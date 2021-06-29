@@ -1,0 +1,41 @@
+{
+  "dir": "ltr",
+  "lang": "en",
+  "name": "Farron Research",
+  "short_name": "Farron Research",
+  "scope": "/",
+  "start_url": "/",
+  "display": "standalone",
+  "icons": [{
+      "src": "//logajob.com.au/assets/images/fr-only-logo.png",
+      "type": "image/png",
+      "sizes": "48x48"
+    },
+    {
+      "src": "//logajob.com.au/assets/images/fr-only-logo.png",
+      "type": "image/png",
+      "sizes": "96x96"
+    },
+    {
+      "src": "//logajob.com.au/assets/images/fr-only-logo.png",
+      "type": "image/png",
+      "sizes": "144x144"
+    },
+    {
+      "src": "//logajob.com.au/assets/images/fr-only-logo.png",
+      "type": "image/png",
+      "sizes": "192x192"
+    },
+    {
+      "src": "//logajob.com.au/assets/images/fr-only-logo.png",
+      "type": "image/png",
+      "sizes": "512x512"
+    }
+  ],
+  "theme_color": "#0f90d2",
+  "description": "",
+  "orientation": "any",
+  "background_color": "#f2f2f2",
+  "related_applications": [],
+  "prefer_related_applications": false
+}

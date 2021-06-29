@@ -1,0 +1,8 @@
+::ng-deep .ng2-tag-input {
+    height: 132px;
+    overflow-y: scroll;
+}
+
+::ng-deep .k-grid td {
+    padding: 2px !important;
+}

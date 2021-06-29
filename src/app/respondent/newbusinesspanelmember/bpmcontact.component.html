@@ -1,0 +1,256 @@
+<div class="tab-pane active" id="contactdetails">
+  <!-- <div *ngIf="!isMyProfile" class="newres-tab-title">
+    <h5 class="no-margin">Contact Details</h5>
+  </div> -->
+  <div *ngIf="!isMyProfile" class="col-md-12 no-padding m-b-0 newres-bottom">
+    <div class="col-md-6 font-10 no-padding">
+      <h5 class="no-margin p-l-10" style="line-height: 34px">Contact Details</h5>
+    </div>
+    <div class="col-md-6 text-right no-padding">
+      <button (click)="updateBpmContact(bpmContactForm)" class="btn waves-effect waves-light btn-md"
+        [class.btn-ocean]="!isMyProfile" [class.btn-basil]="isMyProfile">
+        Submit
+      </button>
+    </div>
+  </div>
+  <div class="clearfix"></div>
+
+  <br *ngIf="!isMyProfile">
+  <form #bpmContactForm="ngForm" *ngIf="!isLoading" class="ax-form" role="form" id="contactform">
+    <div class="no-padding" [class.col-md-4]="!isMyProfile" [class.col-md-12]="isMyProfile">
+
+      <div class="form-group col-md-6 no-padding-left required">
+        <label class="control-label w-100-pre">First Name
+          <div class="pull-right">
+            <span [hidden]="givenNamesmodel.valid || !isSubmitForm">
+              <span class="text-danger pull-right" [hidden]="!givenNamesmodel.hasError('required')">Required</span>
+            </span>
+          </div>
+        </label>
+        <input type="text" name="givenname" [(ngModel)]="respondent.givenNames" class="form-control"
+          #givenNamesmodel="ngModel" required (keypress)="stringOnly($event)">
+      </div>
+
+      <div class="form-group col-md-6 no-padding-left required">
+        <label class="control-label w-100-pre">Last Name
+          <span [hidden]="lastNamemodel.valid || !isSubmitForm">
+            <span class="text-danger pull-right" [hidden]="!lastNamemodel.hasError('required')">Required</span>
+          </span>
+        </label>
+        <input type="text" name="lastname" [(ngModel)]="respondent.lastName" class="form-control"
+          #lastNamemodel="ngModel" required (keypress)="stringOnly($event)">
+      </div>
+
+      <div class="clearfix"></div>
+
+      <div class="form-group col-md-6 no-padding-left required">
+        <label class="control-label w-100-pre" for="companyEmail">Company Email
+          <span [hidden]="companyEmailmodel.valid || !isSubmitForm" class="pull-right">
+            <span class="text-danger pull-right" [hidden]="!companyEmailmodel.hasError('required')">Required</span>
+            <span class="text-danger pull-right" [hidden]="!companyEmailmodel.hasError('pattern')">Invalid Email</span>
+          </span>
+        </label>
+        <input type="text" id="companyEmail" name="companyEmail" [(ngModel)]="respondent.email" class="form-control"
+          #companyEmailmodel="ngModel" pattern="^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,10})+$" required>
+      </div>
+
+      <div class="form-group col-md-6 no-padding-left">
+        <label class="control-label w-100-pre" for="personalEmail">Personal Email
+          <span [hidden]="personalEmailModel.valid || !isSubmitForm" class="pull-right">
+            <span class="text-danger pull-right" [hidden]="!personalEmailModel.hasError('pattern')">Invalid Email</span>
+          </span>
+        </label>
+        <input type="text" id="personalEmail" name="personalEmail" [(ngModel)]="respondent.emailAdditional"
+          class="form-control" #personalEmailModel="ngModel" pattern="^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,10})+$">
+      </div>
+
+      <div class="form-group col-md-12 no-padding-left">
+        <label class="control-label" for="occupation">Occupation</label>
+        <!-- <input auto-complete id="occupation" name="occupation" [(ngModel)]="respondent.occupationId" [source]="occupationlist" class="form-control"
+        [list-formatter]="autocompleListFormatter"/>    -->
+        <!--<input auto-complete [(ngModel)]="respondent.occupationObj" name="occupationid" [source]="occupationlist" class="form-control"-->
+        <!--[list-formatter]="autocompleListFormatter" />-->
+        <input auto-complete [source]="occupationAPI" no-match-found-text="No Data Found" list-formatter="description"
+          path-to-data="value" display-property-name="description" loading-text="Loading..." max-num-list="5"
+          min-chars="2" placeholder="" autocomplete="off" type="text" class="form-control" name="partneroccupation"
+          [(ngModel)]="respondent.occupationObj">
+      </div>
+
+
+      <div class="form-group col-md-6 no-padding-left">
+        <label class="control-label">Job Title</label>
+        <input type="text" class="form-control" name="jobTitle" [(ngModel)]="respondent.jobTitle">
+      </div>
+
+      <div class="form-group col-md-6 no-padding-left">
+        <label class="control-label">Business Role</label>
+        <!-- <select id="type" name="type" class="form-control" name="occupationLevel" [(ngModel)]="respondent.occupationLevel">
+          <option *ngFor="let jt of occupationlevellist" [value]="jt.code">{{jt.desc}}</option>
+        </select> -->
+        <select name="businessrole" class="form-control" [(ngModel)]="respondent.businessRole">
+          <option *ngFor="let br of businessrolelist" [value]="br.code">{{br.desc}}</option>
+        </select>
+      </div>
+
+      <div class="form-group col-md-12 no-padding-left">
+        <label class="control-label">Industry</label>
+        <select class="form-control" name="industryId" [(ngModel)]="respondent.industryId">
+          <option *ngFor="let ind of industrylist" [value]="ind.id">{{ind.description}}</option>
+        </select>
+      </div>
+
+      <div class="form-group col-md-6 no-padding-left">
+        <label class="control-label">Company Name</label>
+        <input type="text" name="companyname" class="form-control" [(ngModel)]="respondent.employerName">
+      </div>
+
+
+      <div class="form-group col-md-6 no-padding-left">
+        <label class="control-label">Company Suburb</label>
+        <input auto-complete [source]="locationAPI" no-match-found-text="No Data Found" list-formatter="suggestion"
+          path-to-data="value" display-property-name="suburb" loading-text="Loading..." max-num-list="5" min-chars="2"
+          placeholder="" type="text" class="form-control" name="suburbWork" [(ngModel)]="respondent.suburbWork"
+          (ngModelChange)="setBusinessLocation(respondent.suburbWork)" [accept-user-input]="false">
+        <!-- <input type="text" class="form-control" [(ngModel)]="respondent.suburbWork" name="suburb" (keypress)="stringOnly($event)"> -->
+        <!-- <div class="dropdown">
+              <ul class="dropdown-menu" [class.show]="isPostSuggShow && postcodes.length > 0">
+                <ng-container *ngFor="let pc of postcodes; let i = index">
+                  <ng-container *ngIf="i < 10">
+                    <li (click)="selectedCode(pc)" class="ax-cursor-pointer"><a>{{pc.suggestion}}</a></li>
+                  </ng-container>
+                </ng-container>
+              </ul>
+            </div> -->
+      </div>
+
+      <div class="form-group col-md-6 no-padding-left">
+        <label class="control-label" for="postcodeBusiness">Company Postcode</label>
+        <!--<input auto-complete [source]="locationAPI" no-match-found-text="No Data Found" list-formatter="suggestion"-->
+        <!--path-to-data="value" loading-text="Loading..." max-num-list="5" min-chars="2" placeholder="" autocomplete="off"-->
+        <!--type="text" class="form-control" name="postcodeBusiness" [(ngModel)]="respondent.postcodeWork"-->
+        <!--(ngModelChange)="setBusinessLocation(respondent.postcodeWork)" />-->
+
+        <input placeholder="" type="text" class="form-control" name="postcodeHome" [(ngModel)]="respondent.postcodeWork"
+          #postcodemodel="ngModel" [pattern]="postcodePattern"
+          [textMask]="{mask: postcodeMask, showMask: true, guide: false}" numeric
+          (ngModelChange)="respondent.postcodeWork = unmask($event)">
+      </div>
+
+      <div class="form-group col-md-6 no-padding-left">
+        <label class="control-label" for="occupation">Company
+          {{countrycode == 'AU' ? 'State' : 'City or Region' }}</label>
+        <select class="form-control" name="workstate" [(ngModel)]="respondent.state">
+          <option value="{{s.code}}" *ngFor="let s of stateslist">{{s.name}}</option>
+        </select>
+      </div>
+
+
+      <div class="form-group col-md-6 no-padding-left">
+        <label class="control-label w-100-pre" for="phoneBusiness">
+          Company Phone
+          <span [hidden]="phoneBusinessModel.valid || !isSubmitForm">
+            <span class="text-danger pull-right" [hidden]="!phoneBusinessModel.hasError('pattern')">Invalid Phone</span>
+          </span>
+        </label>
+        <input type="text" id="phoneBusiness" name="phoneBusiness" [(ngModel)]="respondent.phoneBusiness"
+          class="form-control" [textMask]="{mask: phoneMask, showMask: false, guide: true}" numeric
+          (ngModelChange)="respondent.phoneBusiness = unmask($event)" [pattern]="phonePattern"
+          #phoneBusinessModel="ngModel">
+      </div>
+
+      <div class="form-group col-md-6 no-padding">
+        <label class="control-label w-100-pre" for="mobilephone">
+          Mobile Number
+          <span [hidden]="phoneMobileModel.valid || !isSubmitForm">
+            <span class="text-danger pull-right" [hidden]="!phoneMobileModel.hasError('pattern')">Invalid Mobile</span>
+          </span>
+        </label>
+        <input type="text" id="mobilephone" name="mobilephone" [(ngModel)]="respondent.phoneMobile" class="form-control"
+          [textMask]="{mask: mobileMask, showMask: true, guide: false}" numeric
+          (ngModelChange)="respondent.phoneMobile = unmask($event)" [pattern]="mobilePattern"
+          #phoneMobileModel="ngModel">
+      </div>
+
+      <div class="form-group col-md-6 no-padding-left">
+        <label class="control-label" for="businessSize">Company Size</label>
+        <!-- <input type="text" id="mobilephone" name="mobilephone" [(ngModel)]="respondent.phoneMobile" class="form-control"> -->
+        <select class="form-control" name="businessSize" [(ngModel)]="respondent.businessSize">
+          <option *ngFor="let bs of businesssizelist" [value]="bs.code">{{bs.desc}}</option>
+        </select>
+      </div>
+
+      <div class="form-group col-md-6 no-padding">
+        <label class="control-label" for="employerTurnover">Company Turnover</label>
+        <select class="form-control" name="employerTurnover" [(ngModel)]="respondent.employerTurnover">
+          <option *ngFor="let et of employerturnoverlist" [value]="et.code">{{et.desc}}</option>
+        </select>
+      </div>
+
+      <div class="clearfix"></div>
+      <!-- <div *ngIf="!isMyProfile && (hasPasswordPermission || respondent.id == 0)" class="form-group required">
+        <label class="control-label w-100-pre">Password
+          <span [hidden]="passwordmodel.valid || !isSubmitForm">
+            <span class="text-danger pull-right" [hidden]="!passwordmodel.hasError('required')">Required</span>
+          </span>
+        </label>
+        <input type="text" name="password" [(ngModel)]="respondent.passwordRaw" class="form-control" maxlength="20"
+          #passwordmodel="ngModel" required>
+      </div> -->
+    </div>
+
+    <div class="col-md-4">
+      <div *ngIf="!isMyProfile" class="form-control m-b-15" style="height: auto;">
+        <div class="checkbox checkbox-primary no-margin">
+          <input type="checkbox" name="oneOffRespondent" [(ngModel)]="respondent.oneOffRespondent" value="true"
+            id="oneOffRespondent">
+          <label class="control-label ax-color-black no-padding" for="oneOffRespondent">One Off Respondent</label>
+        </div>
+      </div>
+    </div>
+
+    <div class="clearfix"></div>
+    <div class="form-group">
+      <div class="checkbox checkbox-primary w-100-pre m-t-0">
+        <input id="isTermsAgreed" type="checkbox" [(ngModel)]="respondent.isTermsAgreed" name="isTermsAgreed" disabled>
+        <label *ngIf="!isMyProfile" for="isTermsAgreed" class="control-label ax-color-black no-padding"> &#160;
+          <span>Has agreed to the terms & conditions</span>
+        </label>
+      </div>
+    </div>
+    <div class="clearfix"></div>
+
+    <div class="col-md-12 no-padding m-b-0 newres-bottom">
+      <!-- <div class="pull-left" *ngIf="!isMyProfile">
+          <button class="btn btn-cocktail waves-effect waves-light btn-md">
+            Send Reset Password Link
+          </button>
+        </div> -->
+      <div class="col-md-6 font-10 no-padding" style="line-height: 34px">
+        <ng-container>
+          <b>Created:</b>
+          <ng-container *ngIf="respondent.dateCreated">
+            {{respondent.dateCreated | date: 'dd-MM-yyyy'}} &#160;
+          </ng-container>
+          <ng-container *ngIf="!respondent.dateCreated">
+            {{today | date: 'dd-MM-yyyy'}} &#160;
+          </ng-container>
+          <b>Last Updated:</b>
+          <ng-container *ngIf="respondent.dateLastUpdated">
+            {{respondent.dateLastUpdated | date: 'dd-MM-yyyy'}}
+          </ng-container>
+          <ng-container *ngIf="!respondent.dateLastUpdated">
+            {{today | date: 'dd-MM-yyyy'}}
+          </ng-container>
+        </ng-container>
+      </div>
+      <div class="col-md-6 text-right no-padding">
+        <button type="submit" (click)="updateBpmContact(bpmContactForm)" class="btn waves-effect waves-light btn-md"
+          [class.btn-ocean]="!isMyProfile" [class.btn-basil]="isMyProfile">
+          Submit
+        </button>
+      </div>
+    </div>
+
+  </form>
+  <div class="clearfix"></div>
+</div>

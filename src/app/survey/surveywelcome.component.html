@@ -1,0 +1,162 @@
+﻿<div class="no-padding home-bg" style="margin-bottom: -61px;">
+  <div class="home-bg-trans1">
+    <!-- Navigation Bar-->
+    <header id="topnav">
+      <div class="topbar-main" style="height: 60px;">
+        <div class="container">
+          <!-- Logo container-->
+          <div class="logo">
+            <a class="logo" [title]="isFarronResearch ? 'Farron Research Logo' : 'Logo'">
+              <span class="hidden-xs"><img src="assets/images/fr-logo.png"
+                  [alt]="isFarronResearch ? 'Farron Research Logo' : 'Logo'"></span>
+              <span class="hidden-sm hidden-md hidden-lg">
+                <img src="assets/images/fr-only-logo.png" [alt]="isFarronResearch ? 'Farron Research Logo' : 'Logo'">
+              </span>
+            </a>
+          </div>
+          <!-- End Logo container-->
+          <div class="menu-extras">
+            <ul class="nav navbar-nav navbar-right pull-right ax-right-nav-btn">
+              <li>
+                <!-- <div class="input-group">
+                  <a class="btn btn-skyblue" [routerLink]="['/signin']">Login</a>
+                </div> -->
+              </li>
+            </ul>
+          </div>
+        </div>
+      </div>
+      <!-- End topbar -->
+    </header>
+    <!-- End Navigation Bar-->
+    <!-- =======================
+          ===== START PAGE ======
+          ======================= -->
+
+    <div class="wrapper login-page-wrapper">
+      <div class="container min-width-100vw text-center">
+        <div class="container" [class.text-center]="errors.length < 1">
+          <div class="row">
+            <!--<div class="col-sm-2"></div>-->
+            <div class="ax-login-panel">
+              <div class="col-md-12">
+                <div *ngIf="errors.length > 0" class="card-box m-b-0">
+                  <h3 class="text-left no-margin">
+                    <i class="md md-warning"></i>
+                    <span class="text-danger"> Something went wrong</span>
+                  </h3>
+                  <h5 class="m-b-0">{{errors[0]}}</h5>
+                </div>
+                <div *ngIf="errors.length < 1" class="card-box m-b-0">
+                  <h2 style="font-size: 18px; margin: 0;">Dear {{welcomePageData?.respondentName}},</h2>
+                  <div class="m-b-20">
+                    Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the
+                    industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type
+                    and
+                    scrambled it to make a type specimen book. It has survived not only five centuries, but also the
+                    leap
+                    into electronic typesetting, remaining essentially unchanged.
+                  </div>
+                  <form *ngIf="welcomePageData" #form="ngForm">
+                    <div class="m-b-20">
+                      <div class="form-group required">
+                        <label class="control-label w-100-pre">
+                          Email Address
+                          <div class="pull-right">
+                            <span [hidden]="emailModel.valid || !isSubmitForm">
+                              <span class="text-danger pull-right"
+                                [hidden]="!emailModel.hasError('required')"><b>Required</b></span>
+                              <span class="text-danger pull-right"
+                                [hidden]="!emailModel.hasError('pattern')"><b>Invalid</b></span>
+                            </span>
+                          </div>
+                        </label>
+                        <div class="input-group">
+                          <input type="text" name="respondentEmail" class="form-control"
+                            [(ngModel)]="welcomePageData.respondentEmail" #emailModel="ngModel"
+                            pattern="^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,10})+$" required
+                            [disabled]="welcomePageData.respondentEmail && !isEnableEdit('respondentEmail')"
+                            (ngModelChange)="addToEditFields('respondentEmail')">
+                          <span class="input-group-addon ax-cursor-pointer" style="border-color: #c1c1c1;"
+                            (click)="addToEditFields('respondentEmail')">
+                            <i class="md md-mode-edit"></i>
+                          </span>
+                        </div>
+                      </div>
+                      <div class="row">
+                        <div class="col-md-6 form-group required m-b-0">
+                          <label class="control-label w-100-pre">
+                            Mobile Number
+                            <span [hidden]="phoneMobileModel.valid || !isSubmitForm">
+                              <span class="text-danger pull-right"
+                                [hidden]="!phoneMobileModel.hasError('required')"><b>Required</b></span>
+                              <span class="text-danger pull-right"
+                                [hidden]="!phoneMobileModel.hasError('pattern')">Invalid
+                              </span>
+                            </span>
+                          </label>
+                          <div class="input-group">
+                            <input type="text" name="respondentMobil" [(ngModel)]="welcomePageData.respondentMobil"
+                              class="form-control" [textMask]="{mask: mobileMask, showMask: true, guide: false}" numeric
+                              (ngModelChange)="respondent.phoneMobile = unmask($event)" [pattern]="mobilePattern"
+                              #phoneMobileModel="ngModel"
+                              [disabled]="welcomePageData.phoneMobile && !isEnableEdit('phoneMobile')"
+                              (ngModelChange)="addToEditFields('phoneMobile')" required>
+                            <span class="input-group-addon ax-cursor-pointer" style="border-color: #c1c1c1;"
+                              (click)="addToEditFields('phoneMobile')">
+                              <i class="md md-mode-edit"></i>
+                            </span>
+                          </div>
+                        </div>
+                        <div class="col-md-6 form-group required m-b-0">
+                          <label class="control-label w-100-pre">
+                            Post Code
+                            <span [hidden]="respondentPostcodeModel.valid || !isSubmitForm">
+                              <span class="text-danger pull-right"
+                                [hidden]="!respondentPostcodeModel.hasError('required')"><b>Required</b></span>
+                              <span class="text-danger pull-right"
+                                [hidden]="!respondentPostcodeModel.hasError('pattern')">Invalid
+                              </span>
+                            </span>
+                          </label>
+                          <div class="input-group">
+                            <input type="text" name="respondentPostcode" class="form-control"
+                              [(ngModel)]="welcomePageData.respondentPostcode" required
+                              #respondentPostcodeModel="ngModel"
+                              [textMask]="{mask: postcodeMask, showMask: true, guide: false}" numeric
+                              [disabled]="welcomePageData.respondentPostcode && !isEnableEdit('respondentPostcode')"
+                              (ngModelChange)="addToEditFields('respondentPostcode')">
+                            <span class="input-group-addon ax-cursor-pointer" style="border-color: #c1c1c1;"
+                              (click)="addToEditFields('respondentPostcode')">
+                              <i class="md md-mode-edit"></i>
+                            </span>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                    <div class="m-b-20">
+                      These are the registration details that we have on file for you. If any of these details are
+                      incorrect, please click This is not my Profile button otherwise Save and Continue button.
+                    </div>
+                    <div class="row">
+                      <div class="col-md-6">
+                        <button class="btn btn-cocktail btn-block font-16" [routerLink]="['/signin', this.jobId]">This
+                          is
+                          not my Profile</button>
+                      </div>
+                      <div class="col-md-6">
+                        <button class="btn btn-basil btn-block font-16" (click)="saveAndContinue(form)">Save and
+                          Continue</button>
+                      </div>
+                    </div>
+                  </form>
+                </div>
+              </div>
+            </div>
+            <!--<div class="col-sm-2"></div>-->
+          </div><!-- end container -->
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

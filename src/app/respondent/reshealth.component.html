@@ -1,0 +1,181 @@
+<div class="tab-pane" id="health">
+  <div class="col-md-12 no-padding">
+    <!-- <ng-container *ngIf="!isMyProfile">
+      <div class="newres-tab-title">
+        <h5 class="no-margin">Health Details</h5>
+      </div>
+      <br>
+    </ng-container> -->
+
+    <div *ngIf="!isMyProfile" class="col-md-12 no-padding m-b-0 newres-bottom">
+      <div class="col-md-6 font-10 no-padding">
+        <h5 class="no-margin p-l-10" style="line-height: 34px">Health Details</h5>
+      </div>
+      <div class="col-md-6 text-right no-padding">
+        <button (click)="updateSubmit()" class="btn waves-effect waves-light btn-md" [class.btn-ocean]="!isMyProfile"
+          [class.btn-basil]="isMyProfile">
+          Submit
+        </button>
+      </div>
+    </div>
+    <div class="clearfix"></div>
+    <br>
+    <form *ngIf="!isLoading && respondent != null">
+      <div class="col-md-3 no-padding-left">
+        <div class="form-group">
+          <label class="control-label">Allergy</label>
+          <ng-container *ngFor="let ba of allergyList; let i = index">
+            <div class="checkbox checkbox-primary pull-left res-check-margin w-100-pre">
+              <input type="checkbox" name="allergy{{i}}" id="allergy{{i}}" [(ngModel)]="ba.selected" value="true">
+              <label class="control-label" for="allergy{{i}}">{{ba.description}}</label>
+            </div>
+          </ng-container>
+          <div class="clearfix"></div>
+        </div>
+        <div class="form-group">
+          <label class="control-label panel-member-heading-label">Dietary Requirement</label>
+          <ng-container *ngFor="let ba of dietaryRequirementList; let i = index">
+            <div class="checkbox checkbox-primary pull-left res-check-margin w-100-pre">
+              <input type="checkbox" name="dietaryrequirement{{i}}" id="dietaryrequirement{{i}}"
+                [(ngModel)]="ba.selected" value="true">
+              <label class="control-label" for="dietaryrequirement{{i}}">{{ba.description}}</label>
+            </div>
+          </ng-container>
+          <div class="clearfix"></div>
+        </div>
+        <div class="form-group">
+          <label class="control-label panel-member-heading-label">Disabilty Assistance</label>
+          <ng-container *ngFor="let ba of disabiltyAssistancesList; let i = index">
+            <div class="checkbox checkbox-primary pull-left res-check-margin w-100-pre">
+              <input type="checkbox" name="disabiltyassistance{{i}}" id="disabiltyassistance{{i}}"
+                [(ngModel)]="ba.selected" value="true">
+              <label class="control-label" for="disabiltyassistance{{i}}">{{ba.description}}</label>
+            </div>
+          </ng-container>
+          <div class="clearfix"></div>
+        </div>
+        <div class="form-group">
+          <label class="control-label panel-member-heading-label">Eye Conditions</label>
+          <ng-container *ngFor="let ba of opticalIssueList; let i = index">
+            <div class="checkbox checkbox-primary pull-left res-check-margin w-100-pre">
+              <input type="checkbox" name="eyeconditions{{i}}" id="eyeconditions{{i}}" [(ngModel)]="ba.selected"
+                value="true">
+              <label class="control-label" for="eyeconditions{{i}}">{{ba.description}}</label>
+            </div>
+          </ng-container>
+          <div class="clearfix"></div>
+        </div>
+        <div class="form-group">
+          <label class="control-label panel-member-heading-label">Fitness Devices</label>
+          <ng-container *ngFor="let ba of fitnessDevicesList; let i = index">
+            <div class="checkbox checkbox-primary pull-left res-check-margin w-100-pre">
+              <input type="checkbox" name="fitnessdevices{{i}}" id="fitnessdevices{{i}}" [(ngModel)]="ba.selected"
+                value="true">
+              <label class="control-label" for="fitnessdevices{{i}}">{{ba.description}}</label>
+            </div>
+          </ng-container>
+          <div class="clearfix"></div>
+        </div>
+      </div>
+      <div class="col-md-3 no-padding">
+        <div class="form-group">
+          <label class="control-label">Health Cover Type</label>
+          <ng-container *ngFor="let ba of healthCoverTypesList; let i = index">
+            <div class="checkbox checkbox-primary pull-left res-check-margin w-100-pre">
+              <input type="checkbox" name="healthcovertype{{i}}" id="healthcovertype{{i}}" [(ngModel)]="ba.selected"
+                value="true">
+              <label class="control-label" for="healthcovertype{{i}}">{{ba.description}}</label>
+            </div>
+          </ng-container>
+          <div class="clearfix"></div>
+        </div>
+        <div class="form-group">
+          <label class="control-label panel-member-heading-label">Health Funds</label>
+          <ng-container *ngFor="let ba of healthFundsList; let i = index">
+            <div class="checkbox checkbox-primary pull-left res-check-margin w-100-pre">
+              <input type="checkbox" name="healthfunds{{i}}" id="healthfunds{{i}}" [(ngModel)]="ba.selected"
+                value="true">
+              <label class="control-label" for="healthfunds{{i}}">{{ba.description}}</label>
+            </div>
+          </ng-container>
+          <div class="clearfix"></div>
+        </div>
+
+        <div class="form-group">
+          <label class="control-label panel-member-heading-label">Fitness Activity</label>
+          <ng-container *ngFor="let ba of fitnessActivityList; let i = index">
+            <div class="checkbox checkbox-primary pull-left res-check-margin w-100-pre">
+              <input type="checkbox" name="fitnessactivity{{i}}" id="fitnessactivity{{i}}" [(ngModel)]="ba.selected"
+                value="true">
+              <label class="control-label" for="fitnessactivity{{i}}">{{ba.description}}</label>
+            </div>
+          </ng-container>
+          <div class="clearfix"></div>
+        </div>
+
+      </div>
+      <div class="col-md-3 no-padding-right">
+        <div class="form-group">
+          <label class="control-label">Mental Health Conditions</label>
+          <ng-container *ngFor="let ba of mentalHealthConditionsList; let i = index">
+            <div class="checkbox checkbox-primary pull-left res-check-margin w-100-pre">
+              <input type="checkbox" name="mentalhealthconditions{{i}}" id="mentalhealthconditions{{i}}"
+                [(ngModel)]="ba.selected" value="true">
+              <label class="control-label" for="mentalhealthconditions{{i}}">{{ba.description}}</label>
+            </div>
+          </ng-container>
+          <div class="clearfix"></div>
+        </div>
+      </div>
+
+      <div class="col-md-3 no-padding-right">
+        <div class="form-group">
+          <label class="control-label panel-member-heading-label">Health Problems</label>
+          <ng-container *ngFor="let ba of healthProblemsList; let i = index">
+            <div class="checkbox checkbox-primary pull-left res-check-margin w-100-pre">
+              <input type="checkbox" name="healthproblems{{i}}" id="healthproblems{{i}}" [(ngModel)]="ba.selected"
+                value="true">
+              <label class="control-label" for="healthproblems{{i}}">{{ba.description}}</label>
+            </div>
+          </ng-container>
+          <div class="clearfix"></div>
+        </div>
+      </div>
+
+      <div class="clearfix"></div>
+      <div *ngIf="respondent" class="col-md-12 no-padding m-b-0 newres-bottom">
+        <!-- <div class="pull-left" *ngIf="!isMyProfile">
+            <button class="btn btn-cocktail waves-effect waves-light btn-md">
+              Send Reset Password Link
+            </button>
+          </div> -->
+        <div class="col-md-6 font-10 no-padding" style="line-height: 34px">
+          <ng-container>
+            <b>Created:</b>
+            <ng-container *ngIf="respondent.dateCreated">
+              {{respondent.dateCreated | date: 'dd-MM-yyyy'}} &#160;
+            </ng-container>
+            <ng-container *ngIf="!respondent.dateCreated">
+              {{today | date: 'dd-MM-yyyy'}} &#160;
+            </ng-container>
+            <b>Last Updated:</b>
+            <ng-container *ngIf="respondent.dateLastUpdated">
+              {{respondent.dateLastUpdated | date: 'dd-MM-yyyy'}}
+            </ng-container>
+            <ng-container *ngIf="!respondent.dateLastUpdated">
+              {{today | date: 'dd-MM-yyyy'}}
+            </ng-container>
+          </ng-container>
+        </div>
+        <div class="col-md-6 text-right no-padding">
+          <button (click)="updateSubmit()" class="btn waves-effect waves-light btn-md" [class.btn-ocean]="!isMyProfile"
+            [class.btn-basil]="isMyProfile">
+            Submit
+          </button>
+          <!-- <a *ngIf="isMyProfile" class="btn btn-cocktail m-l-5" (click)="gotoTop()">Skip</a> -->
+        </div>
+      </div>
+    </form>
+  </div>
+  <div class="clearfix"></div>
+</div>

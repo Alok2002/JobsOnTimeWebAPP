@@ -1,0 +1,160 @@
+<div class="wrapper">
+  <div class="container">
+    <div class="row">
+      <div class="col-sm-12">
+        <ol class="breadcrumb breadcrumb-arrow bg-white bx-shadow">
+          <li><a [routerLink]="['/dashboard']" class="home-breadcrumb"><i class="md md-home"></i></a></li>
+          <!-- <li><a [routerLink]="['/reports']" class="home-breadcrumb font-14">Reports</a></li> -->
+          <li><a>Sales Report</a></li>
+        </ol>
+      </div>
+      <div class="col-sm-12">
+        <div class="card-box">
+
+          <div class="portlet ax-border m-b-0" id="jobs-filterBox">
+            <div class="portlet-heading portlet-default">
+              <div class="clearfix"></div>
+              <div id="bg-default" class="panel-collapse collapse in">
+                <div class="portlet-body no-padding m-t-0">
+                  <div class="col-md-12 no-padding">
+                    <form action="" class="ax-form">
+                      <div class="row">
+                        <div class="form-group col-md-3">
+                          <label class="control-label ax-color-black">Date Range</label>
+                          <div class="input-group" daterangepicker [options]="{startDate:dateInput.start, endDate:dateInput.end }"
+                            (selected)="selectedDate($event, dateInput)">
+                            <span class="form-control uneditable-input" name="daterange">
+                              {{ dateInput.start | date:'dd-MM-yyyy' }} - {{ dateInput.end| date:'dd-MM-yyyy' }}
+                            </span>
+                            <span class="input-group-btn">
+                              <a class="btn btn-default"><i class="glyphicon glyphicon-calendar"></i></a>
+                            </span>
+                          </div>
+                        </div>
+                        <div class="form-group col-md-3">
+                          <label class="control-label ax-color-black">Client</label>
+                          <select class="form-control" name="client" [(ngModel)]="reports.clientId">
+                            <option [ngValue]="0">All Clients</option>
+                            <option value="{{client.id}}" *ngFor="let client of clients;">{{client.name}}</option>
+                          </select>
+                        </div>
+                        <div class="form-group col-md-3">
+                          <label class="control-label ax-color-black">Job Name</label>
+                          <input type="text" class="form-control" name="jobname" [(ngModel)]="reports.jobName" />
+                        </div>
+                        <div class="form-group col-md-3">
+                          <label class="control-label ax-color-black">Comma Separated Job Number</label>
+                          <input type="text" class="form-control" name="jobnumber" [(ngModel)]="reports.jobNumber" />
+                        </div>
+                      </div>
+                      <div class="clearfix"></div>
+                      <hr class="m-b-20 m-t-15">
+                      <div class="col-md-12 no-padding text-right">
+                        <a class="btn btn-cocktail" (click)="resetFilter()">Reset</a>&#160;
+                        <button class="btn btn-ocean" (click)="submitFilter()">Show Report</button>
+                      </div>
+                    </form>
+                  </div>
+                  <div class="clearfix"></div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div style="position: relative;min-height: 50px">            
+            <ng-container *ngIf="data && data.length > 0">
+              <br>
+              <div class="btn-group">
+                <a class="btn btn-ocean btn-xs waves-effect btn-square" id="deleteAlert" (click)="exportToExcel(grid)">
+                  Export to Excel
+                </a>
+                <a class="btn btn-cocktail btn-xs waves-effect btn-square" (click)="exportToPDF(grid)">
+                  Export to PDF
+                </a>
+              </div>
+              <kendo-grid #grid="kendoGrid" [data]="gridData" [pageSize]="state.take" [skip]="state.skip" [sort]="state.sort"
+                [group]="state.group" [sortable]="{ mode: 'multiple' }" [height]="auto" [pageable]="true" [scrollable]="false"
+                (dataStateChange)="dataStateChange($event)">
+                <kendo-grid-column field="approvedDate" title="Approved Date" [hidden]="true">
+                  <ng-template kendoGridGroupHeaderTemplate let-group let-field="field" let-value="value">
+                    {{value}}
+                  </ng-template>
+                </kendo-grid-column>
+                <kendo-grid-column field="clientName" title="Client Name" width="250">
+                  <ng-template kendoGridGroupFooterTemplate let-group="group" let-aggregates let-field="field">
+                    <div>Day Total {{aggregates[field].count}} Job(s)</div>
+                  </ng-template>
+                </kendo-grid-column>
+                <kendo-grid-column field="jobNumber" title="Job No" width="75">
+                  <ng-template kendoGridCellTemplate let-dataItem>
+                    <a [routerLink]="['/job/edit', dataItem.jobId]" style="color: #0076a4 !important;" target="_blank">
+                      {{dataItem.jobNumber }}
+                    </a>
+                  </ng-template>
+                </kendo-grid-column>
+                <kendo-grid-column field="jobApproveNumber" title="Job Approve Number" width="150">
+                </kendo-grid-column>
+                <kendo-grid-column field="jobName" title="Job Name" width="300">
+                  <ng-template kendoGridCellTemplate let-dataItem>
+                    <a [routerLink]="['/job/edit', dataItem.jobId]" style="color: #0076a4 !important;" target="_blank">
+                      {{dataItem.jobName }}
+                    </a>
+                  </ng-template>
+                </kendo-grid-column>
+                <kendo-grid-column field="incentives" title="Incentives" width="90" [headerClass]="'text-right-imp'">
+                  <ng-template kendoGridCellTemplate let-dataItem>
+                    <div class="text-right-imp">
+                      {{ dataItem.incentives }}
+                    </div>
+                  </ng-template>
+                  <ng-template kendoGridGroupFooterTemplate let-group="group" let-aggregates>
+                    <div class="text-right-imp">{{aggregates["incentives"].sum}}</div>
+                  </ng-template>
+                  <ng-template kendoGridFooterTemplate let-column="column">
+                    <div class="text-right-imp">Total: {{total["incentives"].sum}}</div>
+                  </ng-template>
+                </kendo-grid-column>
+                <kendo-grid-column field="sales" title="Sales" width="90" [headerClass]="'text-right-imp'">
+                  <ng-template kendoGridCellTemplate let-dataItem>
+                    <div class="text-right-imp">
+                      {{ dataItem.sales }}
+                    </div>
+                  </ng-template>
+                  <ng-template kendoGridGroupFooterTemplate let-group="group" let-aggregates>
+                    <div class="text-right-imp">{{aggregates["sales"].sum}}</div>
+                  </ng-template>
+                  <ng-template kendoGridFooterTemplate let-column="column">
+                    <div class="text-right-imp">Total: {{total["sales"].sum}}</div>
+                  </ng-template>
+                </kendo-grid-column>
+                <kendo-grid-column field="invoiceTotal" title="Invoice Total" width="100" [headerClass]="'text-right-imp'">
+                  <ng-template kendoGridCellTemplate let-dataItem>
+                    <div class="text-right-imp">
+                      {{ dataItem.invoiceTotal }}
+                    </div>
+                  </ng-template>
+                  <ng-template kendoGridGroupFooterTemplate let-group="group" let-aggregates>
+                    <div class="text-right-imp">{{aggregates["invoiceTotal"].sum}}</div>
+                  </ng-template>
+                  <ng-template kendoGridFooterTemplate let-column="column">
+                    <div class="text-right-imp">Total: {{total["invoiceTotal"].sum}}</div>
+                  </ng-template>
+                </kendo-grid-column>
+
+                <kendo-grid-column></kendo-grid-column>
+
+                <kendo-grid-pdf fileName="SalesReport.pdf" paperSize="auto" [scale]="0.8" [repeatHeaders]="true"
+                  [allPages]="true" [margin]="{ top: '0.2cm', left: '0.2cm', right: '0.2cm', bottom: '0.2cm' }">
+                </kendo-grid-pdf>
+                <kendo-grid-excel fileName="SalesReport.xlsx"></kendo-grid-excel>
+              </kendo-grid>
+            </ng-container>
+
+            <div class="card ax-border m-b-0 m-t-20 p-all-15" *ngIf="isSubmitForm && data && data.length == 0">No data
+              available</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div> <!-- end container -->
+</div>

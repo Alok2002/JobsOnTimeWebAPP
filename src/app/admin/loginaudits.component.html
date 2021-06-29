@@ -1,0 +1,173 @@
+﻿<div class="wrapper">
+  <div class="container">
+    <div class="row">
+      <div class="col-sm-12">
+        <ol class="breadcrumb breadcrumb-arrow bg-white box-card-shadow">
+          <li>
+            <a [routerLink]="['/dashboard']" class="home-breadcrumb">
+              <i class="md md-home"></i>
+            </a>
+          </li>
+          <!-- <li><a [routerLink]="['/submenu/admin']" class="home-breadcrumb font-14">Admin</a></li> -->
+          <li>
+            <a href="">Login Audit</a>
+          </li>
+        </ol>
+      </div>
+      <div class="col-sm-12 loginaudit">
+        <div class="card-box">
+
+          <filter [entity]="'auditlog'" [showFilter]="true" (filterSubmit)="filterSubmit($event)"
+            (filtersEmit)="filtersEmit($event)" [isUpdateFiler]="isUpdateFiler" [selectedFilterId]="selectedFilterId"></filter>
+
+          <div class="clearfix"></div>
+          <p-table #dt [columns]="selectedColumns" [value]="loginaudits" [lazy]="true" (onLazyLoad)="loadData($event)"
+            [paginator]="true" [paginatorPosition]="'top'" [pageLinks]="10" [rows]="noofrows"
+            [totalRecords]="totalRecords" [loading]="false" selectionMode="multiple" [(selection)]="selectedRowData"
+            [metaKeySelection]="true" [resizableColumns]="true" columnResizeMode="expand"
+            [tableStyleClass]="'table ax-table table-striped table-bordered m-b-0 border-color-e7e7e7'"
+            [scrollable]="true" scrollHeight="560px" sortField="actionTime" [sortOrder]="-1">
+
+            <ng-template pTemplate="caption">
+              <div class="pull-left col-md-6 no-padding text-left">
+                <div class="ax-sysconfig-data-table-top ax-data-table-top-x700 col-md-6 no-padding">
+                  <div class="btn-group">
+                    <a class="btn btn-xs waves-effect m-l--1 btn-green-dark btn-square" (click)="exporttoExcel()">
+                      <i class="md md-file-download"></i>
+                    </a>
+                    <a class="btn btn-skyblue btn-xs waves-effect btn-square m-l--1" (click)="openSaveQueryModal()">
+                      <i class="md md-save"></i> Save Query
+                    </a>
+                    <a #saveQueryBtn class="btn btn-skyblue btn-xs waves-effect btn-square m-l--1 hidden"
+                      href="#save-job-query-modal" data-toggle="modal" data-animation="fadein" data-plugin="custommodal"
+                      data-overlayspeed="200" data-overlaycolor="#36404a">
+                      <i class="md md-save"></i> Save Query
+                    </a>
+                  </div>
+                </div>
+              </div>
+
+              <div class="pull-right col-md-6 no-padding text-right ax-primeng-table-right">
+                <span class="ax-table-filter vertical-align-top">
+                  <select name="noofrows" class="btn-default-border vertical-align-top" [(ngModel)]="noofrows"
+                    (ngModelChange)="loadData({first:0, rows: noofrows});">
+                    <option value="50">50</option>
+                    <option value="100">100</option>
+                    <option value="200">200</option>
+                    <option value="300">300</option>
+                    <option value="500">500</option>
+                    <option value="1000">1,000</option>
+                  </select>
+                </span>
+                <span class="m-l-1 btn btn-default btn-xs btn-square btn-default-border vertical-align-top">
+                  Total {{totalRecords}} Records
+                </span>
+                <span class="m-l-1">
+                  <p-multiSelect [options]="cols" [(ngModel)]="selectedColumns" optionLabel="header"
+                    (onChange)="updateSelectedColumnsIndex()" selectedItemsLabel="Show Column" maxSelectedLabels="0"
+                    [style]="{minWidth: 'auto'}" defaultLabel="Show Column" dropdownIcon='caret' [filter]="false"
+                    [showToggleAll]="false" [showHeader]="false" [scrollHeight]="'300px'">
+                  </p-multiSelect>
+                </span>
+                <span class="m-l-1 btn btn-default btn-xs btn-square btn-default-border vertical-align-top"
+                  (click)="isShowFilter = !isShowFilter">
+                  <ng-container *ngIf="isShowFilter"><i class="md md-visibility-off"></i> Hide Filter</ng-container>
+                  <ng-container *ngIf="!isShowFilter"><i class="md md-visibility"></i> Show Filter</ng-container>
+                </span>
+              </div>
+              <div class="clearfix"></div>
+            </ng-template>
+
+            <ng-template pTemplate="colgroup" let-columns>
+              <colgroup>
+                <col *ngFor="let col of columns" [style.width.px]="col?.width">
+              </colgroup>
+            </ng-template>
+
+            <ng-template pTemplate="header" let-columns>
+              <tr>
+                <th *ngFor="let col of columns" pResizableColumn [style.width.px]="col?.width"
+                  [style.textAlign]="col?.textAlign" [pSortableColumn]="col.sort ? col.field : ''">
+                  {{col.header}}
+                  <p-sortIcon *ngIf="col.sort" [field]="col.field" ariaLabel="Activate to sort"
+                    ariaLabelDesc="Activate to sort in descending order"
+                    ariaLabelAsc="Activate to sort in ascending order"></p-sortIcon>
+                </th>
+              </tr>
+            </ng-template>
+
+            <ng-template pTemplate="body" let-la let-i="rowIndex" let-columns="columns">
+              <tr [pSelectableRow]="la">
+                <ng-container *ngFor="let sc of selectedColumns;">
+                  <ng-container [ngSwitch]="sc.field">
+                    <!-- <td *ngSwitchCase="'actionTime'" [style.width.px]="sc.width" [style.textAlign]="sc?.textAlign">
+                      {{la.actionTime | date:'dd-MM-yyyy hh:mm'}}</td> -->
+                    <ng-container *ngSwitchDefault>
+                      <td [style.width.px]="sc.width" [style.textAlign]="sc?.textAlign">{{la[sc.field]}}</td>
+                    </ng-container>
+                  </ng-container>
+                </ng-container>
+              </tr>
+            </ng-template>
+
+            <ng-template pTemplate="emptymessage" let-columns>
+              <tr>
+                <td [attr.colspan]="columns.length">
+                  No data available
+                </td>
+              </tr>
+            </ng-template>
+          </p-table>
+
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- SJob job query Modal -->
+<div class="modal fade bs-example-modal-lg" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel"
+  aria-hidden="true" style="display: none;" id="save-job-query-modal">
+  <div class="modal-dialog modal-md">
+    <div class="modal-content">
+      <div class="modal-header no-border ax-modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-hidden="true"
+          (click)="saveQueryName = ''">×</button>
+        <h4 class="modal-title" id="full-width-modalLabel">Save Current Query</h4>
+      </div>
+      <div class="modal-body no-padding">
+        <form class="ax-form" role="form" id="contactform" #saveQueryForm="ngForm">
+          <!-- <div class="save-query-btn btn-group btn-group-justified m-b-10">
+        <a class="btn btn-default waves-effect waves-light btn-primary" role="button">
+          Save
+          Global Query
+        </a>
+        <a class="btn btn-default waves-effect waves-light" role="button">Save Local Query</a>
+      </div> -->
+          <div class="form-group has-feedback required">
+            <label class="control-label w-100-pre" for="queryname">
+              Name of the Query
+              <span [hidden]="saveQueryNameModel.valid || !isSubmitForm">
+                <span class="text-danger pull-right" [hidden]="!saveQueryNameModel.hasError('required')">Required</span>
+              </span>
+            </label>
+            <input type="text" id="queryname" name="queryname" class="form-control" [(ngModel)]="saveQueryName"
+              #saveQueryNameModel="ngModel" required>
+          </div>
+          <div class="col-md-12 no-padding text-right">
+            <a id="contactbtn" (click)="saveQuery(saveQueryForm)"
+              class="btn btn-success waves-effect waves-light m-l-10 btn-md">
+              Save
+            </a>
+            <a #saveQueryCancelBtn data-dismiss="modal" aria-hidden="true" class="btn btn-cocktail m-l-5"
+              (click)="saveQueryName = ''">Cancel</a>
+          </div>
+        </form>
+        <div class="clearfix"></div>
+      </div>
+    </div>
+    <!-- /.modal-content -->
+  </div>
+  <!-- /.modal-dialog -->
+</div>
+<!-- /.modal -->

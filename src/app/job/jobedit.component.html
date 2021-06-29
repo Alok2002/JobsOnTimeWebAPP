@@ -1,0 +1,303 @@
+<div class="col-md-4 no-padding">
+  <form class="ax-form" role="form" #jobEditForm="ngForm" *ngIf="!isLoading">
+    <div class="form-group required">
+      <label class="control-label w-100-pre">
+        Client
+        <span [hidden]="clientModel.valid || !isSubmitForm">
+          <span class="text-danger pull-right" [hidden]="!clientModel.hasError('required')">Required</span>
+        </span>
+      </label>
+      <select class="form-control" name="client" [(ngModel)]="job.clientId" #clientModel="ngModel" required>
+        <option [ngValue]="null"></option>
+        <option [value]="cl.id" *ngFor="let cl of clients">{{cl.name}}</option>
+      </select>
+    </div>
+    <div class="form-group required has-feedback">
+      <label class="control-label w-100-pre" for="jobnumber">
+        Job Number
+        <span class="pull-right">
+          <div class="checkbox checkbox-primary no-margin">
+            <input id="checkbox2" type="checkbox" name="showInClientPortal" [(ngModel)]="job.showInClientPortal">
+            <label for="checkbox2">
+              Show in Client Portal
+            </label>
+          </div>
+        </span>
+        <span [hidden]="jobnoModel.valid || !isSubmitForm">
+          <span class="text-danger pull-right p-r-10" [hidden]="!jobnoModel.hasError('required')">Required</span>
+        </span>
+      </label>
+      <input type="text" id="jobnumber" name="jobnumber" class="form-control" [(ngModel)]="job.jobNumber"
+        #jobnoModel="ngModel" required>
+    </div>
+    <div class="form-group required has-feedback">
+      <label class="control-label w-100-pre" for="jobname">
+        Job Name
+        <span class="pull-right">
+          <span class="pull-left m-r-10">
+            <div class="checkbox checkbox-primary no-margin">
+              <input id="qualJob" type="checkbox" name="qualJob" [(ngModel)]="job.qualJob">
+              <label for="qualJob">
+                Qual
+              </label>
+            </div>
+          </span>
+          <span class="pull-left">
+            <div class="checkbox checkbox-primary no-margin">
+              <input id="quantJob" type="checkbox" name="quantJob" [(ngModel)]="job.quantJob">
+              <label for="quantJob">
+                Quant
+              </label>
+            </div>
+          </span>
+        </span>
+        <span [hidden]="jobnameModel.valid || !isSubmitForm" class="m-r-10">
+          <span class="text-danger pull-right" [hidden]="!jobnameModel.hasError('required')">Required</span>
+        </span>
+      </label>
+      <input type="text" id="jobname" [(ngModel)]="job.jobName" #jobnameModel="ngModel" name="jobname"
+        class="form-control" required>
+      <span class="errorInfo ax-cursor-pointer text-danger glyphicon glyphicon-info-sign form-control-feedback hide"
+        title="" data-placement="top" data-trigger="hover" data-toggle="popover" data-content=""
+        data-original-title=""></span>
+    </div>
+    <div class="clearfix"></div>
+
+    <div class="form-group col-md-6 no-padding">
+      <label class="control-label" for="jobstatus">Job Status</label>
+      <select id="jobstatus" class="form-control" [(ngModel)]="job.jobStatus" name="jobStatus">
+        <option *ngFor="let js of jobstatus" [value]="js.code">{{js.desc}}</option>
+      </select>
+    </div>
+
+    <div class="form-group col-md-6 no-padding-right">
+      <label class="control-label" for="difficultyStatus">Difficulty Status</label>
+      <select id="difficultyStatus" class="form-control" [(ngModel)]="job.difficultyStatus" name="difficultyStatus">
+        <option *ngFor="let ds of difficultystatus" [value]="ds.code">{{ds.desc}}</option>
+      </select>
+    </div>
+    <div class="clearfix"></div>
+
+    <div class="form-group has-feedback col-md-6 no-padding">
+      <label class="control-label" for="type">Session Type</label>
+      <select id="type" class="form-control" name="sesiontype" [(ngModel)]="job.sessionType">
+        <option [value]="jt.code" *ngFor="let jt of jobgrouptypes">{{jt.desc}}</option>
+      </select>
+    </div>
+
+    <div class="form-group col-md-6 no-padding-right">
+      <label class="control-label w-100-pre">
+        Job Source Type
+      </label>
+      <select name="jobsourcetype" [(ngModel)]="job.sourceType" class="form-control">
+        <option>Panel</option>
+        <option>List</option>
+        <option>Panel and List</option>
+      </select>
+    </div>
+    <div class="clearfix"></div>
+
+    <div class="form-group col-md-6 no-padding">
+      <label class="control-label w-100-pre">
+        Job Topic
+      </label>
+      <select name="jobtopic" [(ngModel)]="job.jobTopic" class="form-control">
+        <option *ngFor="let jt of jobTopicList" [value]="jt.description">{{jt.description}}</option>
+      </select>
+    </div>
+
+    <div class="form-group col-md-6 no-padding-right">
+      <label class="control-label">Respondents Required</label>
+      <input type="number" id="respondentsreq" name="respondentsreq" class="form-control"
+        [(ngModel)]="job.respondentsRequired">
+    </div>
+    <div class="clearfix"></div>
+
+    <div class="form-group">
+      <label class="control-label w-100-pre">
+        Job Subject
+        <span class="pull-right">
+          <div class="checkbox checkbox-primary no-margin">
+            <input id="checkbox2" type="checkbox" name="hasHomeworkTask" [(ngModel)]="job.hasHomeworkTask">
+            <label for="checkbox2">
+              Has Homework Task
+            </label>
+          </div>
+        </span>
+      </label>
+      <input type="text" name="jobsubject" [(ngModel)]="job.jobSubject" class="form-control">
+    </div>
+
+    <div class="form-group col-md-6 pull-left no-padding">
+      <label class="control-label">Project Received Date</label>
+      <!-- <input class="form-control datepicker" id="proreceiveddate" name="proreceiveddate" [(ngModel)]="job.dateReceived"
+        ngui-datetime-picker date-format="dddd DD-MMM-YY" parse-format="YYYY-MM-DD" [close-on-select]="true" date-only="true"> -->
+      <kendo-datepicker name="proreceiveddate" [(ngModel)]="job.dateReceived" [format]="'dd-MM-yyyy'" class="w-100-pre"
+        placeholder="">
+      </kendo-datepicker>
+    </div>
+
+    <div class="form-group col-md-6 pull-left no-padding-right">
+      <label class="control-label">Date Allocated To Recruitment</label>
+      <!-- <input class="form-control datepicker" id="dateallocatedtorecruitment" name="dateallocatedtorecruitment"
+        [(ngModel)]="job.dateAllocatedToRecruitment" ngui-datetime-picker date-format="dddd DD-MMM-YY"
+        parse-format="YYYY-MM-DD" [close-on-select]="true" date-only="true"> -->
+      <kendo-datepicker name="dateallocatedtorecruitment" [(ngModel)]="job.dateAllocatedToRecruitment"
+        [format]="'dd-MM-yyyy'" class="w-100-pre" placeholder="">
+      </kendo-datepicker>
+    </div>
+    <div class="clearfix"></div>
+
+    <div class="form-group col-md-6 pull-left no-padding required">
+      <label class="control-label w-100-pre">Expected Date of First Session
+        <span [hidden]="firstSessionModel.valid || !isSubmitForm">
+          <span class="text-danger pull-right" [hidden]="!firstSessionModel.hasError('required')">Required</span>
+        </span>
+      </label>
+      <!-- <input class="form-control datepicker" name="expectedFirstSessionDate" [(ngModel)]="job.expectedFirstSessionDate"
+        ngui-datetime-picker date-format="dddd DD-MMM-YY" parse-format="YYYY-MM-DD" [close-on-select]="true"
+        date-only="true" #firstSessionModel="ngModel" required> -->
+      <kendo-datepicker name="expectedFirstSessionDate" [(ngModel)]="job.expectedFirstSessionDate"
+        [format]="'dd-MM-yyyy'" class="w-100-pre" placeholder="" #firstSessionModel="ngModel" required>
+      </kendo-datepicker>
+    </div>
+
+    <div class="form-group col-md-6 pull-left no-padding-right">
+      <label class="control-label">Expected Date of Last Session</label>
+      <!-- <input class="form-control datepicker" name="expectedLastSessionDate" [(ngModel)]="job.expectedLastSessionDate"
+        ngui-datetime-picker date-format="dddd DD-MMM-YY" parse-format="YYYY-MM-DD" [close-on-select]="true"
+        date-only="true"> -->
+      <kendo-datepicker name="expectedLastSessionDate" [(ngModel)]="job.expectedLastSessionDate" [format]="'dd-MM-yyyy'"
+        class="w-100-pre" placeholder="">
+      </kendo-datepicker>
+    </div>
+    <div class="clearfix"></div>
+    <!--
+        <div class="form-group">
+          <label class="control-label" style="width: 100%;">
+            Venue
+            <a class="btn btn-ocean btn-xs btn-square pull-right" data-toggle="modal"
+               data-target="#add-new-venue-modal">Add New</a>
+          </label>
+          <select class="form-control" [(ngModel)]="job.jobStatus" name="jobStatus">
+            <option value=""></option>
+            <option value="">48 Cambridge Rd - Brisbane - 4002 - NSW</option>
+            <option value="">95 Macquarie Rd - Auburn - 4002 - NSW</option>
+          </select>
+        </div>
+        -->
+    <div class="form-group col-md-6 no-padding">
+      <label class="control-label">Project Manager</label>
+      <select class="form-control" name="projectmanager" [(ngModel)]="job.projectManagerUsername"
+        (ngModelChange)="changeProjectManager()">
+        <option [ngValue]="null"></option>
+        <option value="{{staff.username}}" *ngFor="let staff of projectManagers;">{{staff.fullName}}</option>
+      </select>
+    </div>
+    <div class="form-group col-md-6 no-padding-right">
+      <label class="control-label">Assistant Project Manager</label>
+      <select class="form-control" name="assistantprojectmanager" [(ngModel)]="job.assistantProjectManager">
+        <option [ngValue]="null"></option>
+        <option value="{{staff.username}}" *ngFor="let staff of projectManagers;">{{staff.fullName}}</option>
+      </select>
+    </div>
+    <div class="clearfix"></div>
+    <div class="form-group col-md-6 no-padding">
+      <label class="control-label">Recruiter 1</label>
+      <select class="form-control" name="recruiter1" [(ngModel)]="job.recruiter1">
+        <option [ngValue]="null"></option>
+        <option value="{{staff.username}}" *ngFor="let staff of recruiters;">{{staff.fullName}}</option>
+      </select>
+    </div>
+    <div class="form-group col-md-6 no-padding-right">
+      <label class="control-label">Recruiter 2</label>
+      <select class="form-control" name="recruiter2" [(ngModel)]="job.recruiter2">
+        <option [ngValue]="null"></option>
+        <option value="{{staff.username}}" *ngFor="let staff of recruiters;">{{staff.fullName}}</option>
+      </select>
+    </div>
+    <div class="clearfix"></div>
+    <!--<div class="form-group">-->
+    <!--<label class="control-label">RVR Received</label>-->
+    <!--<input type="text" class="form-control btn-ocean"-->
+    <!--value="Yes. RVR received for all sessions." disabled>-->
+    <!--</div>-->
+    <!--
+        <div class="form-group col-md-6 pull-left p-l-0 p-r-10">
+          <label class="control-label">Duration</label>
+          <input id="duration" name="duration" class="form-control">
+        </div>
+          -->
+
+    <div class="form-group">
+      <label class="control-label">Important Notes</label>
+      <textarea id="importantjobnotes" name="importantjobnotes" class="form-control" [(ngModel)]="job.importantJobNotes"
+        rows="3">
+          {{job.importantJobNotes}}
+      </textarea>
+    </div>
+    <div class="form-group">
+      <label class="control-label">Other Notes</label>
+      <textarea name="othernotes" class="form-control" [(ngModel)]="job.other" rows="3"></textarea>
+    </div>
+    <div class="col-md-12 no-padding text-right">
+      <button (click)="updateorCreateJob(jobEditForm)" class="btn btn-ocean waves-effect waves-light m-l-10 btn-md">
+        Save
+      </button>
+    </div>
+  </form>
+</div>
+
+<div class="col-md-5 no-padding-right">
+  <ng-container *ngFor="let cn of clientNotes">
+    <ng-container *ngIf="cn?.type == 'Job Warning'">
+      <div class="alert alert-danger">
+        <b>{{cn?.type}}!</b> {{cn?.summary}}
+        <p class="m-b-0 font-10">{{cn?.notes}}</p>
+      </div>
+    </ng-container>
+  </ng-container>
+</div>
+
+<div class="col-md-3 pull-right no-padding" *ngIf="job?.sessionCount > 0">
+  <!-- <div style="border: 1px solid #e7e7e7;padding: 15px;background: #dae6ec;display: inline-block" class="pull-right">
+    <b>Actual Respondent Required:</b> {{job?.respondentsRequired}} <br>
+    <b>Actual Date of First Session:</b> {{job?.firstSessionDate | date: 'EEEE dd-MMM-yy'}}<br>
+    <b>Actual Date of Last Session:</b> {{job?.lastSessionDate | date: 'EEEE dd-MMM-yy'}}<br>
+    <b>Validation Report Received for all Sessions:</b>
+    <ng-container *ngIf="job?.validationReportReceivedCalculated">
+      <i class="md md-check text-success"></i>
+    </ng-container>
+    <ng-container *ngIf="!job?.validationReportReceivedCalculated">
+      <i class="md md-clear text-danger"></i>
+    </ng-container>
+  </div> -->
+
+  <div class="panel panel-warning ax-panel-tab pull-right d-desktop-only" style="display: inline-block">
+    <div class="panel-heading">
+      <div class="panel-title">
+        <h4>Job Overview</h4>
+      </div>
+    </div>
+    <div class="panel-body">
+      <b>Actual Respondent Required:</b> {{job?.actualRespondentsRequired}} <br>
+      <b>Actual Qualified Respondent:</b> {{job?.numberOfQualifiedRespondents}} <br>
+      <b>Actual Date of First Session:</b> {{job?.firstSessionDate | date: 'EEEE dd-MMM-yy'}}<br>
+      <b>Actual Date of Last Session:</b> {{job?.lastSessionDate | date: 'EEEE dd-MMM-yy'}}<br>
+      <b>Validation Report Received for all Sessions:</b>
+      <ng-container *ngIf="job?.validationReportReceivedCalculated">
+        <i class="md md-check text-success"></i>
+      </ng-container>
+      <ng-container *ngIf="!job?.validationReportReceivedCalculated">
+        <i class="md md-clear text-danger"></i>
+      </ng-container><br>
+      <ng-container *ngIf="numberOfInvitees != null">
+        <b>Number of Email Invites:</b> {{numberOfInvitees}}<br>
+      </ng-container>
+      <ng-container *ngIf="numberOfSMSInvites != null">
+        <b>Number of SMS Invites:</b> {{numberOfSMSInvites}}
+      </ng-container>
+    </div>
+  </div>
+</div>
+<div class="clearfix"></div>

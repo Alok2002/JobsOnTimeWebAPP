@@ -1,0 +1,1386 @@
+<div class="survey-template">
+  <ng-container [ngSwitch]="surveyQuestions[selectedIndex].answerType">
+    <!--INFORMATION TEXT-->
+    <ng-container *ngSwitchCase="'Information'">
+      <div class="form-group" [class.required]="surveyQuestions[selectedIndex].isMandatory">
+        <label id="question" tabindex="0" class="control-label ax-color-black"
+          [innerHTML]="surveyQuestions[selectedIndex].questionText | safeHtml">
+          <!-- <span class="ax-color-black">{{surveyQuestions[selectedIndex]?.questionNumber}}. </span> -->
+          <!-- {{surveyQuestions[selectedIndex].questionText}} -->
+        </label><br>
+      </div>
+    </ng-container>
+    <!--FREE TEXT-->
+    <ng-container *ngSwitchCase="'Text'">
+      <div class="form-group" [class.required]="surveyQuestions[selectedIndex].isMandatory">
+        <label id="question" tabindex="0" class="control-label ax-color-black"
+          for="{{surveyQuestions[selectedIndex].questionText}}"
+          [innerHTML]="surveyQuestions[selectedIndex].questionText | safeHtml">
+          <!-- <span class="ax-color-black">{{surveyQuestions[selectedIndex]?.questionNumber}}. </span> -->
+          <!-- {{surveyQuestions[selectedIndex].questionText}} -->
+        </label>
+        <div class="text-grey"><small><i>{{surveyQuestions[selectedIndex]?.profilePopulateAlert}}</i></small></div>
+        <br>
+        <SurveyMediaPreviewComponent *ngIf="surveyQuestions[selectedIndex].mediaUrl != null"
+          [mediaUrl]="surveyQuestions[selectedIndex].mediaUrl"></SurveyMediaPreviewComponent>
+        <br *ngIf="surveyQuestions[selectedIndex].mediaUrl != null">
+        <input type="text" name="textques" class="form-control" id="{{surveyQuestions[selectedIndex].questionText}}"
+          [(ngModel)]="surveyQuestions[selectedIndex].clientJobSurveyAnswers[0].answer" />
+      </div>
+    </ng-container>
+    <!--STAFF TEXT-->
+    <ng-container *ngSwitchCase="'StaffText'">
+      <div class="form-group" [class.required]="surveyQuestions[selectedIndex].isMandatory">
+        <label id="question" tabindex="0" class="control-label ax-color-black"
+          for="{{surveyQuestions[selectedIndex].questionText}}"
+          [innerHTML]="surveyQuestions[selectedIndex].questionText | safeHtml">
+          <!-- <span class="ax-color-black">{{surveyQuestions[selectedIndex]?.questionNumber}}. </span> -->
+          <!-- {{surveyQuestions[selectedIndex].questionText}} -->
+        </label>
+        <div class="text-grey"><small><i>{{surveyQuestions[selectedIndex]?.profilePopulateAlert}}</i></small></div>
+        <br>
+        <input type="text" name="textques" class="form-control"
+          [(ngModel)]="surveyQuestions[selectedIndex].clientJobSurveyAnswers[0].answer"
+          id="{{surveyQuestions[selectedIndex].questionText}}" />
+      </div>
+    </ng-container>
+    <!--YESNO TEXT-->
+    <ng-container *ngSwitchCase="'YesNo'">
+      <div class="form-group survey-yesorno" [class.required]="surveyQuestions[selectedIndex].isMandatory">
+        <label id="question" tabindex="0" class="control-label ax-color-black"
+          [innerHTML]="surveyQuestions[selectedIndex].questionText | safeHtml">
+          <!-- <span class="ax-color-black">{{surveyQuestions[selectedIndex]?.questionNumber}}. </span> -->
+          <!-- {{surveyQuestions[selectedIndex].questionText}} -->
+        </label>
+        <div class="text-grey"><small><i>{{surveyQuestions[selectedIndex]?.profilePopulateAlert}}</i></small></div>
+        <br>
+        <SurveyMediaPreviewComponent *ngIf="surveyQuestions[selectedIndex].mediaUrl != null"
+          [mediaUrl]="surveyQuestions[selectedIndex].mediaUrl"></SurveyMediaPreviewComponent>
+        <br *ngIf="surveyQuestions[selectedIndex].mediaUrl != null">
+        <div class="yncontainer pull-left"
+          [class.selected]="surveyQuestions[selectedIndex].clientJobSurveyAnswers[0].answer == 'Yes'"
+          (click)="surveyQuestions[selectedIndex].clientJobSurveyAnswers[0].answer = 'Yes';gotoNextQuestion.emit(true)">
+          <i class="md md-check icon" style="color: #486824;"></i>
+          <div tabindex="0" class="text">
+            Yes
+          </div>
+          <span>
+            <i [tabindex]="surveyQuestions[selectedIndex].clientJobSurveyAnswers[0].answer == 'Yes' ? 0 : -1"
+              title="Selected" class="md md-check text-white"></i>
+          </span>
+        </div>
+        <div class="yncontainer pull-left m-l-10"
+          [class.selected]="surveyQuestions[selectedIndex].clientJobSurveyAnswers[0].answer == 'No'"
+          (click)="surveyQuestions[selectedIndex].clientJobSurveyAnswers[0].answer = 'No';gotoNextQuestion.emit(true)">
+          <i class="md md-close icon" style="color: #d41517;"></i>
+          <div tabindex="0" class="text">
+            No
+          </div>
+          <span>
+            <i [tabindex]="surveyQuestions[selectedIndex].clientJobSurveyAnswers[0].answer == 'No' ? 0 : -1"
+              title="Selected" class="md md-check text-white"></i>
+          </span>
+        </div>
+        <div class="clearfix"></div>
+      </div>
+    </ng-container>
+    <!--OPINION SCALE-->
+    <ng-container *ngSwitchCase="'OneToTen'">
+      <div class="form-group survey-list-rating m-b-10" [class.required]="surveyQuestions[selectedIndex].isMandatory">
+        <label id="question" tabindex="0" class="control-label ax-color-black"
+          [innerHTML]="surveyQuestions[selectedIndex].questionText | safeHtml">
+          <!-- <span class="ax-color-black">{{surveyQuestions[selectedIndex]?.questionNumber}}. </span> -->
+          <!-- {{surveyQuestions[selectedIndex].questionText}} -->
+        </label>
+        <div class="text-grey"><small><i>{{surveyQuestions[selectedIndex]?.profilePopulateAlert}}</i></small></div>
+        <br>
+        <SurveyMediaPreviewComponent *ngIf="surveyQuestions[selectedIndex].mediaUrl != null"
+          [mediaUrl]="surveyQuestions[selectedIndex].mediaUrl"></SurveyMediaPreviewComponent>
+        <br *ngIf="surveyQuestions[selectedIndex].mediaUrl != null">
+        <div style="overflow: scroll;">
+          <ul id="scroll-content" style="min-width: 410px">
+            <ng-container
+              *ngFor="let op of surveyQuestions[selectedIndex].clientJobSurveyQuestionOption; let opindex = index">
+              <li [class.selected]="surveyQuestions[selectedIndex].clientJobSurveyAnswers[0].answer == op.optionText"
+                (click)="surveyQuestions[selectedIndex].clientJobSurveyAnswers[0].answer = op.optionText;gotoNextQuestion.emit(true)"
+                [style.width.%]="100 / surveyQuestions[selectedIndex].clientJobSurveyQuestionOption.length">
+                <span class="number">{{opindex + 1}}</span>
+                <span class="btn btn-default btn-square btn-xs text">{{op.optionText}} <b
+                    *ngIf="isPreview">{{op?.internalText}}</b></span>
+              </li>
+            </ng-container>
+          </ul>
+        </div>
+        <div class="clearfix"></div>
+        <i *ngIf="hasScrollbar" class="md md-arrow-forward pull-right font-20 d-mobile-only ax-color-black"></i>
+        <div class="clearfix"></div>
+      </div>
+    </ng-container>
+    <!--STAR RATING-->
+    <ng-container *ngSwitchCase="'starrating'">
+      <div class="form-group survey-star-rating" [class.required]="surveyQuestions[selectedIndex].isMandatory">
+        <label id="question" tabindex="0" class="control-label ax-color-black"
+          [innerHTML]="surveyQuestions[selectedIndex].questionText | safeHtml">
+          <!-- <span class="ax-color-black">{{surveyQuestions[selectedIndex]?.questionNumber}}. </span> -->
+          <!-- {{surveyQuestions[selectedIndex].questionText}} -->
+        </label>
+        <div class="text-grey"><small><i>{{surveyQuestions[selectedIndex]?.profilePopulateAlert}}</i></small></div>
+        <br>
+        <SurveyMediaPreviewComponent *ngIf="surveyQuestions[selectedIndex].mediaUrl != null"
+          [mediaUrl]="surveyQuestions[selectedIndex].mediaUrl"></SurveyMediaPreviewComponent>
+        <br *ngIf="surveyQuestions[selectedIndex].mediaUrl != null">
+        <ul>
+          <li tabindex="0"
+            [title]="surveyQuestions[selectedIndex].clientJobSurveyAnswers[0].answer > 0 ? 'one star selected' : 'one star'"
+            [class.selected]="surveyQuestions[selectedIndex].clientJobSurveyAnswers[0].answer > 0"
+            (click)="surveyQuestions[selectedIndex].clientJobSurveyAnswers[0].answer = 1;gotoNextQuestion.emit(true)">
+            <i class="ion-ios7-star-outline"></i>
+          </li>
+          <li tabindex="0"
+            [title]="surveyQuestions[selectedIndex].clientJobSurveyAnswers[0].answer > 1 ? 'two star selected' : 'two star'"
+            [class.selected]="surveyQuestions[selectedIndex].clientJobSurveyAnswers[0].answer > 1"
+            (click)="surveyQuestions[selectedIndex].clientJobSurveyAnswers[0].answer = 2;gotoNextQuestion.emit(true)">
+            <i class="ion-ios7-star-outline"></i>
+          </li>
+          <li tabindex="0"
+            [title]="surveyQuestions[selectedIndex].clientJobSurveyAnswers[0].answer > 2 ? 'three star selected' : 'three star'"
+            [class.selected]="surveyQuestions[selectedIndex].clientJobSurveyAnswers[0].answer > 2"
+            (click)="surveyQuestions[selectedIndex].clientJobSurveyAnswers[0].answer = 3;gotoNextQuestion.emit(true)">
+            <i class="ion-ios7-star-outline"></i>
+          </li>
+          <li tabindex="0"
+            [title]="surveyQuestions[selectedIndex].clientJobSurveyAnswers[0].answer > 3 ? 'four star selected' : 'four star'"
+            [class.selected]="surveyQuestions[selectedIndex].clientJobSurveyAnswers[0].answer > 3"
+            (click)="surveyQuestions[selectedIndex].clientJobSurveyAnswers[0].answer = 4;gotoNextQuestion.emit(true)">
+            <i class="ion-ios7-star-outline"></i>
+          </li>
+          <li tabindex="0"
+            [title]="surveyQuestions[selectedIndex].clientJobSurveyAnswers[0].answer > 4 ? 'five star selected' : 'five star'"
+            [class.selected]="surveyQuestions[selectedIndex].clientJobSurveyAnswers[0].answer > 4"
+            (click)="surveyQuestions[selectedIndex].clientJobSurveyAnswers[0].answer = 5;gotoNextQuestion.emit(true)">
+            <i class="ion-ios7-star-outline"></i>
+          </li>
+        </ul>
+      </div>
+    </ng-container>
+    <!--MULTI SELECT-->
+    <ng-container *ngSwitchCase="'OptionListMultipleAnswer'">
+      <div class="form-group survey-multi-select active" data-id="5"
+        [class.required]="surveyQuestions[selectedIndex].isMandatory">
+        <label id="question" tabindex="0" class="control-label ax-color-black"
+          [innerHTML]="surveyQuestions[selectedIndex].questionText | safeHtml">
+          <!-- <span class="ax-color-black">{{surveyQuestions[selectedIndex]?.questionNumber}}. </span> -->
+          <!-- {{surveyQuestions[selectedIndex].questionText}} -->
+        </label>
+        <div class="text-grey"><small><i>{{surveyQuestions[selectedIndex]?.profilePopulateAlert}}</i></small></div>
+        <br>
+        <SurveyMediaPreviewComponent *ngIf="surveyQuestions[selectedIndex].mediaUrl != null"
+          [mediaUrl]="surveyQuestions[selectedIndex].mediaUrl"></SurveyMediaPreviewComponent>
+        <br *ngIf="surveyQuestions[selectedIndex].mediaUrl != null">
+        <div class="clearfix"></div>
+        <div class="col-md-5 no-padding-left">
+          <ul>
+            <ng-container
+              *ngFor="let op of surveyQuestions[selectedIndex].clientJobSurveyQuestionOption; let opindex = index; let oplast = last">
+              <li tabindex="0" (click)="multiSelectClick(surveyQuestions[selectedIndex], op)"
+                [class.selected]="checkMultiSelect(surveyQuestions[selectedIndex], op.optionText)"
+                [class.m-b-20]="oplast">
+                <label for="{{op}}-{{opindex}}" style="margin-bottom: 0;font-weight: normal;">
+                  {{op.optionText}} <b *ngIf="isPreview">{{op?.internalText}}</b>
+                </label>
+                <!-- {{op.optionText}} <b *ngIf="isPreview">{{op?.internalText}}</b>
+                <span>
+                  <i [tabindex]="checkMultiSelect(surveyQuestions[selectedIndex], op.optionText) ? 0 : -1"
+                    title="Selected" class="md md-check text-white"></i>
+                </span> -->
+                <div class="checkbox checkbox-primary" style="float: right;margin: 0;padding: 0;">
+                  <input tabindex="-1" id="{{op}}-{{opindex}}" type="checkbox"
+                    [checked]="checkMultiSelect(surveyQuestions[selectedIndex], op.optionText)" name="wrongEmail">
+                  <label for="{{op}}-{{opindex}}" class="control-label ax-color-black no-padding"
+                    [class.no-required]="!checkMultiSelect(surveyQuestions[selectedIndex], op.optionText)">
+                  </label>
+                </div>
+              </li>
+            </ng-container>
+          </ul>
+          <div class="form-group"
+            *ngIf="checkIfOtherSpecifyAnswerSelected(surveyQuestions[selectedIndex]?.clientJobSurveyAnswers)">
+            <input type="text" name="otherSpecify{{selectedIndex}}" class="form-control" placeholder="Please Specify"
+              [(ngModel)]="surveyQuestions[selectedIndex].clientJobSurveyAnswers[getMultiselectOptherSpecifyIndex()].otherSpecify">
+          </div>
+        </div>
+      </div>
+
+      <div class="clearfix"></div>
+    </ng-container>
+    <!--THUMBSUPDOWN-->
+    <ng-container *ngSwitchCase="'thumbsupdown'">
+      <div class="form-group survey-thumb" [class.required]="surveyQuestions[selectedIndex].isMandatory">
+        <label id="question" tabindex="0" class="control-label ax-color-black"
+          [innerHTML]="surveyQuestions[selectedIndex].questionText | safeHtml">
+          <!-- <div class="ax-color-black" style="display: inline;">{{surveyQuestions[selectedIndex]?.questionNumber}}. </div> -->
+          <!-- {{surveyQuestions[selectedIndex].questionText}} -->
+        </label>
+        <div class="text-grey"><small><i>{{surveyQuestions[selectedIndex]?.profilePopulateAlert}}</i></small></div>
+        <br>
+        <SurveyMediaPreviewComponent *ngIf="surveyQuestions[selectedIndex].mediaUrl != null"
+          [mediaUrl]="surveyQuestions[selectedIndex].mediaUrl"></SurveyMediaPreviewComponent>
+        <br *ngIf="surveyQuestions[selectedIndex].mediaUrl != null">
+        <div class="clearfix"></div>
+        <span [class.selected]="surveyQuestions[selectedIndex].clientJobSurveyAnswers[0].answer == 'ThumbsUp'"
+          (click)="surveyQuestions[selectedIndex].clientJobSurveyAnswers[0].answer = 'ThumbsUp';gotoNextQuestion.emit(true)">
+          <i class="fa fa-thumbs-o-up success"></i>
+        </span>
+        <span [class.selected]="surveyQuestions[selectedIndex].clientJobSurveyAnswers[0].answer == 'ThumbsDown'"
+          (click)="surveyQuestions[selectedIndex].clientJobSurveyAnswers[0].answer = 'ThumbsDown';gotoNextQuestion.emit(true)">
+          <i class="fa fa-thumbs-o-down danger"></i>
+        </span>
+      </div>
+    </ng-container>
+    <!--PICTURE OPTION-->
+    <ng-container *ngSwitchCase="'Picturechoice'">
+      <div class="form-group survey-img active" [class.required]="surveyQuestions[selectedIndex].isMandatory">
+        <label id="question" tabindex="0" class="control-label ax-color-black"
+          [innerHTML]="surveyQuestions[selectedIndex].questionText | safeHtml">
+          <!-- <span class="ax-color-black">{{surveyQuestions[selectedIndex]?.questionNumber}}. </span> -->
+          <!-- {{surveyQuestions[selectedIndex].questionText}} -->
+        </label>
+        <div class="text-grey"><small><i>{{surveyQuestions[selectedIndex]?.profilePopulateAlert}}</i></small></div>
+        <br>
+        <SurveyMediaPreviewComponent *ngIf="surveyQuestions[selectedIndex].mediaUrl != null"
+          [mediaUrl]="surveyQuestions[selectedIndex].mediaUrl"></SurveyMediaPreviewComponent>
+        <br *ngIf="surveyQuestions[selectedIndex].mediaUrl != null">
+        <ul>
+          <ng-container
+            *ngFor="let op of surveyQuestions[selectedIndex].clientJobSurveyQuestionOption; let opindex = index">
+            <li (click)="multiSelectClick(surveyQuestions[selectedIndex], op.mediaUrl)"
+              [class.selected]="checkMultiSelect(surveyQuestions[selectedIndex], op.mediaUrl)">
+              <img src="{{op.mediaUrl}}">
+              <b *ngIf="isPreview">{{op?.internalText}}</b><br>
+              <span><i class="md md-check text-white"></i></span>
+            </li>
+          </ng-container>
+        </ul>
+        <div class="form-group col-md-2 no-padding"
+          *ngIf="surveyQuestions[selectedIndex]?.clientJobSurveyAnswers[0]?.answer == 'Other (please Specify)'">
+          <input type="text" name="othertext"
+            [(ngModel)]="surveyQuestions[selectedIndex].clientJobSurveyAnswers[0].otherText">
+        </div>
+      </div>
+    </ng-container>
+    <!--LONGTEXT-->
+    <ng-container *ngSwitchCase="'longtext'">
+      <div class="form-group" [class.required]="surveyQuestions[selectedIndex].isMandatory">
+        <label id="question" tabindex="0" class="control-label ax-color-black"
+          [innerHTML]="surveyQuestions[selectedIndex].questionText | safeHtml">
+          <!-- <span class="ax-color-black">{{surveyQuestions[selectedIndex]?.questionNumber}}. </span> -->
+          <!-- {{surveyQuestions[selectedIndex].questionText}} -->
+        </label>
+        <div class="text-grey"><small><i>{{surveyQuestions[selectedIndex]?.profilePopulateAlert}}</i></small></div>
+        <br>
+        <SurveyMediaPreviewComponent *ngIf="surveyQuestions[selectedIndex].mediaUrl != null"
+          [mediaUrl]="surveyQuestions[selectedIndex].mediaUrl"></SurveyMediaPreviewComponent>
+        <br *ngIf="surveyQuestions[selectedIndex].mediaUrl != null">
+        <textarea name="" rows="3" class="form-control"></textarea>
+      </div>
+    </ng-container>
+    <!--SINGLE CHOICE-->
+    <ng-container *ngSwitchCase="'OptionList'">
+      <div class="form-group active" data-id="9" [class.required]="surveyQuestions[selectedIndex].isMandatory">
+        <label id="question" tabindex="0" class="control-label ax-color-black"
+          [innerHTML]="surveyQuestions[selectedIndex].questionText | safeHtml">
+          <!-- <span class="ax-color-black">{{surveyQuestions[selectedIndex]?.questionNumber}}. </span> -->
+          <!-- {{surveyQuestions[selectedIndex].questionText}} -->
+        </label>
+        <div class="text-grey"><small><i>{{surveyQuestions[selectedIndex]?.profilePopulateAlert}}</i></small></div>
+        <br>
+        <SurveyMediaPreviewComponent *ngIf="surveyQuestions[selectedIndex].mediaUrl != null"
+          [mediaUrl]="surveyQuestions[selectedIndex].mediaUrl"></SurveyMediaPreviewComponent>
+        <br *ngIf="surveyQuestions[selectedIndex].mediaUrl != null">
+        <ng-container
+          *ngFor="let sques of surveyQuestions[selectedIndex].clientJobSurveyQuestionOption; let sqrlastindex = last; let sqrindex = index">
+          <div class="radio radio-success" [class.m-b-0]="sqrlastindex">
+            <input tabindex="0" type="radio" name="radio{{sqrindex}}" value="{{sques?.optionText}}"
+              id="radio-{{sqrindex}}" [(ngModel)]="surveyQuestions[selectedIndex].clientJobSurveyAnswers[0].answer"
+              (ngModelChange)="gotoNextQuestion.emit(true)">
+            <label tabindex="0" class="ax-color-black" [class.m-b-0]="sqrlastindex" for="radio-{{sqrindex}}">
+              {{sques?.optionText}} <b *ngIf="isPreview">{{sques?.internalText}}</b>
+            </label>
+            <input tabindex="0" type="text" name="otherSpecify{{sqrindex}}" style="color:#4c5667"
+              [(ngModel)]="surveyQuestions[selectedIndex].clientJobSurveyAnswers[0].otherSpecify"
+              *ngIf="checkIfOtherSpecify(sques?.optionText) && surveyQuestions[selectedIndex].clientJobSurveyAnswers[0].answer == sques?.optionText">
+          </div>
+        </ng-container>
+
+        <div class="form-group col-md-2 no-padding"
+          *ngIf="surveyQuestions[selectedIndex]?.clientJobSurveyAnswers[0]?.answer == 'Other (please Specify)'">
+          <input type="text" name="othertext"
+            [(ngModel)]="surveyQuestions[selectedIndex].clientJobSurveyAnswers[0].otherText">
+        </div>
+      </div>
+    </ng-container>
+    <!--SELECT QUESTION-->
+    <ng-container *ngSwitchCase="'selectquestion'">
+      <div class="form-group active" [class.required]="surveyQuestions[selectedIndex].isMandatory">
+        <label id="question" tabindex="0" class="control-label ax-color-black"
+          [innerHTML]="surveyQuestions[selectedIndex].questionText | safeHtml">
+          <!-- <span class="ax-color-black">{{surveyQuestions[selectedIndex]?.questionNumber}}. </span> -->
+          <!-- {{surveyQuestions[selectedIndex].questionText}} -->
+        </label>
+        <div class="text-grey"><small><i>{{surveyQuestions[selectedIndex]?.profilePopulateAlert}}</i></small></div>
+        <br>
+        <SurveyMediaPreviewComponent *ngIf="surveyQuestions[selectedIndex].mediaUrl != null"
+          [mediaUrl]="surveyQuestions[selectedIndex].mediaUrl"></SurveyMediaPreviewComponent>
+        <br *ngIf="surveyQuestions[selectedIndex].mediaUrl != null">
+        <select class="form-control">
+          <option value="">Option 1</option>
+          <option value="">Option 2</option>
+        </select>
+
+        <div class="form-group col-md-2 no-padding"
+          *ngIf="surveyQuestions[selectedIndex]?.clientJobSurveyAnswers[0]?.answer == 'Other (please Specify)'">
+          <input type="text" name="othertext"
+            [(ngModel)]="surveyQuestions[selectedIndex].clientJobSurveyAnswers[0].otherText">
+        </div>
+      </div>
+    </ng-container>
+    <!--DATE QUESTION-->
+    <ng-container *ngSwitchCase="'dateformat'">
+      <div class="form-group active" [class.required]="surveyQuestions[selectedIndex].isMandatory">
+        <label id="question" tabindex="0" class="control-label ax-color-black"
+          for="{{surveyQuestions[selectedIndex].questionText}}"
+          [innerHTML]="surveyQuestions[selectedIndex].questionText | safeHtml">
+          <!-- <span class="ax-color-black">{{surveyQuestions[selectedIndex]?.questionNumber}}. </span> -->
+          <!-- {{surveyQuestions[selectedIndex].questionText}} -->
+        </label>
+        <div class="text-grey"><small><i>{{surveyQuestions[selectedIndex]?.profilePopulateAlert}}</i></small></div>
+        <br>
+        <SurveyMediaPreviewComponent *ngIf="surveyQuestions[selectedIndex].mediaUrl != null"
+          [mediaUrl]="surveyQuestions[selectedIndex].mediaUrl"></SurveyMediaPreviewComponent>
+        <br *ngIf="surveyQuestions[selectedIndex].mediaUrl != null">
+        <input type="text" class="form-control" name="datequestion"
+          [(ngModel)]="surveyQuestions[selectedIndex].clientJobSurveyAnswers[0].answer" ngui-datetime-picker
+          date-format="DD-MM-YYYY" [close-on-select]="true" date-only="true" data-mask="99-99-9999"
+          id="{{surveyQuestions[selectedIndex].questionText}}">
+      </div>
+    </ng-container>
+    <!--MATRIX QUESTION-->
+    <ng-container *ngSwitchCase="'Matrix'">
+      <div class="form-group survey-matrix" [class.required]="surveyQuestions[selectedIndex].isMandatory">
+        <label id="question" tabindex="0" class="control-label ax-color-black"
+          [innerHTML]="surveyQuestions[selectedIndex].questionText | safeHtml">
+          <!-- <span class="ax-color-black">{{surveyQuestions[selectedIndex]?.questionNumber}}. </span> -->
+          <!-- {{surveyQuestions[selectedIndex].questionText}} -->
+        </label>
+        <div class="text-grey"><small><i>{{surveyQuestions[selectedIndex]?.profilePopulateAlert}}</i></small></div>
+        <br>
+        <SurveyMediaPreviewComponent *ngIf="surveyQuestions[selectedIndex].mediaUrl != null"
+          [mediaUrl]="surveyQuestions[selectedIndex].mediaUrl"></SurveyMediaPreviewComponent>
+        <br *ngIf="surveyQuestions[selectedIndex].mediaUrl != null">
+        <div class="clearfix"></div>
+        <div class="table-responsive m-b-0 no-border-radius"
+          [style.maxWidth.px]="matrixKey.length * 300" id="scroll-content">
+          <table class="table ax-table1 table-bordered m-b-0">
+            <tbody>
+              <tr>
+                <td style="border-top:0px" class="bg"></td>
+                <ng-container *ngFor="let mh of surveyQuestions[selectedIndex].matrixHorizontalOptions.split(',')">
+                  <td class="bg no-border-top text-center">{{mh}}</td>
+                </ng-container>
+              </tr>
+
+              <tr *ngFor="let k of matrixKey;let mkindex = index">
+                <ng-container *ngFor="let k1 of k;let kindex = index; let l = last">
+                  <ng-container *ngIf="!l">
+                    <td *ngIf="kindex == 0" class="no-border-top text-center" [class.bg]="kindex == 0"
+                      [class.text-left]="kindex == 0" [class.text-center]="kindex > 0">
+                      {{matrixContent[k1].optionText}}
+                    </td>
+                    <td class="no-border-top text-center">
+                      <ng-container>
+                        <!-- <input type="checkbox" name="checkbox{{mkindex}}{{kindex}}{{k1}}" [checked]="isCheckCheckBox(k1, matrixContent[k1].optionText)"
+                    (change)="clickMatrixOption(k1, matrixContent[k1].optionText, $event)" /> -->
+                        <span class="checkbox checkbox-primary ax-table-checkbox">
+                          <input type="checkbox" name="checkbox{{mkindex}}{{kindex}}{{k1}}"
+                            [checked]="isCheckCheckBox(k1, matrixContent[k1].optionText)"
+                            (change)="clickMatrixOption(k1, matrixContent[k1], $event)" />
+                          <label></label>
+                        </span>
+                      </ng-container>
+                    </td>
+                  </ng-container>
+                </ng-container>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+        <div class="clearfix"></div>
+        <i *ngIf="hasScrollbar" class="md md-arrow-forward pull-right font-20 d-mobile-only ax-color-black"></i>
+        <div class="clearfix"></div>
+        <!--Mobile Responsive-->
+        <!-- <ng-container *ngIf="isMobile">
+          <div class="panel-group panel-group-joined no-margin no-padding" id="accordion-matrix">
+            <ng-container
+              *ngFor="let mh of surveyQuestions[selectedIndex].matrixHorizontalOptions.split(',');let mhindex = index">
+              <div class="panel ax-panel-darkbg">
+                <div class="panel-heading">
+                  <h4 class="panel-title">
+                    <a data-toggle="collapse" data-parent="#accordion-matrix" href="#{{mhindex}}" class="collapsed"
+                      aria-expanded="false">
+                      {{mh}}                      
+                    </a>
+                  </h4>
+                </div>
+                <div id="{{mhindex}}" class="panel-collapse collapse" aria-expanded="false">
+                  <div class="panel-body">
+                    <ng-container *ngFor="let k of matrixKey;let mkindex = index">
+                      <ng-container *ngFor="let k1 of k;let kindex = index; let l = last">
+                        <ng-container *ngIf="k1.split(',')[0] == mh && !l">
+                          <div class="form-group">
+                            <div class="checkbox checkbox-primary w-100-pre m-t-0">
+                              <input type="checkbox"
+                                name="checkbox{{mkindex}}{{kindex}}{{k1}}{{mh}}{{matrixContent[k1].optionText}}"
+                                [checked]="isCheckCheckBox(k1, matrixContent[k1].optionText)"
+                                (change)="clickMatrixOption(k1, matrixContent[k1], $event)" />
+                              <label> {{matrixContent[k1].optionText}}</label>
+                            </div>
+                          </div>
+                        </ng-container>
+                      </ng-container>
+                    </ng-container>
+                  </div>
+                </div>
+              </div>
+            </ng-container>
+          </div>
+        </ng-container> -->
+      </div>
+    </ng-container>
+
+    <!--VIDEO QUESTION-->
+    <ng-container *ngSwitchCase="'Videoquestion'">
+      <div class="form-group active" data-id="14" [class.required]="surveyQuestions[selectedIndex].isMandatory">
+        <label id="question" tabindex="0" class="control-label ax-color-black"
+          [innerHTML]="surveyQuestions[selectedIndex].questionText | safeHtml">
+          <!-- <span class="ax-color-black">{{surveyQuestions[selectedIndex]?.questionNumber}}. </span> -->
+          <!-- {{surveyQuestions[selectedIndex].questionText}} -->
+        </label>
+        <div class="text-grey"><small><i>{{surveyQuestions[selectedIndex]?.profilePopulateAlert}}</i></small></div>
+        <br>
+        <SurveyMediaPreviewComponent *ngIf="surveyQuestions[selectedIndex].mediaUrl != null"
+          [mediaUrl]="surveyQuestions[selectedIndex].mediaUrl"></SurveyMediaPreviewComponent>
+        <br *ngIf="surveyQuestions[selectedIndex].mediaUrl != null">
+        <div class="col-md-5 no-padding">
+          <ng-container
+            *ngFor="let op of surveyQuestions[selectedIndex].clientJobSurveyQuestionOption; let opindex = index">
+            <iframe width="100%" height="315" class="no-border" [src]="op?.optionText | safe"></iframe>
+            <br>
+            <b *ngIf="isPreview">{{op?.internalText}}</b>
+          </ng-container>
+          <textarea rows="3" class="form-control m-t-10" name="videoquestion"
+            [(ngModel)]="surveyQuestions[selectedIndex].clientJobSurveyAnswers[0].answer"></textarea>
+        </div>
+        <div class="clearfix"></div>
+      </div>
+    </ng-container>
+    <!--REORDER-->
+    <ng-container *ngSwitchCase="'ReorderOptions'">
+      <div class="form-group survey-reorder-option" data-id="5"
+        [class.required]="surveyQuestions[selectedIndex].isMandatory">
+        <label id="question" tabindex="0" class="control-label ax-color-black"
+          [innerHTML]="surveyQuestions[selectedIndex].questionText | safeHtml">
+          <!-- <span class="ax-color-black">{{surveyQuestions[selectedIndex]?.questionNumber}}. </span> -->
+          <!-- {{surveyQuestions[selectedIndex].questionText}} -->
+        </label>
+        <div class="text-grey"><small><i>{{surveyQuestions[selectedIndex]?.profilePopulateAlert}}</i></small></div>
+        <br>
+        <SurveyMediaPreviewComponent *ngIf="surveyQuestions[selectedIndex].mediaUrl != null"
+          [mediaUrl]="surveyQuestions[selectedIndex].mediaUrl"></SurveyMediaPreviewComponent>
+        <br *ngIf="surveyQuestions[selectedIndex].mediaUrl != null">
+        <div class="clearfix"></div>
+        <div class="no-padding-left">
+          <ul [dragula]='"bag-one"' [dragulaModel]="surveyQuestions[selectedIndex].clientJobSurveyQuestionOption"
+            (dragulaModelChange)="reorderChangeEvent($event);">
+            <li class=" p-0"
+              *ngFor="let op of surveyQuestions[selectedIndex].clientJobSurveyQuestionOption; let opindex = index;">
+              <button class="btn btn-square" style="background: #c1c1c1;"
+                *ngIf="getReorderIndex(op.optionText) > 0">{{getReorderIndex(op.optionText)}}</button>
+              <span class="btn btn-square p-l-10">
+                {{op.optionText}} <b *ngIf="isPreview">{{op?.internalText}}</b>
+              </span>
+              <button class="btn btn-square pull-right" style="background: #c1c1c1;">
+                <span class="hint--top" aria-label="Reorder">
+                  <i class="ti-move sqo-move" style="vertical-align: middle;color: #777777;"></i>
+                </span>
+              </button>
+              <div class="clearfix"></div>
+            </li>
+          </ul>
+        </div>
+        <div class="clearfix"></div>
+      </div>
+    </ng-container>
+    <!--Version2.0 Questions-->
+    <!--Version2.0 Questions-->
+    <!--Version2.0 Questions-->
+    <!--ButtonMultiSelect-->
+    <ng-container *ngSwitchCase="'ButtonMultiSelect'">
+      <div class="form-group survey-button-multi-select active ax-color-black" data-id="5"
+        [class.required]="surveyQuestions[selectedIndex].isMandatory">
+        <label id="question" tabindex="0" class="control-label ax-color-black"
+          [innerHTML]="surveyQuestions[selectedIndex].questionText | safeHtml">
+          <!-- <span class="ax-color-black">{{surveyQuestions[selectedIndex]?.questionNumber}}. </span> -->
+          <!-- {{surveyQuestions[selectedIndex].questionText}} -->
+        </label>
+        <div class="text-grey"><small><i>{{surveyQuestions[selectedIndex]?.profilePopulateAlert}}</i></small></div>
+        <br>
+        <SurveyMediaPreviewComponent *ngIf="surveyQuestions[selectedIndex].mediaUrl != null"
+          [mediaUrl]="surveyQuestions[selectedIndex].mediaUrl"></SurveyMediaPreviewComponent>
+        <br *ngIf="surveyQuestions[selectedIndex].mediaUrl != null">
+        <div class="clearfix"></div>
+        <div class="col-md-12 no-padding">
+          <ul>
+            <ng-container
+              *ngFor="let op of surveyQuestions[selectedIndex].clientJobSurveyQuestionOption; let opindex = index; let oplast = last">
+              <li tabindex="0" (click)="multiSelectClick(surveyQuestions[selectedIndex], op)"
+                [class.selected]="checkMultiSelect(surveyQuestions[selectedIndex], op.optionText)"
+                class="btn btn-grey m-b-20">
+                {{op.optionText}} <b *ngIf="isPreview">{{op?.internalText}}</b>
+                <span>
+                  <i [tabindex]="checkMultiSelect(surveyQuestions[selectedIndex], op.optionText) ? 0 : -1"
+                    title="Selected" class="md md-check text-white"></i>
+                </span>
+              </li>
+            </ng-container>
+          </ul>
+          <div class="form-group"
+            *ngIf="checkIfOtherSpecifyAnswerSelected(surveyQuestions[selectedIndex]?.clientJobSurveyAnswers)">
+            <input type="text" name="otherSpecify{{selectedIndex}}" class="form-control" placeholder="Please Specify"
+              [(ngModel)]="surveyQuestions[selectedIndex].clientJobSurveyAnswers[getMultiselectOptherSpecifyIndex()].otherSpecify">
+          </div>
+        </div>
+      </div>
+
+      <div class="clearfix"></div>
+    </ng-container>
+    <!--ButtonSingleSelect-->
+    <ng-container *ngSwitchCase="'ButtonSingleSelect'">
+      <div class="form-group survey-button-multi-select active ax-color-black" data-id="5"
+        [class.required]="surveyQuestions[selectedIndex].isMandatory">
+        <label id="question" tabindex="0" class="control-label ax-color-black"
+          [innerHTML]="surveyQuestions[selectedIndex].questionText | safeHtml">
+          <!-- <span class="ax-color-black">{{surveyQuestions[selectedIndex]?.questionNumber}}. </span> -->
+          <!-- {{surveyQuestions[selectedIndex].questionText}} -->
+        </label>
+        <div class="text-grey"><small><i>{{surveyQuestions[selectedIndex]?.profilePopulateAlert}}</i></small></div>
+        <br>
+        <SurveyMediaPreviewComponent *ngIf="surveyQuestions[selectedIndex].mediaUrl != null"
+          [mediaUrl]="surveyQuestions[selectedIndex].mediaUrl"></SurveyMediaPreviewComponent>
+        <br *ngIf="surveyQuestions[selectedIndex].mediaUrl != null">
+        <div class="clearfix"></div>
+        <div class="col-md-12 no-padding">
+          <ul>
+            <ng-container
+              *ngFor="let op of surveyQuestions[selectedIndex].clientJobSurveyQuestionOption; let opindex = index; let oplast = last">
+              <li tabindex="0"
+                (click)="buttonSingleSelectClick(surveyQuestions[selectedIndex], op);gotoNextQuestion.emit(true)"
+                [class.selected]="checkMultiSelect(surveyQuestions[selectedIndex], op.optionText)"
+                class="btn btn-grey m-b-20">
+                {{op.optionText}} <b *ngIf="isPreview">{{op?.internalText}}</b>
+                <span>
+                  <i [tabindex]="checkMultiSelect(surveyQuestions[selectedIndex], op.optionText) ? 0 : -1"
+                    title="Selected" class="md md-check text-white"></i>
+                </span>
+              </li>
+            </ng-container>
+          </ul>
+          <div class="form-group"
+            *ngIf="checkIfOtherSpecifyAnswerSelected(surveyQuestions[selectedIndex]?.clientJobSurveyAnswers)">
+            <input tabindex="0" type="text" name="otherSpecify{{selectedIndex}}" class="form-control"
+              placeholder="Please Specify"
+              [(ngModel)]="surveyQuestions[selectedIndex].clientJobSurveyAnswers[getMultiselectOptherSpecifyIndex()].otherSpecify">
+          </div>
+        </div>
+      </div>
+
+      <div class="clearfix"></div>
+    </ng-container>
+    <!--Essay-->
+    <ng-container *ngSwitchCase="'Essay'">
+      <div class="form-group" [class.required]="surveyQuestions[selectedIndex].isMandatory">
+        <label id="question" tabindex="0" class="control-label ax-color-black"
+          for="{{surveyQuestions[selectedIndex].questionText}}" style="width: 100%;">
+          <!-- <span class="ax-color-black">{{surveyQuestions[selectedIndex]?.questionNumber}}. </span> -->
+          <!-- {{surveyQuestions[selectedIndex].questionText}} -->
+          <span [innerHTML]="surveyQuestions[selectedIndex].questionText | safeHtml"></span>
+          <span class="pull-right" style="font-weight: normal;">
+            Character Count:
+            {{!surveyQuestions[selectedIndex]?.clientJobSurveyAnswers[0]?.answer ? 0 :
+            surveyQuestions[selectedIndex]?.clientJobSurveyAnswers[0]?.answer?.length}}
+          </span>
+        </label>
+        <div class="text-grey"><small><i>{{surveyQuestions[selectedIndex]?.profilePopulateAlert}}</i></small></div>
+        <br>
+        <SurveyMediaPreviewComponent *ngIf="surveyQuestions[selectedIndex].mediaUrl != null"
+          [mediaUrl]="surveyQuestions[selectedIndex].mediaUrl"></SurveyMediaPreviewComponent>
+        <br *ngIf="surveyQuestions[selectedIndex].mediaUrl != null">
+        <textarea name="essay{{selectedIndex}}" rows="5" class="form-control"
+          [(ngModel)]="surveyQuestions[selectedIndex].clientJobSurveyAnswers[0].answer"
+          id="{{surveyQuestions[selectedIndex].questionText}}"></textarea>
+      </div>
+    </ng-container>
+    <!--Numbers-->
+    <ng-container *ngSwitchCase="'Numbers'">
+      <div class="form-group" [class.required]="surveyQuestions[selectedIndex].isMandatory">
+        <label id="question" tabindex="0" class="control-label ax-color-black"
+          for="{{surveyQuestions[selectedIndex].questionText}}"
+          [innerHTML]="surveyQuestions[selectedIndex].questionText | safeHtml">
+          <!-- <span class="ax-color-black">{{surveyQuestions[selectedIndex]?.questionNumber}}. </span> -->
+          <!-- {{surveyQuestions[selectedIndex].questionText}} -->
+        </label>
+        <div class="text-grey"><small><i>{{surveyQuestions[selectedIndex]?.profilePopulateAlert}}</i></small></div>
+        <br>
+        <SurveyMediaPreviewComponent *ngIf="surveyQuestions[selectedIndex].mediaUrl != null"
+          [mediaUrl]="surveyQuestions[selectedIndex].mediaUrl"></SurveyMediaPreviewComponent>
+        <br *ngIf="surveyQuestions[selectedIndex].mediaUrl != null">
+        <input type="text" name="number{{selectedIndex}}" class="form-control" mask="999999999999999"
+          [(ngModel)]="surveyQuestions[selectedIndex].clientJobSurveyAnswers[0].answer"
+          id="{{surveyQuestions[selectedIndex].questionText}}" />
+      </div>
+    </ng-container>
+    <!--DropdownMenu-->
+    <ng-container *ngSwitchCase="'DropdownMenu'">
+      <div class="form-group" [class.required]="surveyQuestions[selectedIndex].isMandatory">
+        <label id="question" tabindex="0" class="control-label ax-color-black"
+          for="{{surveyQuestions[selectedIndex].questionText}}"
+          [innerHTML]="surveyQuestions[selectedIndex].questionText | safeHtml">
+          <!-- <span class="ax-color-black">{{surveyQuestions[selectedIndex]?.questionNumber}}. </span> -->
+          <!-- {{surveyQuestions[selectedIndex].questionText}} -->
+        </label>
+        <div class="text-grey"><small><i>{{surveyQuestions[selectedIndex]?.profilePopulateAlert}}</i></small></div>
+        <br>
+        <SurveyMediaPreviewComponent *ngIf="surveyQuestions[selectedIndex].mediaUrl != null"
+          [mediaUrl]="surveyQuestions[selectedIndex].mediaUrl"></SurveyMediaPreviewComponent>
+        <br *ngIf="surveyQuestions[selectedIndex].mediaUrl != null">
+        <select name="dropdown{{selectedIndex}}" class="form-control"
+          [(ngModel)]="surveyQuestions[selectedIndex].clientJobSurveyAnswers[0].answer"
+          id="{{surveyQuestions[selectedIndex].questionText}}" (ngModelChange)="gotoNextQuestion.emit(true)">
+          <option [ngValue]="null" disabled></option>
+          <option *ngFor="let op of surveyQuestions[selectedIndex].clientJobSurveyQuestionOption;"
+            [value]="op.optionText">{{op.optionText}}</option>
+        </select>
+      </div>
+    </ng-container>
+    <!--Image Single Select-->
+    <ng-container *ngSwitchCase="'ImageSingleSelect'">
+      <div class="form-group survey-img active" [class.required]="surveyQuestions[selectedIndex].isMandatory">
+        <label tabindex="0" class="control-label ax-color-black"
+          [innerHTML]="surveyQuestions[selectedIndex].questionText | safeHtml">
+          <!-- <span class="ax-color-black">{{surveyQuestions[selectedIndex]?.questionNumber}}. </span> -->
+          <!-- {{surveyQuestions[selectedIndex].questionText}} -->
+        </label>
+        <div class="text-grey"><small><i>{{surveyQuestions[selectedIndex]?.profilePopulateAlert}}</i></small></div>
+        <br>
+        <SurveyMediaPreviewComponent *ngIf="surveyQuestions[selectedIndex].mediaUrl != null"
+          [mediaUrl]="surveyQuestions[selectedIndex].mediaUrl"></SurveyMediaPreviewComponent>
+        <br *ngIf="surveyQuestions[selectedIndex].mediaUrl != null">
+        <ul>
+          <ng-container
+            *ngFor="let op of surveyQuestions[selectedIndex].clientJobSurveyQuestionOption; let opindex = index">
+            <li (click)="buttonSingleSelectClick(surveyQuestions[selectedIndex], op)"
+              [class.selected]="checkMultiSelect(surveyQuestions[selectedIndex], op.optionText)">
+              <img src="{{op.optionText}}" style="width: 100px;height: 100px;">
+              <b *ngIf="isPreview">{{op?.internalText}}</b><br>
+              <span><i class="md md-check text-white"></i></span>
+            </li>
+          </ng-container>
+        </ul>
+        <div class="form-group col-md-2 no-padding"
+          *ngIf="surveyQuestions[selectedIndex]?.clientJobSurveyAnswers[0]?.answer == 'Other (please Specify)'">
+          <input type="text" name="othertext"
+            [(ngModel)]="surveyQuestions[selectedIndex].clientJobSurveyAnswers[0].otherText">
+        </div>
+      </div>
+    </ng-container>
+    <!--Image Multi Select-->
+    <ng-container *ngSwitchCase="'ImageMultiSelect'">
+      <div class="form-group survey-img active" [class.required]="surveyQuestions[selectedIndex].isMandatory">
+        <label id="question" tabindex="0" class="control-label ax-color-black"
+          [innerHTML]="surveyQuestions[selectedIndex].questionText | safeHtml">
+          <!-- <span class="ax-color-black">{{surveyQuestions[selectedIndex]?.questionNumber}}. </span> -->
+          <!-- {{surveyQuestions[selectedIndex].questionText}} -->
+        </label>
+        <div class="text-grey"><small><i>{{surveyQuestions[selectedIndex]?.profilePopulateAlert}}</i></small></div>
+        <br>
+        <SurveyMediaPreviewComponent *ngIf="surveyQuestions[selectedIndex].mediaUrl != null"
+          [mediaUrl]="surveyQuestions[selectedIndex].mediaUrl"></SurveyMediaPreviewComponent>
+        <br *ngIf="surveyQuestions[selectedIndex].mediaUrl != null">
+        <ul>
+          <ng-container
+            *ngFor="let op of surveyQuestions[selectedIndex].clientJobSurveyQuestionOption; let opindex = index">
+            <li (click)="multiSelectClick(surveyQuestions[selectedIndex], op)"
+              [class.selected]="checkMultiSelect(surveyQuestions[selectedIndex], op.optionText)">
+              <img src="{{op.optionText}}" style="width: 100px;height: 100px;">
+              <b *ngIf="isPreview">{{op?.internalText}}</b><br>
+              <span><i class="md md-check text-white"></i></span>
+            </li>
+          </ng-container>
+        </ul>
+        <div class="form-group col-md-2 no-padding"
+          *ngIf="surveyQuestions[selectedIndex]?.clientJobSurveyAnswers[0]?.answer == 'Other (please Specify)'">
+          <input type="text" name="othertext"
+            [(ngModel)]="surveyQuestions[selectedIndex].clientJobSurveyAnswers[0].otherText">
+        </div>
+      </div>
+    </ng-container>
+    <!--AudioUpload-->
+    <ng-container *ngSwitchCase="'AudioUpload'">
+      <div class="form-group survey-img active" [class.required]="surveyQuestions[selectedIndex].isMandatory">
+        <label id="question" tabindex="0" class="control-label ax-color-black"
+          [innerHTML]="surveyQuestions[selectedIndex].questionText | safeHtml">
+          <!-- <span class="ax-color-black">{{surveyQuestions[selectedIndex]?.questionNumber}}. </span> -->
+          <!-- {{surveyQuestions[selectedIndex].questionText}} -->
+        </label>
+        <div class="text-grey"><small><i>{{surveyQuestions[selectedIndex]?.profilePopulateAlert}}</i></small></div>
+        <br>
+        <SurveyMediaPreviewComponent *ngIf="surveyQuestions[selectedIndex].mediaUrl != null"
+          [mediaUrl]="surveyQuestions[selectedIndex].mediaUrl"></SurveyMediaPreviewComponent>
+        <br *ngIf="surveyQuestions[selectedIndex].mediaUrl != null">
+        <div class="input-group form-group">
+          <input type="text" disabled name="attachment1" class="form-control"
+            [(ngModel)]="surveyQuestions[selectedIndex].clientJobSurveyAnswers[0].answer">
+          <span class="input-group-addon no-padding">
+            <button class="btn btn-blue btn-square m-t--1" (click)="attachment.click()">Choose</button>
+            <button class="btn btn-danger btn-square m-t--1" (click)="job.inviteImageUrl = null">
+              <i class="md md-clear"></i>
+            </button>
+          </span>
+        </div>
+        <input #attachment type="file" name="inviteimage" (change)="uploadFile($event)"
+          style="visibility: hidden;height: 0;width: 0;" accept="audio/*">
+      </div>
+    </ng-container>
+    <!--VideoUpload-->
+    <ng-container *ngSwitchCase="'VideoUpload'">
+      <div class="form-group survey-img active" [class.required]="surveyQuestions[selectedIndex].isMandatory">
+        <label id="question" tabindex="0" class="control-label ax-color-black"
+          [innerHTML]="surveyQuestions[selectedIndex].questionText | safeHtml">
+          <!-- <span class="ax-color-black">{{surveyQuestions[selectedIndex]?.questionNumber}}. </span> -->
+          <!-- {{surveyQuestions[selectedIndex].questionText}} -->
+        </label>
+        <div class="text-grey"><small><i>{{surveyQuestions[selectedIndex]?.profilePopulateAlert}}</i></small></div>
+        <br>
+        <SurveyMediaPreviewComponent *ngIf="surveyQuestions[selectedIndex].mediaUrl != null"
+          [mediaUrl]="surveyQuestions[selectedIndex].mediaUrl"></SurveyMediaPreviewComponent>
+        <br *ngIf="surveyQuestions[selectedIndex].mediaUrl != null">
+        <div class="input-group form-group">
+          <input type="text" disabled name="attachment1" class="form-control"
+            [(ngModel)]="surveyQuestions[selectedIndex].clientJobSurveyAnswers[0].answer">
+          <span class="input-group-addon no-padding">
+            <button class="btn btn-blue btn-square m-t--1" (click)="attachment.click()">Choose</button>
+            <button class="btn btn-danger btn-square m-t--1" (click)="job.inviteImageUrl = null">
+              <i class="md md-clear"></i>
+            </button>
+          </span>
+        </div>
+        <input #attachment type="file" name="inviteimage" (change)="uploadFile($event)"
+          style="visibility: hidden;height: 0;width: 0;" accept="video/*">
+      </div>
+    </ng-container>
+    <!--ImageUpload-->
+    <ng-container *ngSwitchCase="'ImageUpload'">
+      <div class="form-group survey-img active" [class.required]="surveyQuestions[selectedIndex].isMandatory">
+        <label id="question" tabindex="0" class="control-label ax-color-black"
+          [innerHTML]="surveyQuestions[selectedIndex].questionText | safeHtml">
+          <!-- <span class="ax-color-black">{{surveyQuestions[selectedIndex]?.questionNumber}}. </span> -->
+          <!-- {{surveyQuestions[selectedIndex].questionText}} -->
+        </label>
+        <div class="text-grey"><small><i>{{surveyQuestions[selectedIndex]?.profilePopulateAlert}}</i></small></div>
+        <br>
+        <SurveyMediaPreviewComponent *ngIf="surveyQuestions[selectedIndex].mediaUrl != null"
+          [mediaUrl]="surveyQuestions[selectedIndex].mediaUrl"></SurveyMediaPreviewComponent>
+        <br *ngIf="surveyQuestions[selectedIndex].mediaUrl != null">
+        <div class="input-group form-group">
+          <input type="text" disabled name="attachment1" class="form-control"
+            [(ngModel)]="surveyQuestions[selectedIndex].clientJobSurveyAnswers[0].answer">
+          <span class="input-group-addon no-padding">
+            <button class="btn btn-blue btn-square m-t--1" (click)="attachment.click()">Choose</button>
+            <button class="btn btn-danger btn-square m-t--1" (click)="job.inviteImageUrl = null">
+              <i class="md md-clear"></i>
+            </button>
+          </span>
+        </div>
+        <input #attachment type="file" name="inviteimage" (change)="uploadFile($event)"
+          style="visibility: hidden;height: 0;width: 0;" accept="image/*" />
+      </div>
+    </ng-container>
+    <!--REORDER IMAGE-->
+    <ng-container *ngSwitchCase="'ReorderImage'">
+      <div class="form-group survey-reorder-option survey-reorder-image active" data-id="5"
+        [class.required]="surveyQuestions[selectedIndex].isMandatory">
+        <label id="question" tabindex="0" class="control-label ax-color-black"
+          [innerHTML]="surveyQuestions[selectedIndex].questionText | safeHtml">
+          <!-- <span class="ax-color-black">{{surveyQuestions[selectedIndex]?.questionNumber}}. </span> -->
+          <!-- {{surveyQuestions[selectedIndex].questionText}} -->
+        </label>
+        <div class="text-grey"><small><i>{{surveyQuestions[selectedIndex]?.profilePopulateAlert}}</i></small></div>
+        <br>
+        <SurveyMediaPreviewComponent *ngIf="surveyQuestions[selectedIndex].mediaUrl != null"
+          [mediaUrl]="surveyQuestions[selectedIndex].mediaUrl"></SurveyMediaPreviewComponent>
+        <br *ngIf="surveyQuestions[selectedIndex].mediaUrl != null">
+        <div class="clearfix"></div>
+        <div class="survey-reorder-image-options">
+          <!-- <ul [dragula]='"first-bag"' [dragulaModel]="surveyQuestions[selectedIndex].clientJobSurveyQuestionOption">
+            <ng-container
+              *ngFor="let op of surveyQuestions[selectedIndex].clientJobSurveyQuestionOption; let opindex = index">
+              <li>
+                <img [src]="op.optionText" style="width: 100px; height: 100px;" />
+              </li>
+            </ng-container>
+          </ul> -->
+
+          <ul [dragula]='"bag-one"' [dragulaModel]="surveyQuestions[selectedIndex].clientJobSurveyQuestionOption"
+            (dragulaModelChange)="reorderChangeEvent($event);">
+            <li class=" p-0"
+              *ngFor="let op of surveyQuestions[selectedIndex].clientJobSurveyQuestionOption; let opindex = index;">
+              <button class="btn btn-square" style="background: #c1c1c1;margin: 33px 0px;"
+                *ngIf="getReorderIndex(op.optionText) > 0">{{getReorderIndex(op.optionText)}}</button>
+              <img [src]="op.optionText" style="width: 100px; height: 100px;" />
+              <button class="btn btn-square pull-right" style="background: #c1c1c1;margin: 33px 0px;">
+                <span class="hint--top" aria-label="Reorder">
+                  <i class="ti-move sqo-move" style="vertical-align: middle;color: #777777;"></i>
+                </span>
+              </button>
+              <div class="clearfix"></div>
+            </li>
+          </ul>
+        </div>
+        <div class="clearfix"></div>
+      </div>
+    </ng-container>
+    <!--Button Rating-->
+    <ng-container *ngSwitchCase="'ButtonRating'">
+      <div class="form-group survey-list-rating m-b-10" [class.required]="surveyQuestions[selectedIndex].isMandatory">
+        <label id="question" tabindex="0" class="control-label ax-color-black"
+          [innerHTML]="surveyQuestions[selectedIndex].questionText | safeHtml">
+          <!-- <span class="ax-color-black">{{surveyQuestions[selectedIndex]?.questionNumber}}. </span> -->
+          <!-- {{surveyQuestions[selectedIndex].questionText}} -->
+        </label>
+        <div class="text-grey"><small><i>{{surveyQuestions[selectedIndex]?.profilePopulateAlert}}</i></small></div>
+        <br>
+        <SurveyMediaPreviewComponent *ngIf="surveyQuestions[selectedIndex].mediaUrl != null"
+          [mediaUrl]="surveyQuestions[selectedIndex].mediaUrl"></SurveyMediaPreviewComponent>
+        <br *ngIf="surveyQuestions[selectedIndex].mediaUrl != null">
+        <div style="overflow-x: auto;">
+          <ul id="scroll-content" style="min-width: 410px">
+            <ng-container
+              *ngFor="let op of surveyQuestions[selectedIndex].clientJobSurveyQuestionOption; let opindex = index">
+              <li tabindex="0" style="width: 100%;float: unset;max-width:100%">
+                <div class="text-left" style="font-weight: normal;">
+                  <b>{{op.optionText}} <b *ngIf="isPreview">{{op?.internalText}}</b></b>
+                </div>
+                <div class="clearfix"></div>
+                <div class="btn-group btn-group-justified m-b-10">
+                  <ng-container *ngFor="let rt of [1,2,3,4,5,6,7,8,9,10]">
+                    <a tabindex="0" class="btn btn-default waves-effect waves-light" role="button"
+                      style="background: #eee;border: 1px solid #eee;color: #4c5667;border-right: 1px solid #fff;"
+                      [class.border-right-0]="rt == 10" (click)="selectButtonRating(op, rt)"
+                      [class.btn-ocean]="checkButtonRatingSelection(op.optionText, rt)">
+                      {{rt}}
+                    </a>
+                  </ng-container>
+                </div>
+              </li>
+            </ng-container>
+          </ul>
+        </div>
+        <div class="clearfix"></div>
+        <i class="md md-arrow-forward pull-right font-20 d-mobile-only ax-color-black"></i>
+        <div class="clearfix"></div>
+      </div>
+    </ng-container>
+    <!--Multithumbsupdown-->
+    <ng-container *ngSwitchCase="'MultiThumbsUpDown'">
+      <div class="form-group survey-multithumbsupdown" [class.required]="surveyQuestions[selectedIndex].isMandatory">
+        <label id="question" tabindex="0" class="control-label ax-color-black"
+          [innerHTML]="surveyQuestions[selectedIndex].questionText | safeHtml">
+          <!-- <span class="ax-color-black">{{surveyQuestions[selectedIndex]?.questionNumber}}. </span> -->
+          <!-- {{surveyQuestions[selectedIndex].questionText}} -->
+        </label>
+        <div class="text-grey"><small><i>{{surveyQuestions[selectedIndex]?.profilePopulateAlert}}</i></small></div>
+        <br>
+        <SurveyMediaPreviewComponent *ngIf="surveyQuestions[selectedIndex].mediaUrl != null"
+          [mediaUrl]="surveyQuestions[selectedIndex].mediaUrl"></SurveyMediaPreviewComponent>
+        <br *ngIf="surveyQuestions[selectedIndex].mediaUrl != null">
+        <ul>
+          <ng-container
+            *ngFor="let op of surveyQuestions[selectedIndex].clientJobSurveyQuestionOption; let opindex = index">
+            <li [class.selected]="surveyQuestions[selectedIndex].clientJobSurveyAnswers[0].answer == op.optionText"
+              style="width: 100%;float: unset;position: relative;">
+              <div class="text-left" style="font-weight: normal;">
+                <span class="label-text float-left" style="width: calc(100% - 80px);">
+                  {{op.optionText}} <b *ngIf="isPreview">{{op?.internalText}}</b>
+                </span>
+                <span class="pull-right" style="position: absolute;top: calc(50% - 20px);">
+                  <span [class.selected]="checkButtonRatingSelection(op.optionText, 'ThumbsUp')">
+                    <i (click)="selectButtonRating(op, 'ThumbsUp')" class="fa fa-thumbs-o-up success"></i>
+                  </span>
+                  <span [class.selected]="checkButtonRatingSelection(op.optionText, 'ThumbsDown')">
+                    <i (click)="selectButtonRating(op, 'ThumbsDown')" class="fa fa-thumbs-o-down danger"></i>
+                  </span>
+                </span>
+                <div class="clearfix"></div>
+              </div>
+              <div class="clearfix"></div>
+            </li>
+          </ng-container>
+        </ul>
+        <div class="clearfix"></div>
+      </div>
+    </ng-container>
+    <!-- SliderRating -->
+    <ng-container *ngSwitchCase="'SliderRating'">
+      <div class="form-group survey-multithumbsupdown m-b-10"
+        [class.required]="surveyQuestions[selectedIndex].isMandatory">
+        <label id="question" tabindex="0" class="control-label ax-color-black"
+          [innerHTML]="surveyQuestions[selectedIndex].questionText | safeHtml">
+          <!-- <span class="ax-color-black">{{surveyQuestions[selectedIndex]?.questionNumber}}. </span> -->
+          <!-- {{surveyQuestions[selectedIndex].questionText}} -->
+        </label>
+        <div class="text-grey"><small><i>{{surveyQuestions[selectedIndex]?.profilePopulateAlert}}</i></small></div>
+        <br>
+        <SurveyMediaPreviewComponent *ngIf="surveyQuestions[selectedIndex].mediaUrl != null"
+          [mediaUrl]="surveyQuestions[selectedIndex].mediaUrl"></SurveyMediaPreviewComponent>
+        <br *ngIf="surveyQuestions[selectedIndex].mediaUrl != null">
+        <div id="scroll-content" class="slider-rating-scroll-mob" style="width: 94%;">
+          <div class="slider-rating-mob">
+            <ng-container
+              *ngFor="let op of surveyQuestions[selectedIndex].clientJobSurveyQuestionOption; let opindex = index">
+              <div>
+                <span class="label-text no-padding">
+                  <b>{{op.optionText}} <b *ngIf="isPreview">{{op?.internalText}}</b></b>
+                </span>
+              </div>
+              <div class="clearfix"></div>
+              <div>
+                <ng5-slider [value]="getSliderValue(op.optionText)" [options]="sliderOptions"
+                  (userChange)="sliderRatingChange($event, op)"></ng5-slider>
+              </div>
+              <div class="clearfix"></div>
+            </ng-container>
+          </div>
+        </div>
+        <div class="clearfix"></div>
+        <i *ngIf="hasScrollbar" class="md md-arrow-forward pull-right font-20 d-mobile-only ax-color-black"></i>
+        <div class="clearfix"></div>
+      </div>
+    </ng-container>
+    <!--RatingScale-->
+    <ng-container *ngSwitchCase="'RatingScale'">
+      <div class="form-group survey-matrix survey-ratingscale"
+        [class.required]="surveyQuestions[selectedIndex].isMandatory">
+        <label id="question" tabindex="0" class="control-label ax-color-black"
+          [innerHTML]="surveyQuestions[selectedIndex].questionText | safeHtml">
+          <!-- <span class="ax-color-black">{{surveyQuestions[selectedIndex]?.questionNumber}}. </span> -->
+          <!-- {{surveyQuestions[selectedIndex].questionText}} -->
+        </label>
+        <div class="text-grey"><small><i>{{surveyQuestions[selectedIndex]?.profilePopulateAlert}}</i></small></div>
+        <br>
+        <SurveyMediaPreviewComponent *ngIf="surveyQuestions[selectedIndex].mediaUrl != null"
+          [mediaUrl]="surveyQuestions[selectedIndex].mediaUrl"></SurveyMediaPreviewComponent>
+        <br *ngIf="surveyQuestions[selectedIndex].mediaUrl != null">
+        <div class="clearfix"></div>
+        <div id="scroll-content" class="table-responsive m-b-0 no-border-radius"
+          [style.maxWidth.px]="matrixKey.length * 300">
+          <table class="table ax-table1 table-bordered m-b-0">
+            <tbody>
+              <tr>
+                <td style="border-top:0px" class="bg" style="vertical-align: middle;"></td>
+                <ng-container *ngFor="let mh of surveyQuestions[selectedIndex].matrixHorizontalOptions.split(',')">
+                  <td class="bg no-border-top text-center" style="vertical-align: middle;">{{mh}}</td>
+                </ng-container>
+              </tr>
+
+              <tr *ngFor="let k of matrixKey;let mkindex = index">
+                <ng-container *ngFor="let k1 of k;let kindex = index; let l = last">
+                  <ng-container *ngIf="!l">
+                    <td *ngIf="kindex == 0" class="no-border-top text-center" [class.bg]="kindex == 0"
+                      [class.text-left]="kindex == 0" [class.text-center]="kindex > 0">
+                      {{matrixContent[k1].optionText}}
+                    </td>
+                    <td class="no-border-top text-center no-padding" style="vertical-align: middle;">
+                      <ng-container>
+                        <!-- <span class="checkbox checkbox-primary ax-table-checkbox">
+                          <input type="checkbox" name="checkbox{{mkindex}}{{kindex}}{{k1}}"
+                            [checked]="isCheckCheckBox(k1, matrixContent[k1].optionText)"
+                            (change)="clickMatrixOption(k1, matrixContent[k1], 'SliderRating')" />
+                          <label></label>
+                        </span> -->
+                        <span class="rs-option" [class.selected]="isCheckCheckBox(k1, matrixContent[k1].optionText)"
+                          (click)="clickMatrixOption(k1, matrixContent[k1], 'SliderRating')">
+                          <i class="fa fa-arrow-right text-white"></i>
+                        </span>
+                      </ng-container>
+                    </td>
+                  </ng-container>
+                </ng-container>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+        <div class="clearfix"></div>
+        <i *ngIf="hasScrollbar" class="md md-arrow-forward pull-right font-20 d-mobile-only ax-color-black"></i>
+        <div class="clearfix"></div>
+      </div>
+    </ng-container>
+
+    <!--201126NEWQUESTION-->
+    <!--MULTI YESNO TEXT-->
+    <ng-container *ngSwitchCase="'MultiYesNo'">
+      <div class="form-group survey-multithumbsupdown" [class.required]="surveyQuestions[selectedIndex].isMandatory">
+        <label id="question" tabindex="0" class="control-label ax-color-black"
+          [innerHTML]="surveyQuestions[selectedIndex].questionText | safeHtml">
+        </label>
+        <div class="text-grey"><small><i>{{surveyQuestions[selectedIndex]?.profilePopulateAlert}}</i></small></div>
+        <br>
+        <SurveyMediaPreviewComponent *ngIf="surveyQuestions[selectedIndex].mediaUrl != null"
+          [mediaUrl]="surveyQuestions[selectedIndex].mediaUrl"></SurveyMediaPreviewComponent>
+        <br *ngIf="surveyQuestions[selectedIndex].mediaUrl != null">
+        <ul>
+          <ng-container
+            *ngFor="let op of surveyQuestions[selectedIndex].clientJobSurveyQuestionOption; let opindex = index">
+            <li [class.selected]="surveyQuestions[selectedIndex].clientJobSurveyAnswers[0].answer == op.optionText"
+              style="width: 100%;float: unset;position: relative;height: 76.5px;">
+              <div class="text-left" style="font-weight: normal;">
+                <span class="label-text float-left" style="width: calc(100% - 150px);">
+                  {{op.optionText}} <b *ngIf="isPreview">{{op?.internalText}}</b>
+                </span>
+                <span class="pull-right survey-yesorno" style="position: absolute;">
+                  <div class="yncontainer pull-left" [class.selected]="checkButtonRatingSelection(op.optionText, 'Yes')"
+                    (click)="selectButtonRating(op, 'Yes')"
+                    style="border: 0;border-right:1px solid #ddd;border-left:1px solid #ddd;">
+                    <i class="md md-check icon" style="color: #486824;"></i>
+                    <div tabindex="0" class="text">
+                      Yes
+                    </div>
+                    <span>
+                      <i title="Selected" class="md md-check text-white"></i>
+                    </span>
+                  </div>
+                  <div class="yncontainer pull-left" [class.selected]="checkButtonRatingSelection(op.optionText, 'No')"
+                    (click)="selectButtonRating(op, 'No')" style="border: 0;">
+                    <i class="md md-close icon" style="color: #d41517;"></i>
+                    <div tabindex="0" class="text">
+                      No
+                    </div>
+                    <span>
+                      <i title="Selected" class="md md-check text-white"></i>
+                    </span>
+                  </div>
+                </span>
+                <div class="clearfix"></div>
+              </div>
+              <div class="clearfix"></div>
+            </li>
+          </ng-container>
+        </ul>
+        <div class="clearfix"></div>
+      </div>
+    </ng-container>
+    <!--MULTI STAR RATIG-->
+    <!--MULTI STAR RATIG-->
+    <!--MULTI STAR RATIG-->
+    <ng-container *ngSwitchCase="'MultiStarRating'">
+      <div class="form-group survey-multithumbsupdown" [class.required]="surveyQuestions[selectedIndex].isMandatory">
+        <label id="question" tabindex="0" class="control-label ax-color-black"
+          [innerHTML]="surveyQuestions[selectedIndex].questionText | safeHtml">
+        </label>
+        <div class="text-grey"><small><i>{{surveyQuestions[selectedIndex]?.profilePopulateAlert}}</i></small></div>
+        <br>
+        <SurveyMediaPreviewComponent *ngIf="surveyQuestions[selectedIndex].mediaUrl != null"
+          [mediaUrl]="surveyQuestions[selectedIndex].mediaUrl"></SurveyMediaPreviewComponent>
+        <br *ngIf="surveyQuestions[selectedIndex].mediaUrl != null">
+        <ul>
+          <ng-container
+            *ngFor="let op of surveyQuestions[selectedIndex].clientJobSurveyQuestionOption; let opindex = index">
+            <li [class.selected]="surveyQuestions[selectedIndex].clientJobSurveyAnswers[0].answer == op.optionText"
+              style="width: 100%;float: unset;position: relative;">
+              <div class="text-left" style="font-weight: normal;">
+                <span class="label-text pull-left" style="width: calc(100% - 137px);">
+                  {{op.optionText}} <b *ngIf="isPreview">{{op?.internalText}}</b>
+                </span>
+                <span class="pull-right survey-star-rating">
+                  <ul style="border: 0;margin-top: 3px;margin-right: 3px;">
+                    <li tabindex="0" [class.selected]="getMultiStarRatingValue(op.optionText) > 0"
+                      (click)="selectButtonRating(op, 1)" style="border: 0;font-size: 30px;">
+                      <i class="ion-ios7-star-outline"></i>
+                    </li>
+                    <li tabindex="0" [class.selected]="getMultiStarRatingValue(op.optionText) > 1"
+                      (click)="selectButtonRating(op, 2)" style="border: 0;font-size: 30px;">
+                      <i class="ion-ios7-star-outline"></i>
+                    </li>
+                    <li tabindex="0" [class.selected]="getMultiStarRatingValue(op.optionText) > 2"
+                      (click)="selectButtonRating(op, 3)" style="border: 0;font-size: 30px;">
+                      <i class="ion-ios7-star-outline"></i>
+                    </li>
+                    <li tabindex="0" [class.selected]="getMultiStarRatingValue(op.optionText) > 3"
+                      (click)="selectButtonRating(op, 4)" style="border: 0;font-size: 30px;">
+                      <i class="ion-ios7-star-outline"></i>
+                    </li>
+                    <li tabindex="0" [class.selected]="getMultiStarRatingValue(op.optionText) > 4"
+                      (click)="selectButtonRating(op, 5)" style="border: 0;font-size: 30px;">
+                      <i class="ion-ios7-star-outline"></i>
+                    </li>
+                  </ul>
+                </span>
+                <div class="clearfix"></div>
+              </div>
+              <div class="clearfix"></div>
+            </li>
+          </ng-container>
+        </ul>
+        <div class="clearfix"></div>
+      </div>
+    </ng-container>
+    <!--ADDRESS TYPE-->
+    <ng-container *ngSwitchCase="'AddressText'">
+      <div class="form-group" [class.required]="surveyQuestions[selectedIndex].isMandatory">
+        <label id="question" tabindex="0" class="control-label ax-color-black"
+          for="{{surveyQuestions[selectedIndex].questionText}}"
+          [innerHTML]="surveyQuestions[selectedIndex].questionText | safeHtml">
+        </label>
+        <div class="text-grey"><small><i>{{surveyQuestions[selectedIndex]?.profilePopulateAlert}}</i></small></div>
+        <br>
+        <SurveyMediaPreviewComponent *ngIf="surveyQuestions[selectedIndex].mediaUrl != null"
+          [mediaUrl]="surveyQuestions[selectedIndex].mediaUrl"></SurveyMediaPreviewComponent>
+        <br *ngIf="surveyQuestions[selectedIndex].mediaUrl != null">
+        <label>Name / Unit / Level / Floor / Suite</label>
+        <input type="text" class="form-control m-b-15" [(ngModel)]="addressName" name="addressName"
+          (ngModelChange)="updateAddressTypeAnswer()">
+        <label>Street Address</label>
+        <!-- [(ngModel)]="surveyQuestions[selectedIndex].clientJobSurveyAnswers[0].answer" -->
+        <input ngx-google-places-autocomplete [options]="{componentRestrictions: { country: countrycode }}"
+          #placesRef="ngx-places" class="form-control" autocomplete="nope" name="addressStreet"
+          [(ngModel)]="addressStreet" (onAddressChange)="handleAddressChange($event)"
+          [placeholder]="getPlainTextFromHtml(surveyQuestions[selectedIndex].questionText)"
+          (ngModelChange)="updateAddressTypeAnswer()" />
+      </div>
+    </ng-container>
+    <!--MULTI TEXT TYPE-->
+    <ng-container *ngSwitchCase="'MultiText'">
+      <div class="form-group" [class.required]="surveyQuestions[selectedIndex].isMandatory">
+        <label id="question" tabindex="0" class="control-label ax-color-black"
+          for="{{surveyQuestions[selectedIndex].questionText}}"
+          [innerHTML]="surveyQuestions[selectedIndex].questionText | safeHtml">
+        </label>
+        <div class="text-grey"><small><i>{{surveyQuestions[selectedIndex]?.profilePopulateAlert}}</i></small></div>
+        <br>
+        <SurveyMediaPreviewComponent *ngIf="surveyQuestions[selectedIndex].mediaUrl != null"
+          [mediaUrl]="surveyQuestions[selectedIndex].mediaUrl"></SurveyMediaPreviewComponent>
+        <br *ngIf="surveyQuestions[selectedIndex].mediaUrl != null">
+        <ng-container
+          *ngFor="let sques of surveyQuestions[selectedIndex].clientJobSurveyQuestionOption; let sqrlastindex = last; let sqrindex = index">
+          <div class="form-group" style="max-width: 550px;">
+            <label class="ax-color-black w-100" for="radio-{{sqrindex}}">
+              {{sques?.optionText}} <b *ngIf="isPreview">{{sques?.internalText}}</b>
+            </label>
+            <input type="text" name="multi-text-{{sqrindex}}" style="color:#4c5667" #multiTextInput
+              (change)="selectButtonRating(sques, multiTextInput.value)" class="form-control"
+              [value]="getMultiTextValue(sques?.optionText)">
+          </div>
+        </ng-container>
+      </div>
+    </ng-container>
+    <!--SIMLY RATING-->
+    <ng-container *ngSwitchCase="'SmileyRating'">
+      <div class="form-group survey-star-rating" [class.required]="surveyQuestions[selectedIndex].isMandatory">
+        <label id="question" tabindex="0" class="control-label ax-color-black"
+          [innerHTML]="surveyQuestions[selectedIndex].questionText | safeHtml">
+          <!-- <span class="ax-color-black">{{surveyQuestions[selectedIndex]?.questionNumber}}. </span> -->
+          <!-- {{surveyQuestions[selectedIndex].questionText}} -->
+        </label>
+        <div class="text-grey"><small><i>{{surveyQuestions[selectedIndex]?.profilePopulateAlert}}</i></small></div>
+        <br>
+        <SurveyMediaPreviewComponent *ngIf="surveyQuestions[selectedIndex].mediaUrl != null"
+          [mediaUrl]="surveyQuestions[selectedIndex].mediaUrl"></SurveyMediaPreviewComponent>
+        <br *ngIf="surveyQuestions[selectedIndex].mediaUrl != null">
+        <ng-container
+          *ngFor="let sques of surveyQuestions[selectedIndex].clientJobSurveyQuestionOption; let sqrlastindex = last; let sqrindex = index">
+          <div class="smiley-wrapper">
+            <label for="radio{{sqrindex}}" [class.last]="sqrlastindex">
+              <div class="smiley-container" style="cursor: pointer;">
+                <div>
+                  <img src="/assets/images/survey/simly/{{sqrindex + 1}}.png" height="55"
+                    style="margin-bottom: 7px;"><br>
+                  <input type="radio" name="radio{{sqrindex}}" value="{{sques?.optionText}}" id="radio{{sqrindex}}"
+                    style="cursor: pointer;"
+                    [(ngModel)]="surveyQuestions[selectedIndex].clientJobSurveyAnswers[0].answer"
+                    (ngModelChange)="gotoNextQuestion.emit(true)"><br>
+                  <label for="radio{{sqrindex}}"
+                    style="text-align: center;width: 100%;font-weight: normal;margin: 0;">{{sques?.optionText}}</label>
+                </div>
+              </div>
+            </label>
+          </div>
+        </ng-container>
+        <div class="clearfix"></div>
+      </div>
+    </ng-container>
+    <!--Multi SmileyRating QUESTION-->
+    <ng-container *ngSwitchCase="'Multi SmileyRating'">
+      <div class="form-group survey-matrix" [class.required]="surveyQuestions[selectedIndex].isMandatory">
+        <label id="question" tabindex="0" class="control-label ax-color-black"
+          [innerHTML]="surveyQuestions[selectedIndex].questionText | safeHtml">
+          <!-- <span class="ax-color-black">{{surveyQuestions[selectedIndex]?.questionNumber}}. </span> -->
+          <!-- {{surveyQuestions[selectedIndex].questionText}} -->
+        </label>
+        <div class="text-grey"><small><i>{{surveyQuestions[selectedIndex]?.profilePopulateAlert}}</i></small></div>
+        <br>
+        <SurveyMediaPreviewComponent *ngIf="surveyQuestions[selectedIndex].mediaUrl != null"
+          [mediaUrl]="surveyQuestions[selectedIndex].mediaUrl"></SurveyMediaPreviewComponent>
+        <br *ngIf="surveyQuestions[selectedIndex].mediaUrl != null">
+        <div class="clearfix"></div>
+        <div class="table-responsive m-b-0 no-border-radius" [style.maxWidth.px]="matrixKey.length * 300"
+          id="scroll-content">
+          <table class="table ax-table1 table-bordered m-b-0">
+            <tbody>
+              <tr>
+                <td style="border-top:0px" class="bg"></td>
+                <ng-container
+                  *ngFor="let mh of surveyQuestions[selectedIndex].matrixHorizontalOptions.split(','); let mhi = index">
+                  <td class="bg no-border-top text-center">
+                    <!-- {{mh}} -->
+                    <img src="/assets/images/survey/simly/{{mhi + 1}}.png" height="20">
+                  </td>
+                </ng-container>
+              </tr>
+
+              <tr *ngFor="let k of matrixKey;let mkindex = index">
+                <ng-container *ngFor="let k1 of k;let kindex = index; let l = last">
+                  <ng-container *ngIf="!l">
+                    <td *ngIf="kindex == 0" class="no-border-top text-center" [class.bg]="kindex == 0"
+                      [class.text-left]="kindex == 0" [class.text-center]="kindex > 0">
+                      {{matrixContent[k1].optionText}}
+                    </td>
+                    <td class="no-border-top text-center">
+                      <ng-container>
+                        <!-- <input type="checkbox" name="checkbox{{mkindex}}{{kindex}}{{k1}}" [checked]="isCheckCheckBox(k1, matrixContent[k1].optionText)"
+                        (change)="clickMatrixOption(k1, matrixContent[k1].optionText, $event)" /> -->
+                        <span>
+                          <input type="radio" name="checkbox{{mkindex}}"
+                            [checked]="isCheckCheckBox(k1, matrixContent[k1].optionText)"
+                            (change)="clickMatrixOption(k1, matrixContent[k1], $event)" />
+                          <label></label>
+                        </span>
+                      </ng-container>
+                    </td>
+                  </ng-container>
+                </ng-container>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+        <div class="clearfix"></div>
+        <i *ngIf="hasScrollbar" class="md md-arrow-forward pull-right font-20 d-mobile-only ax-color-black"></i>
+        <div class="clearfix"></div>
+      </div>
+    </ng-container>
+    <!--MULTI Smiley-->
+    <ng-container *ngSwitchCase="'MultiSmiley'">
+      <div class="form-group" [class.required]="surveyQuestions[selectedIndex].isMandatory">
+        <label id="question" tabindex="0" class="control-label ax-color-black"
+          [innerHTML]="surveyQuestions[selectedIndex].questionText | safeHtml">
+        </label>
+        <div class="text-grey"><small><i>{{surveyQuestions[selectedIndex]?.profilePopulateAlert}}</i></small></div>
+        <br>
+        <SurveyMediaPreviewComponent *ngIf="surveyQuestions[selectedIndex].mediaUrl != null"
+          [mediaUrl]="surveyQuestions[selectedIndex].mediaUrl"></SurveyMediaPreviewComponent>
+        <br *ngIf="surveyQuestions[selectedIndex].mediaUrl != null">
+        <ul style="margin: 0;padding: 0;list-style: none;">
+          <ng-container
+            *ngFor="let op of surveyQuestions[selectedIndex].clientJobSurveyQuestionOption; let opindex = index; let oplast = last">
+            <li [class.selected]="surveyQuestions[selectedIndex].clientJobSurveyAnswers[0].answer == op.optionText"
+              style="width: 100%;float: unset;position: relative;">
+              <div class="text-left" style="font-weight: normal;overflow-x: auto;">
+                <div class="label-text m-b-5" [class.m-t-10]="opindex != 0">
+                  <b>{{op.optionText}} <b *ngIf="isPreview">{{op?.internalText}}</b></b>
+                </div>
+                <div class="smiley-wrapper multi-smiley-wrapper">
+                  <ng-container
+                    *ngFor="let opch of ['Extremely Unsatisfied', 'Unsatisfied', 'Neutral', 'Satisfied', 'Extremely Satisfied'];let i = index;let l =last">
+                    <label for="{{op.optionText}}{{opch}}" [class.last]="l">
+                      <div class="smiley-container" style="cursor: pointer;">
+                        <div>
+                          <img src="/assets/images/survey/simly/{{i + 1}}.png" height="55"
+                            style="margin-bottom: 7px;"><br>
+                          <input type="radio" name="{{op.optionText}}" value="{{opch}}" id="{{op.optionText}}{{opch}}"
+                            style="cursor: pointer;" [checked]="checkButtonRatingSelection(op.optionText, opch)"
+                            (change)="selectButtonRating(op, opch)"><br>
+                          <label for="{{op.optionText}}{{opch}}"
+                            style="text-align: center;width: 100%;font-weight: normal;margin: 0;">{{opch}}</label>
+                        </div>
+                      </div>
+                    </label>
+                  </ng-container>
+                </div>
+                <!-- <span class="pull-right survey-star-rating">
+                  <ul style="border: 0;margin-top: 3px;margin-right: 3px;">
+                    <ng-container
+                      *ngFor="let opch of ['Extremely Unsatisfied', 'Unsatisfied', 'Neutral', 'Satisfied', 'Extremely Satisfied'];let i = index">
+                      <li tabindex="0" [class.selected]="checkButtonRatingSelection(op.optionText, opch)"
+                        (click)="selectButtonRating(op, opch)" style="border: 0;margin-left: 5px;font-size: 16px;" class="text-center">
+                        <img src="/assets/images/survey/simly/{{i + 1}}.png" height="30" style="display: block;">
+                        <input type="radio" name="{{op.optionText}}"
+                          [checked]="checkButtonRatingSelection(op.optionText, opch)"
+                          (change)="selectButtonRating(op, opch)" />
+                        <label></label>
+                      </li>
+                    </ng-container>
+                  </ul>
+                </span> -->
+                <div class="clearfix"></div>
+              </div>
+              <div class="clearfix"></div>
+            </li>
+          </ng-container>
+        </ul>
+        <div class="clearfix"></div>
+      </div>
+    </ng-container>
+    <!--DocumentUpload-->
+    <ng-container *ngSwitchCase="'DocumentUpload'">
+      <div class="form-group survey-img active" [class.required]="surveyQuestions[selectedIndex].isMandatory">
+        <label id="question" tabindex="0" class="control-label ax-color-black"
+          [innerHTML]="surveyQuestions[selectedIndex].questionText | safeHtml">
+          <!-- <span class="ax-color-black">{{surveyQuestions[selectedIndex]?.questionNumber}}. </span> -->
+          <!-- {{surveyQuestions[selectedIndex].questionText}} -->
+        </label>
+        <div class="text-grey"><small><i>{{surveyQuestions[selectedIndex]?.profilePopulateAlert}}</i></small></div>
+        <br>
+        <SurveyMediaPreviewComponent *ngIf="surveyQuestions[selectedIndex].mediaUrl != null"
+          [mediaUrl]="surveyQuestions[selectedIndex].mediaUrl"></SurveyMediaPreviewComponent>
+        <br *ngIf="surveyQuestions[selectedIndex].mediaUrl != null">
+        <div class="input-group form-group">
+          <input type="text" disabled name="attachment1" class="form-control"
+            [(ngModel)]="surveyQuestions[selectedIndex].clientJobSurveyAnswers[0].answer">
+          <span class="input-group-addon no-padding">
+            <button class="btn btn-blue btn-square m-t--1" (click)="attachment.click()">Choose</button>
+            <button class="btn btn-danger btn-square m-t--1" (click)="job.inviteImageUrl = null">
+              <i class="md md-clear"></i>
+            </button>
+          </span>
+        </div>
+        <input #attachment type="file" name="inviteimage" (change)="uploadFile($event)"
+          style="visibility: hidden;height: 0;width: 0;" accept="application/msword, application/vnd.ms-excel, application/vnd.ms-powerpoint,
+          text/plain, application/pdf" />
+      </div>
+    </ng-container>
+  </ng-container>
+
+  <ng-container
+    *ngIf="surveyQuestions[selectedIndex].internalText != null && surveyQuestions[selectedIndex].internalText != '' && isPreview">
+    <div class="alert alert-warning" style="padding: 7px 10px;margin-bottom: 15px;color: #4c5667">
+      {{surveyQuestions[selectedIndex].internalText}}
+    </div>
+  </ng-container>
+</div>

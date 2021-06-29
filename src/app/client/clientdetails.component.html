@@ -1,0 +1,106 @@
+<div class="wrapper">
+  <div class="container">
+    <div class="row">
+      <div class="col-sm-12">
+        <ol class="breadcrumb breadcrumb-arrow bg-white bx-shadow">
+          <li><a [routerLink]="['/dashboard']" class="home-breadcrumb"><i class="md md-home"></i></a></li>
+          <li><a [routerLink]="['/client']" class="home-breadcrumb font-14">Clients</a></li>
+          <li><a>
+              <ng-container *ngIf="!isUpdateClient">New Client</ng-container>
+              <ng-container *ngIf="isUpdateClient">{{client?.name}}</ng-container>
+            </a></li>
+        </ol>
+      </div>
+      <div class="col-sm-12">
+        <div class="card-box">
+          <ul class="nav nav-tabs navtab-custom ax-nav-tabs">
+            <li [class.active]="selectedTab == 'clientedit'">
+              <a (click)="selectedTab = 'clientedit'">
+                <span class="hidden-xs1">Details</span>
+              </a>
+            </li>
+            <li [class.active]="selectedTab == 'clientaddress'" [class.disable]="!editClientId">
+              <a (click)="editClientId && selectedTab = 'clientaddress'">
+                <span class="hidden-xs1">Address</span>
+              </a>
+            </li>
+            <li [class.active]="selectedTab == 'clientcontact'" [class.disable]="!editClientId">
+              <a (click)="editClientId && selectedTab = 'clientcontact'">
+                <span class="hidden-xs1">Contacts</span>
+              </a>
+            </li>
+            <li [class.active]="selectedTab == 'clientaccount'" [class.disable]="!editClientId" class="d-desktop-only">
+              <a (click)="editClientId && selectedTab = 'clientaccount'">
+                <span class="hidden-xs1">Accounts</span>
+              </a>
+            </li>
+            <li [class.active]="selectedTab == 'clientjob'" [class.disable]="!editClientId" class="d-desktop-only">
+              <a (click)="editClientId && selectedTab = 'clientjob'">
+                <span class="hidden-xs1">Jobs</span>
+              </a>
+            </li>
+            <li [class.active]="selectedTab == 'clientnotes'" [class.disable]="!editClientId" class="d-desktop-only">
+              <a (click)="editClientId && selectedTab = 'clientnotes'">
+                <span class="hidden-xs1">Notes</span>
+              </a>
+            </li>
+            <li [class.active]="selectedTab == 'clientdocument'" [class.disable]="!editClientId" class="d-desktop-only">
+              <a (click)="editClientId && selectedTab = 'clientdocument'">
+                <span class="hidden-xs1">Documents</span>
+              </a>
+            </li>
+            <li [class.active]="selectedTab == 'clientfeedback'" [class.disable]="!editClientId" class="d-desktop-only">
+              <a (click)="editClientId && selectedTab = 'clientfeedback'">
+                <span class="hidden-xs1">Feedback</span>
+              </a>
+            </li>
+            <li [class.active]="selectedTab == 'clientvenue'" [class.disable]="!editClientId">
+              <a (click)="editClientId && selectedTab = 'clientvenue'">
+                <span class="hidden-xs1">Venue</span>
+              </a>
+            </li>
+            <li [class.active]="selectedTab == 'clientquote'" [class.disable]="!editClientId" class="d-desktop-only">
+              <a (click)="editClientId && selectedTab = 'clientquote'">
+                <span class="hidden-xs1">Quotes</span>
+              </a>
+            </li>
+            <li *ngIf="client?.allowPrivateList && hasPrivateListPermission" [class.active]="selectedTab == 'clientprivatelist'"
+              [class.disable]="!editClientId" class="d-desktop-only">
+              <a (click)="editClientId && selectedTab = 'clientprivatelist'">
+                <span class="hidden-xs1">Private List</span>
+              </a>
+            </li>
+          </ul>
+
+          <div class="tab-content no-margin ax-tab-content min-height-x300">
+            <div class="tab-pane active">
+              <ClientEditComponent [id]="editClientId" [isUpdateClient]="isUpdateClient"
+                *ngIf="selectedTab == 'clientedit'" (updateClient)="updateClient($event)"></ClientEditComponent>
+              <ClientAddressComponent [id]="editClientId" [isUpdateClient]="isUpdateClient"
+                *ngIf="selectedTab == 'clientaddress'"></ClientAddressComponent>
+              <ClientContactComponent [id]="editClientId" [isUpdateClient]="isUpdateClient"
+                *ngIf="selectedTab == 'clientcontact'"></ClientContactComponent>
+              <ClientAccountComponent [id]="editClientId" [isUpdateClient]="isUpdateClient"
+                *ngIf="selectedTab == 'clientaccount'"></ClientAccountComponent>
+              <ClientNotesComponent [id]="editClientId" [isUpdateClient]="isUpdateClient"
+                *ngIf="selectedTab == 'clientnotes'"></ClientNotesComponent>
+              <ClientDocumentComponent [id]="editClientId" [isUpdateClient]="isUpdateClient"
+                *ngIf="selectedTab == 'clientdocument'"></ClientDocumentComponent>
+              <ClientJobComponent [id]="editClientId" [isUpdateClient]="isUpdateClient"
+                *ngIf="selectedTab == 'clientjob'"></ClientJobComponent>
+              <ClientFeedbackComponent [id]="editClientId" [isUpdateClient]="isUpdateClient"
+                *ngIf="selectedTab == 'clientfeedback'"></ClientFeedbackComponent>
+              <ClientVenueComponent [id]="editClientId" [isUpdateClient]="isUpdateClient"
+                *ngIf="selectedTab == 'clientvenue'"></ClientVenueComponent>
+              <ClientQuoteComponent [id]="editClientId" [isUpdateClient]="isUpdateClient"
+                *ngIf="selectedTab == 'clientquote'"></ClientQuoteComponent>
+              <ClientPrivateListComponent [id]="editClientId" [isUpdateClient]="isUpdateClient"
+                *ngIf="selectedTab == 'clientprivatelist'"></ClientPrivateListComponent>
+              <div class="clearfix"></div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

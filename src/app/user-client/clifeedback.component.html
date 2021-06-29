@@ -1,0 +1,117 @@
+<div class="wrapper">
+  <div class="container">
+    <div class="row">
+      <div class="col-sm-12">
+        <ol class="breadcrumb breadcrumb-arrow bg-white bx-shadow">
+          <li><a class="home-breadcrumb"><i class="md md-home"></i></a></li>
+          <li><a>Feedback</a></li>
+        </ol>
+      </div>
+
+      <div class="col-sm-12">
+        <div class="card-box">
+            <div class='table-responsive ax-data-table ax-data-table-no-min-height m-b-0 no-border-radius fadeIn animated'>
+                <div class="ax-sysconfig-data-table-top ax-data-table-top-x700 col-md-6 no-padding">
+                  <div class="btn-group">
+                    <a class="btn btn-xs waves-effect m-l--1 btn-green-dark btn-square" (click)="exporttoExcel()">
+                      <i class="md md-file-download"></i>
+                    </a>
+                    <a class="btn btn-ocean btn-xs waves-effect btn-square" data-target="#add-new-feedback-modal" data-toggle="modal"
+                      data-backdrop="static" (click)="addNew()">
+                      <i class="md md-add-circle-outline"></i> New
+                    </a>
+                    <a class="btn btn-cocktail btn-xs waves-effect btn-square m-l-1" id="deleteAlert" (click)="deleteFeedback()">
+                      <i class="md md-remove-circle-outline"></i> Delete
+                    </a>                    
+                  </div>
+                </div>
+              
+                <table class="table ax-table table-striped table-bordered m-b-0">
+                  <thead class="ax-bg-e7e7e7">
+                  <tr>
+                    <th class="ax-width-30-imp"></th>
+                    <th class="ax-table-x100">Date</th>
+                    <th class="ax-table-x100">Job No</th>
+                    <th class="ax-table-x75 text-center">Type</th>
+                    <th class="ax-table-x150">User</th>
+                    <th>Feedback</th>
+                  </tr>
+                  </thead>
+                  <tbody>
+                  <tr *ngFor="let fb of feedbacks; let i=index">
+                    <td>
+                      <span class="checkbox checkbox-primary ax-table-checkbox">
+                        <input type="checkbox" [(ngModel)]="selected[i]" name="{{fb.id}}" value="{{fb.id}}"
+                               (change)="updateDeleteList(fb.id, $event)">
+                        <label></label>
+                      </span>
+                    </td>
+                    <td>{{fb?.createdDate | date : 'dd-MM-yyyy' }}</td>
+                    <td><a href="#">{{fb?.jobId}}</a></td>
+                    <td class="text-center">
+                      <i class="fa fa-thumbs-up font-14 ax-text-success" *ngIf="fb?.feedbackType=='Positive'"></i>
+                      <i class="fa fa-thumbs-down font-14 ax-text-danger" *ngIf="fb?.feedbackType=='Negative'"></i>
+                    </td>
+                    <td>{{fb?.username}}</td>
+                    <td>{{fb?.feedbackText}}</td>
+                  </tr>
+                  </tbody>
+                </table>
+              </div>
+              
+              <!--ADD NEW FEEDBACK MODAL-->
+              <div id="add-new-feedback-modal" class="modal fade" tabindex="-1" role="dialog"
+                    aria-labelledby="full-width-modalLabel" aria-hidden="true" style="display: none;">
+                <div class="modal-dialog modal-md">
+                  <div class="modal-content">
+                    <div class="modal-header no-border ax-modal-header">
+                      <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+                      <h4 class="modal-title">
+                        <ng-container *ngIf="feedback.id">Update Feedback</ng-container>
+                        <ng-container *ngIf="!feedback.id">Add New Feedback</ng-container>
+                      </h4>
+                    </div>
+                    <div class="modal-body no-padding">
+                      <div class="col-md-12 no-padding">
+                        <form class="ax-form" role="form" id="noteform" #clientFeedbackForm="ngForm">
+                          <div class="form-group">
+                            <label class="control-label w-100-pre">Job</label>
+                            <select class="form-control" #jobmodel="ngModel" name="job" [(ngModel)]="feedback.jobId">
+                              <option value=""></option>
+                              <option [value]="j.id" *ngFor="let j of jobs">{{j.jobNumber}} - {{j.jobName}}</option>
+                            </select>
+                          </div>
+                          <div class="form-group has-feedback required">
+                            <label class="control-label">Type</label>
+                            <select type="text" id="type" name="type" class="form-control" [(ngModel)]="feedback.feedbackType" required>
+                              <option *ngFor="let ft of feedbackTypeList" value="{{ft.code}}">{{ft.desc}}</option>
+                            </select>
+                          </div>
+                          <div class="form-group has-feedback required">
+                            <label class="control-label w-100-pre">
+                              Feedback
+                              <span [hidden]="notemodel.valid || !isSubmitForm">
+                                <span class="text-danger pull-right" [hidden]="!notemodel.hasError('required')">Required</span>
+                              </span>
+                            </label>
+                            <textarea rows="3" class="form-control" name="feedback" [(ngModel)]="feedback.feedbackText" #notemodel="ngModel" required>
+                            {{feedback.feedbackText}}
+                            </textarea>
+                          </div>
+                          <div class="col-md-12 no-padding text-right">
+                            <i class="fa fa-spinner fa-pulse" *ngIf="isSubmitFormSpinner"></i>
+                            <a id="feebbackbtn" (click)="submitClientFeedback(clientFeedbackForm)"
+                                    class="btn btn-ocean waves-effect waves-light m-l-10 btn-md">
+                              Save
+                          </a>
+                            <a data-dismiss="modal" aria-hidden="true" class="btn btn-cocktail m-l-5" 
+                            #closeAddNewModal>Cancel</a>
+                          </div>
+                        </form>
+                      </div>
+                      <div class="clearfix"></div>
+                    </div>
+                  </div><!-- /.modal-content -->
+                </div><!-- /.modal-dialog -->
+              </div>
+</div>

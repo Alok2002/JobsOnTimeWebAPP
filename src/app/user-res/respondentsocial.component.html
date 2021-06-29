@@ -1,0 +1,26 @@
+<div class="wrapper">
+  <div class="container">
+    <div class="row">
+      <div class="col-sm-12">
+        <ol class="breadcrumb breadcrumb-arrow bg-white box-card-shadow">
+          <li><a [routerLink]="['/dashboard']" class="home-breadcrumb">
+            <i class="md md-home"></i>
+            <span class="d-none">Home</span>
+          </a></li>
+          <li><a>Share With Friends</a></li>
+        </ol>
+      </div>
+      <div class="col-sm-12">
+        <div class="card-box">
+          <p>Share Farron Research with your Friends and Family.</p>
+          <hr>
+          <share-buttons [theme]="'material-dark'"
+            [title]="'Hey, I am registered with Farron Research and earn extra cash for giving my opinion. Click on link below to register, it is free and great fun.'"
+            [description]="'Hey, I am registered with Farron Research and earn extra cash for giving my opinion. Click on link below to register, it is free and great fun.'"
+            [include]="['facebook','twitter','whatsapp','sms','email']" [show]="6" [showText]="false"
+            [size]="-3" [url]="'https://www.farronresearch.net.au/'" [autoSetMeta]="false"></share-buttons>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

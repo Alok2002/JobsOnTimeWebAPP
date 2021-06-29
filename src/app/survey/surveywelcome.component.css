@@ -1,0 +1,17 @@
+﻿::ng-deep staffmenucomponent {
+  display: none;
+}
+
+.ax-login-panel {
+  max-width: 720px;
+}
+
+ul.session-list {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+ul.session-list li {
+    margin: 7px 0px;
+}

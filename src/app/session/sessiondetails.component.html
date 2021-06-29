@@ -1,0 +1,285 @@
+<div class="wrapper">
+  <div class="container">
+    <div class="row">
+      <div class="col-sm-12">
+        <ol class="breadcrumb breadcrumb-arrow bg-white bx-shadow">
+          <li><a [routerLink]="['/dashboard']" class="home-breadcrumb"><i class="md md-home"></i></a></li>
+          <li *ngIf="isUpdateSession"><a [routerLink]="['/client']" class="home-breadcrumb font-14">Client</a></li>
+          <li *ngIf="isUpdateSession && job?.clientId"><a [routerLink]="['/client/edit', job.clientId]"
+              class="home-breadcrumb font-14">{{job?.clientName}}</a></li>
+          <li *ngIf="isUpdateSession && job?.clientId"><a [routerLink]="['/client/edit', job.clientId, 'clientjob']"
+              class="home-breadcrumb font-14">Jobs</a></li>
+          <li><a [routerLink]="['/job/edit', jobId, 'jobsession']"
+              class="home-breadcrumb font-14">{{job?.jobBreadcrumbDetails}}</a></li>
+          <li><a>
+              <ng-container *ngIf="!isUpdateSession">New Session</ng-container>
+              <ng-container *ngIf="isUpdateSession">{{session?.name}}</ng-container>
+            </a></li>
+        </ol>
+      </div>
+      <div class="col-sm-12">
+        <div class="card-box">
+          <div class="btn btn-group jobs-top-btn-p">
+            <button [disabled]="!editSessionId" class="btn btn-sand btn-xs btn-square waves-effect waves-light"
+              href="#download-doc-modal" data-toggle="modal">
+              <i class="md md-content-paste"></i> Documents
+            </button>
+            <button [disabled]="!editSessionId" class="btn btn-green btn-xs btn-square waves-effect waves-light"
+              href="#EmailButtonModal" data-toggle="modal">
+              <i class="md md-content-paste"></i> Email
+            </button>
+            <button [disabled]="!editSessionId" class="btn btn-pink btn-xs btn-square waves-effect waves-light"
+              href="#SMSButtonModal" data-toggle="modal">
+              <i class="md md-content-paste"></i> SMS
+            </button>
+            <!--<button [disabled]="!editSessionId" *ngIf="survey" class="btn btn-skyblue btn-xs btn-square waves-effect waves-light"-->
+            <!--[routerLink]="['/managesessionsurvey', jobId, survey.id, editSessionId]">-->
+            <!--<i class="md md-folder"></i> Manage Survey-->
+            <!--</button>-->
+            <!--<button [disabled]="!editSessionId" *ngIf="!survey" class="btn btn-skyblue btn-xs btn-square waves-effect waves-light"-->
+            <!--[routerLink]="['/managesessionsurvey', jobId, editSessionId]">-->
+            <!--<i class="md md-folder"></i>-->
+            <!--<ng-container *ngIf="!survey"> Create Survey</ng-container>-->
+            <!--</button>-->
+            <!--<button [disabled]="!editSessionId" *ngIf="screener" class="btn btn-purple btn-xs btn-square waves-effect waves-light"-->
+            <!--[routerLink]="['/managescreener', jobId, screener.id]">-->
+            <!--<i class="md md-folder"></i> Manage Screener-->
+            <!--</button>-->
+            <!--<button [disabled]="!editSessionId" *ngIf="!screener" class="btn btn-purple btn-xs btn-square waves-effect waves-light"-->
+            <!--data-target="#copySurvey" data-toggle="modal" data-backdrop="static">-->
+            <!--<i class="md md-folder"></i>-->
+            <!--<ng-container *ngIf="!screener"> Create Screener</ng-container>-->
+            <!--</button>-->
+          </div>
+          <div class="clearfix"></div>
+          <ul class="nav nav-tabs navtab-custom ax-nav-tabs">
+            <li [class.active]="selectedTab == 'sessionedit'">
+              <a href="#details-tab" data-toggle="tab" aria-expanded="false" (click)="selectedTab = 'sessionedit'">
+                <span class="hidden-xs1">Details</span>
+              </a>
+            </li>
+            <!-- <li [class.disable]="!editSessionId" [class.active]="selectedTab == 'sessiontime'">
+              <a href="#session-time-tab" data-toggle="tab" aria-expanded="false" (click)="editSessionId && selectedTab = 'sessiontime'">
+                <span class="hidden-xs1">Session Time</span>
+              </a>
+            </li> -->
+            <li [class.disable]="!editSessionId" [class.active]="selectedTab == 'sessionresearcher'">
+              <a href="#researcher-tab" data-toggle="tab" aria-expanded="false"
+                (click)="editSessionId && selectedTab = 'sessionresearcher'">
+                <span class="hidden-xs1">Researcher</span>
+              </a>
+            </li>
+            <li [class.disable]="!editSessionId" [class.active]="selectedTab == 'sessionvenue'">
+              <a (click)="editSessionId && selectedTab = 'sessionvenue'">
+                <span class="hidden-xs1">Venue</span>
+              </a>
+            </li>
+            <!-- <li [class.disable]="!editSessionId" [class.active]="selectedTab == 'sessionincentives'">
+                <a href="#incentives-tab" data-toggle="tab" aria-expanded="false" (click)="editSessionId && selectedTab = 'sessionincentives'">
+                  <span class="hidden-xs1">Incentives</span>
+                </a>
+              </li> -->
+            <li [class.disable]="!editSessionId" [class.active]="selectedTab == 'sessioncustomiservr'">
+              <a href="#cus-rvr-tab" data-toggle="tab" aria-expanded="false"
+                (click)="editSessionId && selectedTab = 'sessioncustomiservr'">
+                <span class="hidden-xs1">Customise RVR</span>
+              </a>
+            </li>
+            <!-- <li [class.disable]="!editSessionId" [class.active]="selectedTab == 'sessionquota'">
+              <a href="#quotas-tab" data-toggle="tab" aria-expanded="false"
+                (click)="editSessionId && selectedTab = 'sessionquota'">
+                <span class="hidden-xs1">Quotas</span>
+              </a>
+            </li> -->
+            <li [class.disable]="!editSessionId" [class.active]="selectedTab == 'sessionqualifiedrespondent'">
+              <a href="#qua-res-tab" data-toggle="tab" aria-expanded="false"
+                (click)="editSessionId && selectedTab = 'sessionqualifiedrespondent'">
+                <span class="hidden-xs1">Qualified Respondents</span>
+              </a>
+            </li>
+            <li [class.disable]="!editSessionId" [class.active]="selectedTab == 'sessionwaitlistrespondent'"
+              class="d-desktop-only">
+              <a href="#standby-res-tab" data-toggle="tab" aria-expanded="false"
+                (click)="editSessionId && selectedTab = 'sessionwaitlistrespondent'">
+                <span class="hidden-xs1">Standby Respondents</span>
+              </a>
+            </li>
+            <li [class.disable]="!editSessionId" [class.active]="selectedTab == 'pendingscreeningrespondents'"
+              class="d-desktop-only">
+              <a href="#standby-res-tab" data-toggle="tab" aria-expanded="false"
+                (click)="editSessionId && selectedTab = 'pendingscreeningrespondents'">
+                <span class="hidden-xs1">Potential Respondents</span>
+              </a>
+            </li>
+            <li [class.disable]="!editSessionId" [class.active]="selectedTab == 'sessionallrespondent'"
+              class="d-desktop-only">
+              <a href="#all-res-tab" data-toggle="tab" aria-expanded="false"
+                (click)="editSessionId && selectedTab = 'sessionallrespondent'">
+                <span class="hidden-xs1">All Respondents</span>
+              </a>
+            </li>
+            <li [class.disable]="!editSessionId" [class.active]="selectedTab == 'sessionconfirmationemail'">
+              <a href="#confirmation-email-tab" data-toggle="tab" aria-expanded="false"
+                (click)="editSessionId && selectedTab = 'sessionconfirmationemail'">
+                <span class="hidden-xs1">Confirmation Email</span>
+              </a>
+            </li>
+          </ul>
+          <div class="tab-content no-margin ax-tab-content">
+            <div class="tab-pane active" id="details-tab">
+              <SessionEditComponent [id]="editSessionId" [jobId]="jobId" [isUpdateSession]="isUpdateSession"
+                *ngIf="selectedTab == 'sessionedit'"></SessionEditComponent>
+              <SessionTimeComponent [id]="editSessionId" [isUpdateSession]="isUpdateSession"
+                *ngIf="selectedTab == 'sessiontime'"></SessionTimeComponent>
+              <SessionResearcherComponent [id]="editSessionId" [jobId]="jobId" [isUpdateSession]="isUpdateSession"
+                *ngIf="selectedTab == 'sessionresearcher'"></SessionResearcherComponent>
+              <SessionIncentiveComponent [id]="editSessionId" [jobId]="jobId" [isUpdateSession]="isUpdateSession"
+                *ngIf="selectedTab == 'sessionincentives'"></SessionIncentiveComponent>
+              <SessionCustomiseRVR [id]="editSessionId" [isUpdateSession]="isUpdateSession"
+                *ngIf="selectedTab == 'sessioncustomiservr'"></SessionCustomiseRVR>
+              <SessionQuota [id]="editSessionId" [jobId]="jobId" [isUpdateSession]="isUpdateSession"
+                *ngIf="selectedTab == 'sessionquota'"></SessionQuota>
+              <SessionQualifiedRespondent [id]="editSessionId" [jobId]="jobId" [isUpdateSession]="isUpdateSession"
+                *ngIf="selectedTab == 'sessionqualifiedrespondent'"></SessionQualifiedRespondent>
+              <SessionWaitlistRespondents [id]="editSessionId" [isUpdateSession]="isUpdateSession"
+                *ngIf="selectedTab == 'sessionwaitlistrespondent'"></SessionWaitlistRespondents>
+              <SessionAllRespondents [id]="editSessionId" [isUpdateSession]="isUpdateSession"
+                *ngIf="selectedTab == 'sessionallrespondent'"></SessionAllRespondents>
+              <SessionVenue [id]="editSessionId" [jobId]="jobId" [isUpdateSession]="isUpdateSession"
+                *ngIf="selectedTab == 'sessionvenue'"></SessionVenue>
+              <SessionPendingScreenerRespondents [id]="editSessionId" [jobId]="jobId"
+                [isUpdateSession]="isUpdateSession" *ngIf="selectedTab == 'pendingscreeningrespondents'">
+              </SessionPendingScreenerRespondents>
+              <SessionConfirmationEmail [id]="editSessionId" [jobId]="jobId"
+                [isUpdateSession]="isUpdateSession" *ngIf="selectedTab == 'sessionconfirmationemail'">
+              </SessionConfirmationEmail>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+<!--Manage Screener Model-->
+<div class="modal fade bs-example-modal-lg" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel"
+  aria-hidden="true" style="display: none;" id="copySurvey">
+  <div class="modal-dialog modal-md">
+    <div class="modal-content">
+      <div class="modal-header no-border ax-modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+        <h4 class="modal-title">Copy Survey to Session Screener</h4>
+      </div>
+      <div class="modal-body no-padding">
+        <div class="form-group">
+          <select class="form-control" #surveysdropdown>
+            <option *ngFor="let sr of surveys;let i = index;" [value]="sr.id">{{sr.id}}-{{sr.title}}</option>
+          </select>
+        </div>
+        <div class="text-right">
+          <a (click)="copySessionScreener(surveysdropdown.value)" class="btn btn-success">Save</a>
+        </div>
+      </div>
+    </div><!-- /.modal-content -->
+  </div><!-- /.modal-dialog -->
+</div><!-- /.modal -->
+
+
+<!--ADD Download Documents MODAL-->
+<div id="download-doc-modal" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="full-width-modalLabel"
+  aria-hidden="true" style="display: none;">
+  <div class="modal-dialog modal-md" style="width: 320px">
+    <div class="modal-content">
+      <div class="modal-header no-border ax-modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+        <h4 class="modal-title">Documents</h4>
+      </div>
+      <div class="modal-body no-padding">
+        <div class="col-md-12 no-padding">
+          <a class="btn btn-ocean btn-block btn-square m-b-10"
+            href="{{apihost}}/api/session-incentive-document/{{editSessionId}}/?token={{token}}">Download
+            Incentives Document
+          </a>
+          <a class="btn btn-ocean btn-block btn-square m-b-10"
+            href="{{apihost}}/api/session-attendees-document/{{editSessionId}}/?token={{token}}">Download
+            RVR Document</a>
+        </div>
+        <div class="clearfix"></div>
+      </div>
+    </div><!-- /.modal-content -->
+  </div><!-- /.modal-dialog -->
+</div>
+
+<!--Email Buttons MODAL-->
+<div id="EmailButtonModal" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="full-width-modalLabel"
+  aria-hidden="true" style="display: none">
+  <div class="modal-dialog modal-md" style="width: 400px">
+    <div class="modal-content">
+      <div class="modal-header no-border ax-modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+        <h4 class="modal-title">Email</h4>
+      </div>
+      <div class="modal-body no-padding">
+        <div class="col-md-12 no-padding">
+          <a class="btn btn-ocean btn-block btn-square m-b-10"
+            (click)="openEmailModal('CreateRVRDocumentEmailForSession', 'Send RVR Document')" data-dismiss="modal"
+            aria-hidden="true">Email RVR Document</a>
+          <a class="btn btn-ocean btn-block btn-square m-b-10"
+            (click)="openEmailModal('CreateSessionConfirmationEmail', 'Send Confirmation Email (All Respondents)')"
+            data-dismiss="modal" aria-hidden="true">Confirmation Email (All respondents)</a>
+          <a class="btn btn-ocean btn-block btn-square m-b-10"
+            (click)="openEmailModal('CreateSessionConfirmationNewResEmail', 'Send Confirmation Email (Only new respondents)')"
+            data-dismiss="modal" aria-hidden="true">Confirmation Email (Only new respondents)</a>
+          <a class="btn btn-ocean btn-block btn-square m-b-10"
+            (click)="openEmailModal('CreateSessionThankyouEmail', 'Send Thank You Email')" data-dismiss="modal"
+            aria-hidden="true">Thank You Email</a>
+          <a class="btn btn-ocean btn-block btn-square"
+            (click)="openEmailModal('CreateSessionGeneralEmail', 'Send General Email')" data-dismiss="modal"
+            aria-hidden="true">General Email</a>
+        </div>
+        <div class="clearfix"></div>
+      </div>
+    </div><!-- /.modal-content -->
+  </div><!-- /.modal-dialog -->
+</div>
+
+<!--SMS Buttons MODAL-->
+<div id="SMSButtonModal" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="full-width-modalLabel"
+  aria-hidden="true" style="display: none">
+  <div class="modal-dialog modal-md" style="width: 400px">
+    <div class="modal-content">
+      <div class="modal-header no-border ax-modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+        <h4 class="modal-title">SMS</h4>
+      </div>
+      <div class="modal-body no-padding">
+        <div class="col-md-12 no-padding">
+          <a class="btn btn-ocean btn-block btn-square m-b-10"
+            (click)="openSmsModal('CreateSessionConfirmationSms', 'Send Confirmation SMS (All respondents)')"
+            data-dismiss="modal" aria-hidden="true">Confirmation SMS (All respondents)</a>
+          <a class="btn btn-ocean btn-block btn-square"
+            (click)="openSmsModal('CreateSessionConfirmationNewResSms', 'Confirmation SMS (Only new respondents)')"
+            data-dismiss="modal" aria-hidden="true">Confirmation SMS (Only new respondents)</a>
+        </div>
+        <div class="clearfix"></div>
+      </div>
+    </div><!-- /.modal-content -->
+  </div><!-- /.modal-dialog -->
+</div>
+
+<!--EMAIL-->
+<email-component *ngIf="emailData && (emailData | json) != ({} | json)" [(emailData)]="emailData"
+  [modalTitle]="emailModalTitle"></email-component>
+
+<button #emailModlaBtn style="visibility: hidden; height: 0" data-toggle="modal" data-target="#emailModal"
+  data-backdrop="static">Open Email Model
+</button>
+
+<!--SMS-->
+<sms-component *ngIf="smsData" [(smsData)]="smsData" [modalTitle]="smsModalTitle"></sms-component>
+
+<button #smsModlaBtn style="visibility: hidden; height: 0" data-toggle="modal" data-target="#smsModal"
+  data-backdrop="static">Open
+  SMS Model
+</button>

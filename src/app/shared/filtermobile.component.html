@@ -1,0 +1,148 @@
+<div class="portlet ax-border hidden" id="filterBox" [class.hidden]="!showFilter">
+  <div class="portlet-heading portlet-default">
+    <div class="clearfix"></div>
+    <div id="bg-default" class="panel-collapse collapse in filter-from">
+      <div class="portlet-body no-padding m-t-0">
+        <div class="col-md-12 no-padding">
+          <form class="ax-form">
+            <!-- <div class="form-group col-md-12 p-l-0 p-r-0" style="margin-bottom: 20px !important;">
+              <div class="pull-right" *ngIf="entity == 'respondent' || entity == 'ClientJobSurvey'">
+                <div style="width: 50px;" class="pull-left">
+                  <label class="control-label ax-color-black" for="jobs_count">Count</label>
+                  <input type="text" name="filterCriCount" class="form-control" [(ngModel)]="filterCriCount"
+                    placeholder="Count">
+                </div>
+                <div style="margin-left:10px;width: 50px;" class="pull-left">
+                  <label class="control-label ax-color-black">Max</label>
+                  <input type="number" class="form-control" [(ngModel)]="maxrecords" name="maxrecords" placeholder="Max">
+                </div>
+              </div>
+            </div> -->
+            <div class='clearfix'></div>
+            <div id="addNewCriteriaContent">
+              <ng-container *ngFor="let fl of filters; let flindex = index;">
+                <div class="form-group col-md-12 p-l-0 p-r-0">
+                  <label class="control-label ax-color-black w-100-pre">{{fl.caption}}</label>
+                  <div>
+                    <ng-container [ngSwitch]="fl.type">
+                      <ng-container *ngSwitchCase="'Text'">
+                        <input type="text" class="form-control" [ngModelOptions]="{standalone: true}"
+                          [(ngModel)]="fl.value1">
+                      </ng-container>
+                      <ng-container *ngSwitchCase="'Password'">
+                        <input type="password" class="form-control" [ngModelOptions]="{standalone: true}"
+                          [(ngModel)]="fl.value1">
+                      </ng-container>
+                      <ng-container *ngSwitchCase="'DoubleText'">
+                        <div>
+                          <input type="text" class="form-control pull-left" style="width: calc(50% - 10px);"
+                            [ngModelOptions]="{standalone: true}" [(ngModel)]="fl.value1">
+                          <input type="text" class="form-control pull-left" style="width: 50%;margin-left: 10px;"
+                            [ngModelOptions]="{standalone: true}" [(ngModel)]="fl.value2">
+                          <div class="clearfix"></div>
+                        </div>
+                      </ng-container>
+                      <ng-container *ngSwitchCase="'DropDown'">
+                        <select class="form-control" [ngModelOptions]="{standalone: true}" [(ngModel)]="fl.value1">
+                          <!--[compareWith]="compareFn"-->
+                          <ng-container *ngFor="let op of fl?.options; let opi = index">
+                            <option [value]="op.value">{{op?.text}}</option>
+                          </ng-container>
+                        </select>
+                      </ng-container>
+                      <ng-container *ngSwitchCase="'Option'">
+                        <div class="checkbox checkbox-primary pull-left m-l-10 m-b-0 m-t-5">
+                          <input name="option" type="checkbox" [ngModelOptions]="{standalone: true}"
+                            [(ngModel)]="fl.value1">
+                          <label></label>
+                        </div>
+                      </ng-container>
+                      <ng-container *ngSwitchCase="'Date'">
+                        <div>
+                          <div style="position: relative; padding-right: 5px !important;" class="col-md-6 no-padding">
+                            <input type="text" class="form-control pull-left" [ngModelOptions]="{standalone: true}"
+                              [(ngModel)]="fl.value1" ngui-datetime-picker date-format="DD-MM-YYYY"
+                              parse-format="YYYY-MM-DD" [close-on-select]="true" date-only="true">
+                          </div>
+                          <div style="position: relative; padding-left: 5px !important;" class="col-md-6 no-padding">
+                            <input type="text" class="form-control pull-left" [ngModelOptions]="{standalone: true}"
+                              [(ngModel)]="fl.value2" ngui-datetime-picker date-format="DD-MM-YYYY"
+                              parse-format="YYYY-MM-DD" [close-on-select]="true" date-only="true">
+                          </div>
+                        </div>
+                      </ng-container>
+                      <ng-container *ngSwitchCase="'ClientJobGroupEvent'">
+                        <div>
+                          <select class="form-control pull-left" [ngModelOptions]="{standalone: true}"
+                            [(ngModel)]="fl.value1" style="width: 33.33%" (ngModelChange)="getJobByClient(fl.value1);">
+                            <!--[compareWith]="compareFn"-->
+                            <ng-container *ngFor="let op of clients; let opi = index">
+                              <option [value]="op.value">{{op?.text}}</option>
+                            </ng-container>
+                          </select>
+                          <select *ngIf="jobs" class="form-control pull-left" [ngModelOptions]="{standalone: true}"
+                            [(ngModel)]="fl.value2"
+                            style="width: calc(33.33% - 20px);margin-left: 10px;margin-right: 10px;"
+                            (ngModelChange)="getJobGroupByJob(fl.value2)">
+                            <!--[compareWith]="compareFn"-->
+                            <ng-container *ngFor="let op of getJobByClientHelper(fl.value1); let opi = index">
+                              <option [value]="op.value">{{op?.text}}</option>
+                            </ng-container>
+                          </select>
+                          <select class="form-control pull-left" [ngModelOptions]="{standalone: true}"
+                            [(ngModel)]="fl.value3" style="width: 33.33%">
+                            <!--[compareWith]="compareFn"-->
+                            <ng-container *ngFor="let op of getJobGroupByJobHelper(fl.value2); let opi = index">
+                              <option [value]="op.value">{{op?.text}}</option>
+                            </ng-container>
+                          </select>
+                          <div class="clearfix"></div>
+                          <select class="form-control pull-left m-t-10" [ngModelOptions]="{standalone: true}"
+                            [(ngModel)]="fl.value4" style="width: calc(25% - 10px);margin-right: 10px;">
+                            <!--[compareWith]="compareFn"-->
+                            <ng-container *ngFor="let op of eventTypes; let opi = index">
+                              <option [value]="op.text">{{op?.text}}</option>
+                            </ng-container>
+                          </select>
+
+                          <input type="text" class="form-control pull-left m-t-10" [ngModelOptions]="{standalone: true}"
+                            [(ngModel)]="fl.value5" ngui-datetime-picker date-format="DD-MM-YYYY"
+                            parse-format="YYYY-MM-DD" [close-on-select]="true" date-only="true"
+                            style="width: calc(25% - 10px);margin-right: 10px;">
+
+                          <input type="text" class="form-control pull-left m-t-10" [ngModelOptions]="{standalone: true}"
+                            [(ngModel)]="fl.value6" ngui-datetime-picker date-format="DD-MM-YYYY"
+                            parse-format="YYYY-MM-DD" [close-on-select]="true" date-only="true"
+                            style="width: calc(25% - 10px);margin-right: 10px;">
+
+                          <select class="form-control pull-left m-t-10" [ngModelOptions]="{standalone: true}"
+                            [(ngModel)]="fl.value7" style="width: 25%">
+                            <!--[compareWith]="compareFn"-->
+                            <option [ngValue]="null"></option>
+                            <ng-container *ngFor="let op of staffs; let opi = index">
+                              <option [value]="op?.username">{{op?.fullName}}</option>
+                            </ng-container>
+                          </select>
+                        </div>
+                      </ng-container>
+                    </ng-container>
+                  </div>
+                </div>
+              </ng-container>
+            </div>
+            <div class="clearfix"></div>
+            <hr class="m-b-12 m-t-12">
+            <div class="col-md-12 no-padding m-b-0 text-right">
+              <a (click)="resetFilter()"
+                class="btn btn-cocktail waves-effect waves-light btn-md text-white">Reset</a>&#160;
+              <button type="submit" (click)="filterSubmitFn()"
+                class="btn btn-ocean waves-effect waves-light btn-md">Search</button>
+            </div>
+            <div class="clearfix"></div>
+          </form>
+        </div>
+        <div class="clearfix"></div>
+      </div>
+    </div>
+  </div>
+</div>

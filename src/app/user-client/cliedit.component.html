@@ -1,0 +1,147 @@
+<div class="col-md-4 no-padding">
+  <form class="ax-form" role="form" id="addclientform" *ngIf="!isLoading" #clientEditForm="ngForm">
+    <div class="form-group has-feedback">
+      <label class="control-label w-100-pre" for="name">
+        Client Name
+        <span [hidden]="clientnamemodel.valid || !isSubmitForm">
+          <span class="text-danger pull-right" [hidden]="!clientnamemodel.hasError('required')">Required</span>
+        </span>
+
+        <!-- <div class="pull-right">
+          <label for="checkbox1"
+                 class="control-label ax-color-black pull-left m-b-0 font-normal font-12 no-required">
+            Allow Online Access
+          </label>
+          <div class="checkbox checkbox-primary"
+               style="margin: 0px 0px 0px 115px;">
+            <input id="checkbox1" type="checkbox" [(ngModel)]="client.allowOnlineAccess" name="allowOnlineAccess" 
+              [value]="client.allowOnlineAccess">
+            <label for="checkbox1" class="ax-color-black">                    
+            </label>
+          </div>
+        </div> -->
+      </label>
+      <input type="text" id="name" name="clientname" class="form-control" [(ngModel)]="client.name" required
+        #clientnamemodel="ngModel" autocomplete="nope" disabled for="Client Name">
+    </div>
+    <!-- <div class="form-group col-md-4 no-padding-left">
+      <label class="control-label">Category</label>
+      <select class="form-control" name="category" [(ngModel)]="client.category">
+        <option value="{{c.code}}" *ngFor="let c of categories">{{c.desc}}</option>
+      </select>
+    </div>
+    <div class="form-group col-md-4 no-padding">
+      <label class="control-label" for="cardId">Card Id</label>
+      <input type="text" id="cardId" name="cardId" [(ngModel)]="client.cardId" class="form-control" autocomplete="nope">
+    </div>
+    <div class="form-group col-md-4 no-padding-right">
+      <label class="control-label" for="cardId">Allow Online Access</label>
+      <select class="form-control" [(ngModel)]="client.allowOnlineAccess" name="allowOnlineAccess">
+        <option value="true">Yes</option>
+        <option value="false">No</option>
+      </select>
+    </div> -->
+    <div class="clearfix"></div>
+    <div class="form-group">
+      <label class="control-label w-100-pre" for="website">Client Website
+        <span [hidden]="website.valid || !isSubmitForm">
+          <span class="text-danger pull-right" [hidden]="!website.hasError('pattern')">Invalid Website</span>
+        </span>
+      </label>
+      <input type="text" id="website" #website="ngModel" name="website" [(ngModel)]="client.website"
+        class="form-control" pattern="https?://.+|www.+" autocomplete="nope" disabled for="Client Website">
+    </div>
+    <div class="clearfix"></div>
+    <!-- pattern="https?://.+"  -->
+    <!--
+    <div class="form-group required has-feedback col-md-6 no-padding">
+      <label class="control-label w-100-pre" for="phone">
+        Client Phone
+        <span [hidden]="phone.valid || !isSubmitForm">
+          <span class="text-danger pull-right" [hidden]="!phone.hasError('required')">Required</span>
+          <span class="text-danger pull-right" [hidden]="!phone.hasError('pattern')">Invalid Phone</span>
+        </span>
+      </label>
+      <input type="text" id="phone" mask="00 0000 0000" pattern=".{10,10}" name="phone" [(ngModel)]="client.phone" #phone="ngModel"
+             class="form-control" placeholder="-"
+             required>
+      <span class="errorInfo ax-cursor-pointer text-danger glyphicon glyphicon-info-sign form-control-feedback hide"
+            title="" data-placement="top" data-trigger="hover"
+            data-toggle="popover" data-content="" data-original-title=""></span>
+    </div>
+    <div class="form-group has-feedback required col-md-6 no-padding-right">
+      <label class="control-label w-100-pre" for="email">
+        Client Email
+        <span [hidden]="emailModel.valid || !isSubmitForm">
+          <span class="text-danger pull-right" [hidden]="!emailModel.hasError('pattern')">Invalid Email</span>
+          <span class="text-danger pull-right" [hidden]="!emailModel.hasError('required')">Required</span>
+        </span>
+      </label>
+      <input type="text" id="email" name="email" [(ngModel)]="client.email" class="form-control"
+             pattern="^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,10})+$" #emailModel="ngModel"
+             required>
+      <span class="errorInfo ax-cursor-pointer text-danger glyphicon glyphicon-info-sign form-control-feedback hide"
+            title="" data-placement="top" data-trigger="hover"
+            data-toggle="popover" data-content="" data-original-title=""></span>
+    </div>
+    <div class="clearfix"></div>
+    
+    <div class="form-group">
+      <label class="control-label">Address </label>
+      <input type="text" class="form-control" name="address" [(ngModel)]="client.address">
+    </div>
+
+    <div class="form-group">
+      <div class="pull-left col-md-8 no-padding">
+        <label class="control-label w-100-pre">
+          Suburb
+          <span *ngIf="isPostSuggShow && postcodes.length < 1">
+            <span class="text-danger pull-right">Invalid Suburb</span>
+          </span>
+        </label>
+        <div class="dropup">
+          <ul class="dropdown-menu" [class.show]="isPostSuggShow && postcodes.length > 0">
+            <ng-container *ngFor="let pc of postcodes; let i = index">
+              <ng-container *ngIf="i < 10">
+                <li (click)="selectedCode(pc)" class="ax-cursor-pointer"><a>{{pc.suggestion}}</a></li>
+              </ng-container>
+            </ng-container>
+          </ul>
+        </div>
+        <input type="text" class="form-control" name="suburb" [(ngModel)]="client.suburb"
+               (ngModelChange)="getLocation($event)">
+      </div>
+      <div class="pull-right col-md-4 no-padding-right">
+        <label class="control-label w-100-pre">
+          Postcode
+          <span [hidden]="postcodeModel.valid || !isSubmitForm">
+            <span class="text-danger pull-right" [hidden]="!postcodeModel.hasError('pattern')">Invalid Postcode</span>
+          </span>
+        </label>
+        <input type="text" class="form-control" mask="9999" pattern=".{4,4}" name="postcode"
+               #postcodeModel="ngModel" [(ngModel)]="client.postcode" readonly>
+      </div>
+      <div class="clearfix"></div>
+    </div>
+    <div class="form-group">
+      <label class="control-label">State</label>
+      <input type="text" class="form-control"
+             name="state" [(ngModel)]="client.state" readonly>
+    </div>
+    -->
+    <!-- <div class="col-md-12 no-padding">
+      <div class="col-md-6 font-10 no-padding" style="line-height: 34px">
+        <ng-container *ngIf="isUpdateClient">
+          <b>Created:</b> {{client.createdDate | date: 'dd-MM-yyyy'}} &#160;
+          <b>Last Updated:</b> {{client.lastUpdatedDate | date: 'dd-MM-yyyy'}}
+        </ng-container>
+      </div>
+      <div class="col-md-6 text-right no-padding">
+        <button type="button" id="addclientbtn" (click)="updateorCreateClient(clientEditForm)"
+          class="btn btn-ocean waves-effect waves-light m-l-10 btn-md">
+          Save
+        </button>
+      </div>
+    </div> -->
+  </form>
+</div>

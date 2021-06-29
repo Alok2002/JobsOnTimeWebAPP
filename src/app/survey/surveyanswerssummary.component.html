@@ -1,0 +1,55 @@
+<div class="wrapper">
+  <div class="container">
+    <div class="row">
+      <div class="col-sm-12">
+        <ol class="breadcrumb breadcrumb-arrow bg-white bx-shadow">
+          <li>
+            <a [routerLink]="['/dashboard']" class="home-breadcrumb">
+              <i class="md md-home"></i>
+            </a>
+          </li>
+          <li>
+            <a [routerLink]="['/job']" class="home-breadcrumb font-14">Jobs</a>
+          </li>
+          <ng-container *ngIf="survey">
+            <li>
+              <a [routerLink]="['/job/edit', survey.clientJobId]"
+                class="home-breadcrumb font-14">{{job?.jobBreadcrumbDetails}}</a>
+            </li>
+            <li>
+              <a class="home-breadcrumb font-14" [routerLink]="['/managesurvey', survey.clientJobId, surveyid]"
+                *ngIf="surveyid && !survey.isScreener">Manage Survey</a>
+              <a class="home-breadcrumb font-14" [routerLink]="['/managesurvey', survey.clientJobId, surveyid]"
+                *ngIf="surveyid && survey.isScreener">Manage Screener</a>
+            </li>
+            <li>
+              <a>Answer Summary</a>
+            </li>
+          </ng-container>
+        </ol>
+      </div>
+
+      <div class="col-sm-12">
+        <div class="card-box">
+          <ng-container *ngFor="let sq of surveyQuestions;let i = index; let last = last">
+            <div class="portlet ax-border m-b-0" id="jobs-filterBox">
+              <div class="portlet-heading portlet-default" style="color: #4c5667">
+                <div class="clearfix"></div>
+                <b>{{sq.questionNumber}}. &#160;&#160;</b>
+                <span [innerHTML]="sq.questionText | safeHtml"></span>
+                <br>
+
+                <ng-container *ngIf="sq.answerType != 'Information'">
+                  <ng-container *ngFor="let ans of sq.clientJobSurveyAnswers">
+                    <div style="text-indent: 20px;">{{ans.answer}}</div>
+                  </ng-container>
+                </ng-container>
+              </div>
+            </div>
+            <br *ngIf="!last">
+          </ng-container>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

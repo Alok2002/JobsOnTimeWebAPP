@@ -1,0 +1,241 @@
+<!--ADD NEW VENUE NOTES MODAL-->
+<div id="add-new-venue-modal" class="modal fade" tabindex="-1" role="dialog"
+     aria-labelledby="full-width-modalLabel" aria-hidden="true" style="display: none;">
+  <div class="modal-dialog modal-md">
+    <div class="modal-content">
+      <div class="modal-header no-border ax-modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+        <h4 class="modal-title">
+          <ng-container *ngIf="venue.id">Update Venue</ng-container>
+          <ng-container *ngIf="!venue.id">Add New Venue</ng-container>
+        </h4>
+      </div>
+      <div class="modal-body no-padding">
+        <div class="col-md-12 no-padding">
+          <form class="ax-form" role="form" #venueForm="ngForm">
+            <div class="form-group required">
+              <label class="control-label w-100-pre">
+                Venue Name
+                <span [hidden]="name.valid || !isSubmitForm">
+                  <span class="text-danger pull-right" [hidden]="!name.hasError('required')">Required</span>
+                </span>
+
+                <div class="pull-right">
+                  <label for="checkbox1"
+                         class="control-label ax-color-black pull-left m-b-0 font-normal font-12 no-required">
+                      Global
+                  </label>
+                  <div class="checkbox checkbox-primary"
+                       style="margin: 0px 0px 0px 40px;height: 0">
+                    <input id="checkbox1" type="checkbox" [(ngModel)]="venue.global" name="global">
+                    <label for="checkbox1" class="ax-color-black no-padding">
+                    </label>
+                  </div>
+                </div>
+              </label>
+              <input type="text" [(ngModel)]="venue.venueName" id="venue"
+                     class="form-control" name="name" #name="ngModel" required>
+            </div>
+            <div class="form-group col-md-6 no-padding">
+              <label class="control-label w-100-pre">
+                First Name
+                <span [hidden]="firstname.valid || !isSubmitForm">
+                  <span class="text-danger pull-right" [hidden]="!firstname.hasError('required')">Required</span>
+                </span>
+              </label>
+              <input type="text" [(ngModel)]="venue.firstname" (ngModelChange)="autoUpperFirstLetter('firstname')"
+                     class="form-control" name="firstname" #firstname="ngModel">
+            </div>
+            <div class="form-group col-md-6 no-padding-right">
+                <label class="control-label w-100-pre">
+                  Last Name
+                  <span [hidden]="lastname.valid || !isSubmitForm">
+                    <span class="text-danger pull-right" [hidden]="!lastname.hasError('required')">Required</span>
+                  </span>
+                </label>
+                <input type="text" [(ngModel)]="venue.lastname" (ngModelChange)="autoUpperFirstLetter('lastname')"
+                       class="form-control" name="lastname" #lastname="ngModel">
+              </div>
+            <div class="clearfix"></div>
+            <div class="form-group col-md-6 no-padding">
+              <label class="control-label w-100-pre">
+                Phone
+                <span [hidden]="venuephonemodel.valid || !isSubmitForm">
+                  <span class="text-danger pull-right" [hidden]="!venuephonemodel.hasError('required')">Required</span>
+                  <span class="text-danger pull-right" [hidden]="!venuephonemodel.hasError('pattern')">Invalid Phone</span>
+                </span>
+              </label>
+              <input type="text"
+                     [textMask]="{mask: phoneMask, showMask: false, guide: true}" numeric
+                     (ngModelChange)="venue.phone = unmask($event)"
+                     [pattern]="phonePattern" #venuephonemodel="ngModel" class="form-control" name="phone" [(ngModel)]="venue.phone">
+            </div>
+            <div class="form-group col-md-6 no-padding-right">
+              <label class="control-label w-100-pre">
+                Mobile
+                <span [hidden]="venuemobilemodel.valid || !isSubmitForm">
+                  <span class="text-danger pull-right" [hidden]="!venuemobilemodel.hasError('pattern')">Invalid Mobile</span>
+                </span>
+              </label>
+              <input type="text"
+                     [textMask]="{mask: mobileMask, showMask: true, guide: false}" numeric (ngModelChange)="venue.mobile = unmask($event)"
+                     [pattern]="mobilePattern" #venuemobilemodel="ngModel" class="form-control"
+                  name="mobile" [(ngModel)]="venue.mobile">
+            </div>
+            <div class="clearfix"></div>
+
+            <!-- <div class="form-group required">
+              <label class="control-label w-100-pre">
+                Address
+                <span [hidden]="addressmodel.valid || !isSubmitForm">
+                  <span class="text-danger pull-right" [hidden]="!addressmodel.hasError('required')">Required</span>
+                </span>
+              </label>
+              <input type="text" [(ngModel)]="venue.address" class="form-control" name="address" #addressmodel="ngModel" required>
+            </div> -->
+            <div class="form-group col-md-5 no-padding-left">
+              <label class="control-label w-100-pre">
+                Name / Unit / Level / Floor / Suite
+                <!-- <span [hidden]="unitmodel.valid || !isSubmitForm">
+                  <span class="text-danger pull-right" [hidden]="!unitmodel.hasError('required')">Required</span>
+                </span> -->
+              </label>
+              <input class="form-control" name="unit" [(ngModel)]="venue.unit" #unitmodel="ngModel" (ngModelChange)="autoUpperFirstLetter('unit')">
+            </div>
+            <div class="form-group required col-md-7 no-padding">
+                <label class="control-label w-100-pre">
+                  Street Address
+                  <span [hidden]="addressmodel.valid || !isSubmitForm">
+                    <span class="text-danger pull-right" [hidden]="!addressmodel.hasError('required')">Required</span>
+                  </span>
+                </label>
+                <!-- <input class="form-control" name="address" [(ngModel)]="address.address" #addressmodel="ngModel" required> -->
+                <input ngx-google-places-autocomplete [options]="{componentRestrictions: { country: countrycode }}" #placesRef="ngx-places"
+                      (onAddressChange)="handleAddressChange($event)" class="form-control"
+                      name="address" [(ngModel)]="venue.address" autocomplete="nope" #addressmodel="ngModel" required/>
+              </div>
+              <div class="form-group required">
+                <div class="pull-left col-md-8 no-padding">
+                  <label class="control-label w-100-pre">
+                    Suburb
+                    <span [hidden]="suburbmodel.valid || !isSubmitForm">
+                      <span class="text-danger pull-right" [hidden]="!suburbmodel.hasError('required')">Required</span>
+                    </span>
+                  </label>
+                  <input tye="text" class="form-control" name="suburb" [(ngModel)]="venue.suburb"
+                         #suburbmodel="ngModel" required>
+
+                  <!-- <ul class="dropdown-menu" [class.show]="isPostSuggShow">
+                    <ng-container *ngFor="let pc of postcodes; let i = index">
+                      <ng-container *ngIf="i < 10">
+                        <li (click)="selectedCode(pc)" class="ax-cursor-pointer"><a>{{pc.suggestion}}</a></li>
+                      </ng-container>
+                    </ng-container>
+                  </ul> -->
+                </div>
+
+                <div class="form-group">
+                  <div class="pull-right col-md-4 no-padding-right">
+                    <label class="control-label w-100-pre">
+                      Postcode
+                      <span [hidden]="postcodemodel.valid || !isSubmitForm">
+                        <span class="text-danger pull-right" [hidden]="!postcodemodel.hasError('pattern')">Invalid Postcode</span>
+                        <span class="text-danger pull-right" [hidden]="!postcodemodel.hasError('required')">Required</span>
+                      </span>
+                    </label>
+                    <input class="form-control" name="postcode" [pattern]="postcodePattern"
+                           [textMask]="{mask: postcodeMask, showMask: true, guide: false}" numeric (ngModelChange)="venue.postcode = unmask($event)"
+                           [(ngModel)]="venue.postcode" #postcodemodel="ngModel" required>
+                  </div>
+                </div>
+                <div class="clearfix"></div>
+              </div>
+
+              <div class="form-group required">
+                <label class="control-label w-100-pre">
+                  State
+                  <span [hidden]="stateemodel.valid || !isSubmitForm">
+                    <span class="text-danger pull-right" [hidden]="!stateemodel.hasError('required')">Required</span>
+                  </span>
+                </label>
+                <!-- <input type="text" class="form-control" #stateemodel="ngModel"
+                       name="state" [(ngModel)]="address.state" readonly> -->
+                <select class="form-control" name="state" [(ngModel)]="venue.state" #stateemodel="ngModel" required>
+                  <option disabled [ngValue]="null" [selected]="true"></option>
+                  <option [value]="s.code" *ngFor="let s of stateslist">{{s.name}}</option>
+                </select>
+              </div>
+            <!-- <div class="form-group required">
+              <div class="pull-left col-md-8 no-padding">
+                <label class="control-label">
+                  Suburb
+                  <span [hidden]="suburbmodel.valid || !isSubmitForm">
+                    <span class="text-danger pull-right" [hidden]="!suburbmodel.hasError('required')">Required</span>
+                  </span>
+                </label>
+                <input type="text" [(ngModel)]="venue.suburb" class="form-control" name="suburb"
+                       #suburbmodel="ngModel" (ngModelChange)="getLocation($event)" required>
+                <ul class="dropdown-menu" [class.show]="isPostSuggShow">
+                  <ng-container *ngFor="let pc of postcodes; let i = index">
+                    <ng-container *ngIf="i < 10">
+                      <li (click)="selectedCode(pc)" class="ax-cursor-pointer"><a>{{pc.suggestion}}</a></li>
+                    </ng-container>
+                  </ng-container>
+                </ul>
+              </div>
+
+              <div class="pull-right col-md-4 no-padding-right">
+                <label class="control-label w-100-pre">
+                  Postcode
+                  <span [hidden]="venuepostcodemodel.valid || !isSubmitForm">
+                    <span class="text-danger pull-right" [hidden]="!venuepostcodemodel.hasError('required')">Required</span>
+                    <span class="text-danger pull-right" [hidden]="!venuepostcodemodel.hasError('pattern')">Invalid Postcode</span>
+                  </span>
+                </label>
+                <input type="text" [(ngModel)]="venue.postcode" mask="9999" pattern=".{4,4}" readonly
+                       #venuepostcodemodel="ngModel" class="form-control" name="postcode">
+              </div>
+              <div class="clearfix"></div>
+            </div>
+
+            <div class="form-group">
+              <label class="control-label w-100-pre">
+                State
+                <span [hidden]="statemodel.valid || !isSubmitForm">
+                  <span class="text-danger pull-right" [hidden]="!statemodel.hasError('required')">Required</span>
+                </span>
+              </label>
+              <input type="text" class="form-control" #statemodel="ngModel"
+                     name="state" [(ngModel)]="venue.state" readonly>
+            </div> -->
+            <div class="form-group">
+                <label class="control-label w-100-pre">Location Url
+                    <span [hidden]="website.valid || !isSubmitForm">
+                        <span class="text-danger pull-right" [hidden]="!website.hasError('pattern')">Invalid Website</span>
+                      </span>
+                </label>
+                <input type="text" [(ngModel)]="venue.location" class="form-control" name="location" #website="ngModel"
+                  pattern="https?://.+|www.+" autocomplete="nope">
+              </div>
+
+              <div class="form-group">
+                <label class="control-label w-100-pre">Instruction</label>
+                <textarea [(ngModel)]="venue.instruction" class="form-control" name="instruction"></textarea>
+              </div>
+
+
+            <div class="col-md-12 no-padding text-right">
+              <a id="addclientbtn" (click)="submitVenue(venueForm)"
+                      class="btn btn-ocean waves-effect waves-light m-l-10 btn-md">
+                Save
+            </a>
+              <a data-dismiss="modal" aria-hidden="true" class="btn btn-cocktail m-l-5" #closeAddNewModal>
+                Cancel</a>
+            </div>
+          </form>
+        </div>
+        <div class="clearfix"></div>
+      </div>
+    </div><!-- /.modal-content -->
+  </div><!-- /.modal-dialog -->
+</div>

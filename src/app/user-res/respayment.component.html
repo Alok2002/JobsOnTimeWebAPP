@@ -1,0 +1,97 @@
+<div class="wrapper">
+  <div class="container">
+    <div class="row">
+      <div class="col-sm-12">
+        <ol class="breadcrumb breadcrumb-arrow bg-white bx-shadow">
+          <li>
+            <a [routerLink]="['/reshome']" class="home-breadcrumb" title="Home">
+              <i class="md md-home"></i>
+              <span class="d-none">Home</span>
+            </a>
+          </li>
+          <li><a>My Payments</a></li>
+        </ol>
+      </div>
+
+      <div class="col-sm-12">
+        <!-- <div class="card-box user-res-payments">
+          <ResPaymentsComponent *ngIf="respondent != null" [resId]="resId" [isMyProfile]="true"></ResPaymentsComponent>
+          <div class="clearfix"></div>
+        </div> -->
+
+        <div *ngIf="ressurvey && ressurvey.length == 0" class="card-box respondent-card-box">
+          <p tabindex="0">Once you have completed a research study, all your payment details will be available in this section.</p>
+        </div>
+
+        <div class="card-box respondent-card-box" *ngFor="let rs of ressurvey"
+          style="position: relative;padding-left: 0;">
+          <div style="display: flex;">
+            <div style="flex: 1;max-width: 50px;" class="text-center">
+              <h4 tabindex="0" class="m-t-0 m-b-0 text-muted" style="border-right: 1px solid #eee;">
+                {{rs?.eventDate | date: 'dd'}}
+              </h4>
+              <h5 tabindex="0" class="m-b-0 text-muted text-uppercase" style="margin-top: 1px;border-right: 1px solid #eee;">
+                {{rs?.eventDate | date: 'MMM'}}</h5>
+              <!-- <h6 class="m-t-0 m-b-0">{{rs?.eventDate | date: 'yyyy'}}</h6> -->
+            </div>
+            <div style="flex: 1;position: relative;padding-left: 10px;">              
+              <p tabindex="0" class="font-weight-700 respondent-card-box-title">{{rs?.eventDescription}}</p>
+              <p tabindex="0" class="font-12">{{rs?.incentive}}</p>
+              <a tabindex="0" href="javascript:;" (click)="toggleView(rs?.id)" style="position: absolute;right: 0px;top: 20px;">
+                <i class="ti ti-angle-down ax-cursor-pointer" title="More"></i>
+                <span class="d-none">More</span>
+              </a>
+              <ng-container *ngIf="toggleViewList.indexOf(rs?.id) >= 0">
+                <hr style="margin: 7px 0px;margin-left: -40px;">
+                <div class="font-12">
+                  <p tabindex="0">Job: {{rs?.jobNumber}} {{rs?.jobTopic}}</p>
+                  <p tabindex="0">Session: {{rs?.sessionName}}</p>
+                  <!-- <p>{{rs?.location}}</p> -->
+                  <p tabindex="0">Payment Date: {{rs?.eventDate | date: 'dd-MM-yyyy'}}</p>
+                </div>
+              </ng-container>
+            </div>
+          </div>
+
+          <!-- <div class="col-sm-12">
+        <div class="card-box">
+          <div class="clearfix"></div>          
+          <div class='table-responsive no-border ax-data-table m-b-0 no-border-radius'>
+              <div class="ax-sysconfig-data-table-top ax-data-table-top-x700 col-md-6 no-padding">
+                  <div class="btn-group">
+                    <a class="btn btn-xs waves-effect m-l--1 btn-green-dark btn-square" (click)="exporttoExcel()">
+                      <i class="md md-file-download"></i>
+                    </a>
+                    </div>
+                  </div>
+            <table id="datatable" class="table ax-table table-striped table-bordered m-b-0 border-color-e7e7e7" datatable [dtOptions]="dtOptions"
+              [dtTrigger]="dtTrigger">
+              <thead>
+                <tr>
+                  <th class="ax-table-x50">Type</th>
+                  <th class="ax-table-x100">Date</th>
+                  <th>Job Name</th>
+                  <th class="ax-table-x100">Group</th>
+                  <th class="ax-table-x100">Location</th>
+                  <th class="ax-table-x150">In Depth Time</th>
+                  <th class="ax-table-x100">Incentive</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr *ngFor="let py of respayments">
+                  <td>{{py.id}}</td>
+                  <td>{{py.eventDate | date: 'dd-MM-yyyy'}}</td>
+                  <td>{{py.eventDescription}}</td>
+                  <td>{{py.jobGroupId}}</td>
+                  <td></td>
+                  <td>{{py.inDepthTime}}</td>
+                  <td>{{py.incentive}}</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div> -->
+        </div>
+      </div>
+    </div>

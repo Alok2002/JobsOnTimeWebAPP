@@ -1,0 +1,78 @@
+<div class="wrapper">
+  <div class="container">
+    <div class="row">
+      <div class="col-sm-12">
+        <ol class="breadcrumb breadcrumb-arrow bg-white box-card-shadow">
+          <li><a [routerLink]="['/dashboard']" class="home-breadcrumb"><i class="md md-home"></i></a></li>
+          <li *ngIf="resId"><a [routerLink]="['/searchrespondents']" class="home-breadcrumb font-14">Panel Members</a></li>
+          <li *ngIf="resId"><a>{{resId}} - {{respondent?.givenNames}} {{respondent?.lastName}}</a></li>
+          <li *ngIf="!resId"><a href="">New Business Panel Member</a></li>
+        </ol>
+      </div>
+
+      <div class="col-sm-12">
+        <div class="card-box" style="overflow: auto">
+          <div class="tabs-vertical-env nav-tab-left navtab-custom m-b-0">
+            <ul class="nav nav tabs-vertical ax-nav-tabs ax-nav-tabs-bpm">
+              <li [class.active]="selectTab == 'contact'" (click)="selectTab = 'contact'">
+                <a data-toggle="tab" aria-expanded="false">
+                  <span class="hidden-xs1">Contact Details</span>
+                </a>
+              </li>
+              <!-- <li [class.active]="selectTab == 'further'" (click)="selectTab = 'further'">
+                <a data-toggle="tab" aria-expanded="true">
+                  <span class="hidden-xs1">Further Details</span>
+                </a>
+              </li>              -->
+
+              <li [class.active]="selectTab == 'jobs'" [class.disable]="!resId" (click)="resId && selectTab = 'jobs'">
+                <a>
+                  <span class="hidden-xs1">Jobs & Events</span>
+                </a>
+              </li>
+              <li [class.active]="selectTab == 'surveys'" [class.disable]="!resId" (click)="resId && selectTab = 'surveys'">
+                <a>
+                  <span class="hidden-xs1">Surveys</span>
+                </a>
+              </li>
+              <li [class.active]="selectTab == 'payments'" [class.disable]="!resId" (click)="resId && selectTab = 'payments'">
+                <a>
+                  <span class="hidden-xs1">Payments & Banking</span>
+                </a>
+              </li>
+
+              <li [class.active]="selectTab == 'other'" [class.disable]="!resId" (click)="resId && selectTab = 'other'">
+                <a>
+                  <span class="hidden-xs1">Other</span>
+                </a>
+              </li>
+            </ul>
+
+            <div class="tab-content no-margin ax-tab-content w-100-pre">
+              <BPMContactComponent *ngIf="selectTab == 'contact'" [resId]="resId"></BPMContactComponent>
+              <BPMFurtherdetails *ngIf="selectTab == 'further'" [resId]="resId"></BPMFurtherdetails>
+              <!-- <ResPersonalComponent *ngIf="selectTab == 'personal'" [resId]="resId"></ResPersonalComponent>
+              <ResResearchComponent *ngIf="selectTab == 'research'" [resId]="resId"></ResResearchComponent>
+              <ResOccupationComponent *ngIf="selectTab == 'occupation'" [resId]="resId"></ResOccupationComponent>
+              <ResFamilyComponent *ngIf="selectTab == 'family'" [resId]="resId"></ResFamilyComponent>
+              <ResBankingComponent *ngIf="selectTab == 'banking'" [resId]="resId"></ResBankingComponent>
+              <ResInsuranceComponent *ngIf="selectTab == 'insurance'" [resId]="resId"></ResInsuranceComponent>
+              <ResPhoneComponent *ngIf="selectTab == 'phone'" [resId]="resId"></ResPhoneComponent>
+              <ResServicesComponent *ngIf="selectTab == 'services'" [resId]="resId"></ResServicesComponent>
+              <ResVehicleComponent *ngIf="selectTab == 'vehicle'" [resId]="resId"></ResVehicleComponent>
+              <ResTravelComponent *ngIf="selectTab == 'travel'" [resId]="resId"></ResTravelComponent>
+              <ResLoyalteeComponent *ngIf="selectTab == 'loyaltee'" [resId]="resId"></ResLoyalteeComponent>
+              <ResHealthComponent *ngIf="selectTab == 'health'" [resId]="resId"></ResHealthComponent>
+              <ResBankComponent *ngIf="selectTab == 'bank'" [resId]="resId"></ResBankComponent>
+              <ResOtherComponent *ngIf="selectTab == 'other'" [resId]="resId"></ResOtherComponent>-->
+              <ResSurveysComponent *ngIf="selectTab == 'surveys'" [resId]="resId"></ResSurveysComponent>
+              <ResPaymentsComponent *ngIf="selectTab == 'payments'" [resId]="resId"></ResPaymentsComponent>
+              <ResJobsComponent *ngIf="selectTab == 'jobs'" [resId]="resId"></ResJobsComponent>
+              <ResOtherComponent *ngIf="selectTab == 'other'" [resId]="resId"></ResOtherComponent>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

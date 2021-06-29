@@ -1,0 +1,433 @@
+<div class="tab-pane active" id="contactdetails">
+  <!-- <div *ngIf="!isMyProfile" class="newres-tab-title">
+    <h5 class="no-margin">Contact Details</h5>
+  </div> -->
+  <div *ngIf="!isMyProfile" class="col-md-12 no-padding m-b-0 newres-bottom">
+    <div class="col-md-6 font-10 no-padding">
+      <h5 class="no-margin p-l-10" style="line-height: 34px">Contact Details</h5>
+    </div>
+    <div class="col-md-6 text-right no-padding">
+      <button (click)="updateRespondent(resContactForm)" class="btn waves-effect waves-light btn-md"
+        [class.btn-ocean]="!isMyProfile" [class.btn-basil]="isMyProfile">
+        Submit
+      </button>
+    </div>
+  </div>
+  <div class="clearfix"></div>
+  <br>
+  <form *ngIf="!isLoading" class="ax-form" role="form" id="contactform" #resContactForm="ngForm">
+    <div class="no-padding" [class.col-md-7]="!isMyProfile" [class.col-md-12]="isMyProfile">
+      <!-- <div class="alert alert-danger" *ngIf="!isMyProfile">
+      <strong>Stop </strong>don't call this respondent. Was very rude to the staff in
+      the
+      past.
+    </div>     -->
+      <div class="form-group col-md-1 no-padding-left">
+        <label class="control-label w-100-pre" for="firstname">
+          Title
+          <!-- <span [hidden]="givenNamesmodel.valid || !isSubmitForm">
+            <span class="text-danger pull-right" [hidden]="!givenNamesmodel.hasError('required')">Required</span>
+          </span> -->
+        </label>
+        <select name="title" class="form-control no-padding" [(ngModel)]="respondent.title">
+          <option *ngFor="let rt of respTitleList" [value]="rt.code">{{rt.desc}}</option>
+        </select>
+      </div>
+      <div class="form-group col-md-3 no-padding required">
+        <label class="control-label w-100-pre" for="firstname">
+          First Name
+          <span [hidden]="givenNamesmodel.valid || !isSubmitForm">
+            <span class="text-danger pull-right" [hidden]="!givenNamesmodel.hasError('required')">Required</span>
+          </span>
+        </label>
+        <input id="firstname" type="text" name="givenname" [(ngModel)]="respondent.givenNames" class="form-control"
+          required (ngModelChange)="autoUpperFirstLetter('givenNames')" #givenNamesmodel="ngModel"
+          (keypress)="stringOnly($event)">
+      </div>
+
+      <div class="form-group col-md-4 required">
+        <label class="control-label w-100-pre">
+          Last Name
+          <span [hidden]="lastNamemodel.valid || !isSubmitForm">
+            <span class="text-danger pull-right" [hidden]="!lastNamemodel.hasError('required')">Required</span>
+          </span>
+        </label>
+        <input autocomplete="off" type="text" name="lastname" [(ngModel)]="respondent.lastName" class="form-control"
+          required (ngModelChange)="autoUpperFirstLetter('lastName')" #lastNamemodel="ngModel"
+          (keypress)="stringOnly($event)">
+      </div>
+
+      <div class="form-group col-md-4 no-padding required">
+        <label class="control-label w-100-pre" for="gender">
+          Gender
+          <span [hidden]="gendermodel.valid || !isSubmitForm">
+            <span class="text-danger pull-right" [hidden]="!gendermodel.hasError('required')">Required</span>
+          </span>
+        </label>
+        <select id="gender" name="gender" class="form-control" [(ngModel)]="respondent.gender" #gendermodel="ngModel"
+          required>
+          <option *ngFor="let gl of genderList" [value]="gl.code">{{gl.desc}}</option>
+        </select>
+      </div>
+      <div class="clearfix"></div>
+
+      <div class="form-group col-md-12 no-padding">
+        <label class="control-label w-100-pre">
+          Street Address
+          <!-- <span [hidden]="lastNamemodel.valid || !isSubmitForm">
+            <span class="text-danger pull-right" [hidden]="!lastNamemodel.hasError('required')">Required</span>
+          </span> -->
+        </label>
+        <input autocomplete="off" type="text" name="streetAddress" [(ngModel)]="respondent.streetAddress" class="form-control">
+      </div>
+
+      <div class="form-group col-md-4 required no-padding">
+        <label class="control-label w-100-pre">Suburb
+          <span [hidden]="suburbmodel.valid || !isSubmitForm">
+            <span class="text-danger pull-right" [hidden]="!suburbmodel.hasError('required')">Required</span>
+          </span>
+        </label>
+        <input auto-complete [source]="locationAPI" no-match-found-text="No Data Found" list-formatter="suggestion"
+          path-to-data="value" display-property-name="suburb" loading-text="Loading..." max-num-list="5" min-chars="2"
+          placeholder="" type="text" class="form-control" name="suburbHome" [(ngModel)]="respondent.suburbHome" required
+          #suburbmodel="ngModel" (ngModelChange)="setLocation(respondent.suburbHome)" [accept-user-input]="false">
+      </div>
+
+      <div class="form-group col-md-4 required">
+        <label class="control-label w-100-pre">Postcode
+          <span [hidden]="postcodemodel.valid || !isSubmitForm">
+            <span class="text-danger pull-right" [hidden]="!postcodemodel.hasError('required')">Required</span>
+            <span class="text-danger pull-right" [hidden]="!postcodemodel.hasError('pattern')">Invalid Postcode</span>
+          </span>
+        </label>
+        <input placeholder="" type="text" class="form-control" name="postcodeHome" [(ngModel)]="respondent.postcodeHome"
+          required #postcodemodel="ngModel" [pattern]="postcodePattern"
+          [textMask]="{mask: postcodeMask, showMask: true, guide: false}" numeric
+          (ngModelChange)="respondent.postcodeHome = unmask($event)">
+      </div>
+
+      <!--
+      <div class="col-md-8 no-padding-left">
+      </div> -->
+
+      <div class="form-group col-md-4 no-padding required">
+        <label class="control-label w-100-pre">
+          {{countrycode == 'AU' ? 'State' : 'City or Region' }}
+          <span [hidden]="stateemodel.valid || !isSubmitForm">
+            <span class="text-danger pull-right" [hidden]="!stateemodel.hasError('required')">Required</span>
+          </span>
+        </label>
+        <!-- <input type="text" name="state" class="form-control" [(ngModel)]="respondent.state" name="state" disabled>  -->
+        <select class="form-control" name="state" [(ngModel)]="respondent.state" #stateemodel="ngModel" required>
+          <option [value]="s.code" *ngFor="let s of stateslist">{{s.name}}</option>
+        </select>
+      </div>
+      <div class="clearfix"></div>
+
+      <div class="form-group col-md-4 no-padding">
+        <label class="control-label">Work Suburb</label>
+        <!-- <input [(ngModel)]="respondent.suburbBusiness" name="suburbBusiness" class="form-control" placeholder="" /> -->
+        <input auto-complete [source]="locationAPI" no-match-found-text="No Data Found" list-formatter="suggestion"
+          path-to-data="value" display-property-name="suburb" loading-text="Loading..." max-num-list="5" min-chars="2"
+          placeholder="" autocomplete="off" type="text" class="form-control" name="suburbBusiness"
+          [(ngModel)]="respondent.suburbBusiness" (ngModelChange)="setBusinessLocation(respondent.suburbBusiness)"
+          [accept-user-input]="false">
+      </div>
+
+      <div class="form-group col-md-4">
+        <label class="control-label">Work Postcode</label>
+        <input placeholder="" autocomplete="off" type="text" class="form-control" name="postcodeBusiness"
+          [(ngModel)]="respondent.postcodeBusiness" [pattern]="postcodePattern"
+          [textMask]="{mask: postcodeMask, showMask: true, guide: false}" numeric
+          (ngModelChange)="respondent.postcodeBusiness = unmask($event)">
+      </div>
+
+      <div class="form-group col-md-4 no-padding">
+        <label class="control-label">Work State</label>
+        <!-- <input type="text" name="state" class="form-control" [(ngModel)]="respondent.state" name="state" disabled>  -->
+        <select class="form-control" name="workstate" [(ngModel)]="respondent.stateWork">
+          <option value="{{s.code}}" *ngFor="let s of stateslist">{{s.name}}</option>
+        </select>
+      </div>
+      <div class="clearfix"></div>
+
+      <div class="form-group col-md-4 no-padding">
+        <label class="control-label w-100-pre" for="workphone">
+          Home Phone
+          <span [hidden]="phoneHomeModel.valid || !isSubmitForm">
+            <span class="text-danger pull-right" [hidden]="!phoneHomeModel.hasError('pattern')">Invalid Home
+              Phone</span>
+          </span>
+        </label>
+        <input autocomplete="off" type="text" id="workphone" name="homephone" [(ngModel)]="respondent.phoneHome"
+          class="form-control" [textMask]="{mask: phoneMask, showMask: false, guide:true}" numeric
+          (ngModelChange)="respondent.phoneHome = unmask($event)" [pattern]="phonePattern" #phoneHomeModel="ngModel">
+      </div>
+      <!--mask="00 0000 0000" [textMask]="{mask: mask}" pattern=".{10,10}"-->
+
+      <div class="form-group col-md-4">
+        <label class="control-label w-100-pre" for="workphone">
+          Work Phone
+          <span [hidden]="phoneBusinessModel.valid || !isSubmitForm">
+            <span class="text-danger pull-right" [hidden]="!phoneBusinessModel.hasError('pattern')">Invalid Work
+              Phone</span>
+          </span>
+        </label>
+        <input autocomplete="off" type="text" [(ngModel)]="respondent.phoneBusiness" name="workphone"
+          class="form-control" [textMask]="{mask: phoneMask, showMask: false, guide: true}" numeric
+          (ngModelChange)="respondent.phoneBusiness = unmask($event)" [pattern]="phonePattern"
+          #phoneBusinessModel="ngModel">
+      </div>
+
+      <div class="form-group col-md-4 no-padding">
+        <label class="control-label w-100-pre" for="mobilephone">
+          Mobile Number
+          <span [hidden]="phoneMobileModel.valid || !isSubmitForm">
+            <span class="text-danger pull-right" [hidden]="!phoneMobileModel.hasError('pattern')">Invalid Mobile
+              Number</span>
+          </span>
+        </label>
+        <input type="text" id="mobilephone" name="mobilephone" [(ngModel)]="respondent.phoneMobile" class="form-control"
+          [textMask]="{mask: mobileMask, showMask: true, guide: false}" numeric
+          (ngModelChange)="respondent.phoneMobile = unmask($event)" [pattern]="mobilePattern"
+          #phoneMobileModel="ngModel">
+      </div>
+      <div class="clearfix"></div>
+
+      <div class="form-group col-md-4 no-padding">
+        <label class="control-label w-100-pre">
+          Month of Birth
+          <span [hidden]="monthofbirthmodel.valid || !isSubmitForm">
+            <!-- <span class="text-danger pull-right" [hidden]="!monthofbirthmodel.hasError('required')">Required</span> -->
+            <span class="text-danger pull-right" [hidden]="!monthofbirthmodel.hasError('pattern')">Invalid Month</span>
+          </span>
+        </label>
+        <select class="form-control" [(ngModel)]="respondent.birthMonth" name="birthMonth" #monthofbirthmodel="ngModel">
+          <option *ngFor="let ml of monthList" [value]="ml.code">{{ml.desc}}</option>
+        </select>
+        <!-- <input type="text" class="form-control" [(ngModel)]="respondent.birthMonth" name="birthMonth" mask="00" pattern=".{2,2}"
+          required #monthofbirthmodel="ngModel"> -->
+      </div>
+      <div class="form-group col-md-4 required">
+        <label class="control-label w-100-pre">
+          Year of Birth
+          <span class="pull-right font-normal font-12">
+            <ng-container *ngIf="respondent.age">
+              Age {{respondent.age}}
+            </ng-container>
+          </span>
+          <span [hidden]="yearofbirthmodel.valid || !isSubmitForm">
+            <span class="text-danger pull-right" [hidden]="!yearofbirthmodel.hasError('required')">Required
+              &#160;</span>
+            <span class="text-danger pull-right" [hidden]="!yearofbirthmodel.hasError('pattern')">Invalid Year
+              &#160;</span>
+          </span>
+          <span class="text-danger pull-right" *ngIf="invalidYearErrMsg && yearofbirthmodel.valid">Invalid Year
+            &#160;</span>
+        </label>
+        <input type="text" class="form-control" [(ngModel)]="respondent.birthYear" name="birthyear" pattern=".{4,4}"
+          [textMask]="{mask: yearMask, showMask: true, guide: false}" numeric
+          (ngModelChange)="respondent.birthYear = unmask($event)" required #yearofbirthmodel="ngModel"
+          (ngModelChange)="checkYearOnchange()">
+      </div>
+      <div class="form-group col-md-4 no-padding">
+        <label class="control-label w-100-pre" for="fax">
+          Fax
+          <span [hidden]="faxModel.valid || !isSubmitForm">
+            <span class="text-danger pull-right" [hidden]="!faxModel.hasError('pattern')">Invalid Fax Number</span>
+          </span>
+        </label>
+        <input type="text" id="fax" name="fax" [(ngModel)]="respondent.fax" class="form-control"
+          [textMask]="{mask: phoneMask, showMask: true, guide: false}" numeric
+          (ngModelChange)="respondent.fax = unmask($event)" [pattern]="mobilePattern" #faxModel="ngModel">
+      </div>
+      <!-- <div *ngIf="!isMyProfile && (hasPasswordPermission || respondent.id == 0)"
+        class="form-group col-md-4 no-padding required">
+        <label class="control-label w-100-pre">Password
+          <span [hidden]="passwordmodel.valid || !isSubmitForm">
+            <span class="text-danger pull-right" [hidden]="!passwordmodel.hasError('required')">Required</span>
+          </span>
+        </label>
+        <input type="text" name="password" [(ngModel)]="respondent.passwordRaw" class="form-control" maxlength="20"
+          #passwordmodel="ngModel" required>
+      </div> -->
+      <div class="clearfix"></div>
+
+      <div class="form-group no-padding pull-left" [class.required]="isMyProfile" [class.col-md-12]="!isMyProfile"
+        [class.col-md-6]="isMyProfile">
+        <label class="control-label w-100-pre">
+          Email Address
+          <span [hidden]="emailModel.valid || !isSubmitForm">
+            <span class="text-danger pull-right" [hidden]="!emailModel.hasError('required')">Required</span>
+            <span class="text-danger pull-right" [hidden]="!emailModel.hasError('pattern')">Invalid Email</span>
+          </span>
+
+          <!-- <div class="pull-right">
+            <ng-container *ngIf="!isMyProfile">
+              <label for="checkbox1"
+                     class="control-label ax-color-black pull-left m-b-0 font-normal font-12">
+                This ID has a wrong email
+              </label>
+              <div class="checkbox checkbox-primary" style="margin: 0px 0px 0px 145px;">
+                <input id="checkbox1" type="checkbox" [(ngModel)]="respondent.wrongEmail"
+                       name="wrongEmail">
+                <label for="checkbox1" class="control-label ax-color-black no-padding">
+                </label>
+              </div>
+            </ng-container>
+          </div> -->
+        </label>
+        <input type="text" class="form-control" [(ngModel)]="respondent.email" name="email" #emailModel="ngModel"
+          pattern="^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,10})+$" (ngModelChange)="checkConfirmationEmail()"
+          [required]="isMyProfile">
+      </div>
+      <div *ngIf="isMyProfile" class="form-group col-md-6 no-padding-right pull-left">
+        <label class="control-label w-100-pre">
+          Confirm Email Address
+          <div class="pull-right">
+            <span [hidden]="confirmemailModel.valid || !isSubmitForm">
+              <!-- <span class="text-danger pull-right" [hidden]="!confirmemailModel.hasError('pattern')">Invalid Email</span> -->
+            </span>
+            <span class="text-danger pull-right" *ngIf="confirmEmailErrMsg && isSubmitForm">Email Mismatch</span>
+          </div>
+        </label>
+        <input type="text" class="form-control" [(ngModel)]="confirmEmail" name="confirmemail"
+          #confirmemailModel="ngModel" (ngModelChange)="checkConfirmationEmail()"
+          pattern="^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,10})+$" (paste)="preventDefault($event)">
+      </div>
+
+      <div class="clearfix"></div>
+      <!-- <div class="form-group" *ngIf="!isMyProfile">
+        <div class="checkbox checkbox-primary w-100-pre m-t-0">
+          <input id="checkbox1" type="checkbox" [(ngModel)]="respondent.wrongEmail" name="wrongEmail">
+          <label for="checkbox1" class="control-label ax-color-black no-padding"> This ID has a wrong email</label>
+        </div>
+      </div>
+      <div class="clearfix"></div>
+      <div class="form-group">
+        <div class="checkbox checkbox-primary w-100-pre m-t-0">
+          <input type="checkbox" id="acknowledgeNoEmail" name="acknowledgeNoEmail"
+            [(ngModel)]="respondent.acknowledgeNoEmail" value="true">
+          <label class="control-label" for="acknowledgeNoEmail"> I understand by not providing an email address I will
+            be contacted less
+            frequently</label>
+        </div>
+      </div>
+      <div class="clearfix"></div>
+      <div class="form-group">
+        <div class="checkbox checkbox-primary w-100-pre m-t-0">
+          <input id="isTermsAgreed" type="checkbox" [(ngModel)]="respondent.isTermsAgreed" name="isTermsAgreed"
+            disabled>
+          <label *ngIf="!isMyProfile" for="isTermsAgreed" class="control-label ax-color-black no-padding">
+            <span>Has agreed to the terms & conditions</span>
+          </label>
+        </div>
+      </div> -->
+      <div class="clearfix"></div>
+    </div>
+    <div *ngIf="!isMyProfile" class="pull-left" [class.col-md-3]="!isMyProfile" [class.col-md-12]="isMyProfile"
+      [class.no-padding]="isMyProfile">
+      <div class="form-control m-b-15" style="height: auto;">
+        <div class="checkbox checkbox-primary no-margin">
+          <input type="checkbox" name="oneOffRespondent" [(ngModel)]="respondent.oneOffRespondent" value="true"
+            id="oneOffRespondent">
+          <label class="control-label ax-color-black ax-cursor-pointer" for="oneOffRespondent">One Off
+            Respondent</label>
+        </div>
+      </div>
+      <div class="form-control m-b-15" style="height: auto;">
+        <div class="checkbox checkbox-primary no-margin">
+          <input id="checkbox" type="checkbox" [(ngModel)]="respondent.doNotCall" name="doNotCall" value="true">
+          <label for="checkbox" class="control-label ax-color-black ax-cursor-pointer">
+            Do Not Call
+          </label>
+        </div>
+      </div>
+      <div class="form-control m-b-15" style="height: auto;">
+        <div class="checkbox checkbox-primary no-margin">
+          <input type="checkbox" name="hasAccent" id="hasAccent" [(ngModel)]="respondent.hasAccent" value="true">
+          <label class="control-label ax-color-black ax-cursor-pointer" for="hasAccent">Has Accent</label>
+        </div>
+      </div>
+      <div class="form-control m-b-15" style="height: auto;">
+        <div class="checkbox checkbox-primary no-margin">
+          <input type="checkbox" name="keenRespondent" id="keenRespondent" [(ngModel)]="respondent.keenRespondent"
+            value="true">
+          <label class="control-label ax-color-black ax-cursor-pointer" for="keenRespondent">Keen Respondent</label>
+        </div>
+      </div>
+      <div class="form-control m-b-15" style="height: auto;">
+        <div class="checkbox checkbox-primary no-margin">
+          <input type="checkbox" name="qualBlacklist" id="qualBlacklist" [(ngModel)]="respondent.qualBlacklist"
+            value="true">
+          <label class="control-label ax-color-black ax-cursor-pointer" for="qualBlacklist">Exclude from Qual
+            Study</label>
+        </div>
+      </div>
+      <div class="form-control m-b-15" style="height: auto;">
+        <div class="checkbox checkbox-primary no-margin">
+          <input type="checkbox" name="quantBlacklist" id="quantBlacklist" [(ngModel)]="respondent.quantBlacklist"
+            value="true">
+          <label class="control-label ax-color-black ax-cursor-pointer" for="quantBlacklist">Exclude from Quant
+            Study</label>
+        </div>
+      </div>
+      <div class="form-control m-b-15" style="height: auto;">
+        <div class="checkbox checkbox-primary no-margin">
+          <input id="wrongEmail" type="checkbox" [(ngModel)]="respondent.wrongEmail" name="wrongEmail">
+          <label for="wrongEmail" class="control-label ax-color-black ax-cursor-pointer"> This ID has a wrong
+            email</label>
+        </div>
+      </div>
+      <div class="form-control m-b-15" style="height: auto;">
+        <div class="checkbox checkbox-primary no-margin">
+          <input id="specialInterest" type="checkbox" [(ngModel)]="respondent.specialInterest" name="specialInterest">
+          <label for="specialInterest" class="control-label ax-color-black ax-cursor-pointer"> Special Interest</label>
+        </div>
+      </div>
+
+      <div class="form-group col-md-12 no-padding">
+        <label class="control-label w-100-pre" style="margin-bottom: -1px;">
+          Reason
+        </label>
+        <textarea rows="5" class="form-control" name="doNotCallReason" [(ngModel)]="respondent.doNotCallReason"
+          style="max-height:108px"></textarea>
+      </div>
+    </div>
+
+    <div class="clearfix"></div>
+    <div class="col-md-12 no-padding m-b-0 newres-bottom">
+      <!-- <div class="pull-left" *ngIf="!isMyProfile">
+          <button class="btn btn-cocktail waves-effect waves-light btn-md">
+            Send Reset Password Link
+          </button>
+        </div> -->
+      <div class="col-md-6 font-10 no-padding" style="line-height: 34px">
+        <ng-container *ngIf="respondent.id">
+          <b>Created:</b>
+          <ng-container *ngIf="respondent.dateCreated">
+            {{respondent.dateCreated | date: 'dd-MM-yyyy'}} &#160;
+          </ng-container>
+          <ng-container *ngIf="!respondent.dateCreated">
+            {{today | date: 'dd-MM-yyyy'}} &#160;
+          </ng-container>
+          <b>Last Updated:</b>
+          <ng-container *ngIf="respondent.dateLastUpdated">
+            {{respondent.dateLastUpdated | date: 'dd-MM-yyyy'}}
+          </ng-container>
+          <ng-container *ngIf="!respondent.dateLastUpdated">
+            {{today | date: 'dd-MM-yyyy'}}
+          </ng-container>
+        </ng-container>
+      </div>
+      <div class="col-md-6 text-right no-padding">
+        <button type="submit" (click)="updateRespondent(resContactForm)" class="btn waves-effect waves-light btn-md"
+          [class.btn-ocean]="!isMyProfile" [class.btn-basil]="isMyProfile">
+          Submit
+        </button>
+        <!-- <a *ngIf="isMyProfile" class="btn btn-cocktail m-l-5" (click)="gotoTop()">Skip</a> -->
+      </div>
+    </div>
+  </form>
+  <div class="clearfix"></div>
+</div>

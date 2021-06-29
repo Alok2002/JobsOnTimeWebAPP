@@ -1,0 +1,25 @@
+<div class="wrapper">
+    <div class="container">
+      <div class="row">
+        <div class="col-sm-12">
+          <ol class="breadcrumb breadcrumb-arrow bg-white bx-shadow">
+            <li><a [routerLink]="['/dashboard']" class="home-breadcrumb"><i class="md md-home"></i></a></li>            
+            <li><a>{{pageTitle}}</a></li>
+          </ol>
+        </div> 
+        <div class="col-sm-12">
+        <div class="card-box">
+            <div class="col-md-12 no-padding respondentmenu">
+            <ul class="navigation-menu systemreference">
+                <li *ngFor="let me of menuItems">
+                    <a [routerLink]="[me.url]">{{me.label}}</a>
+                </li>                
+            </ul>
+            </div>
+            <div class="clearfix"></div>
+        </div>
+        </div>
+      </div>
+    </div>
+    <!-- end container -->
+  </div>

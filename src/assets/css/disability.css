@@ -1,0 +1,62 @@
+.ax-nav-tabs>li>a:hover {
+  color: #0372cc;
+}
+
+.ax-nav-tabs li.active a {
+  border-top: 2px solid #0372cc !important;
+}
+
+.nav-tab-left.navtab-custom li.active a {
+  border-left: 2px solid #0372cc !important;
+}
+
+.btn-cocktail,
+.btn-cocktail:hover,
+.btn-cocktail:focus,
+.btn-cocktail:active {
+  background-color: #d41517;
+}
+
+.ax-nav-tabs>li.active>a {
+  background-color: #0372cc !important;
+}
+
+.radio-success input[type="radio"]:checked+label::before {
+  border-color: #486824;
+}
+
+.radio-success input[type="radio"]+label::after,
+.radio-success input[type="radio"]:checked+label::after {
+  background-color: #486824;
+}
+
+.btn-ocean,
+.btn-ocean:hover,
+.btn-ocean:focus,
+.btn-ocean:active {
+  background-color: #486824 !important;
+  color: #fff !important;
+}
+
+.text-success {
+  color: #486824;
+}
+
+
+.btn-skyblue,
+.btn-skyblue:hover,
+.btn-skyblue:focus,
+.btn-skyblue:active {
+  background-color: #0372cc;
+  color: #fff;
+}
+
+*[tabindex]:focus,
+a:focus,
+.btn:focus {
+  outline: 5px auto #0372cc !important;
+}
+
+.radio input[type="radio"]:focus+label::before {
+  border: 1px solid #0372cc;
+}

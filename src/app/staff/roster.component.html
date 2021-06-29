@@ -1,0 +1,320 @@
+﻿<div class="wrapper">
+  <div class="container">
+    <div class="row">
+      <div class="col-sm-12">
+        <ol class="breadcrumb breadcrumb-arrow bg-white bx-shadow">
+          <li><a [routerLink]="['/dashboard']" class="home-breadcrumb"><i class="md md-home"></i></a></li>
+          <li><a>Staff Roster</a></li>
+        </ol>
+      </div>
+      <div class="col-sm-12">
+        <div class="card-box">
+          <div class="portlet ax-border m-b-0" id="jobs-filterBox">
+            <div class="portlet-heading portlet-default">
+              <div class="clearfix"></div>
+              <div id="bg-default" class="panel-collapse collapse in">
+                <div class="portlet-body no-padding m-t-0">
+                  <div class="col-md-12 no-padding">
+                    <form action="" class="ax-form">
+                      <div class="row">
+                        <div class="col-md-3">
+                          <label class="control-label ax-color-black">Staff Roster</label>
+                          <div class="form-group">
+                            <div class="input-group" daterangepicker
+                              [options]="{startDate:dateInput.start, endDate:dateInput.end }"
+                              (selected)="selectedDate($event, dateInput)">
+                              <span class="form-control uneditable-input" name="daterange">
+                                {{ dateInput.start | date:'dd-MM-yyyy' }} - {{ dateInput.end| date:'dd-MM-yyyy' }}
+                              </span>
+                              <span class="input-group-btn">
+                                <a class="btn btn-default"><i class="glyphicon glyphicon-calendar"></i></a>
+                              </span>
+                            </div>
+                          </div>
+
+                          <div class="form-group">
+                            <select class="form-control" name="recruiter" [(ngModel)]="reports.recruiter">
+                              <option [ngValue]="null">All Recruiters</option>
+                              <option value="{{staff.username}}" *ngFor="let staff of staffs;">{{staff.fullName}}
+                              </option>
+                            </select>
+                          </div>
+
+                          <div class="form-group">
+                            <select class="form-control" [(ngModel)]="reports.projectManager" name="selectedstaff">
+                              <option [ngValue]="null">All Project Managers</option>
+                              <option value="{{staff.username}}" *ngFor="let staff of staffs;">{{staff.fullName}}
+                              </option>
+                            </select>
+                          </div>
+
+                          <div class="text-right">
+                            <button class="btn btn-success" type="button"
+                              (click)="reports.projectManager = null; reports.recruiter = null;submitFilter()">All Staff
+                              Roster</button>&#160;
+                            <button class="btn btn-success" type="button" (click)="submitFilter()">Show Roster</button>
+                          </div>
+                        </div>
+
+                        <div *ngIf="hasPermission" class="col-md-5 mobile-m-t-30">
+                          <label class="control-label ax-color-black">
+                            Allocate Jobs
+                          </label>
+                          <form #allocateForm="ngForm">
+                            <div class="form-group">
+                              <label class="control-label ax-color-black w-100-pre d-desktop-only">
+                                Job
+                                <span [hidden]="ajjobidmodel.valid || !isSubmitForm">
+                                  <span class="text-danger pull-right"
+                                    [hidden]="!ajjobidmodel.hasError('required')">Required</span>
+                                </span>
+                              </label>
+                              <select class="form-control" name="jausername" [(ngModel)]="ajjobid" required
+                                #ajjobidmodel="ngModel">
+                                <option [ngValue]="null">Job to be Allocated</option>
+                                <option value="{{jta.id}}" *ngFor="let jta of jobsTobeAllocated;">{{jta.description}}
+                                </option>
+                              </select>
+                            </div>
+
+                            <div class="form-group">
+                              <label class="control-label ax-color-black w-100-pre">
+                                Recruiters
+                                <span [hidden]="ajrecruitermodel.valid || !isSubmitForm">
+                                  <span class="text-danger pull-right"
+                                    [hidden]="!ajrecruitermodel.hasError('required')">Required</span>
+                                </span>
+                              </label>
+                              <select class="form-control" name="recruiter" [(ngModel)]="ajrecruiter" required
+                                #ajrecruitermodel="ngModel">
+                                <option [ngValue]="null">All Recruiters</option>
+                                <option value="{{staff.username}}" *ngFor="let staff of staffs;">{{staff.fullName}}
+                                </option>
+                              </select>
+                            </div>
+
+                            <div class="text-right">
+                              <a *ngIf="ajjobid" class="btn btn-success" href="job/edit/{{ajjobid}}" target="_blank">
+                                Open Job</a>
+                              <a *ngIf="!ajjobid" class="btn btn-success" (click)="openJobError()">
+                                Open Job</a>&#160;
+                              <button class="btn btn-success" type="button"
+                                (click)="rosterAllocate(allocateForm)">Allocate</button>
+                            </div>
+                          </form>
+                        </div>
+
+                        <div *ngIf="hasPermission" class="col-md-2 mobile-m-t-30">
+                          <label class="control-label ax-color-black">Available Recruiters</label>
+                          <div class="form-group">
+                            <select class="form-control" name="arRecruiters" [(ngModel)]="arRecruiters"
+                              (ngModelChange)="addRecuriterToList()">
+                              <option [ngValue]="null">All Recruiters</option>
+                              <option value="{{staff.fullName}}" *ngFor="let staff of staffs;">{{staff.fullName}}
+                              </option>
+                            </select>
+                          </div>
+
+                          <div class="form-group m-b-0">
+                            <!-- <textarea name="" class="form-control" style="height:132px"></textarea> -->
+                            <tag-input [(ngModel)]='arRecruitersList' name="arRecruitersList" theme='bootstrap'
+                              [placeholder]="''" class="sendmobile-input" type="number" [secondaryPlaceholder]="''"
+                              [separatorKeyCodes]="[9, 188]" style="height:132px"></tag-input>
+                          </div>
+                        </div>
+
+                        <div class="col-md-2 mobile-m-t-30">
+                          <label class="control-label ax-color-black">Update Staff Notes</label>
+                          <div class="form-group">
+                            <div class="form-group">
+                              <select class="form-control" [(ngModel)]="usnStaff" name="usnStaff"
+                                (ngModelChange)="changeStaffNotesUser(usnStaff)">
+                                <option [ngValue]="null">All Staff</option>
+                                <option value="{{staff.username}}" *ngFor="let staff of staffs;">{{staff.fullName}}
+                                </option>
+                              </select>
+                            </div>
+                          </div>
+
+                          <div class="form-group">
+                            <textarea name="usnNotes" [(ngModel)]="usnNotes" class="form-control"
+                              style="height:83px"></textarea>
+                          </div>
+
+                          <div class="text-right">
+                            <button class="btn btn-success" type="button" (click)="updateNotes()">Update</button>
+                          </div>
+                        </div>
+                        <div class="clearfix"></div>
+                      </div>
+                      <!-- <hr class="m-b-20 m-t-15">
+                      <div class="col-md-12 no-padding text-right">
+                        <a class="btn btn-cocktail" (click)="resetFilter()">Reset</a>&#160;
+                        <button class="btn btn-ocean" (click)="submitFilter()">Show Report</button>
+                      </div> -->
+                    </form>
+                  </div>
+                  <div class="clearfix"></div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div style="position: relative;min-height: 50px">
+
+            <ng-container *ngIf="data && data.length > 0">
+              <div class="row">
+                <div class="col-md-10">
+                  <br>
+                  <div class="btn-group">
+                    <a class="btn btn-ocean btn-xs waves-effect btn-square m-l--1" id="deleteAlert"
+                      (click)="exportToExcel(grid)">
+                      Export to Excel
+                    </a>
+                    <a class="btn btn-cocktail btn-xs waves-effect btn-square" (click)="exportToPDF(grid)">
+                      Export to PDF
+                    </a>
+                  </div>
+                  <kendo-grid #grid="kendoGrid" [data]="gridData" [pageSize]="state.take" [skip]="state.skip"
+                    [sort]="state.sort" [group]="state.group" [sortable]="{ mode: 'multiple' }" [height]="1000"
+                    [scrollable]="false" (dataStateChange)="dataStateChange($event)">
+                    <kendo-grid-column field="recruiter1" title="Recruiter" [hidden]="true">
+                      <ng-template kendoGridGroupHeaderTemplate let-group let-field="field" let-value="value">
+                        <div style="background: #f1c4d4;width: 100%;padding: 5px;">
+                          <span>{{value}}</span>
+                          <span [innerHTML]="getRecruiterWithNotes(value) | safeHtml"></span>
+                        </div>
+                      </ng-template>
+                    </kendo-grid-column>
+                    <kendo-grid-column field="sessionDate" title="Session" width="80"
+                      [style]="{'font-weight': '400 !important'}" [hidden]="true">
+                      <ng-template kendoGridGroupHeaderTemplate let-group let-field="field" let-value="value">
+                        <span
+                          style="padding: 0px 5px; background: #EAB126;color: #fff">{{value | date: 'dd-MM-yyyy'}}</span>
+                      </ng-template>
+                    </kendo-grid-column>
+                    <kendo-grid-column field="jobNumber" title="Job No" width="75">
+                      <ng-template kendoGridCellTemplate let-dataItem>
+                        <a [routerLink]="['/job/edit', dataItem.jobId]" style="color: #0076a4 !important;"
+                          target="_blank">
+                          {{dataItem.jobNumber }}
+                        </a>
+                      </ng-template>
+                    </kendo-grid-column>
+                    <kendo-grid-column field="projectManager" title="Project Manager" width="130">
+                    </kendo-grid-column>
+                    <kendo-grid-column field="jobStatus" title="Job Status">
+                    </kendo-grid-column>
+
+                    <kendo-grid-column field="jobName" title="Job Name">
+                      <ng-template kendoGridCellTemplate let-dataItem>
+                        <a [routerLink]="['/job/edit', dataItem.jobId]" style="color: #0076a4 !important;"
+                          target="_blank">
+                          {{dataItem.jobName }}
+                        </a>
+                      </ng-template>
+                    </kendo-grid-column>
+
+                    <kendo-grid-column field="sessionName" title="Session Name">
+                    </kendo-grid-column>
+                    <kendo-grid-column field="requiredforJob" title="Req Job" width="90"
+                      [headerClass]="'text-right-imp'">
+                      <ng-template kendoGridCellTemplate let-dataItem>
+                        <div class="text-right-imp">
+                          {{ dataItem.requiredforJob }}
+                        </div>
+                      </ng-template>
+                      <!-- <ng-template kendoGridGroupFooterTemplate let-group="group" let-aggregates>
+                        <div class="text-right-imp">{{aggregates["requiredforJob"]?.sum}}</div>
+                      </ng-template>
+                      <ng-template kendoGridFooterTemplate let-column="column">
+                        <div class="text-right-imp">Total: {{total["requiredforJob"]?.sum}}</div>
+                      </ng-template> -->
+                    </kendo-grid-column>
+
+                    <kendo-grid-column field="requiredforSession" title="Req Ses" width="90"
+                      [headerClass]="'text-right-imp'">
+                      <ng-template kendoGridCellTemplate let-dataItem>
+                        <div class="text-right-imp">
+                          {{ dataItem.requiredforSession }}
+                        </div>
+                      </ng-template>
+                      <!-- <ng-template kendoGridGroupFooterTemplate let-group="group" let-aggregates>
+                        <div class="text-right-imp">{{aggregates["requiredforSession"]?.sum}}</div>
+                      </ng-template> -->
+                      <!-- <ng-template kendoGridFooterTemplate let-column="column">
+                        <div class="text-right-imp">Total: {{total["requiredforSession"]?.sum}}</div>
+                      </ng-template> -->
+                    </kendo-grid-column>
+
+                    <kendo-grid-column field="qualified" title="Qual" width="90" [headerClass]="'text-right-imp'">
+                      <ng-template kendoGridCellTemplate let-dataItem>
+                        <div class="text-right-imp">
+                          {{ dataItem.qualified }}
+                        </div>
+                      </ng-template>
+                      <!-- <ng-template kendoGridGroupFooterTemplate let-group="group" let-aggregates>
+                        <div class="text-right-imp">
+                          {{aggregates["qualified"]?.sum}}
+                        </div>
+                      </ng-template> -->
+                      <!-- <ng-template kendoGridFooterTemplate let-column="column">
+                        <div class="text-right-imp">
+                          Total: {{total["qualified"]?.sum}}
+                        </div>
+                      </ng-template> -->
+                    </kendo-grid-column>
+
+                    <kendo-grid-column field="totaltoRecruit" title="To Rec" width="100"
+                      [headerClass]="'text-right-imp'">
+                      <ng-template kendoGridCellTemplate let-dataItem>
+                        <div class="text-right-imp">
+                          {{ dataItem.totaltoRecruit }}
+                        </div>
+                      </ng-template>
+                      <ng-template kendoGridGroupFooterTemplate let-group="group" let-aggregates let-value="value">
+                        <div [class.hide]="!aggregates['totaltoRecruit']?.sum" class="text-right-imp text-white"
+                          [style.backgroundColor]="getTotalLabel(group.value) == 'Day Total: ' ? '#EAB126' : '#0c778a'">
+                          {{getTotalLabel(group.value)}} {{aggregates["totaltoRecruit"]?.sum}}&#160;
+                        </div>
+                      </ng-template>
+                      <!-- <ng-template kendoGridFooterTemplate let-column="column">
+                        <div class="text-right-imp">
+                          Total: {{total["totaltoRecruit"]?.sum}}
+                        </div>
+                      </ng-template> -->
+                    </kendo-grid-column>
+                    <kendo-grid-pdf fileName="SessionRecruitment.pdf" paperSize="auto" [scale]="0.8"
+                      [repeatHeaders]="true" [allPages]="true"
+                      [margin]="{ top: '0.2cm', left: '0.2cm', right: '0.2cm', bottom: '0.2cm' }">
+                    </kendo-grid-pdf>
+                    <kendo-grid-excel fileName="SessionRecruitment.xlsx"></kendo-grid-excel>
+                  </kendo-grid>
+                </div>
+                <div class="col-md-2">
+                  <br>
+                  <div class="portlet ax-border m-b-0">
+                    <div style="padding:20px">
+                      <label class="control-label ax-color-black">How to leave a note?</label><br>
+                      <b>Prefix:</b> Always prefix your note with keywords like Urgent:, Leave:, Note: or JOBS: to make
+                      it
+                      more readable. The system will automatically highlight those keywords. See example below.<br><br>
+
+                      <b style="color:blue;">NOTE:</b> This is a test msg.<br>
+                      <b style="color:red">URGENT:</b> This is a test msg.<br>
+                      <b style="color:green">LEAVE:</b> This is a test msg.<br>
+                      <b style="color:orange">JOBS:</b> This is a test msg.<br>
+                      <b style="color:blueviolet">RECRUIT:</b> This is a test msg.<br>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </ng-container>
+            <div class="card ax-border m-b-0 m-t-20 p-all-15" *ngIf="isSubmitForm && data && data.length == 0">No data
+              available</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div> <!-- end container -->
+</div>

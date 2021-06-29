@@ -1,0 +1,284 @@
+<div class="tab-pane" id="occupationdetails">
+  <!-- <ng-container *ngIf="!isMyProfile">
+    <div class="newres-tab-title">
+      <h5 class="no-margin">Occupation Details</h5>
+    </div>
+    <br>
+  </ng-container> -->
+
+  <div *ngIf="!isMyProfile" class="col-md-12 no-padding m-b-0 newres-bottom">
+    <div class="col-md-6 font-10 no-padding">
+      <h5 class="no-margin p-l-10" style="line-height: 34px">Occupation Details</h5>
+    </div>
+    <div class="col-md-6 text-right no-padding">
+      <button type="submit" (click)="updateRespondent(resOccupationForm)" class="btn waves-effect waves-light btn-md"
+        [class.btn-ocean]="!isMyProfile" [class.btn-basil]="isMyProfile">
+        Submit
+      </button>
+    </div>
+  </div>
+  <div class="clearfix"></div>
+  <br>
+  <form *ngIf="!isLoading" class="ax-form" role="form" #resOccupationForm="ngForm">
+    <div class="no-padding" [class.col-md-4]="!isMyProfile" [class.col-md-12]="isMyProfile">
+      <div class="form-group has-feedback container no-padding full-width">
+        <label class="control-label">I am currently</label>
+        <div class="clearfix"></div>
+        <div class="checkbox checkbox-primary res-check-margin">
+          <input id="isStudent" type="checkbox" [(ngModel)]="respondent.isStudent" name="isStudent" [value]="true">
+          <label for="isStudent">
+            a student
+          </label>
+        </div>
+        <div class="checkbox checkbox-primary res-check-margin">
+          <input id="bussiness" type="checkbox" [(ngModel)]="respondent.isBusinessOwner" name="isBusinessOwner"
+            [value]="true">
+          <label for="bussiness">
+            a business owner
+          </label>
+        </div>
+        <div class="checkbox checkbox-primary res-check-margin">
+          <input id="retired" type="checkbox" [(ngModel)]="respondent.isRetired" name="isRetired" [value]="true">
+          <label for="retired">
+            retired
+          </label>
+        </div>
+        <div class="checkbox checkbox-primary res-check-margin">
+          <input id="unemployed" type="checkbox" [(ngModel)]="respondent.isUnemployed" name="isUnemployed"
+            [value]="true">
+          <label for="unemployed">
+            currently unemployed
+          </label>
+        </div>
+        <div class="checkbox checkbox-primary res-check-margin">
+          <input id="homeparent" type="checkbox" [(ngModel)]="respondent.isStayAtHomeParent" name="isStayAtHomeParent"
+            [value]="true">
+          <label for="homeparent">
+            a stay at home parent
+          </label>
+        </div>
+        <div class="checkbox checkbox-primary res-check-margin">
+          <input id="employed" type="checkbox" [(ngModel)]="respondent.isEmployed" name="isEmployed" [value]="true">
+          <label for="employed">
+            employed
+          </label>
+        </div>
+        <div class="checkbox checkbox-primary res-check-margin">
+          <input id="maternityleave" type="checkbox" [(ngModel)]="respondent.isOnMaternityLeave"
+            name="isOnMaternityLeave" [value]="true">
+          <label for="maternityleave">
+            on maternity leave
+          </label>
+        </div>
+        <div class="checkbox checkbox-primary res-check-margin">
+          <input id="isSelfEmployed" type="checkbox" [(ngModel)]="respondent.isSelfEmployed" name="isSelfEmployed"
+            [value]="true">
+          <label for="isSelfEmployed">
+            self employed
+          </label>
+        </div>
+        <div class="checkbox checkbox-primary res-check-margin">
+          <input id="isContractor" type="checkbox" [(ngModel)]="respondent.isContractor" name="isContractor"
+            [value]="true">
+          <label for="isContractor">
+            a contractor
+          </label>
+        </div>
+      </div>
+
+      <div class="form-group">
+        <label class="control-label">On Maternity Leave</label>
+        <div class="input-daterange input-group">
+          <!-- <input type="text" class="form-control" name="start" [(ngModel)]="respondent.maternityFromDate"
+            ngui-datetime-picker date-format="DD-MM-YYYY" parse-format="YYYY-MM-DD HH:mm:ss" [close-on-select]="false"
+            date-only="true" /> -->
+          <kendo-datepicker name="start" [(ngModel)]="respondent.maternityFromDate" [format]="'dd-MM-yyyy'"
+            class="w-100-pre" placeholder="">
+          </kendo-datepicker>
+
+          <span class="input-group-addon bg-primary b-0 text-white">to</span>
+          <!-- <input type="text" class="form-control" name="end" [(ngModel)]="respondent.maternityToDate"
+            ngui-datetime-picker date-format="DD-MM-YYYY" min-date=" respondent.maternityFromDate"
+            parse-format="YYYY-MM-DD HH:mm:ss" [close-on-select]="false" date-only="true" /> -->
+          <kendo-datepicker name="end" [(ngModel)]="respondent.maternityToDate" [format]="'dd-MM-yyyy'"
+            class="w-100-pre" placeholder="">
+          </kendo-datepicker>
+        </div>
+      </div>
+
+      <!--<div class="form-group has-feedback">-->
+      <!--<label class="control-label" for="occupation">Occupation</label>-->
+      <!--<select id="occupation" name="occupation" [(ngModel)]="respondent.occupationId" class="form-control">-->
+      <!--<option *ngFor="let oc of occupationlist" [value]="oc.id">{{oc.description}}</option>-->
+      <!--</select>-->
+      <!--</div>-->
+
+      <div class="form-group has-feedback job-tracking dashboard-auto font-14 no-padding">
+        <label class="control-label">Occupation</label>
+        <!--<angular2-multiselect [data]="occupationlist"-->
+        <!--[(ngModel)]="respondent.occupationId"-->
+        <!--[settings]="settings"-->
+        <!--name="occupationid">-->
+        <!--</angular2-multiselect>-->
+        <!--<input auto-complete [(ngModel)]="respondent.occupationObj" name="occupationid" [source]="occupationlist" class="form-control"-->
+        <!--[list-formatter]="autocompleListFormatter" />-->
+        <input auto-complete [source]="occupationAPI" no-match-found-text="No Data Found" list-formatter="description"
+          path-to-data="value" display-property-name="description" [accept-user-input]="false" loading-text="Loading..."
+          max-num-list="5" min-chars="2" placeholder="" autocomplete="off" type="text" class="form-control"
+          name="occupation" [(ngModel)]="respondent.occupationObj">
+      </div>
+
+      <div class="form-group has-feedback col-md-7 no-padding">
+        <label class="control-label" for="type">Employment Type</label>
+        <select id="type" name="type" class="form-control" name="occupationLevel"
+          [(ngModel)]="respondent.occupationLevel">
+          <option *ngFor="let jt of occupationlevellist" [value]="jt.code">{{jt.desc}}</option>
+        </select>
+      </div>
+
+      <div class="col-md-5 no-padding-right">
+        <label class="control-label w-100-pre">Hours Per Week
+          <span [hidden]="occupationHoursPerWeekModel.valid || !isSubmitForm">
+            <span class="text-danger pull-right" [hidden]="!occupationHoursPerWeekModel.hasError('pattern')">Invalid
+              Hours</span>
+          </span>
+        </label>
+        <input type="text" class="form-control" name="hoursperweek" [(ngModel)]="respondent.occupationHoursPerWeek"
+          mask="000" pattern=".{0,3}" #occupationHoursPerWeekModel="ngModel">
+
+      </div>
+      <div class="clearfix"></div>
+
+      <div class="form-group has-feedback">
+        <label class="control-label" for="type">Job Title</label>
+        <input type="text" class="form-control" name="type" [(ngModel)]="respondent.jobTitle"
+          (keypress)="stringOnly($event)">
+      </div>
+      <div class="form-group has-feedback">
+        <label class="control-label" for="type">Employer Name</label>
+        <input type="text" class="form-control" name="employerName" [(ngModel)]="respondent.employerName">
+      </div>
+      <div class="form-group has-feedback">
+        <label class="control-label" for="type">Employer Size</label>
+        <select class="form-control" name="businessSize" [(ngModel)]="respondent.businessSize">
+          <option *ngFor="let bs of businesssizelist" [value]="bs.code">{{bs.desc}}</option>
+        </select>
+      </div>
+      <div class="form-group has-feedback">
+        <label class="control-label" for="type">Employer Turnover</label>
+        <select class="form-control" name="employerTurnover" [(ngModel)]="respondent.employerTurnover">
+          <option *ngFor="let et of employerturnoverlist" [value]="et.code">{{et.desc}}</option>
+        </select>
+      </div>
+
+      <div class="form-group has-feedback">
+        <label class="control-label" for="type">Industry</label>
+        <select class="form-control" name="industryId" [(ngModel)]="respondent.industryId">
+          <option *ngFor="let ind of industrylist" [value]="ind.id">{{ind.description}}</option>
+        </select>
+      </div>
+
+      <div class="form-group has-feedback job-tracking dashboard-auto font-14">
+        <label class="control-label" for="type">Partner's Occupation</label>
+        <!-- <select class="form-control" name="partnerOccupationId" [(ngModel)]="respondent.partnerOccupationId">
+                    <option *ngFor="let oc of occupationlist" [value]="oc.id">{{oc.description}}</option>
+                </select> -->
+        <!--<input auto-complete name="partnerOccupation" [(ngModel)]="respondent.partnerOccupationObj" [source]="occupationlist"-->
+        <!--class="form-control" [list-formatter]="autocompleListFormatter" />-->
+        <input auto-complete [source]="occupationAPI" no-match-found-text="No Data Found" list-formatter="description"
+          path-to-data="value" display-property-name="description" loading-text="Loading..." max-num-list="5"
+          min-chars="2" placeholder="" autocomplete="off" type="text" class="form-control" name="partneroccupation"
+          [(ngModel)]="respondent.partnerOccupationObj">
+      </div>
+      <div class="form-group">
+        <label class="control-label">Partner's Employer Size</label>
+        <select class="form-control" name="partnerBusinessSize" [(ngModel)]="respondent.partnerBusinessSize">
+          <option *ngFor="let bs of businesssizelist" [value]="bs.code">{{bs.desc}}</option>
+        </select>
+      </div>
+      <div class="form-group has-feedback">
+        <label class="control-label" for="type">Partner's Industry</label>
+        <select class="form-control" name="partnerIndustryId" [(ngModel)]="respondent.partnerIndustryId">
+          <option *ngFor="let in of industrylist" [value]="in.id">{{in.description}}</option>
+        </select>
+      </div>
+
+      <div class="form-group has-feedback">
+        <label class="control-label" for="type">Highest Education Level Achieved</label>
+        <select class="form-control" name="educationLevel" [(ngModel)]="respondent.educationLevel">
+          <option *ngFor="let el of highereducationlevellist" [value]="el.code">{{el.desc}}</option>
+        </select>
+      </div>
+      <div class="form-group has-feedback">
+        <label class="control-label" for="type">Education Institute Type</label>
+        <select class="form-control" name="educationinstutue" [(ngModel)]="respondent.studentPrivPub">
+          <option *ngFor="let it of educationtypelist" [value]="it.code">{{it.desc}}</option>
+        </select>
+      </div>
+
+      <div class="form-group has-feedback">
+        <label class="control-label">Education Institute Suburb</label>
+        <input auto-complete [source]="locationAPI" no-match-found-text="No Data Found" list-formatter="suggestion"
+          path-to-data="value" display-property-name="suburb" loading-text="Loading..." max-num-list="5" min-chars="2"
+          placeholder="" autocomplete="off" type="text" class="form-control" name="postcodeBusiness"
+          [(ngModel)]="respondent.studentSuburb" (ngModelChange)="setEduSub(respondent.studentSuburb)">
+      </div>
+
+      <div class="form-group has-feedback">
+        <label class="control-label w-100-pre" for="type">Highest Education Completed Year
+          <span [hidden]="currentEducationYearModel.valid || !isSubmitForm">
+            <span class="text-danger pull-right" [hidden]="!currentEducationYearModel.hasError('pattern')">Invalid
+              Year</span>
+          </span>
+        </label>
+        <input type="text" class="form-control datepicker-year" name="currentEducationYear"
+          [(ngModel)]="respondent.currentEducationYear" [textMask]="{mask: yearMask, showMask: true, guide: false}"
+          numeric (ngModelChange)="respondent.currentEducationYear = unmask($event)" pattern=".{4,4}"
+          #currentEducationYearModel="ngModel">
+      </div>
+      <div class="form-group has-feedback">
+        <label class="control-label" for="type">Education Study Field
+        </label>
+        <input class="form-control" name="studentStudyField" [(ngModel)]="respondent.studentStudyField"
+          (keypress)="stringOnly($event)" />
+      </div>
+
+
+
+    </div>
+    <div class="clearfix"></div>
+    <div class="col-md-12 no-padding m-b-0 newres-bottom">
+      <!-- <div class="pull-left" *ngIf="!isMyProfile">
+          <button class="btn btn-cocktail waves-effect waves-light btn-md">
+            Send Reset Password Link
+          </button>
+        </div> -->
+      <div class="col-md-6 font-10 no-padding" style="line-height: 34px">
+        <ng-container>
+          <b>Created:</b>
+          <ng-container *ngIf="respondent.dateCreated">
+            {{respondent.dateCreated | date: 'dd-MM-yyyy'}} &#160;
+          </ng-container>
+          <ng-container *ngIf="!respondent.dateCreated">
+            {{today | date: 'dd-MM-yyyy'}} &#160;
+          </ng-container>
+          <b>Last Updated:</b>
+          <ng-container *ngIf="respondent.dateLastUpdated">
+            {{respondent.dateLastUpdated | date: 'dd-MM-yyyy'}}
+          </ng-container>
+          <ng-container *ngIf="!respondent.dateLastUpdated">
+            {{today | date: 'dd-MM-yyyy'}}
+          </ng-container>
+        </ng-container>
+      </div>
+      <div class="col-md-6 text-right no-padding">
+        <button type="submit" (click)="updateRespondent(resOccupationForm)" class="btn waves-effect waves-light btn-md"
+          [class.btn-ocean]="!isMyProfile" [class.btn-basil]="isMyProfile">
+          Submit
+        </button>
+        <!-- <a *ngIf="isMyProfile" class="btn btn-cocktail m-l-5" (click)="gotoTop()">Skip</a> -->
+      </div>
+    </div>
+  </form>
+  <div class="clearfix"></div>
+</div>

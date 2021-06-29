@@ -1,0 +1,107 @@
+<div class="tab-pane" id="vehicledetails">
+  <ng-container *ngIf="!isMyProfile">
+    <div class="newres-tab-title">
+      <h5 class="no-margin">Vehicle Details</h5>
+    </div>
+    <br>
+  </ng-container>
+  <ng-container *ngIf="!isLoading">
+    <div class="no-padding-left" [class.col-md-2]="!isMyProfile" [class.col-md-12]="isMyProfile">
+      <div class="form-group has-feedback">
+        <label class="control-label">Vehicle 1 Make</label>
+        <select id="Vehicle1_MakeID" name="Vehicle1_MakeID" class="form-control" [(ngModel)]="respondent.vehicle1MakeId">
+          <option *ngFor="let vm of vehiclemakelist" [value]="vm.id">{{vm.description}}</option>
+        </select>
+      </div>
+      <div class="form-group">
+        <label class="control-label">Vehicle 1 Type</label>
+        <select id="Vehicle1_Type" name="Vehicle1_Type" class="form-control" [(ngModel)]="respondent.vehicle1Type">
+          <option *ngFor="let vt of vehicletypelist" [value]="vt.code">{{vt.desc}}</option>
+        </select>
+      </div>
+      <div class="form-group">
+        <label>Vehicle 1 Model</label>
+        <input autocomplete="off" type="text" id="Vehicle1_Model" name="Vehicle1_Model" [(ngModel)]="respondent.vehicle1Model" class="form-control">
+      </div>
+      <div class="form-group">
+        <label>Vehicle 1 Year</label>
+        <input autocomplete="off" type="text" id="Vehicle1_Year" name="Vehicle1_Year" [(ngModel)]="respondent.vehicle1Year" class="form-control"
+               [textMask]="{mask: yearMask, showMask: true, guide: false}" numeric (ngModelChange)="respondent.vehicle1Year = unmask($event)"
+               pattern=".{4,4}">
+      </div>
+      <div class="form-group">
+        <label>Vehicle 1 Brand New</label>
+        <select name="vehicle1IsNew" [(ngModel)]="respondent.vehicle1IsNew" class="form-control">
+          <option value="true">Yes</option>
+          <option value="false">No</option>
+        </select>
+        <!-- <input type="text" id="vehicle1IsNew" name="vehicle1IsNew" [(ngModel)]="respondent.vehicle1IsNew" class="form-control"
+          mask="0000" pattern=".{4,4}"> -->
+      </div>
+    </div>
+    <div class="no-padding-left" [class.col-md-2]="!isMyProfile" [class.col-md-12]="isMyProfile">
+      <div class="form-group has-feedback">
+        <label class="control-label">Vehicle 2 Make</label>
+        <select id="Vehicle2_MakeID" name="Vehicle2_MakeID" class="form-control" [(ngModel)]="respondent.vehicle2MakeId">
+          <option *ngFor="let vm of vehiclemakelist" [value]="vm.id">{{vm.description}}</option>
+        </select>
+      </div>
+      <div class="form-group">
+        <label class="control-label">Vehicle 2 Type</label>
+        <select id="Vehicle2_Type" name="Vehicle2_Type" class="form-control" [(ngModel)]="respondent.vehicle2Type">
+          <option *ngFor="let vt of vehicletypelist" [value]="vt.code">{{vt.desc}}</option>
+        </select>
+      </div>
+      <div class="form-group">
+        <label>Vehicle 2 Model</label>
+        <input autocomplete="off" type="text" id="Vehicle2_Model" name="Vehicle2_Model" [(ngModel)]="respondent.vehicle2Model" class="form-control">
+      </div>
+      <div class="form-group">
+        <label>Vehicle 2 Year</label>
+        <input autocomplete="off" type="text" id="Vehicle2_Year" name="Vehicle2_Year" [(ngModel)]="respondent.vehicle2Year" class="form-control"
+               [textMask]="{mask: yearMask, showMask: true, guide: false}" numeric (ngModelChange)="respondent.vehicle2Year = unmask($event)"
+               pattern=".{4,4}">
+      </div>
+      <div class="form-group">
+        <label>Vehicle 1 Brand New</label>
+        <select name="vehicle1IsNew" [(ngModel)]="respondent.vehicle1IsNew" class="form-control">
+          <option [value]="true">Yes</option>
+          <option [value]="false">No</option>
+        </select>
+        <!-- <input type="text" id="vehicle1IsNew" name="vehicle1IsNew" [(ngModel)]="respondent.vehicle1IsNew" class="form-control"
+          mask="0000" pattern=".{4,4}"> -->
+      </div>
+    </div>
+  </ng-container>
+  <div class="clearfix"></div>
+  <div class="col-md-12 no-padding m-b-0 newres-bottom">
+    <!-- <div class="pull-left" *ngIf="!isMyProfile">
+        <button class="btn btn-cocktail waves-effect waves-light btn-md">
+          Send Reset Password Link
+        </button>
+      </div> -->
+    <div class="col-md-6 font-10 no-padding" style="line-height: 34px">
+      <ng-container>
+        <b>Created:</b>
+        <ng-container *ngIf="respondent.dateCreated">
+          {{respondent.dateCreated | date: 'dd-MM-yyyy'}} &#160;
+        </ng-container>
+        <ng-container *ngIf="!respondent.dateCreated">
+          {{today | date: 'dd-MM-yyyy'}} &#160;
+        </ng-container>
+        <b>Last Updated:</b>
+        <ng-container *ngIf="respondent.dateLastUpdated">
+          {{respondent.dateLastUpdated | date: 'dd-MM-yyyy'}}
+        </ng-container>
+        <ng-container *ngIf="!respondent.dateLastUpdated">
+          {{today | date: 'dd-MM-yyyy'}}
+        </ng-container>
+      </ng-container>
+    </div>
+    <div class="col-md-6 text-right no-padding">
+      <button (click)="updateSubmit()" class="btn btn-ocean waves-effect waves-light btn-md">
+        Submit
+      </button>
+    </div>
+  </div>
+</div>

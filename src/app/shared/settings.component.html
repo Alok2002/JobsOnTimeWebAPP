@@ -1,0 +1,186 @@
+<div class="wrapper">
+  <div class="container">
+    <div class="row">
+      <div class="col-sm-12">
+        <ol class="breadcrumb breadcrumb-arrow bg-white box-card-shadow">
+          <li><a [routerLink]="['/dashboard']" class="home-breadcrumb"><i class="md md-home"></i><span
+                style="display: none;">Home</span></a></li>
+          <li><a>Account Settings</a></li>
+        </ol>
+      </div>
+      <div class="col-sm-12">
+        <div class="card-box">
+          <div class="col-md-5 p-0 m-b-15">
+            <div class="panel panel-warning ax-panel-tab m-b-0">
+              <div class="panel-heading">
+                <div class="panel-title">
+                  <h4 tabindex="0">Change Password</h4>
+                </div>
+              </div>
+              <div class="panel-body">
+                <form #settingsForm="ngForm">
+                  <div class="form-group required">
+                    <label class="control-label w-100-pre" for="currentpassword">Current Password
+                      <div class="pull-right">
+                        <span [hidden]="currentPasswordModel.valid || !isSubmitForm">
+                          <span class="text-danger pull-right"
+                            [hidden]="!currentPasswordModel.hasError('required')">Required</span>
+                        </span>
+                        <span class="text-danger pull-right" *ngIf="isIncorrectPassword">Incorrect Password</span>
+                      </div>
+                    </label>
+                    <input type="password" class="form-control" name="currentpassword"
+                      (ngModelChange)="isIncorrectPassword = false" [(ngModel)]="currentPassword" required
+                      #currentPasswordModel="ngModel" id="currentpassword">
+                  </div>
+                  <div class="clearfix"></div>
+                  <div class="form-group required">
+                    <label class="control-label w-100-pre" for="newpassword">New Password
+                      <div class="pull-right">
+                        <!-- <span [hidden]="newpasswordmodel.valid || !isSubmitForm">
+                          <span class="text-danger pull-right"
+                            [hidden]="!newpasswordmodel.hasError('required')">Required</span>
+                          <span class="text-danger pull-right" [hidden]="!newpasswordmodel.hasError('pattern')">
+                            At Least 8 characters with number, symbol and an uppercase letter&#160;</span>                          
+                        </span> -->
+                        <span class="pull-right" *ngIf="newpasswordmodel.dirty || (!newpasswordmodel.valid && isSubmitForm)"
+                          [class.text-danger]="!newpasswordmodel.valid && isSubmitForm">
+                          <span class="pull-right ax-cursor-pointer">
+                            At Least 8 characters with number, symbol and an uppercase letter
+                          </span>
+                        </span>
+                      </div>
+                    </label>
+                    <input type="password" class="form-control" name="newpassword" [(ngModel)]="newPassword"
+                      validateEqualTo="confirmnewpassword" #newpasswordmodel="ngModel" required [minlength]="minlength"
+                      [pattern]="pattern" (ngModelChange)="validatePasswordMissMatch()" id="newpassword">
+                  </div>
+                  <div class="clearfix"></div>
+                  <div class="form-group required">
+                    <label class="control-label w-100-pre" for="confirmnewpassword">Confirm New Password
+                      <div class="pull-right">
+                        <span [hidden]="confirmnewpasswordmodel.valid || !isSubmitForm">
+                          <span class="text-danger pull-right"
+                            [hidden]="!confirmnewpasswordmodel.hasError('required')">Required</span>
+                        </span>
+                        <span *ngIf="isSubmitForm && isMismatchpassword" class="text-danger pull-right">Passwords
+                          Mismatch</span>
+                      </div>
+                    </label>
+                    <input type="password" class="form-control" name="confirmnewpassword"
+                      [(ngModel)]="confirmNewPassword" validateEqual="newpassword" required
+                      #confirmnewpasswordmodel="ngModel" (ngModelChange)="validatePasswordMissMatch()"
+                      id="confirmnewpassword">
+                  </div>
+                  <div class="clearfix"></div>
+                  <div class="col-md-12 no-padding m-b-0">
+                    <div class="col-md-6 pull-left no-padding">
+                    </div>
+                    <div class="col-md-6 text-right no-padding">
+                      <button type="button" (click)="clearChangePassword()"
+                        class="btn btn-cocktail waves-effect waves-light btn-md">
+                        Clear
+                      </button>&#160;
+                      <button *ngIf="actort != 'Staff'" type="submit" (click)="submitChangePassword(settingsForm)"
+                        class="btn btn-basil waves-effect waves-light btn-md">
+                        Submit
+                      </button>
+                      <button *ngIf="actort == 'Staff'" type="submit" (click)="submitChangePasswordStaff(settingsForm)"
+                        class="btn btn-basil waves-effect waves-light btn-md">
+                        Submit
+                      </button>
+                    </div>
+                  </div>
+                  <div class="clearfix"></div>
+                  <ng-container *ngIf="actort != 'Client' && actort != 'Staff'">
+                    <br>
+                    <div class="panel panel-warning ax-panel-skyblue m-b-0">
+                      <div class="panel-heading" style="background-color: #dae6ec !important;padding: 7px;">
+                        <div class="panel-title">
+                          <h4 tabindex="0" style="color: #2a3142 !important;font-size: 14px;">Close My Account</h4>
+                        </div>
+                      </div>
+                      <div tabindex="0" class="panel-body">
+                        Unsubscribe means all your contact details will be removed from the system and you will no
+                        longer
+                        be
+                        contacted by Farron.
+                        <a (click)="unsubscribeAlert()" href="javascript:;">Unsubscribe Now.</a>
+                      </div>
+                    </div>
+                  </ng-container>
+                </form>
+              </div>
+            </div>
+          </div>
+          <div class="clearfix"></div>
+          <div class="col-md-5 p-0" *ngIf="actort == 'Staff'">
+            <div class="panel panel-warning ax-panel-tab m-b-0">
+              <div class="panel-heading">
+                <div class="panel-title">
+                  <h4>
+                    Two-Factor Authentication
+                    <span *ngIf="staffUser?.enable2FA == true" class="pull-right text-success">
+                      <i class="md md-check"></i> Enabled
+                    </span>
+                    <div class="clearfix"></div>
+                  </h4>
+                </div>
+              </div>
+              <div *ngIf="staffUser?.enable2FA == false" class="panel-body">
+                <ng-container *ngIf="!isShowOtpForm">
+                  <!-- <ng-container *ngIf="enable2FA == false">
+                    <label class="control-label" style="padding-top: 10px;">Two-Factor Authentication</label>
+                    <label class="switch pull-right">
+                      <input type="checkbox" name="enable2FA" [(ngModel)]="enable2FA" [value]="true">
+                      <span class="slider"></span>
+                    </label>
+                  </ng-container> -->
+                  <div style="margin: 0 auto;">
+                    <div style="max-width: 250px;" class="pull-left">
+                      <iframe *ngIf="qrCodePath" [src]="qrCodePath | safe" width="100%" height="250"
+                        class="no-border text-center"></iframe>
+                    </div>
+                    <div class="pull-right" style="width: calc(100% - 250px);">
+                      <br><br>
+                      <p>When you log in, you'll need to enter a code generated by the Google Authenticator app.</p>
+                      <p>Download an authentication app to your smartphone from the App Store (for iPhone) or Google
+                        Play
+                        (for Android smartphones).</p>
+                      <p>Use the app to scan the barcode below or type in the key to enable Two Factor Authentication.
+                      </p>
+                    </div>
+                    <button class="btn btn-basil waves-effect waves-light btn-md btn-block"
+                      (click)="isShowOtpForm = true">
+                      Enable
+                    </button>
+                  </div>
+                </ng-container>
+
+                <form *ngIf="isShowOtpForm" #faForm="ngForm">
+                  <div class="form-group">
+                    <ng-otp-input #show2FAOTP (onInputChange)="onOtpChange($event)"
+                      [config]="{length:6,inputClass:'form-control d-inline-block otp-input',allowNumbersOnly: true}">
+                    </ng-otp-input>
+                  </div>
+                  <div class="text-right">
+                    <button (click)="isShowOtpForm = false" class="btn btn-cocktail waves-effect waves-light btn-md">
+                      Cancel
+                    </button>&#160;
+                    <button (click)="clear2FAOTP()" class="btn btn-warning waves-effect waves-light btn-md">
+                      Clear
+                    </button>&#160;
+                    <button (click)="validateTwoFactorPIN()" class="btn btn-basil waves-effect waves-light btn-md">
+                      Validate
+                    </button>
+                  </div>
+                </form>
+              </div>
+              <div class="clearfix"></div>
+            </div>
+          </div>
+          <div class="clearfix"></div>
+        </div>
+      </div>
+    </div>
+  </div>

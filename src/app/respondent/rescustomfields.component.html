@@ -1,0 +1,53 @@
+<div class="tab-pane" id="bankdetails">
+  <ng-container *ngIf="!isMyProfile">
+    <div class="newres-tab-title">
+      <h5 class="no-margin">Custom Fields</h5>
+    </div>
+    <br>
+  </ng-container>
+  <form action="">
+    <div *ngIf="!isLoading" class="no-padding" [class.col-md-6]="!isMyProfile" [class.col-md-12]="isMyProfile">
+      <div *ngIf="fieldLabels?.customField1" class="form-group">
+        <label
+          class="control-label">{{fieldLabels?.customField1 ? fieldLabels?.customField1 : "Custom Field 1"}}</label>
+        <input type="text" class="form-control" name="customField1" [(ngModel)]="respondent.customField1">
+      </div>
+      <div *ngIf="fieldLabels?.customField2" class="form-group">
+        <label
+          class="control-label">{{fieldLabels?.customField2 ? fieldLabels?.customField2 : "Custom Field 2"}}</label>
+        <input type="text" class="form-control" name="customField2" [(ngModel)]="respondent.customField2">
+      </div>
+      <div *ngIf="fieldLabels?.customField3" class="form-group">
+        <label
+          class="control-label">{{fieldLabels?.customField3 ? fieldLabels?.customField3 : "Custom Field 3"}}</label>
+        <input type="text" class="form-control" name="customField3" [(ngModel)]="respondent.customField3">
+      </div>
+
+      <div *ngIf="fieldLabels?.customField4" class="form-group">
+        <label
+          class="control-label">{{fieldLabels?.customField4 ? fieldLabels?.customField4 : "Custom Field 4"}}</label>
+        <input type="text" class="form-control" name="customField4" [(ngModel)]="respondent.customField4">
+      </div>
+      <div *ngIf="fieldLabels?.customField5" class="form-group">
+        <label
+          class="control-label">{{fieldLabels?.customField5 ? fieldLabels?.customField5 : "Custom Field 5"}}</label>
+        <input type="text" class="form-control" name="customField5" [(ngModel)]="respondent.customField5">
+      </div>
+      <div *ngIf="fieldLabels?.customField6" class="form-group">
+        <label
+          class="control-label">{{fieldLabels?.customField6 ? fieldLabels?.customField6 : "Custom Field 6"}}</label>
+        <input type="text" class="form-control" name="customField6" [(ngModel)]="respondent.customField6">
+      </div>
+
+      <div *ngIf="fieldLabels?.customField7" class="form-group">
+        <label
+          class="control-label">{{fieldLabels?.customField7 ? fieldLabels?.customField7 : "Custom Field 7"}}</label>
+        <input type="text" class="form-control" name="customField7" [(ngModel)]="respondent.customField7">
+      </div>
+    </div>
+    <div class="col-md-12 no-padding text-right newres-bottom">
+      <button class="btn" [class.btn-ocean]="!isMyProfile" [class.btn-basil]="isMyProfile"
+        (click)="updateRespondent()">Submit</button>
+    </div>
+  </form>
+</div>

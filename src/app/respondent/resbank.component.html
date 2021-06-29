@@ -1,0 +1,38 @@
+<div class="tab-pane" id="bankdetails">
+  <ng-container *ngIf="!isMyProfile">
+    <div class="newres-tab-title">
+      <h5 class="no-margin">Bank Details</h5>
+    </div>
+    <br>
+  </ng-container>
+  <form action="">
+    <div *ngIf="!isLoading" class="no-padding" [class.col-md-4]="!isMyProfile" [class.col-md-12]="isMyProfile">
+      <div class="form-group no-padding" [class.col-md-2]="!isMyProfile" [class.col-md-12]="isMyProfile">
+        <label class="control-label">BSB</label>
+        <input autocomplete="off" type="text" class="form-control" name="financeBsb" [(ngModel)]="respondent.financeBsb"
+          [textMask]="{mask: bsbMask, showMask: true}" numeric (ngModelChange)="respondent.financeBsb = unmask($event)"
+          [pattern]="financeBSBPattern">
+      </div>
+      <div class="form-group col-md-10" [class.no-padding-right]="!isMyProfile" [class.col-md-10]="!isMyProfile"
+        [class.col-md-12]="isMyProfile">
+        <label class="control-label">Account Number</label>
+        <input autocomplete="off" type="number" class="form-control" name="financeAccountNumber"
+          [(ngModel)]="respondent.financeAccountNumber">
+      </div>
+      <div class="form-group">
+        <label class="control-label">Account Name</label>
+        <input autocomplete="off" type="text" class="form-control" name="financeAccountName"
+          [(ngModel)]="respondent.financeAccountName">
+      </div>
+      <div class="form-group">
+        <label class="control-label">Bank Name</label>
+        <input autocomplete="off" type="text" class="form-control" name="financeBankName"
+          [(ngModel)]="respondent.financeBankName">
+      </div>
+    </div>
+    <div class="col-md-12 no-padding text-right newres-bottom">
+      <button class="btn" [class.btn-ocean]="!isMyProfile" [class.btn-basil]="isMyProfile"
+        (click)="updateRespondent()">Submit</button>
+    </div>
+  </form>
+</div>

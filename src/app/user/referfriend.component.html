@@ -1,0 +1,190 @@
+<div class="no-padding home-bg" style="margin-bottom: -61px;">
+  <div class="home-bg-trans1">
+    <!-- Navigation Bar-->
+    <header id="topnav">
+      <div class="topbar-main" style="height:60px">
+        <div class="container">
+          <!-- Logo container-->
+          <div class="logo">
+            <a class="logo" [title]="isFarronResearch ? 'Farron Research Logo' : 'Logo'">
+              <span class="hidden-xs"><img src="assets/images/fr-logo.png"
+                  [alt]="isFarronResearch ? 'Farron Research Logo' : 'Logo'"></span>
+              <span class="hidden-sm hidden-md hidden-lg">
+                <img src="assets/images/fr-only-logo.png" [alt]="isFarronResearch ? 'Farron Research Logo' : 'Logo'">
+              </span>
+            </a>
+          </div>
+          <!-- End Logo container-->
+          <div class="menu-extras">
+            <ul class="nav navbar-nav navbar-right pull-right ax-right-nav-btn">
+              <li>
+                <div class="input-group">
+                  <a *ngIf="!surveyRedirecJobId" [routerLink]="['/signin']" class="btn btn-basil">Login</a>
+                  <a *ngIf="surveyRedirecJobId" [routerLink]="['/signin', surveyRedirecJobId]"
+                    class="btn btn-basil">Login</a>
+                </div>
+              </li>
+            </ul>
+          </div>
+        </div>
+      </div>
+      <!-- End topbar -->
+      <!-- Navbar Start -->
+      <!-- end navbar-custom -->
+    </header>
+    <!-- End Navigation Bar-->
+    <!-- =======================
+         ===== START PAGE ======
+         ======================= -->
+
+    <div class="wrapper login-page-wrapper">
+      <div class="container min-width-100vw text-center">
+        <div class="row">
+          <!--<div class="col-sm-2"></div>-->
+          <div class="ax-login-panel" style="max-width: 960px">
+            <h1 class="text-center login-card-header text-white" style="background: #2ea2db;">
+              <!-- <i class="fa fa-lock"></i> &#160; -->
+              Refer a Friend
+            </h1>
+            <div class="col-md-12">
+              <div class="card-box m-b-0 login-card">
+                <div class="col-md-5 no-padding-left login-card-left" style="font-size: 13px; padding-right: 30px">
+                  <img src="assets/images/login-left.png" style="max-width: 100%">
+                  <!-- <h5 style="font-size: 18px; margin-bottom: 20px;color: #0f90d2;" class="m-t-30"> -->
+                  <!-- Join and Get Paid $$$ for Your Opinion -->
+                  <span>
+                    <h2 style="font-size: 18px; margin-bottom: 20px;color:#0372cc;line-height: 1.1;" class="m-t-30">
+                      <span [innerHTML]="welcomeCopies?.referPageText1 | safeHtml"></span>
+                    </h2>
+                  </span>
+                  <!-- </h5> -->
+                  <p>
+                    <span [innerHTML]="welcomeCopies?.referPageText2 | safeHtml"></span>
+                    <!-- Make a difference by sharing your opinion.<br>
+                    When you participate in a market research session with Farron Research you are helping to shape and
+                    improve the product and services that our clients offer.<br>
+                    Your submission is encrypted and personally identifiable information is never shared with any third
+                    parties without your written consent. -->
+                  </p>
+                  <p style="margin-top: 22px; margin-bottom: 0px;" class="hidden-xs">
+                    <a *ngIf="surveyRedirecJobId" [routerLink]="['/signin', surveyRedirecJobId]"
+                      class="btn btn-skyblue waves-effect waves-light btn-md btn-block font-16">Existing
+                      member login here</a>
+                    <a *ngIf="!surveyRedirecJobId" [routerLink]="['/signin']"
+                      class="btn btn-skyblue waves-effect waves-light btn-md btn-block font-16">Existing
+                      member login here</a>
+                  </p>
+                </div>
+
+                <div class="col-md-7 no-padding-right no-padding-mob m-t-15-mob no-border-mob"
+                  style="padding-left: 30px; border-left:1px solid #e6e7e8">
+                  <!-- <img src="assets/images/fr-only-logo.png" class="ax-login-panel-logo"> -->
+                  <form class="text-left ax-form" role="form" id="loginForm" #signUpForm="ngForm">
+                    <div class="form-group required">
+                      <label class="control-label w-100-pre">
+                        Email Address
+                        <div class="pull-right">
+                          <span [hidden]="emailModel.valid || !isSubmitForm">
+                            <span class="text-danger pull-right"
+                              [hidden]="!emailModel.hasError('required')"><b>Required</b></span>
+                            <span class="text-danger pull-right"
+                              [hidden]="!emailModel.hasError('pattern')"><b>Invalid</b></span>
+                          </span>
+                        </div>
+                      </label>
+                      <input type="text" class="form-control" [(ngModel)]="referFriend.yourEmail" name="email"
+                        #emailModel="ngModel" pattern="^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,10})+$" required>
+                    </div>
+                    <div class="form-group required">
+                      <label class="control-label w-100-pre">
+                        Friend's Email
+                        <div class="pull-right">
+                          <span [hidden]="friendEmail1Model.valid || !isSubmitForm">
+                            <span class="text-danger pull-right"
+                              [hidden]="!friendEmail1Model.hasError('required')"><b>Required</b></span>
+                            <span class="text-danger pull-right"
+                              [hidden]="!friendEmail1Model.hasError('pattern')"><b>Invalid</b></span>
+                          </span>
+                        </div>
+                      </label>
+                      <input type="text" class="form-control" [(ngModel)]="referFriend.friendEmail1" name="friendEmail1"
+                        #friendEmail1Model="ngModel" pattern="^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,10})+$" required>
+                    </div>
+                    <div class="form-group">
+                      <label class="control-label w-100-pre">
+                        Friend's Email
+                        <div class="pull-right">
+                          <span [hidden]="friendEmail2Model.valid || !isSubmitForm">
+                            <span class="text-danger pull-right"
+                              [hidden]="!friendEmail2Model.hasError('required')"><b>Required</b></span>
+                            <span class="text-danger pull-right"
+                              [hidden]="!friendEmail2Model.hasError('pattern')"><b>Invalid</b></span>
+                          </span>
+                        </div>
+                      </label>
+                      <input type="text" class="form-control" [(ngModel)]="referFriend.friendEmail2" name="friendEmail2"
+                        #friendEmail2Model="ngModel" pattern="^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,10})+$">
+                    </div>
+                    <div class="form-group">
+                      <label class="control-label w-100-pre">
+                        Friend's Email
+                        <div class="pull-right">
+                          <span [hidden]="friendEmail3Model.valid || !isSubmitForm">
+                            <span class="text-danger pull-right"
+                              [hidden]="!friendEmail3Model.hasError('required')"><b>Required</b></span>
+                            <span class="text-danger pull-right"
+                              [hidden]="!friendEmail3Model.hasError('pattern')"><b>Invalid</b></span>
+                          </span>
+                        </div>
+                      </label>
+                      <input type="text" class="form-control" [(ngModel)]="referFriend.friendEmail3" name="friendEmail3"
+                        #friendEmail3Model="ngModel" pattern="^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,10})+$">
+                    </div>
+                    <div class="form-group">
+                      <label class="control-label w-100-pre">
+                        Your Personal Message
+                      </label>
+                      <textarea name="message" [(ngModel)]="referFriend.message" rows="2" class="form-control"></textarea>
+                    </div>
+                    <div class="clearfix"></div>
+                    <div class="text-right">
+                      <span>
+                        <!-- <i class="fa fa-spinner fa-pulse" *ngIf="isSubmitFormSpinner"></i>&#160; -->
+                        <button (click)="referFriendFormSubmit(signUpForm)"
+                          class="btn btn-basil waves-effect waves-light btn-md">
+                          Send
+                        </button>
+                      </span>
+                    </div>
+                    <div class="clearfix"></div>
+                    <div class="text-center error-box" *ngIf="errmsg">
+                      <b>{{errmsg}}</b>
+                    </div>
+                    <div class="clearfix"></div>
+                  </form>
+                  <!--
+                <h2 class="line-text"><span>or</span></h2>
+                <div class="text-center">
+                  <a href="home.html" class="btn btn-facebook btn-block">
+                    <i class="fa fa-facebook"></i>
+                    &nbsp;&nbsp;Sign Up with Facebook
+                  </a>
+                  <h2 class="line-text"><span>or</span></h2>
+                  <a href="home.html" class="btn btn-cocktail btn-block m-b-10">
+                    <i class="fa fa-google-plus"></i>
+                    &nbsp;&nbsp;Sign Up with Google+
+                  </a>
+                </div>
+                  -->
+                </div>
+
+                <div class="clearfix"></div>
+              </div>
+            </div>
+          </div>
+          <!--<div class="col-sm-2"></div>-->
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

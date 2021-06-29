@@ -1,0 +1,207 @@
+<div [class.wrapper]="!inputResId">
+  <div [class.container]="!inputResId">
+    <div class="row">
+      <div *ngIf="!inputResId" class="col-sm-12">
+        <ol class="breadcrumb breadcrumb-arrow bg-white box-card-shadow">
+          <li><a [routerLink]="['/dashboard']" class="home-breadcrumb"><i class="md md-home"></i></a></li>
+          <li *ngIf="resId"><a [routerLink]="['/searchrespondents']" class="home-breadcrumb font-14">Panel Members</a>
+          </li>
+          <li *ngIf="resId"><a>{{resId}} - {{respondent?.givenNames}} {{respondent?.lastName}}</a></li>
+          <li *ngIf="!resId"><a href="">New Consumer Panel Member</a></li>
+        </ol>
+      </div>
+
+      <div class="col-sm-12">
+        <div class="card-box" [class.m-b-0]="inputResId" style="overflow: auto">
+          <div class="tabs-vertical-env nav-tab-left navtab-custom m-b-0">
+            <ul class="nav nav tabs-vertical ax-nav-tabs">
+              <li [class.active]="selectTab == 'contact'" (click)="selectTab = 'contact'">
+                <a>
+                  <span class="hidden-xs1">Contact Details</span>
+                </a>
+              </li>
+              <li [class.active]="selectTab == 'jobs'" [class.disable]="!resId" (click)="resId && selectTab = 'jobs'">
+                <a>
+                  <span class="hidden-xs1">Jobs & Events</span>
+                </a>
+              </li>
+              <li [class.active]="selectTab == 'personal'" [class.disable]="!resId" class="d-desktop-only"
+                (click)="resId && selectTab = 'personal'">
+                <a>
+                  <span class="hidden-xs1">Personal Details</span>
+                </a>
+              </li>
+              <li [class.active]="selectTab == 'research'" [class.disable]="!resId" class="d-desktop-only"
+                (click)="resId && selectTab = 'research'">
+                <a>
+                  <span class="hidden-xs1">Research Preferences</span>
+                </a>
+              </li>
+              <li [class.active]="selectTab == 'occupation'" [class.disable]="!resId" class="d-desktop-only"
+                (click)="resId && selectTab = 'occupation'">
+                <a>
+                  <span class="hidden-xs1">Occupation Details</span>
+                </a>
+              </li>
+              <li [class.active]="selectTab == 'family'" [class.disable]="!resId" class="d-desktop-only"
+                (click)="resId && selectTab = 'family'">
+                <a>
+                  <span class="hidden-xs1">Family Details</span>
+                </a>
+              </li>
+              <li [class.active]="selectTab == 'finance'" [class.disable]="!resId" class="d-desktop-only"
+                (click)="resId && selectTab = 'finance'">
+                <a>
+                  <span class="hidden-xs1">Finance</span>
+                </a>
+              </li>
+              <li [class.active]="selectTab == 'health'" [class.disable]="!resId" class="d-desktop-only"
+                (click)="resId && selectTab = 'health'">
+                <a>
+                  <span class="hidden-xs1">Health Details</span>
+                </a>
+              </li>
+              <li [class.active]="selectTab == 'insurance'" [class.disable]="!resId" class="d-desktop-only"
+                (click)="resId && selectTab = 'insurance'">
+                <a>
+                  <span class="hidden-xs1">Insurance & Government</span>
+                </a>
+              </li>
+              <li [class.active]="selectTab == 'services'" [class.disable]="!resId" class="d-desktop-only"
+                (click)="resId && selectTab = 'services'">
+                <a>
+                  <span class="hidden-xs1">Services & Utilities</span>
+                </a>
+              </li>
+              <li [class.active]="selectTab == 'social'" [class.disable]="!resId" class="d-desktop-only"
+                (click)="resId && selectTab = 'social'">
+                <a>
+                  <span class="hidden-xs1">Social</span>
+                </a>
+              </li>
+              <li [class.active]="selectTab == 'technology'" [class.disable]="!resId" class="d-desktop-only"
+                (click)="resId && selectTab = 'technology'">
+                <a>
+                  <span class="hidden-xs1">Technology</span>
+                </a>
+              </li>
+              <li [class.active]="selectTab == 'telecommunications'" [class.disable]="!resId" class="d-desktop-only"
+                (click)="resId && selectTab = 'telecommunications'">
+                <a>
+                  <span class="hidden-xs1">Telecommunications</span>
+                </a>
+              </li>
+              <li [class.active]="selectTab == 'transport'" [class.disable]="!resId" class="d-desktop-only"
+                (click)="resId && selectTab = 'transport'">
+                <a>
+                  <span class="hidden-xs1">Transport</span>
+                </a>
+              </li>
+              <li [class.active]="selectTab == 'travel'" [class.disable]="!resId" class="d-desktop-only"
+                (click)="resId && selectTab = 'travel'">
+                <a>
+                  <span class="hidden-xs1">Travel & Loyalty Program</span>
+                </a>
+              </li>
+              <li *ngIf="!inputResId" [class.active]="selectTab == 'payments'" [class.disable]="!resId"
+                (click)="resId && selectTab = 'payments'">
+                <a>
+                  <span class="hidden-xs1">Payments & Banking</span>
+                </a>
+              </li>
+              <li [class.active]="selectTab == 'other'" [class.disable]="!resId" (click)="resId && selectTab = 'other'">
+                <a>
+                  <span class="hidden-xs1">Other</span>
+                </a>
+              </li>
+              <li *ngIf="!inputResId" [class.active]="selectTab == 'surveys'" [class.disable]="!resId"
+                class="d-desktop-only" (click)="resId && selectTab = 'surveys'">
+                <a>
+                  <span class="hidden-xs1">Surveys</span>
+                </a>
+              </li>
+              <li *ngIf="!inputResId" [class.active]="selectTab == 'customfields'" [class.disable]="!resId"
+                class="d-desktop-only" (click)="resId && selectTab = 'customfields'">
+                <a>
+                  <span class="hidden-xs1">Custom Fields</span>
+                </a>
+              </li>
+
+
+              <!--
+
+              <li [class.active]="selectTab == 'banking'" (click)="selectTab = 'banking'">
+                <a>
+                  <span class="hidden-xs1">Banking & Investment</span>
+                </a>
+              </li>
+              <li [class.active]="selectTab == 'phone'" (click)="selectTab = 'phone'">
+                <a>
+                  <span class="hidden-xs1">Phone, Internet & Tv</span>
+                </a>
+              </li>
+              <li [class.active]="selectTab == 'vehicle'" (click)="selectTab = 'vehicle'">
+                <a>
+                  <span class="hidden-xs1">Vehicle Details</span>
+                </a>
+              </li>
+              <li [class.active]="selectTab == 'loyaltee'" (click)="selectTab = 'loyaltee'">
+                <a>
+                  <span class="hidden-xs1">Loyaltee Programs</span>
+                </a>
+              </li>
+              <li [class.active]="selectTab == 'bank'" (click)="selectTab = 'bank'">
+                <a>
+                  <span class="hidden-xs1">Bank Details</span>
+                </a>
+              </li>
+
+              <li [class.active]="selectTab == 'surveys'" (click)="selectTab = 'surveys'">
+                <a>
+                  <span class="hidden-xs1">Surveys</span>
+                </a>
+              </li>
+              <li [class.active]="selectTab == 'payments'" (click)="selectTab = 'payments'">
+                <a>
+                  <span class="hidden-xs1">Payments & Points</span>
+                </a>
+              </li> -->
+            </ul>
+
+            <div class="tab-content no-margin ax-tab-content w-100-pre">
+              <ResContactComponent *ngIf="selectTab == 'contact'" [resId]="resId"></ResContactComponent>
+              <ResPersonalComponent *ngIf="selectTab == 'personal'" [resId]="resId"></ResPersonalComponent>
+              <ResResearchComponent *ngIf="selectTab == 'research'" [resId]="resId"></ResResearchComponent>
+              <ResOccupationComponent *ngIf="selectTab == 'occupation'" [resId]="resId"></ResOccupationComponent>
+              <ResFamilyComponent *ngIf="selectTab == 'family'" [resId]="resId"></ResFamilyComponent>
+              <ResBankingComponent *ngIf="selectTab == 'banking'" [resId]="resId"></ResBankingComponent>
+              <ResInsuranceComponent *ngIf="selectTab == 'insurance'" [resId]="resId"></ResInsuranceComponent>
+              <ResPhoneComponent *ngIf="selectTab == 'phone'" [resId]="resId"></ResPhoneComponent>
+              <ResServicesComponent *ngIf="selectTab == 'services'" [resId]="resId"></ResServicesComponent>
+              <ResVehicleComponent *ngIf="selectTab == 'vehicle'" [resId]="resId"></ResVehicleComponent>
+              <ResTravelComponent *ngIf="selectTab == 'travel'" [resId]="resId"></ResTravelComponent>
+              <ResLoyalteeComponent *ngIf="selectTab == 'loyaltee'" [resId]="resId"></ResLoyalteeComponent>
+              <ResHealthComponent *ngIf="selectTab == 'health'" [resId]="resId"></ResHealthComponent>
+              <ResBankComponent *ngIf="selectTab == 'bank'" [resId]="resId"></ResBankComponent>
+              <ResOtherComponent *ngIf="selectTab == 'other'" [resId]="resId"></ResOtherComponent>
+              <ResSurveysComponent *ngIf="selectTab == 'surveys'" [resId]="resId"></ResSurveysComponent>
+              <ResPaymentsComponent *ngIf="selectTab == 'payments'" [resId]="resId"></ResPaymentsComponent>
+              <ResJobsComponent *ngIf="selectTab == 'jobs'" [resId]="resId"></ResJobsComponent>
+
+              <ResFinanceComponent *ngIf="selectTab == 'finance'" [resId]="resId"></ResFinanceComponent>
+              <ResSocialComponent *ngIf="selectTab == 'social'" [resId]="resId"></ResSocialComponent>
+              <ResTechnologyComponent *ngIf="selectTab == 'technology'" [resId]="resId"></ResTechnologyComponent>
+              <ResTransportComponent *ngIf="selectTab == 'transport'" [resId]="resId"></ResTransportComponent>
+
+              <ResTeleCommunicationsComponent *ngIf="selectTab == 'telecommunications'" [resId]="resId">
+              </ResTeleCommunicationsComponent>
+
+              <ResCustomFieldsComponent *ngIf="selectTab == 'customfields'" [resId]="resId">
+              </ResCustomFieldsComponent>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

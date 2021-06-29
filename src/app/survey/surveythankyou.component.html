@@ -1,0 +1,54 @@
+﻿<div class="no-padding home-bg" style="margin-bottom: -61px;">
+  <div class="home-bg-trans1">
+    <!-- Navigation Bar-->
+    <header id="topnav">
+      <div class="topbar-main" style="height: 60px;">
+        <div class="container">
+          <!-- Logo container-->
+          <div class="logo">
+            <a class="logo" [title]="isFarronResearch ? 'Farron Research Logo' : 'Logo'">
+              <span class="hidden-xs"><img src="assets/images/fr-logo.png"
+                  [alt]="isFarronResearch ? 'Farron Research Logo' : 'Logo'"></span>
+              <span class="hidden-sm hidden-md hidden-lg">
+                <img src="assets/images/fr-only-logo.png" [alt]="isFarronResearch ? 'Farron Research Logo' : 'Logo'">
+              </span>
+            </a>
+          </div>
+          <!-- End Logo container-->
+          <div class="menu-extras">
+            <ul class="nav navbar-nav navbar-right pull-right ax-right-nav-btn">
+              <li>
+                <div class="input-group">
+                  <a class="btn btn-skyblue" [routerLink]="['/signin']">Login</a>
+                </div>
+              </li>
+            </ul>
+          </div>
+        </div>
+      </div>
+      <!-- End topbar -->
+    </header>
+    <!-- End Navigation Bar-->
+    <!-- =======================
+          ===== START PAGE ======
+          ======================= -->
+
+    <div class="wrapper login-page-wrapper">
+      <div class="container min-width-100vw text-center">
+        <div class="row">
+          <!--<div class="col-sm-2"></div>-->
+          <div class="ax-login-panel">
+            <h3 class="login-card-header">Thank You!</h3>
+            <div class="col-md-12">
+              <div class="card-box m-b-0 login-card">
+                Thank you for taking the survey. Your response is very important to us.<br>
+                {{thankyoupagesign}}
+              </div>
+            </div>
+          </div>
+          <!--<div class="col-sm-2"></div>-->
+        </div><!-- end container -->
+      </div>
+    </div>
+  </div>
+</div>

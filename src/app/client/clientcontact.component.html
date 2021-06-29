@@ -1,0 +1,131 @@
+<div class="clearfix"></div>
+
+<p-table #dt [columns]="selectedColumns" [value]="clientcontacts" [paginator]="true" [paginatorPosition]="'top'"
+  [pageLinks]="10" [rows]="noofrows" [totalRecords]="clientcontacts?.length" [loading]="false"
+  selectionMode="multiple" [(selection)]="selectedRowData" [metaKeySelection]="true" [resizableColumns]="true" columnResizeMode="expand"
+  [tableStyleClass]="'table ax-table table-striped table-bordered m-b-0 border-color-e7e7e7'" [scrollable]="true"
+  scrollHeight="550px">
+
+  <ng-template pTemplate="caption">
+    <div class="pull-left col-md-6 no-padding text-left d-desktop-only">
+      <div class="ax-sysconfig-data-table-top ax-data-table-top-x700 col-md-6 no-padding">
+        <div class="btn-group">
+          <a class="btn btn-xs waves-effect m-l--1 btn-green-dark btn-square" (click)="exporttoExcel()">
+            <i class="md md-file-download"></i>
+          </a>
+          <a class="btn btn-ocean btn-xs waves-effect btn-square" data-target="#add-new-contact-modal"
+            data-toggle="modal" data-backdrop="static" (click)="addNew()">
+            <i class="md md-add-circle-outline"></i> New
+          </a>
+          <a class="btn btn-cocktail btn-xs waves-effect btn-square m-l--1" id="deleteAlert" (click)="deleteContact()">
+            <i class="md md-remove-circle-outline"></i> Delete
+          </a>
+        </div>
+      </div>
+    </div>
+    <div class="pull-right col-md-6 no-padding text-right ax-primeng-table-right d-desktop-only">
+      <span class="ax-table-search vertical-align-top">
+        <span class="btn btn-default btn-xs btn-square btn-default-border vertical-align-top">
+          <i class="md md-search"></i>
+        </span>
+        <input [(ngModel)]="ptablesearch" type="text" pInputText size="50" placeholder="Search"
+          (input)="dt.filterGlobal($event.target.value, 'contains')" style="width:150px"
+          class="vertical-align-top ptable-search-input">
+        <span class="btn btn-default btn-xs btn-square btn-default-border vertical-align-top"
+          (click)="dt.filterGlobal(null, 'contains');ptablesearch = null">
+          <i class="md md-clear"></i>
+        </span>
+      </span>
+
+      <span class="m-l-1 ax-table-filter vertical-align-top">
+        <select name="noofrows" class="btn-default-border vertical-align-top" [(ngModel)]="noofrows">
+          <option value="50">50</option>
+          <option value="100">100</option>
+          <option value="200">200</option>
+          <option value="300">300</option>
+          <option value="500">500</option>
+          <option value="1000">1,000</option>
+        </select>
+      </span>
+      <span class="m-l-1 btn btn-default btn-xs btn-square btn-default-border vertical-align-top">
+        Total {{clientcontacts?.length}} Records
+      </span>
+      <span class="m-l-1">
+        <p-multiSelect [options]="cols" [(ngModel)]="selectedColumns" optionLabel="header"
+          (onChange)="updateSelectedColumnsIndex()" selectedItemsLabel="Show Column" maxSelectedLabels="0"
+          [style]="{minWidth: 'auto'}" defaultLabel="Show Column" dropdownIcon='caret' [filter]="false"
+          [showToggleAll]="false" [showHeader]="false">
+        </p-multiSelect>
+      </span>
+    </div>
+    <div class="clearfix"></div>
+  </ng-template>
+
+  <ng-template pTemplate="colgroup" let-columns>
+    <colgroup>
+      <col *ngFor="let col of columns" [style.width.px]="col?.width">
+    </colgroup>
+  </ng-template>
+
+  <ng-template pTemplate="header" let-columns>
+    <tr>
+      <th *ngFor="let col of columns" pResizableColumn [style.width.px]="col?.width" [style.textAlign]="col?.textAlign"
+        [pSortableColumn]="col.sort ? col.field : ''">
+        {{col.header}}
+        <p-sortIcon *ngIf="col.sort" [field]="col.field" ariaLabel="Activate to sort"
+          ariaLabelDesc="Activate to sort in descending order" ariaLabelAsc="Activate to sort in ascending order">
+        </p-sortIcon>
+      </th>
+    </tr>
+  </ng-template>
+
+  <ng-template pTemplate="body" let-cn let-i="rowIndex" let-columns="columns">
+    <tr [pSelectableRow]="cn">
+      <ng-container *ngFor="let sc of selectedColumns;">
+        <ng-container [ngSwitch]="sc.field">
+          <ng-container *ngSwitchCase="'fullName'">
+            <td [style.width.px]="sc.width">
+              <a data-target="#add-new-contact-modal" data-toggle="modal" class="ax-cursor-pointer"
+                data-backdrop="static" (click)="editContact(cn.id);isNewContact=false">{{cn.fullName}}</a>
+            </td>
+          </ng-container>
+          <ng-container *ngSwitchCase="'emailAddress'">
+            <td [style.width.px]="sc.width"><a href="mailto:{{cn.emailAddress}}">{{cn.emailAddress}}</a></td>
+          </ng-container>
+          <ng-container *ngSwitchCase="'onlineAccess'">
+            <td [style.width.px]="sc.width" [style.textAlign]="sc?.textAlign">
+              <i *ngIf="cn?.onlineAccess" class="md md-check text-success"></i>
+              <i *ngIf="!cn?.onlineAccess" class="md md-close text-danger"></i>
+            </td>
+          </ng-container>
+          <ng-container *ngSwitchCase="'stakeholder'">
+            <td [style.width.px]="sc.width" [style.textAlign]="sc?.textAlign">
+              <i *ngIf="cn?.stakeholder" class="md md-check text-success"></i>
+              <i *ngIf="!cn?.stakeholder" class="md md-close text-danger"></i>
+            </td>
+          </ng-container>
+          <ng-container *ngSwitchCase="'formattedMobile'">
+            <td [style.width.px]="sc.width">
+              <a href="tel:{{cn?.formattedMobile}}">{{cn?.formattedMobile}}</a>
+            </td>
+          </ng-container>
+          <ng-container *ngSwitchDefault>
+            <td [style.width.px]="cn.width">{{cn[sc.field]}}</td>
+          </ng-container>
+        </ng-container>
+      </ng-container>
+    </tr>
+  </ng-template>
+
+  <ng-template pTemplate="emptymessage" let-columns>
+    <tr>
+      <td [attr.colspan]="columns.length">
+        No data available
+      </td>
+    </tr>
+  </ng-template>
+</p-table>
+
+<ContactModalComponent *ngIf="isContactModel" [(clientId)]="id" [(clientcontact)]="selectedClientContact"
+  [(isNewContact)]="isNewContact" (response)="response($event)" [isAccountContact]="isAccountContact">
+</ContactModalComponent>

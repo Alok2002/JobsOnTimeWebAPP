@@ -1,0 +1,463 @@
+<form action="" *ngIf="job?.clientId">
+  <div class="col-md-4 no-padding-lefta">
+    <!--
+    <div class="form-group col-md-6 no-padding">
+      <label class="control-label">Contact for Invoice</label>
+      <select class="form-control">
+        <option value=""></option>
+        <option value="">Glen Mcgrath</option>
+        <option value="">Steve Smith</option>
+      </select>
+    </div>
+    <div class="form-group col-md-6 no-padding-right">
+      <label class="control-label">PO Number</label>
+      <input type="text" class="form-control" name="ponumber" [(ngModel)]="job.clientPO">
+    </div> -->
+    <div class="form-group col-md-6 no-padding">
+      <label class="control-label">Quoted By</label>
+      <select id="quotedBy" class="form-control" name="quotedBy" [(ngModel)]="job.quotedBy">
+        <option [ngValue]="null"></option>
+        <ng-container *ngFor="let staff of staffs">
+          <option value="{{staff.username}}">{{staff.fullName}}</option>
+        </ng-container>
+      </select>
+    </div>
+    <div class="form-group col-md-6 no-padding-right">
+      <label class="control-label">Quote Status</label>
+      <select class="form-control" name="quotedStatus" [(ngModel)]="job.quoteStatus"
+        (ngModelChange)="ChangeQuoteStatus()">
+        <ng-container *ngFor="let qs of quotestatuslist">
+          <option value="{{qs.code}}">{{qs.desc}}</option>
+        </ng-container>
+      </select>
+    </div>
+    <div class="clearfix"></div>
+    <div class="form-group col-md-4 no-padding">
+      <label class="control-label">Date Job Quoted</label>
+      <!-- <input type="text" class="form-control" name="dateQuoted" [(ngModel)]="job.dateQuoted" ngui-datetime-picker
+        date-format="dddd DD-MMM-YY" parse-format="YYYY-MM-DD" [close-on-select]="true" date-only="true"
+        data-mask="99-99-9999"> -->
+      <kendo-datepicker name="dateQuoted" [(ngModel)]="job.dateQuoted" [format]="'dd-MM-yyyy'" class="w-100-pre"
+        placeholder="">
+      </kendo-datepicker>
+    </div>
+    <div class="form-group col-md-4 no-padding-right">
+      <label class="control-label">Date Job Approved</label>
+      <!-- <input type="text" class="form-control" name="dateJobApproved" [(ngModel)]="job.dateJobApproved"
+        ngui-datetime-picker date-format="dddd DD-MMM-YY" parse-format="YYYY-MM-DD" [close-on-select]="true"
+        date-only="true" data-mask="99-99-9999"> -->
+      <kendo-datepicker name="dateJobApproved" [(ngModel)]="job.dateJobApproved" [format]="'dd-MM-yyyy'"
+        class="w-100-pre" placeholder="">
+      </kendo-datepicker>
+    </div>
+    <div class="col-md-4 form-group no-padding-right">
+      <label class="control-label w-100-pre">
+        Follow Up Date
+      </label>
+      <kendo-datepicker name="quoteFollowUpDate" [(ngModel)]="job.quoteFollowUpDate" [format]="'dd-MM-yyyy'"
+        class="w-100-pre" placeholder="">
+      </kendo-datepicker>
+    </div>
+    <div class="clearfix"></div>
+    <div class="form-group">
+      <label class="control-label w-100-pre">
+        <span>Quote Note to Client</span>
+        <div class="pull-right" style="height: 0;">
+          <label for="listenCallRecording" class="control-label ax-color-black pull-left m-b-0 font-normal font-12">
+            PM to Listen to call recording
+          </label>
+          <div class="checkbox checkbox-primary" style="margin: 0px 0px 0px 160px;">
+            <input id="listenCallRecording" type="checkbox" name="pmlistncall" [(ngModel)]="job.listenCallRecording">
+            <label for="listenCallRecording" class="control-label ax-color-black p-0">
+            </label>
+          </div>
+        </div>
+      </label>
+      <textarea name="quotenotes" [(ngModel)]="job.quoteNotes" class="form-control"></textarea>
+    </div>
+
+    <div class="form-group">
+      <label class="control-label w-100-pre">
+        Quote Internal Notes
+        <div class="pull-right" style="height: 0;">
+          <label for="quoteFollowedUp" class="control-label ax-color-black pull-left m-b-0 font-normal font-12">
+            Followed Up
+          </label>
+          <div class="checkbox checkbox-primary" style="margin: 0px 0px 0px 70px;">
+            <input id="quoteFollowedUp" type="checkbox" name="quoteFollowedUp" [(ngModel)]="job.quoteFollowedUp">
+            <label for="quoteFollowedUp" class="control-label ax-color-black p-0">
+            </label>
+          </div>
+        </div>
+      </label>
+      <!-- <input type="text" name="internalQuoteNotes" [(ngModel)]="job.internalQuoteNotes" class="form-control"> -->
+      <textarea name="internalQuoteNotes" [(ngModel)]="job.internalQuoteNotes" class="form-control"></textarea>
+    </div>
+    <div class="clearfix"></div>
+
+    <!-- <div class="form-group col-md-6 no-padding-right">
+        <label class="control-label">Contact for Invoice</label>
+        <select class="form-control">
+          <option value=""></option>
+          <option value="">Glen Mcgrath</option>
+          <option value="">Steve Smith</option>
+        </select>
+      </div> -->
+
+    <div class="form-group">
+      <label class="control-label w-100-pre">
+        PO Number
+        <div class="pull-right">
+          <span *ngIf="job?.clientPoRequired" class="btn btn-cocktail btn-xs btn-square" style="margin-right: 1px;">Yes
+            PO Required</span>
+          <button class="btn btn-ocean btn-xs btn-square waves-effect" data-target="#client-po-add-new-modal"
+            data-backdrop="static" data-toggle="modal" (click)="addNewClientPO()">
+            Add Client PO
+          </button>
+          <button class="btn btn-ocean btn-xs btn-square waves-effect" data-target="#client-po-modal"
+            data-backdrop="static" data-toggle="modal" style="margin-left: 1px">
+            View Client PO
+          </button>
+        </div>
+      </label>
+      <input type="text" class="form-control" name="ponumber" [(ngModel)]="job.clientPO">
+    </div>
+
+    <div class="form-group col-md-6 no-padding">
+      <label class="control-label">Job Approved Number</label>
+      <input type="text" class="form-control" name="jobApprovedNo" [(ngModel)]="job.jobApprovedNo">
+    </div>
+    <div class="form-group col-md-6 no-padding-right">
+      <label class="control-label w-100-pre">Invoice Number
+        <button *ngIf="hasMyObSecutiry && job?.showMyobButton" class="btn btn-success btn-xs pull-right" style="background: linear-gradient(to right, #6100a5, #8241aa, #b93499, #ec0677);
+                     border-color: transparent !important;" (click)="pushMyOb()" [disabled]="!hasMyObPermission">
+          Push Invoice to {{accountingSystemName}}
+        </button>
+      </label>
+      <input type="text" class="form-control" name="invoiceNumber" [(ngModel)]="job.invoiceNumber">
+    </div>
+    <div class="clearfix"></div>
+
+    <div class="form-group col-md-6 no-padding">
+      <label class="control-label">Invoice Status</label>
+      <select class="form-control" name="invoicestatus" [(ngModel)]="job.invoiceStatus">
+        <option value="{{st.code}}" *ngFor="let st of invoicestatus">{{st.desc}}</option>
+      </select>
+    </div>
+    <div class="form-group col-md-6 no-padding-right">
+      <label class="control-label">Invoice Client</label>
+      <select class="form-control" name="invoiceClient" [(ngModel)]="job.invoiceClient">
+        <option [ngValue]="null"></option>
+        <ng-container *ngFor="let cl of clients">
+          <option value="{{cl.id}}">{{cl.name}}</option>
+        </ng-container>
+      </select>
+    </div>
+    <div class="clearfix"></div>
+
+    <div class="form-group col-md-6 no-padding">
+      <label class="control-label">Invoice Sent</label>
+      <!-- <input type="text" class="form-control" name="invoicedate" [(ngModel)]="job.invoiceSent" ngui-datetime-picker
+        date-format="dddd DD-MMM-YY" parse-format="YYYY-MM-DD" [close-on-select]="true" date-only="true"
+        data-mask="99-99-9999"> -->
+      <kendo-datepicker name="invoiceSent" [(ngModel)]="job.invoiceSent" [format]="'dd-MM-yyyy'" class="w-100-pre"
+        placeholder="">
+      </kendo-datepicker>
+    </div>
+    <div class="form-group col-md-6 no-padding-right">
+      <label class="control-label">Signed Off By</label>
+      <select class="form-control" name="invoiceBy" [(ngModel)]="job.signedOffByUsername">
+        <option [ngValue]="null"></option>
+        <ng-container *ngFor="let staff of staffs">
+          <option value="{{staff.username}}">{{staff.fullName}}</option>
+        </ng-container>
+      </select>
+    </div>
+    <div class="clearfix"></div>
+
+    <div class="form-group">
+      <label class="control-label w-100-pre">Invoice Notes</label>
+      <textarea name="invoicenotes" [(ngModel)]="job.invoiceNotes" class="form-control"></textarea>
+    </div>
+
+  </div>
+
+  <div class="col-md-8 no-padding-right">
+    <ng-container *ngFor="let cn of clientNotes">
+      <ng-container *ngIf="cn?.type == 'Invoice Warning' || cn?.type == 'Quotation Warning'">
+        <div class="alert" [class.alert-danger]="cn?.type == 'Invoice Warning'"
+          [class.alert-warning]="cn?.type == 'Quotation Warning'">
+          <b>{{cn?.type}}!</b>
+          {{cn?.summary}}
+          <p class="m-b-0 font-10">{{cn?.notes}}</p>
+        </div>
+      </ng-container>
+    </ng-container>
+  </div>
+  <div class="clearfix"></div>
+</form>
+<div class="ax-data-table m-b-0 no-border-radius ax-data-table-no-min-height">
+  <div class="ax-sysconfig-data-table-top ax-data-table-top-x700 col-md-6 no-padding" style="margin-bottom: 3px;">
+    <!--<div class="btn-group">-->
+    <!--<a class="btn btn-ocean btn-xs waves-effect btn-square" (click)="addNew()">-->
+    <!--<i class="md md-add-circle-outline"></i> New-->
+    <!--</a>-->
+    <!--</div>-->
+  </div>
+  <table class="table ax-table table-striped table-bordered m-b-0">
+    <thead class="ax-bg-e7e7e7">
+      <tr>
+        <th class="ax-width-30-imp"></th>
+        <th class="ax-width-30-imp">No</th>
+        <th class="ax-table-x100">Quoted Qty</th>
+        <th class="ax-table-x100">Actual Qty</th>
+        <th>Description</th>
+        <th class="text-right ax-table-x125">Quoted Unit $</th>
+        <th class="text-right ax-table-x125">Actual Unit $</th>
+        <th class="ax-table-x125">Tax Code</th>
+        <th class="text-right ax-table-x125">Quoted Total $</th>
+        <th class="text-right ax-table-x125">Actual Total $</th>
+        <th class="ax-table-x125">Incentives Paid</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr *ngFor="let inv of invoices;let i = index">
+        <td class="text-center" style="padding: 0">
+          <a href="javascript:;" class="ax-text-success-plus-btn" (click)="addNewWithIndex(i)" tabindex="-1">
+            <i class="fa fa-plus ax-plus-btn" aria-hidden="true"></i>
+          </a>
+          <a href="javascript:;" class="ax-text-danger" (click)="removeFromList(i); calcuateTotal()" tabindex="-1">
+            <i class="fa fa-minus ax-minus-btn" aria-hidden="true"></i>
+          </a>
+          <!--<a (click)="addNew()" class="font-14 ax-cursor-pointer">-->
+          <!--<i class="fa fa-trash-o text-danger"></i>-->
+          <!--</a>-->
+          <!--<a (click)="removeFromList(i); calcuateTotal()" class="font-14 ax-cursor-pointer">-->
+          <!--<i class="fa fa-trash-o text-danger"></i>-->
+          <!--</a>-->
+        </td>
+        <td>{{i+1}}</td>
+        <td style="background: #d5d5d5;">
+          <input type="text" name="itemQuotedQty{{i}}" [(ngModel)]="inv.itemQuotedQty" (blur)="calcuateTotal()"
+            class="form-control h-x24 text-right" [disabled]="!hasQuotePermission" mask="9999999999" pattern=".{0,9}" />
+        </td>
+        <td>
+          <input type="number" name="itemActualQty{{i}}" [(ngModel)]="inv.itemActualQty" (blur)="calcuateTotal()"
+            class="form-control h-x24 text-right" />
+        </td>
+        <td class="job-tracking dashboard-auto font-14">
+          <!--<input type="text" name="itemDescription{{i}}" [(ngModel)]="inv.itemDescription" class="form-control h-x24"/>-->
+          <input auto-complete [(ngModel)]="inv.itemDescription" name="itemDescriptionObj{{i}}"
+            [source]="invoiceDesSource" class="form-control h-x24" [re-focus-after-select]="false" maxlength="250" />
+        </td>
+        <td style="background: #d5d5d5;">
+          <input type="number" (change)="setTwoNumberDecimal($event); inv.itemQuotedAmount=$event.target.value"
+            [ngModel]="inv.itemQuotedAmount | number:'1.2-2' | noComma" class="form-control h-x24 text-right"
+            (blur)="calcuateTotal()" [disabled]="!hasQuotePermission" name="itemQuotedAmount{{i}}">
+          <!-- (keypress)="_keyPress($event)" -->
+
+          <!--<input type="number" name="itemQuotedAmount{{i}}" [(ngModel)]="inv.itemQuotedAmount"-->
+          <!--(blur)="calcuateTotal()"-->
+          <!--class="form-control h-x24 text-right"/>-->
+        </td>
+        <td>
+          <input type="number" (change)="setTwoNumberDecimal($event); inv.itemActualAmount=$event.target.value"
+            [ngModel]="inv.itemActualAmount | number:'1.2-2' | noComma" class="form-control h-x24 text-right"
+            (blur)="calcuateTotal()" name="itemActualAmount{{i}}">
+          <!-- (keypress)="_keyPress($event)" -->
+
+          <!--<input type="number" name="itemActualAmount{{i}}" [(ngModel)]="inv.itemActualAmount"-->
+          <!--(blur)="calcuateTotal()"-->
+          <!--class="form-control h-x24 text-right"/>-->
+        </td>
+        <td>
+          <select name="itemTaxCode{{i}}" [(ngModel)]="inv.itemTaxCode" (change)="calcuateTotal()"
+            class="form-control h-x24 font-12 p-t-0 p-b-0">
+            <option value=""></option>
+            <option value="GST">GST</option>
+            <option value="N-T">N-T</option>
+            <option value="FRE">FRE</option>
+          </select>
+        </td>
+        <td class="text-right">
+          <ng-container *ngIf="inv.itemQuotedQty && inv.itemQuotedAmount">
+            {{inv.itemQuotedQty * inv.itemQuotedAmount | number : '1.2-2'}}
+          </ng-container>
+        </td>
+        <td class="text-right">
+          <ng-container *ngIf="inv.itemActualQty && inv.itemActualAmount">
+            {{inv.itemActualQty * inv.itemActualAmount | number : '1.2-2'}}
+          </ng-container>
+        </td>
+        <td>
+          <input type="text" name="itemIncentivePaid{{i}}" [(ngModel)]="inv.incentivePaid"
+            class="form-control h-x24 text-right" mask="9999999999" pattern=".{0,9}" />
+        </td>
+      </tr>
+    </tbody>
+  </table>
+  <input style="position: absolute; display: none;">
+</div>
+<div class="text-right m-t-15 pull-right m-b-15">
+  <div class="table-responsive ax-data-table m-b-0 no-border-radius ax-data-table-no-min-height">
+    <table class="table ax-table table-striped table-bordered m-b-0" style="cursor: pointer;">
+      <tbody>
+        <tr>
+          <td class="no-border-top ax-table-x125">Sub-Total</td>
+          <td class="no-border-top text-right ax-table-x125">
+            <ng-container *ngIf="quotedTotal">${{quotedTotal | number : '1.2-2'}}</ng-container>
+          </td>
+          <td class="no-border-top text-right ax-table-x125">
+            <ng-container *ngIf="actualTotal">${{actualTotal | number : '1.2-2'}}</ng-container>
+          </td>
+          <td class="ax-table-x125"></td>
+        </tr>
+        <tr>
+          <td>GST</td>
+          <td class="text-right">
+            <ng-container *ngIf="quotedTotalTax">${{quotedTotalTax | number : '1.2-2'}}</ng-container>
+          </td>
+          <td class="text-right">
+            <ng-container *ngIf="actualTotalTax">${{actualTotalTax | number : '1.2-2'}}</ng-container>
+          </td>
+          <td></td>
+        </tr>
+        <tr>
+          <td>
+            <b>Total</b>
+          </td>
+          <td class="text-right">
+            <b *ngIf="quotedTotal || quotedTotalTax">${{quotedTotal + quotedTotalTax | number : '1.2-2'}}</b>
+          </td>
+          <td class="text-right">
+            <b *ngIf="actualTotal || actualTotalTax">${{actualTotal + actualTotalTax | number : '1.2-2'}}</b>
+          </td>
+          <td></td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+</div>
+<div class="col-md-12 no-padding text-right">
+  <button type="button" class="btn btn-warning waves-effect waves-light m-l-10 btn-md" (click)="getInvoicesByJobId()">
+    Refresh
+  </button>
+  <button type="button" class="btn btn-ocean waves-effect waves-light m-l-10 btn-md" (click)="submitInvoice()">
+    Save
+  </button>
+</div>
+<div class="clearfix"></div>
+
+<!--CLIENT PO MODAL-->
+<div id="client-po-modal" class="modal fade ax-model-x1700" tabindex="-1" role="dialog"
+  aria-labelledby="full-width-modalLabel" aria-hidden="true" style="display: none;">
+  <div class="modal-dialog modal-md">
+    <div class="modal-content">
+      <div class="modal-header no-border ax-modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+        <h4 class="modal-title">Client PO</h4>
+      </div>
+      <div class="modal-body no-padding">
+        <table class="table ax-table table-striped table-bordered m-b-0 no-footer">
+          <thead>
+            <tr>
+              <th class="ax-table-x100 text-center">Action</th>
+              <th class="ax-table-x150">PO Number</th>
+              <th class="ax-table-x150">PO Value</th>
+              <th class="ax-table-x125">Expiry Date</th>
+              <th class="ax-table-x150">Job Reference</th>
+              <th class="ax-table-x200">Associated Contacts</th>
+              <th>Additional Notes</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr *ngFor="let po of clientpos; let i = index">
+              <td class="text-center">
+                <a class="ax-cursor-pointer" (click)="job.clientPO = po.poNumber" data-dismiss="modal"
+                  aria-hidden="true">Select</a>
+              </td>
+              <td>{{po.poNumber}}</td>
+              <td>{{po.poValue}}</td>
+              <td>{{po.expiryDate | date: 'dd-MM-yyyy'}}</td>
+              <td>{{po.jobReference}}</td>
+              <td>
+                <ng-container *ngIf="po?.associatedContacts">
+                  <ng-container *ngFor="let con of po?.associatedContacts.split('|')">
+                    {{getContactValue(con)}}<br>
+                  </ng-container>
+                </ng-container>
+              </td>
+              <td>{{po.additionalNotes}}</td>
+            </tr>
+          </tbody>
+        </table>
+        <!--<ClientPOComponent *ngIf="job" [id]="job?.clientId" [isUpdateClient]="isUpdateJob" [isJobInvoiceChild]="true"></ClientPOComponent>-->
+      </div>
+    </div>
+  </div>
+</div>
+
+<!---CLIENT PO ADD MODAL-->
+<div id="client-po-add-new-modal" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="full-width-modalLabel"
+  aria-hidden="true" style="display: none;">
+  <div class="modal-dialog modal-md">
+    <div class="modal-content">
+      <div class="modal-header no-border ax-modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+        <h4 class="modal-title">Add Client PO</h4>
+      </div>
+      <div class="modal-body no-padding" #container>
+        <div class="col-md-12 no-padding">
+          <form class="ax-form" role="form" id="noteform" #jobClientPoForm="ngForm">
+            <div class="form-group col-md-6 no-padding required">
+              <label class="control-label w-100-pre" for="ponumber">
+                PO Number
+              </label>
+              <input type="text" class="form-control" name="ponumber" [(ngModel)]="clientpo.poNumber" required>
+            </div>
+            <div class="form-group col-md-6 no-padding-right">
+              <label class="control-label w-100-pre" for="poValue">PO Value</label>
+              <input type="text" class="form-control" name="poValue" [(ngModel)]="clientpo.poValue" currencyMask>
+            </div>
+            <div class="form-group col-md-6 no-padding">
+              <label class="control-label w-100-pre" for="expirydate">Expiry Date</label>
+              <!-- <input type="text" class="form-control" name="expirydate" [(ngModel)]="clientpo.expiryDate"
+                ngui-datetime-picker date-format="DD-MM-YYYY" [close-on-select]="true" date-only="true"
+                data-mask="99-99-9999" autocomplete="nope"> -->
+              <kendo-datepicker name="expirydate" [(ngModel)]="clientpo.expiryDate" [format]="'dd-MM-yyyy'"
+                class="w-100-pre" placeholder="" [popupSettings]="{ appendTo: containerRef }">
+              </kendo-datepicker>
+            </div>
+
+            <div class="form-group col-md-6 no-padding-right">
+              <label class="control-label w-100-pre" for="jobReference">Job Reference</label>
+              <input type="text" class="form-control" name="jobReference" [(ngModel)]="clientpo.jobReference">
+            </div>
+
+            <div class="form-group col-md-12 no-padding">
+              <label class="control-label w-100-pre" for="associatedContacts">Associated Contacts</label>
+              <!-- <input type="text" class="form-control" name="associatedContacts" [(ngModel)]="clientpo.associatedContacts"> -->
+              <angular2-multiselect [data]="contactList" [(ngModel)]="selectedContactList" name="selectedcontacttypes"
+                [settings]="dropdownSettings"></angular2-multiselect>
+            </div>
+
+            <div class="form-group col-md-12 no-padding">
+              <label class="control-label w-100-pre" for="additionalNotes">Additional Notes</label>
+              <textarea class="form-control" name="associatedContacts"
+                [(ngModel)]="clientpo.additionalNotes"></textarea>
+            </div>
+
+            <div class="col-md-12 no-padding text-right">
+              <a id="notebtn" (click)="submitClientPo(jobClientPoForm)"
+                class="btn btn-ocean waves-effect waves-light m-l-10 btn-md">
+                Save
+              </a>
+              <a data-dismiss="modal" aria-hidden="true" class="btn btn-cocktail m-l-5" #closeAddNewModal>Cancel</a>
+            </div>
+          </form>
+        </div>
+        <div class="clearfix"></div>
+      </div>
+    </div>
+  </div>
+</div>

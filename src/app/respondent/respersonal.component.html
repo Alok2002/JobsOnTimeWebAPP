@@ -1,0 +1,162 @@
+<div class="tab-pane" id="personaldetails">
+  <!-- <div *ngIf="!isMyProfile" class="newres-tab-title">
+    <h5 class="no-margin">Personal Details</h5>
+  </div> -->
+
+  <div *ngIf="!isMyProfile" class="col-md-12 no-padding m-b-0 newres-bottom">
+    <div class="col-md-6 font-10 no-padding">
+      <h5 class="no-margin p-l-10" style="line-height: 34px">Personal Details</h5>
+    </div>
+    <div class="col-md-6 text-right no-padding">
+      <button (click)="updateRespondent(resPersonalForm)" class="btn waves-effect waves-light btn-md"
+        [class.btn-ocean]="!isMyProfile" [class.btn-basil]="isMyProfile">
+        Submit
+      </button>
+    </div>
+  </div>
+  <div class="clearfix"></div>
+  <br>
+  <form *ngIf="!isLoading" class="ax-form" role="form" #resPersonalForm="ngForm">
+    <div class="no-padding" [class.col-md-4]="!isMyProfile" [class.col-md-12]="isMyProfile">
+
+      <ng-container *ngIf="!isMyProfile">
+        <div class="form-group">
+          <label class="control-label panel-member-heading-label">Communication Level</label>
+          <ng-container *ngFor="let ba of comunicationLevelList; let i = index">
+            <div class="checkbox checkbox-primary pull-left res-check-margin w-100-pre">
+              <input type="checkbox" id="travelapps{{i}}" name="travelapps{{i}}" [(ngModel)]="ba.selected" value="true">
+              <label class="control-label" for="travelapps{{i}}">{{ba.description}}</label>
+            </div>
+          </ng-container>
+          <div class="clearfix"></div>
+        </div>
+      </ng-container>
+
+      <div class="form-group has-feedback">
+        <label class="control-label" for="languageoutofhome">Main Language Spoken Outside of Home</label>
+        <select id="languageoutofhome" name="languageoutofhome" [(ngModel)]="respondent.mainLanguage"
+          class="form-control">
+          <option *ngFor="let co of languagelist" [value]="co.code">{{co.desc}}</option>
+        </select>
+      </div>
+      <div class="form-group has-feedback">
+        <label class="control-label" for="languageathome">Main Language Spoken at Home</label>
+        <select id="languageathome" name="languageathome" [(ngModel)]="respondent.mainLanguageAtHome"
+          class="form-control">
+          <option *ngFor="let co of languagelist" [value]="co.code">{{co.desc}}</option>
+        </select>
+      </div>
+      <div class="form-group has-feedback">
+        <label class="control-label" for="othermaillanguage">Any Other Main Language Spoken Fluently
+        </label>
+        <select id="othermaillanguage" name="othermaillanguage" [(ngModel)]="respondent.otherLanguage"
+          class="form-control">
+          <option *ngFor="let co of languagelist" [value]="co.code">{{co.desc}}</option>
+        </select>
+      </div>
+      <div class="form-group has-feedback">
+        <label class="control-label" for="resstatus">Residency Status</label>
+        <select id="resstatus" name="resstatus" [(ngModel)]="respondent.visaStatus" class="form-control">
+          <option *ngFor="let re of residencystatuslist" [value]="re.code">{{re.desc}}</option>
+        </select>
+      </div>
+      <div class="form-group has-feedback">
+        <label class="control-label" for="birthcountry">Birth Country</label>
+        <select id="birthcountry" name="birthcountry" [(ngModel)]="respondent.birthCountry" class="form-control">
+          <option *ngFor="let co of countrylist" [value]="co.code">{{co.desc}}</option>
+        </select>
+      </div>
+      <div class="form-group has-feedback">
+        <label class="control-label" for="origincountry">Country of Origin</label>
+        <select id="origincountry" name="origincountry" [(ngModel)]="respondent.originCountry" class="form-control">
+          <option *ngFor="let co of countrylist" [value]="co.code">{{co.desc}}</option>
+        </select>
+      </div>
+      <div class="form-group has-feedback">
+        <label class="control-label">Ethnic Background</label>
+        <input type="text" name="ethnicbackground" [(ngModel)]="respondent.ethnicBackground" class="form-control"
+          (keypress)="stringOnly($event)" />
+      </div>
+
+      <div class="form-group has-feedback">
+        <label class="control-label w-100-pre">
+          What year did you start living in {{countrycode == 'AU' ? 'Australia?' : 'New Zealand' }} 
+          <span [hidden]="yearMovedToCountryModel.valid || !isSubmitForm" *ngIf="!invalidYearErrMsg">
+            <span class="text-danger pull-right" [hidden]="!yearMovedToCountryModel.hasError('pattern')">&#160;
+              Invalid
+              Year</span>
+          </span>
+          <span *ngIf="invalidYearErrMsg">
+            <span class="text-danger pull-right">&#160; Invalid Year</span>
+          </span>
+          <span class="pull-right font-normal font-12">
+            <ng-container *ngIf="respondent.yearMovedToCountry">{{currentyear - respondent.yearMovedToCountry}}
+              Year(s)
+            </ng-container>
+          </span>
+        </label>
+        <input type="text" name="startlivingaus" [(ngModel)]="respondent.yearMovedToCountry"
+          class="form-control datepicker-year" [textMask]="{mask: yearMask, showMask: true, guide: false}" numeric
+          (ngModelChange)="respondent.yearMovedToCountry = unmask($event); updateYearMovedToCountry()" pattern=".{4,4}"
+          #yearMovedToCountryModel="ngModel">
+      </div>
+      <!-- <div class="form-group">
+        <label class="control-label">
+          Are you of Aboriginal or Torres Strait Islander origin?
+        </label>
+        <select class="form-control" name="indigenous" [(ngModel)]="respondent.indigenous">
+          <option [value]="false"></option>
+          <option [value]="true">Yes</option>
+          <option [value]="false">No</option>
+        </select>
+      </div> -->
+      <ng-container *ngIf="countrycode == 'AU'">
+        <div class="form-goup">
+          <label class="control-label pull-left m-r-10" for="indigenous">Are you of Aboriginal or Torres Strait Islander
+            origin?</label>
+          <div class="checkbox checkbox-primary res-check-margin pull-left">
+            <input type="checkbox" name="indigenous" [(ngModel)]="respondent.indigenous" value="true" id="indigenous">
+            <label class="control-label text-left"></label>
+          </div>
+        </div>
+      </ng-container>
+    </div>
+    <div class="clearfix"></div>
+
+    <div class="col-md-12 no-padding m-b-0 newres-bottom">
+      <!-- <div class="pull-left" *ngIf="!isMyProfile">
+          <button class="btn btn-cocktail waves-effect waves-light btn-md">
+            Send Reset Password Link
+          </button>
+        </div> -->
+      <div class="col-md-6 font-10 no-padding" style="line-height: 34px">
+        <ng-container>
+          <b>Created:</b>
+          <ng-container *ngIf="respondent.dateCreated">
+            {{respondent.dateCreated | date: 'dd-MM-yyyy'}} &#160;
+          </ng-container>
+          <ng-container *ngIf="!respondent.dateCreated">
+            {{today | date: 'dd-MM-yyyy'}} &#160;
+          </ng-container>
+          <b>Last Updated:</b>
+          <ng-container *ngIf="respondent.dateLastUpdated">
+            {{respondent.dateLastUpdated | date: 'dd-MM-yyyy'}}
+          </ng-container>
+          <ng-container *ngIf="!respondent.dateLastUpdated">
+            {{today | date: 'dd-MM-yyyy'}}
+          </ng-container>
+        </ng-container>
+      </div>
+      <div class="col-md-6 text-right no-padding">
+        <button (click)="updateRespondent(resPersonalForm)" class="btn waves-effect waves-light btn-md"
+          [class.btn-ocean]="!isMyProfile" [class.btn-basil]="isMyProfile">
+          Submit
+        </button>
+        <!-- <a *ngIf="isMyProfile" class="btn btn-cocktail m-l-5" (click)="gotoTop()">Skip</a> -->
+      </div>
+    </div>
+
+
+  </form>
+  <div class="clearfix"></div>
+</div>

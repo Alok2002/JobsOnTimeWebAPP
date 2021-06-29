@@ -1,0 +1,97 @@
+<div class="tab-pane" id="furtherdetails">
+  <div class="newres-tab-title">
+    <h5 class="no-margin">Further Details</h5>
+  </div>
+  <br>
+  <form action="">
+    <div class="col-md-4 no-padding">
+      <div class="form-group col-md-6 no-padding-left">
+        <label class="control-label">Premises Type</label>
+        <select class="form-control">
+          <option></option>
+        </select>
+      </div>
+
+      <div class="form-group col-md-6 no-padding">
+        <label class="control-label">Energy Provider</label>
+        <select class="form-control">
+          <option></option>
+        </select>
+      </div>
+
+      <div class="form-group col-md-6 no-padding-left">
+        <label class="control-label">Bank</label>
+        <select class="form-control">
+          <option></option>
+        </select>
+      </div>
+
+      <div class="form-group col-md-6 no-padding">
+        <label class="control-label">Accounting Software</label>
+        <select class="form-control">
+          <option></option>
+        </select>
+      </div>
+
+      <div class="form-group col-md-6 no-padding-left">
+        <label class="control-label">Phone Provider</label>
+        <select class="form-control">
+          <option></option>
+        </select>
+      </div>
+
+      <div class="form-group col-md-6 no-padding">
+        <label class="control-label">Internet Provider</label>
+        <select class="form-control">
+          <option></option>
+        </select>
+      </div>
+
+      <div class="form-group col-md-6 no-padding-left">
+        <label class="control-label">Loans</label>
+        <select class="form-control">
+          <option></option>
+        </select>
+      </div>
+
+      <div class="form-group col-md-6 no-padding">
+        <label class="control-label">Overdrafts</label>
+        <select class="form-control">
+          <option></option>
+        </select>
+      </div>
+    </div>
+    <div class="clearfix"></div>
+
+    <div class="col-md-12 no-padding m-b-0 newres-bottom">
+      <!-- <div class="pull-left" *ngIf="!isMyProfile">
+          <button class="btn btn-cocktail waves-effect waves-light btn-md">
+            Send Reset Password Link
+          </button>
+        </div> -->
+      <div class="col-md-6 font-10 no-padding" style="line-height: 34px">
+        <ng-container>
+          <b>Created:</b>
+          <ng-container *ngIf="respondent.dateCreated">
+            {{respondent.dateCreated | date: 'dd-MM-yyyy'}} &#160;
+          </ng-container>
+          <ng-container *ngIf="!respondent.dateCreated">
+            {{today | date: 'dd-MM-yyyy'}} &#160;
+          </ng-container>
+          <b>Last Updated:</b>
+          <ng-container *ngIf="respondent.dateLastUpdated">
+            {{respondent.dateLastUpdated | date: 'dd-MM-yyyy'}}
+          </ng-container>
+          <ng-container *ngIf="!respondent.dateLastUpdated">
+            {{today | date: 'dd-MM-yyyy'}}
+          </ng-container>
+        </ng-container>
+      </div>
+      <div class="col-md-6 text-right no-padding">
+        <button type="submit"  class="btn btn-ocean waves-effect waves-light btn-md">
+          Submit
+        </button>
+      </div>
+    </div>  
+      </form>
+</div>

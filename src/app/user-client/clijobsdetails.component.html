@@ -1,0 +1,31 @@
+<div class="wrapper">
+  <div class="container">
+    <div class="row">
+      <div class="col-sm-12">
+        <ol class="breadcrumb breadcrumb-arrow bg-white bx-shadow">
+          <li><a [routerLink]="['/clihome']" class="home-breadcrumb"><i class="md md-home"></i></a></li>
+          <li><a [routerLink]="['/clijobs']" class="home-breadcrumb font-14">Jobs</a></li>
+          <li><a>{{job?.jobBreadcrumbDetails}}</a></li>
+        </ol>
+      </div>
+      <div class="col-sm-12">
+        <div class="card-box">
+          <ul class="nav nav-tabs navtab-custom ax-nav-tabs">
+            <li [class.active]="selectedTab == 'jobedit'">
+              <a href="#details" data-toggle="tab" aria-expanded="false" (click)="selectedTab = 'jobdoc'">
+                <span class="hidden-xs1">Documents</span>
+              </a>
+            </li>
+          </ul>
+          <div class="tab-content no-margin ax-tab-content min-height-x300">
+            <div class="tab-pane active">
+              <CliDocComponent [id]="editJobId" [isUpdateJob]="isUpdateJob" *ngIf="selectedTab == 'jobdoc'">
+              </CliDocComponent>
+              <div class="clearfix"></div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

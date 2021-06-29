@@ -1,0 +1,172 @@
+<div class="tab-pane" id="vehicledetails">
+  <!-- <div *ngIf="!isMyProfile" class="newres-tab-title">
+    <h5 class="no-margin">Telecommunications</h5>
+  </div> -->
+
+  <div *ngIf="!isMyProfile" class="col-md-12 no-padding m-b-0 newres-bottom">
+    <div class="col-md-6 font-10 no-padding">
+      <h5 class="no-margin p-l-10" style="line-height: 34px">Telecommunications</h5>
+    </div>
+    <div class="col-md-6 text-right no-padding">
+      <button (click)="updateSubmit()" class="btn waves-effect waves-light btn-md" [class.btn-ocean]="!isMyProfile"
+        [class.btn-basil]="isMyProfile">
+        Submit
+      </button>
+    </div>
+  </div>
+  <div class="clearfix"></div>
+  <br>
+  <ng-container *ngIf="!isLoading">
+    <div class="col-md-4 no-padding-left">
+      <div class="form-group">
+        <label class="control-label">Internet Provider</label>
+        <ng-container *ngFor="let ba of internetProviderList; let i = index">
+          <div class="checkbox checkbox-primary pull-left res-check-margin w-100-pre">
+            <input type="checkbox" name="internetprovider{{i}}" id="internetprovider{{i}}" [(ngModel)]="ba.selected"
+              value="true">
+            <label class="control-label" for="internetprovider{{i}}">{{ba.description}}</label>
+          </div>
+        </ng-container>
+        <div class="clearfix"></div>
+      </div>
+      <!-- <div class="form-group">
+                <label class="control-label panel-member-heading-label">NBN Provider</label>
+                <ng-container *ngFor="let ba of nbnprovidersList; let i = index">
+                    <div class="checkbox checkbox-primary pull-left m-t-5 m-b-5 m-r-10 w-100-pre">
+                        <input type="checkbox" name="nbnprovider{{i}}" [(ngModel)]="ba.selected" value="true">
+                        <label class="control-label">{{ba.description}}</label>
+                    </div>
+                </ng-container>
+                <div class="clearfix"></div>
+            </div> -->
+    </div>
+    <div class="col-md-4 no-padding">
+      <div class="form-group">
+        <label class="control-label w-100-pre">
+          Mobile Phone Type
+        </label>
+        <select name="largestCity" class="form-control" [(ngModel)]="respondent.phoneMobile1Type"
+          style="max-width: 200px;">
+          <option [ngValue]="null"></option>
+          <option *ngFor="let ba of mobilePhoneTypesList" [value]="ba.code">{{ba.desc}}</option>
+        </select>
+      </div>
+      <div class="form-group">
+        <label class="control-label">Mobile Phone Providers</label>
+        <ng-container *ngFor="let ba of mobileProvidersList; let i = index">
+          <div class="checkbox checkbox-primary pull-left res-check-margin w-100-pre">
+            <input type="checkbox" name="mobilephoneproviders{{i}}" id="mobilephoneproviders{{i}}"
+              [(ngModel)]="ba.selected" value="true">
+            <label class="control-label" for="mobilephoneproviders{{i}}">{{ba.description}}</label>
+          </div>
+        </ng-container>
+        <div class="clearfix"></div>
+      </div>
+      <div class="form-group">
+        <label class="control-label panel-member-heading-label">Landline Providers</label>
+        <ng-container *ngFor="let ba of phoneCompanyList; let i = index">
+          <div class="checkbox checkbox-primary pull-left res-check-margin w-100-pre">
+            <input type="checkbox" name="landlineproviders{{i}}" id="landlineproviders{{i}}" [(ngModel)]="ba.selected"
+              value="true">
+            <label class="control-label" for="landlineproviders{{i}}">{{ba.description}}</label>
+          </div>
+        </ng-container>
+        <div class="clearfix"></div>
+      </div>
+      <div class="form-group">
+        <label class="control-label panel-member-heading-label">Smartphones Brands</label>
+        <ng-container *ngFor="let ba of smartPhoneBrandsList; let i = index">
+          <div class="checkbox checkbox-primary pull-left res-check-margin w-100-pre">
+            <input type="checkbox" name="smartphonesbrands{{i}}" id="smartphonesbrands{{i}}" [(ngModel)]="ba.selected"
+              value="true">
+            <label class="control-label" for="smartphonesbrands{{i}}">{{ba.description}}</label>
+          </div>
+        </ng-container>
+        <div class="clearfix"></div>
+      </div>
+    </div>
+    <div class="col-md-4 no-padding-right">
+      <div class="form-group">
+        <label class="control-label">Streaming Services</label>
+        <ng-container *ngFor="let ba of streamingServicesList; let i = index">
+          <div class="checkbox checkbox-primary pull-left res-check-margin w-100-pre">
+            <input type="checkbox" name="streamingservices{{i}}" id="streamingservices{{i}}" [(ngModel)]="ba.selected"
+              value="true">
+            <label class="control-label" for="streamingservices{{i}}">{{ba.description}}</label>
+          </div>
+        </ng-container>
+        <div class="clearfix"></div>
+      </div>
+      <div class="form-group">
+        <label class="control-label panel-member-heading-label">Internet Connection Type</label>
+        <ng-container *ngFor="let ba of internetConnectionTypesList; let i = index">
+          <div class="checkbox checkbox-primary pull-left res-check-margin w-100-pre">
+            <input type="checkbox" name="internetconnectiontype{{i}}" id="internetconnectiontype{{i}}"
+              [(ngModel)]="ba.selected" value="true">
+            <label class="control-label" for="internetconnectiontype{{i}}">{{ba.description}}</label>
+          </div>
+        </ng-container>
+        <div class="clearfix"></div>
+      </div>
+
+      <div class="form-group">
+        <label class="control-label panel-member-heading-label">NBN Connection Type</label>
+        <ng-container *ngFor="let ba of NbnConnectionTypesList; let i = index">
+          <div class="checkbox checkbox-primary pull-left res-check-margin w-100-pre">
+            <input type="checkbox" name="NbnConnectionTypes{{i}}" id="NbnConnectionTypes{{i}}" [(ngModel)]="ba.selected"
+              value="true">
+            <label class="control-label" for="NbnConnectionTypes{{i}}">{{ba.description}}</label>
+          </div>
+        </ng-container>
+        <div class="clearfix"></div>
+      </div>
+
+
+
+
+      <!-- <div class="form-group">
+        <label class="control-label panel-member-heading-label">TV Providers</label>
+        <ng-container *ngFor="let ba of tvproviderList; let i = index">
+          <div class="checkbox checkbox-primary pull-left res-check-margin w-100-pre">
+            <input type="checkbox" name="tvproviders{{i}}" [(ngModel)]="ba.selected" value="true">
+            <label class="control-label">{{ba.description}}</label>
+          </div>
+        </ng-container>
+        <div class="clearfix"></div>
+      </div> -->
+    </div>
+  </ng-container>
+  <div class="clearfix"></div>
+  <div *ngIf="respondent" class="col-md-12 no-padding m-b-0 newres-bottom">
+    <!-- <div class="pull-left" *ngIf="!isMyProfile">
+            <button class="btn btn-cocktail waves-effect waves-light btn-md">
+              Send Reset Password Link
+            </button>
+          </div> -->
+    <div class="col-md-6 font-10 no-padding" style="line-height: 34px">
+      <ng-container>
+        <b>Created:</b>
+        <ng-container *ngIf="respondent.dateCreated">
+          {{respondent.dateCreated | date: 'dd-MM-yyyy'}} &#160;
+        </ng-container>
+        <ng-container *ngIf="!respondent.dateCreated">
+          {{today | date: 'dd-MM-yyyy'}} &#160;
+        </ng-container>
+        <b>Last Updated:</b>
+        <ng-container *ngIf="respondent.dateLastUpdated">
+          {{respondent.dateLastUpdated | date: 'dd-MM-yyyy'}}
+        </ng-container>
+        <ng-container *ngIf="!respondent.dateLastUpdated">
+          {{today | date: 'dd-MM-yyyy'}}
+        </ng-container>
+      </ng-container>
+    </div>
+    <div class="col-md-6 text-right no-padding">
+      <button (click)="updateSubmit()" class="btn waves-effect waves-light btn-md" [class.btn-ocean]="!isMyProfile"
+        [class.btn-basil]="isMyProfile">
+        Submit
+      </button>
+      <!-- <a *ngIf="isMyProfile" class="btn btn-cocktail m-l-5" (click)="gotoTop()">Skip</a> -->
+    </div>
+  </div>
+</div>

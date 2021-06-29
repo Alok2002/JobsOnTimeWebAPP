@@ -1,0 +1,398 @@
+<!-- Navigation Bar-->
+<header id="topnav">
+  <div class="topbar-main">
+    <div class="container">
+      <!-- Logo container-->
+      <div class="logo">
+        <!-- <a [routerLink]="['/dashboard']" class="logo"> -->
+        <a class="logo" [title]="isFarronResearch ? 'Farron Research Logo' : 'Logo'">
+          <span class="hidden-xs">
+            <img src="assets/images/fr-logo.png" [alt]="isFarronResearch ? 'Farron Research Logo' : 'Logo'">
+          </span>
+          <span class="hidden-sm hidden-md hidden-lg">
+            <img src="assets/images/fr-only-logo.png" [alt]="isFarronResearch ? 'Farron Research Logo' : 'Logo'">
+          </span>
+        </a>
+      </div>
+      <!-- End Logo container-->
+      <div class="menu-extras job-tracking dashboard-auto">
+        <ul class="nav navbar-nav navbar-right pull-right">
+          <li class="hidden-xs d-desktop-only">
+            <div class="input-group" style="max-width: 400px; margin: 13px;">
+              <div class="input-group-btn">
+                <button type="button" class="btn waves-effect waves-light btn-default"
+                  style="overflow: hidden; position: relative;">
+                  <i class="fa fa-search"></i> &#160; {{selectedsearchfield}}
+                </button>
+                <button type="button" class="btn waves-effect waves-light btn-default dropdown-toggle"
+                  data-toggle="dropdown" style="overflow: hidden; position: relative;" aria-expanded="false">
+                  <span class="caret"></span>
+                </button>
+                <ul class="dropdown-menu ax-dropdown-search-menu">
+                  <li *ngIf="selectedsearchfield != 'Mobile Number'" (click)="selectedsearchfield = 'Mobile Number'">
+                    <a href="javascript:void(0)">Mobile Number</a>
+                  </li>
+                  <li *ngIf="selectedsearchfield != 'Email Address'" (click)="selectedsearchfield = 'Email Address'">
+                    <a href="javascript:void(0)">Email Address</a>
+                  </li>
+                  <li *ngIf="selectedsearchfield != 'Panel Member ID'"
+                    (click)="selectedsearchfield = 'Panel Member ID'">
+                    <a href="javascript:void(0)">Panel Member ID</a>
+                  </li>
+                  <li *ngIf="selectedsearchfield != 'Job Number'" (click)="selectedsearchfield = 'Job Number'">
+                    <a href="javascript:void(0)">Job Number</a>
+                  </li>
+                  <li *ngIf="selectedsearchfield != 'Job Name'" (click)="selectedsearchfield = 'Job Name'">
+                    <a href="javascript:void(0)">Job Name</a>
+                  </li>
+                </ul>
+              </div>
+
+              <!-- <input *ngIf="selectedsearchfield == 'Panel Member ID'" class="form-control" name="resid"
+                [(ngModel)]="resid" (keyup.enter)="gotoRespondentById(resid)" /> -->
+
+              <input *ngIf="selectedsearchfield == 'Panel Member ID'" auto-complete [(ngModel)]="resid" name="resid"
+                [source]="respIdAPI" no-match-found-text="No Data Found" list-formatter="fullName" path-to-data="value"
+                loading-text="Loading..." max-num-list="5" min-chars="1" class="form-control no-border"
+                autocomplete="off" (valueChanged)="gotoRespondent(resid)" [accept-user-input]="false" />
+
+              <input *ngIf="selectedsearchfield == 'Mobile Number'" auto-complete [(ngModel)]="resmobile"
+                name="resmobile" [source]="respMobileAPI" no-match-found-text="No Data Found" list-formatter="fullName"
+                path-to-data="value" loading-text="Loading..." max-num-list="5" min-chars="4"
+                class="form-control no-border" autocomplete="off" (valueChanged)="gotoRespondent(resmobile)"
+                [accept-user-input]="false" [open-on-focus]="false" />
+
+              <input *ngIf="selectedsearchfield == 'Email Address'" auto-complete [(ngModel)]="resemail" name="resemail"
+                [source]="respEmailAPI" no-match-found-text="No Data Found" list-formatter="fullName"
+                path-to-data="value" loading-text="Loading..." max-num-list="5" min-chars="4"
+                class="form-control no-border" autocomplete="off" (valueChanged)="gotoRespondent(resemail)"
+                [accept-user-input]="false" />
+
+              <input *ngIf="selectedsearchfield == 'Job Number'" auto-complete [(ngModel)]="jobno" name="jobno"
+                [source]="jobNoAPI" no-match-found-text="No Data Found" list-formatter="jobNumberAndName"
+                path-to-data="value" loading-text="Loading..." max-num-list="5" min-chars="4"
+                class="form-control no-border" autocomplete="off" (valueChanged)="gotoJob(jobno)"
+                [accept-user-input]="false" />
+
+              <input *ngIf="selectedsearchfield == 'Job Name'" auto-complete [(ngModel)]="jobname" name="jobname"
+                [source]="jobNameAPI" no-match-found-text="No Data Found" list-formatter="jobNumberAndName"
+                path-to-data="value" loading-text="Loading..." max-num-list="5" min-chars="4"
+                class="form-control no-border" autocomplete="off" (valueChanged)="gotoJob(jobname)"
+                [accept-user-input]="false" />
+
+              <div class="input-group-btn">
+                <button type="button" class="btn waves-effect waves-light btn-default" (click)="resetSearchBoxs()">
+                  <i class="md md-close"></i>
+                </button>
+              </div>
+            </div>
+          </li>
+          <li class="dropdown hidden">
+            <a href="#" data-target="#" data-backdrop="static" class="dropdown-toggle waves-effect waves-light"
+              data-toggle="dropdown" aria-expanded="true">
+              <i class="md md-notifications"></i>
+              <span class="badge badge-xs badge-pink">2</span>
+            </a>
+            <ul class="dropdown-menu dropdown-menu-lg">
+              <li class="text-center notifi-title">Notification</li>
+              <li class="list-group nicescroll notification-list">
+                <!-- list item-->
+                <a [routerLink]="['/underconstruction']" class="list-group-item">
+                  <div class="media">
+                    <div class="pull-left p-r-10">
+                      <em class="md md-textsms noti-primary"></em>
+                    </div>
+                    <div class="media-body">
+                      <h5 class="media-heading">You have received a new SMS</h5>
+                      <p class="m-0">
+                        <small>From James Faulkner</small>
+                      </p>
+                    </div>
+                  </div>
+                </a>
+                <!-- list item-->
+                <a [routerLink]="['/underconstruction']" class="list-group-item">
+                  <div class="media">
+                    <div class="pull-left p-r-10">
+                      <em class="md md-warning noti-danger"></em>
+                    </div>
+                    <div class="media-body">
+                      <h5 class="media-heading">Respondent Cancellation</h5>
+                      <p class="m-0">
+                        <small>New cancellation for Job No 123-17</small>
+                      </p>
+                    </div>
+                  </div>
+                </a>
+              </li>
+            </ul>
+          </li>
+          <li class="dropdown" id="user-dropdown" (click)="startDropdownTimer()">
+            <span class="top-menu-user-txt d-desktop-only pull-left">{{loginusername}}</span>
+            <a href="#" class="dropdown-toggle waves-effect waves-light profile" style="padding-left: 6px !important;"
+              data-toggle="dropdown" aria-expanded="true" (click)="getWorkingHours();isDisableClockToggle=false">
+              <i class="md md-person" [class.bg-ocean]="getClockIn()" [class.bg-cocktail]="!getClockIn()"></i>
+            </a>
+            <ul class="dropdown-menu">
+              <li>
+                <a href="javascript:void(0)" [routerLink]="['/settings']"><i class="ti-settings m-r-5"></i> My
+                  Settings</a>
+              </li>
+              <li>
+                <a href="javascript:;" (click)="logOut()">
+                  <i class="ti-power-off m-r-5"></i> Logout</a>
+              </li>
+              <li>
+                <div style="border-top:1px solid #e7e7e7;padding-bottom: 20px;"></div>
+              </li>
+              <li id="switch">
+                <div class="text-center" style="line-height: 0;">
+                  <!-- <label class="switch">
+                    <input type="checkbox" id="togBtn" value="true" [(ngModel)]="clockIn" (change)="toggleClock()"
+                      [disabled]="isDisableClockToggle || clockIn == null">
+                    <div class="slider round"></div>
+                  </label> -->
+                  <!-- <button class="btn btn-ocean btn-xs btn-square" (click)="clockIn = true;toggleClock()" [disabled]="clockIn">Clock In</button>
+                  <button class="btn btn-cocktail btn-xs btn-square" (click)="clockIn = false;toggleClock()" [disabled]="!clockIn">Clock Out</button> -->
+                  <button class="btn btn-xs btn-square font-14" [class.btn-ocean]="clockIn" [class.btn-grey]="!clockIn"
+                    (click)="clockIn = true;toggleClock()" [disabled]="clockIn"
+                    style="border-top-left-radius: 2px;border-bottom-left-radius: 2px;">Clock In</button>
+                  <button class="btn btn-xs btn-square font-14" [class.btn-cocktail]="!clockIn"
+                    [class.btn-grey]="clockIn" (click)="clockIn = false;toggleClock()" [disabled]="!clockIn"
+                    style="border-top-right-radius: 2px;border-bottom-right-radius: 2px;">Clock Out</button>
+                </div>
+                <div class="spacing text-center m-b-15">
+                  <small style="font-size: 10px;color: darkgray;">Total hours: {{totalHours}}</small>
+                </div>
+              </li>
+            </ul>
+          </li>
+        </ul>
+        <div class="menu-item">
+          <!-- Mobile menu toggle-->
+          <a class="navbar-toggle" (click)="isShowMobileMenu = !isShowMobileMenu">
+            <div class="lines">
+              <span></span>
+              <span></span>
+              <span></span>
+            </div>
+          </a>
+          <!-- End mobile menu toggle-->
+        </div>
+      </div>
+    </div>
+  </div>
+  <!-- End topbar -->
+  <!-- Navbar Start -->
+  <div class="navbar-custom">
+    <div class="container">
+      <div id="navigation" [class.mobile-menu-show]="isShowMobileMenu">
+        <!-- Navigation Menu-->
+        <ul class="navigation-menu">
+          <li class="has-submenu" (click)="isShowMobileMenu = false">
+            <a [routerLink]="['/dashboard']">
+              <i class="">
+                <img src="assets/icons/respontent/house.svg" style="height: 30px; width: 30px;">
+              </i>Home
+            </a>
+          </li>
+          <li class="has-submenu">
+            <a>
+              <i class="">
+                <img src="assets/icons/3-teamwork.svg" style="height: 30px; width: 30px;">
+              </i>Client
+            </a>
+            <ul class="submenu" (click)="isShowMobileMenu = false">
+              <!-- <li><a [routerLink]="['/searchrespondents']">Search Panel Member</a></li> -->
+              <li class="d-desktop-only">
+                <a [routerLink]="['/client/add']">New Client</a>
+              </li>
+              <li>
+                <a [routerLink]="['/client']">Search Client</a>
+              </li>
+            </ul>
+          </li>
+          <li class="has-submenu">
+            <a class="">
+              <i>
+                <img src="assets/icons/res-networking.svg" style="height: 30px; width: 30px;">
+              </i>Panel Member
+            </a>
+            <ul class="submenu" (click)="isShowMobileMenu = false">
+              <li class="d-desktop-only">
+                <!-- <a [routerLink]="['/submenu/respondent']">New Panel Member</a> -->
+                <a [routerLink]="['/newrespondents']">New Consumer Panel Member</a>
+                <a *ngIf="isBusinessPanelAllowed" [routerLink]="['/newbussinesspanelmember']">New Business Panel
+                  Member</a>
+                <a *ngIf="isDisabilityPanelAllowed" [routerLink]="['/newimpairmentpanelmember']">New Disability Panel
+                  Member</a>
+              </li>
+              <li>
+                <a [routerLink]="['/searchrespondents']">Search Panel Member</a>
+              </li>
+            </ul>
+          </li>
+          <li class="has-submenu">
+            <a class="">
+              <i class="">
+                <img src="assets/icons/jobs-files.svg" style="height: 30px; width: 30px;">
+              </i>Jobs
+            </a>
+            <ul class="submenu" (click)="isShowMobileMenu = false">
+              <li class="d-desktop-only">
+                <a [routerLink]="['/job/add']">New Job</a>
+              </li>
+              <li>
+                <a [routerLink]="['/job']">Search Job</a>
+              </li>
+              <li class="d-desktop-only">
+                <a [routerLink]="['/sessioncalendar']">Session Calendar</a>
+              </li>
+            </ul>
+          </li>
+          <li class="has-submenu">
+            <a class="">
+              <i class="">
+                <img src="assets/icons/analytics.svg" style="height: 30px; width: 30px;">
+              </i>Reports
+            </a>
+            <ul class="submenu" (click)="isShowMobileMenu = false">
+              <li class="d-desktop-only">
+                <a [routerLink]="['/report/sessionrecruitment']">Session Recruitment Report</a>
+              </li>
+              <li class="d-desktop-only">
+                <a [routerLink]="['/report/jobrecruitment']">Job Recruitment Report</a>
+              </li>
+              <li class="d-desktop-only">
+                <a [routerLink]="['/report/jobsummary']">PM Job Summary Report</a>
+              </li>
+              <li class="d-desktop-only">
+                <a [routerLink]="['/report/jobsummarydetail']">PM Job Detail Report</a>
+              </li>
+              <li>
+                <a [routerLink]="['/report/joborder']">Job Order Report</a>
+              </li>
+              <!-- <li>
+                <a [routerLink]="['/report/sales']">Sales Report</a>
+              </li> -->
+              <li class="d-desktop-only">
+                <a [routerLink]="['/report/memberprofilepoint']">Member Profile Point Report</a>
+              </li>
+              <li class="d-desktop-only">
+                <a [routerLink]="['/report/memberpointsdetail']">Member Point Detail Report</a>
+              </li>
+              <li class="d-desktop-only">
+                <a [routerLink]="['/report/staffkpi']">Staff KPI Report</a>
+              </li>
+              <li class="d-desktop-only">
+                <a [routerLink]="['/report/staffattendance']">Staff Attendance Report</a>
+              </li>
+              <li class="d-desktop-only">
+                <a [routerLink]="['/report/staffpayroll']">Staff Payroll Report</a>
+              </li>
+              <li class="d-desktop-only">
+                <a [routerLink]="['/report/incentive']">Incentive Report</a>
+              </li>
+            </ul>
+          </li>
+          <li class="has-submenu">
+            <a class="">
+              <i class="">
+                <img src="assets/icons/2-megaphone.svg" style="height: 30px; width: 30px;">
+              </i>Communication
+            </a>
+            <ul class="submenu" (click)="isShowMobileMenu = false">
+              <li>
+                <a [routerLink]="['/comms/sendsms']">Send SMS</a>
+              </li>
+              <li>
+                <a [routerLink]="['/comms/sendemail']">Send Email</a>
+              </li>
+              <li>
+                <a [routerLink]="['/comms/smsreplies']">SMS Replies</a>
+              </li>
+            </ul>
+          </li>
+          <li class="has-submenu">
+            <a>
+              <i class="">
+                <img src="assets/icons/3-user1.svg" style="height: 30px; width: 30px;">
+              </i>Staff
+            </a>
+            <ul class="submenu" (click)="isShowMobileMenu = false">
+              <li>
+                <a [routerLink]="['staff/roster']">Roster</a>
+              </li>
+              <li class="d-desktop-only">
+                <a [routerLink]="['/staff']">Staff List</a>
+              </li>
+              <li class="d-desktop-only">
+                <a [routerLink]="['/staff/attendance']">Manage Staff Attendance</a>
+              </li>
+              <!--<li>-->
+              <!--<a>Staff Leave</a>-->
+              <!--</li>-->
+              <!--<li>-->
+              <!--<a>Position Description</a>-->
+              <!--</li>-->
+            </ul>
+          </li>
+          <li class="has-submenu d-desktop-only">
+            <a class="">
+              <i class="">
+                <img src="assets/icons/admin-settings.svg" style="height: 30px; width: 30px;">
+              </i>Admin
+            </a>
+            <ul class="submenu" (click)="isShowMobileMenu = false">
+              <li>
+                <a [routerLink]="['/system-users']">System Users</a>
+              </li>
+              <li>
+                <a [routerLink]="['/loginaudit']">Login Audit</a>
+              </li>
+              <li *ngIf="isFarronResearch">
+                <a [routerLink]="['/support-ticket']">Support Tickets</a>
+              </li>
+              <li>
+                <a [routerLink]="['/emailtemplates']">Email & SMS Templates</a>
+              </li>
+              <li>
+                <a [routerLink]="['/emailsender']">Email Senders</a>
+              </li>
+              <li>
+                <a [routerLink]="['/admin/reference']">System References</a>
+              </li>
+              <li>
+                <a [routerLink]="['/system-configuration']">System Configuration</a>
+              </li>
+              <li *ngIf="isFarronResearch">
+                <a [routerLink]="['/software-licence']">Software Licences</a>
+              </li>
+              <li>
+                <a [routerLink]="['/admin/bulkdata']">Bulk Data Management</a>
+              </li>
+              <li>
+                <a [routerLink]="['/admin/globalqueries']">Manage Global Queries</a>
+              </li>
+              <li>
+                <a [routerLink]="['/admin/searchevents']">Search Events</a>
+              </li>
+              <li>
+                <a [routerLink]="['/admin/searcharchivedevents']">Search Archived Events</a>
+              </li>
+              <li>
+                <a [routerLink]="['/admin/privatelist']">Manage Private List</a>
+              </li>
+            </ul>
+          </li>
+        </ul>
+        <!-- End navigation menu -->
+      </div>
+      <!-- end #navigation -->
+      <JobTrackerComponent class="d-desktop-only"></JobTrackerComponent>
+    </div>
+    <!-- end container -->
+  </div>
+  <!-- end navbar-custom -->
+</header>
+<!-- End Navigation Bar-->

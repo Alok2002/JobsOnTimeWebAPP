@@ -1,0 +1,100 @@
+<div class="col-md-6 no-padding">
+  <form #surveyEditForm="ngForm" class="ax-form" role="form" *ngIf="survey">
+    <div class="form-group required">
+      <label class="control-label w-100-pre">Title
+        <span class="pull-right p-l-10">
+          <div class="checkbox checkbox-primary no-margin">
+            <input id="checkbox2" type="checkbox" name="closed" [(ngModel)]="survey.closed">
+            <label for="checkbox2">Closed</label>
+          </div>
+        </span>
+        <span [hidden]="titleModel.valid || !isSubmitForm">
+          <span class="text-danger pull-right" [hidden]="!titleModel.hasError('required')">Required</span>
+        </span>
+      </label>
+      <input type="text" class="form-control" name="title" [(ngModel)]="survey.title" #titleModel="ngModel" required>
+    </div>
+    <div class="form-group col-md-6 no-padding-left">
+      <label class="control-label w-100-pre">Expiry Date & Time
+        <span [hidden]="expirydateModel.valid || !isSubmitForm">
+          <span class="text-danger pull-right" [hidden]="!expirydateModel .hasError('required')">Required</span>
+        </span>
+      </label>
+      <!-- <input type="text" class="form-control" name="expiryDate" [(ngModel)]="survey.expiryDate"
+             ngui-datetime-picker
+             date-format="DD-MM-YYYY HH:mm"
+             [close-on-select]="true"
+             data-mask="99-99-9999 99:99"
+             #expirydateModel="ngModel" readonly> -->
+      <kendo-datepicker name="expiryDate" [(ngModel)]="survey.expiryDate" #expirydateModel="ngModel" style="width:55%"
+        placeholder="" #grouptimemodal="ngModel" [format]="'dd-MM-yyyy'">
+      </kendo-datepicker>
+      <kendo-timepicker name="expiryDate" [(ngModel)]="survey.expiryDate" #expirydateModel="ngModel" style="width:45%"
+        placeholder="" #grouptimemodal="ngModel">
+      </kendo-timepicker>
+    </div>
+    <div class="form-group col-md-2 no-padding-left">
+      <label class="control-label w-100-pre">Success Points
+        <span [hidden]="completionSuccessPointsModel.valid || !isSubmitForm">
+          <span class="text-danger pull-right"
+            [hidden]="!completionSuccessPointsModel.hasError('pattern')">Invalid</span>
+        </span>
+      </label>
+      <input type="text" class="form-control" name="completionSuccessPoints"
+        [(ngModel)]="survey.completionSuccessPoints" mask="99999" pattern=".{0,5}"
+        #completionSuccessPointsModel="ngModel">
+    </div>
+    <div class="form-group col-md-2 no-padding">
+      <label class="control-label w-100-pre">Disqualified Points
+        <span [hidden]="completionQualifiedPointsModel.valid || !isSubmitForm">
+          <span class="text-danger pull-right"
+            [hidden]="!completionQualifiedPointsModel.hasError('pattern')">Invalid</span>
+        </span>
+      </label>
+      <input type="text" class="form-control" name="completionDisqualifiedPoints"
+        [(ngModel)]="survey.completionDisqualifiedPoints" mask="99999" pattern=".{0,5}"
+        #completionQualifiedPointsModel="ngModel">
+    </div>
+    <div class="form-group col-md-2 no-padding-right">
+      <label class="control-label w-100-pre">Max Success
+        <span [hidden]="maxSuccessRequiredModel.valid || !isSubmitForm">
+          <span class="text-danger pull-right"
+            [hidden]="!maxSuccessRequiredModel.hasError('pattern')">Invalid</span>
+        </span>
+      </label>
+      <input type="text" class="form-control" name="maxSuccessRequired"
+        [(ngModel)]="survey.maxSuccessRequired" mask="99999" pattern=".{0,5}"
+        #maxSuccessRequiredModel="ngModel">
+    </div>
+    <div class="clearfix"></div>
+    <div class="form-group" *ngIf="isUpdateSurvey">
+      <label class="control-label">Survey Link</label>
+      <div class="input-group">
+        <input type="text" class="form-control btn-skyblue" name="publicurl" id="publicURL"
+          [(ngModel)]="survey.publicURL" />
+        <span class="input-group-btn">
+          <a class="btn btn-default ccopy" data-clipboard-target="#publicURL" (click)="clipboardCopy()">
+            Copy
+          </a>
+        </span>
+      </div>
+    </div>
+    <div class="form-group">
+      <label class="control-label w-100-pre">
+        Description
+        <span [hidden]="descModel.valid || !isSubmitForm">
+          <span class="text-danger pull-right" [hidden]="!descModel.hasError('required')">Required</span>
+        </span>
+      </label>
+      <textarea rows="3" class="form-control" id="elm1" name="description" #descModel="ngModel"
+        [(ngModel)]="survey.description"></textarea>
+    </div>
+    <div class="col-md-12 no-padding text-right">
+      <button type="button" class="btn btn-ocean waves-effect waves-light m-l-10 btn-md"
+        (click)="submitSurvey(surveyEditForm)">
+        Save
+      </button>
+    </div>
+  </form>
+</div>
+<div class="clearfix"></div>

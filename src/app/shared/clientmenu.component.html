@@ -1,0 +1,151 @@
+<!-- Navigation Bar-->
+<header id="topnav">
+  <div class="topbar-main">
+    <div class="container">
+      <!-- Logo container-->
+      <div class="logo">
+        <!-- <a [routerLink]="['/clihome']" class="logo"> -->
+        <a class="logo" [title]="isFarronResearch ? 'Farron Research Logo' : 'Logo'">
+          <span class="hidden-xs"><img src="assets/images/fr-logo.png"
+              [alt]="isFarronResearch ? 'Farron Research Logo' : 'Logo'"></span>
+          <span class="hidden-sm hidden-md hidden-lg"><img src="assets/images/fr-only-logo.png"
+              [alt]="isFarronResearch ? 'Farron Research Logo' : 'Logo'"></span>
+        </a>
+      </div>
+      <!-- End Logo container-->
+      <div class="menu-extras">
+        <ul class="nav navbar-nav navbar-right pull-right">
+          <li class="dropdown hidden">
+            <a href="#" data-target="#" class="dropdown-toggle waves-effect waves-light" data-toggle="dropdown"
+              aria-expanded="true" data-backdrop="static">
+              <i class="md md-notifications"></i> <span class="badge badge-xs badge-pink">2</span>
+            </a>
+            <ul class="dropdown-menu dropdown-menu-lg">
+              <li class="text-center notifi-title">Notification</li>
+              <li class="list-group nicescroll notification-list">
+                <!-- list item-->
+                <a [routerLink]="['/underconstruction']" class="list-group-item">
+                  <div class="media">
+                    <div class="pull-left p-r-10">
+                      <em class="md md-textsms noti-primary"></em>
+                    </div>
+                    <div class="media-body">
+                      <h5 class="media-heading">You have received a new SMS</h5>
+                      <p class="m-0">
+                        <small>From James Faulkner</small>
+                      </p>
+                    </div>
+                  </div>
+                </a>
+                <!-- list item-->
+                <a [routerLink]="['/underconstruction']" class="list-group-item">
+                  <div class="media">
+                    <div class="pull-left p-r-10">
+                      <em class="md md-warning noti-danger"></em>
+                    </div>
+                    <div class="media-body">
+                      <h5 class="media-heading">Respondent Cancellation</h5>
+                      <p class="m-0">
+                        <small>New cancellation for Job No 123-17</small>
+                      </p>
+                    </div>
+                  </div>
+                </a>
+              </li>
+            </ul>
+          </li>
+          <li class="dropdown">
+            <span class="top-menu-user-txt hidden-xs pull-left">{{username}}</span>
+            <a href="#" class="dropdown-toggle waves-effect waves-light profile" data-toggle="dropdown"
+              aria-expanded="true">
+              <i class="md md-person"></i>
+            </a>
+            <ul class="dropdown-menu">
+              <li>
+                <a href="javascript:void(0)" [routerLink]="['/clisettings']"><i class="ti-settings m-r-5"></i>
+                  Settings</a>
+              </li>
+              <li>
+                <a [routerLink]="['/rescontactus']">
+                  <i class="ti-email m-r-5"></i> Contact Us</a>
+              </li>
+              <li><a href="javascript:;" (click)="logOut()"><i class="ti-power-off m-r-5"></i> Logout</a></li>
+            </ul>
+          </li>
+        </ul>
+        <div class="menu-item">
+          <!-- Mobile menu toggle-->
+          <a class="navbar-toggle">
+            <div class="lines">
+              <span></span>
+              <span></span>
+              <span></span>
+            </div>
+          </a>
+          <!-- End mobile menu toggle-->
+        </div>
+      </div>
+    </div>
+  </div>
+  <!-- End topbar -->
+  <!-- Navbar Start -->
+  <div class="navbar-custom">
+    <div class="container">
+      <div id="navigation">
+        <!-- Navigation Menu-->
+        <ul class="navigation-menu">
+          <li class="has-submenu" (click)="isShowMobileMenu = false">
+            <a [routerLink]="['/clihome']">
+              <i class="">
+                <img src="assets/icons/respontent/house.svg" style="height: 30px; width: 30px;">
+              </i>Home
+            </a>
+          </li>
+
+          <li class="has-submenu" (click)="isShowMobileMenu = false">
+            <a [routerLink]="['/cliclient']">
+              <i class="">
+                <img src="assets/icons/3-teamwork.svg" style="height: 30px; width: 30px;">
+              </i>Client
+            </a>
+          </li>
+
+          <li class="has-submenu">
+            <a [routerLink]="['/clijobs']">
+              <i class="">
+                <img src="assets/icons/jobs-files.svg" style="height: 30px; width: 30px;">
+              </i>Jobs
+            </a>
+          </li>
+
+          <!-- <li class="has-submenu">
+            <a [routerLink]="['/clinotes']">
+              <i class="">
+                <img src="assets/icons/client/contract.svg" style="height: 30px; width: 30px;">
+              </i>Notes
+            </a>
+          </li> -->
+
+          <li *ngIf="client?.allowPrivateList" class="has-submenu">
+            <a [routerLink]="['/cliprivatelist']">
+              <i class="">
+                <img src="assets/icons/respontent/file.svg" style="height: 30px; width: 30px;">
+              </i>Private List
+            </a>
+          </li>
+
+          <!-- <li class="has-submenu">
+            <a [routerLink]="['/clifeedback']">
+              <i class="">
+                <img src="assets/icons/client/user.svg" style="height: 30px; width: 30px;">
+              </i>Feedback
+            </a>
+          </li> -->
+        </ul>
+        <!-- End navigation menu -->
+      </div> <!-- end #navigation -->
+    </div> <!-- end container -->
+  </div>
+  <!-- end navbar-custom -->
+</header>
+<!-- End Navigation Bar-->

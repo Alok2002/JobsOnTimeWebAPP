@@ -1,0 +1,63 @@
+<div class="wrapper">
+  <div class="container">
+    <!-- Page-Title -->
+    <div class="row">
+      <div class="col-sm-12">
+        <h1 tabindex="0" class="page-title m-t-15 mobile-text-center font-18" style="line-height: 22px;">
+          Welcome {{unique_name}}!
+        </h1>
+      </div>
+    </div>
+    <!-- Page-Title -->
+    <div id="lobipanel-multiple">
+      <div class="bs-example">
+        <div class="row">
+          <div class="col-md-4">
+            <div class="panel panel-warning ax-panel-warning">
+              <div class="panel-heading" style="background-color: #dae6ec !important;padding: 7px;">
+                <div class="panel-title">
+                  <h2 tabindex="0" style="color: #2a3142 !important;font-size: 14px;line-height: normal;margin: 0;">Quick Stats</h2>
+                </div>
+              </div>
+              <div class="panel-body">
+                <table class="table table-bordered ax-table m-b-0">
+                  <tbody>
+                    <tr>
+                      <td tabindex="0">Sessions you are attending today</td>
+                      <td tabindex="0" class="ax-width-50 text-right">
+                        <!-- <a href="res-mysessions.html">{{reshomesummary?.sessionsToday}}</a> -->
+                        {{reshomesummary?.sessionsToday}}
+                      </td>
+                    </tr>
+                    <tr>
+                      <td tabindex="0">Total sessions you have attended/are to attend</td>
+                      <td tabindex="0" class="text-right">
+                        <!-- <a href="res-mysessions.html">{{reshomesummary?.totalSessions}}</a> -->
+                        {{reshomesummary?.totalSessions}}
+                      </td>
+                    </tr>
+                    <tr>
+                      <td tabindex="0">Surveys you can complete</td>
+                      <td tabindex="0" class="text-right">
+                        <!-- <a href="res-mysessions.html">{{reshomesummary?.surveysCompleted}}</a> -->
+                        {{reshomesummary?.surveyToComplete}}
+                      </td>
+                    </tr>
+                    <tr>
+                      <td tabindex="0">Total surveys you have completed</td>
+                      <td tabindex="0" class="text-right">
+                        <!-- <a href="res-mysessions.html">{{reshomesummary?.surveyToComplete}}</a> -->
+                        {{reshomesummary?.surveysCompleted}}
+                      </td>
+                    </tr>
+                  </tbody>
+                </table>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <!-- end container -->
+  </div>
+</div>

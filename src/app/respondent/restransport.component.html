@@ -1,0 +1,268 @@
+<div class="tab-pane" id="vehicledetails">
+  <!-- <div *ngIf="!isMyProfile" class="newres-tab-title">
+    <h5 class="no-margin">Transport</h5>
+  </div> -->
+
+  <div *ngIf="!isMyProfile" class="col-md-12 no-padding m-b-0 newres-bottom">
+    <div class="col-md-6 font-10 no-padding">
+      <h5 class="no-margin p-l-10" style="line-height: 34px">Transport</h5>
+    </div>
+    <div class="col-md-6 text-right no-padding">
+      <button type="submit" (click)="updateSubmit(resTransportForm)" class="btn waves-effect waves-light btn-md"
+        [class.btn-ocean]="!isMyProfile" [class.btn-basil]="isMyProfile">
+        Submit
+      </button>
+    </div>
+  </div>
+  <div class="clearfix"></div>
+  <br>
+  <form *ngIf="!isLoading && respondent != null" class="ax-form" role="form" #resTransportForm="ngForm">
+    <ng-container>
+      <div class="col-md-4 no-padding-left">
+        <div class="form-group">
+          <label class="control-label">Vehicle Finance</label>
+          <ng-container *ngFor="let ba of vehicleFinancesList; let i = index">
+            <div class="checkbox checkbox-primary pull-left res-check-margin w-100-pre">
+              <input type="checkbox" name="vehiclefinance{{i}}" id="vehiclefinance{{i}}" [(ngModel)]="ba.selected"
+                value="true">
+              <label class="control-label" for="vehiclefinance{{i}}">{{ba.description}}</label>
+            </div>
+          </ng-container>
+          <div class="clearfix"></div>
+        </div>
+        <div class="form-group">
+          <label class="control-label panel-member-heading-label">Vehicle Licence Type</label>
+          <ng-container *ngFor="let ba of vehicleLicenceTypesList; let i = index">
+            <div class="checkbox checkbox-primary pull-left res-check-margin w-100-pre">
+              <input type="checkbox" name="vehiclelicencetype{{i}}" id="vehiclelicencetype{{i}}"
+                [(ngModel)]="ba.selected" value="true">
+              <label class="control-label" for="vehiclelicencetype{{i}}">{{ba.description}}</label>
+            </div>
+          </ng-container>
+          <div class="clearfix"></div>
+        </div>
+        <div class="form-group">
+          <label class="control-label panel-member-heading-label">Vehicle Sales Methods</label>
+          <ng-container *ngFor="let ba of vehicleSalesMethodsList; let i = index">
+            <div class="checkbox checkbox-primary pull-left res-check-margin w-100-pre">
+              <input type="checkbox" name="vehiclesalesmethods{{i}}" id="vehiclesalesmethods{{i}}"
+                [(ngModel)]="ba.selected" value="true">
+              <label class="control-label" for="vehiclesalesmethods{{i}}">{{ba.description}}</label>
+            </div>
+          </ng-container>
+          <div class="clearfix"></div>
+        </div>
+        <div class="form-group">
+          <label class="control-label panel-member-heading-label">Modes of transportation</label>
+          <ng-container *ngFor="let ba of transportationModesList; let i = index">
+            <div class="checkbox checkbox-primary pull-left res-check-margin w-100-pre">
+              <input type="checkbox" name="modesoftransportation{{i}}" id="modesoftransportation{{i}}"
+                [(ngModel)]="ba.selected" value="true">
+              <label class="control-label" for="modesoftransportation{{i}}">{{ba.description}}</label>
+            </div>
+          </ng-container>
+          <div class="clearfix"></div>
+        </div>
+        <div class="form-group">
+          <label class="control-label panel-member-heading-label">Public Transport</label>
+          <ng-container *ngFor="let ba of publicTransportTypesList; let i = index">
+            <div class="checkbox checkbox-primary pull-left res-check-margin w-100-pre">
+              <input type="checkbox" name="publictransport{{i}}" id="publictransport{{i}}" [(ngModel)]="ba.selected"
+                value="true">
+              <label class="control-label" for="publictransport{{i}}">{{ba.description}}</label>
+            </div>
+          </ng-container>
+          <div class="clearfix"></div>
+        </div>
+        <div class="form-group">
+          <label class="control-label panel-member-heading-label">Ride Share Services</label>
+          <ng-container *ngFor="let ba of rideShareServicesList; let i = index">
+            <div class="checkbox checkbox-primary pull-left res-check-margin w-100-pre">
+              <input type="checkbox" name="rideshareservices{{i}}" id="rideshareservices{{i}}" [(ngModel)]="ba.selected"
+                value="true">
+              <label class="control-label" for="rideshareservices{{i}}">{{ba.description}}</label>
+            </div>
+          </ng-container>
+          <div class="clearfix"></div>
+        </div>
+      </div>
+      <!-- <div class="col-md-4 no-padding">
+      <div class="form-group">
+        <label class="control-label">Vehicle Make</label>
+        <ng-container *ngFor="let ba of vehicleMakeList; let i = index">
+          <div class="checkbox checkbox-primary pull-left res-check-margin w-100-pre">
+            <input type="checkbox" name="vehiclemake{{i}}" [(ngModel)]="ba.selected" value="true">
+            <label class="control-label">{{ba.description}}</label>
+          </div>
+        </ng-container>
+        <div class="clearfix"></div>
+      </div>
+    </div> -->
+      <div class="col-md-4 no-padding-right">
+        <!-- <div class="form-group">
+        <label class="control-label">Vehicle Model</label>
+        <ng-container *ngFor="let ba of vehicleModelsList; let i = index">
+          <div class="checkbox checkbox-primary pull-left res-check-margin w-100-pre">
+            <input type="checkbox" name="vehiclemodel{{i}}" [(ngModel)]="ba.selected" value="true">
+            <label class="control-label">{{ba.description}}</label>
+          </div>
+        </ng-container>
+        <div class="clearfix"></div>
+      </div>
+      <div class="form-group">
+        <label class="control-label panel-member-heading-label">Vehicle Type</label>
+        <ng-container *ngFor="let ba of vehicleTypesList; let i = index">
+          <div class="checkbox checkbox-primary pull-left res-check-margin w-100-pre">
+            <input type="checkbox" name="vehicletype{{i}}" [(ngModel)]="ba.selected" value="true">
+            <label class="control-label">{{ba.description}}</label>
+          </div>
+        </ng-container>
+        <div class="clearfix"></div>
+      </div> -->
+
+        <ng-container *ngIf="!isLoading">
+          <div class="no-padding-left" [class.col-md-6]="!isMyProfile" [class.col-md-12]="isMyProfile">
+            <div class="form-group has-feedback">
+              <label class="control-label w-100-pre">
+                Vehicle 1 Make
+                <div class="pull-right">
+                  <label for="vehicle1IsNew"
+                    class="control-label ax-color-black pull-left m-b-0 font-normal font-12 no-padding">
+                    Brand New
+                  </label>
+                  <div class="checkbox checkbox-primary" style="margin: 0px 0px 0px 65px;">
+                    <input id="vehicle1IsNew" type="checkbox" [(ngModel)]="respondent.vehicle1IsNew"
+                      name="vehicle1IsNew" value="true">
+                    <label for="vehicle1IsNew" class="control-label ax-color-black no-padding">
+                    </label>
+                  </div>
+                </div>
+              </label>
+              <select id="Vehicle1_MakeID" name="Vehicle1_MakeID" class="form-control"
+                [(ngModel)]="respondent.vehicle1MakeId">
+                <option *ngFor="let vm of vehiclemakelist" [value]="vm.id">{{vm.description}}</option>
+              </select>
+            </div>
+            <div class="form-group">
+              <label class="control-label">Vehicle 1 Type</label>
+              <select id="Vehicle1_Type" name="Vehicle1_Type" class="form-control"
+                [(ngModel)]="respondent.vehicle1Type">
+                <option *ngFor="let vt of vehicletypelist" [value]="vt.description">{{vt.description}}</option>
+              </select>
+            </div>
+            <div class="form-group">
+              <label class="w-100-pre">Vehicle 1 Model</label>
+              <input type="text" id="Vehicle1_Model" name="Vehicle1_Model" [(ngModel)]="respondent.vehicle1Model"
+                class="form-control">
+            </div>
+            <div class="form-group">
+              <label class="control-label w-100-pre">Vehicle 1 Year
+                <span [hidden]="vehicle1YearModel.valid || !isSubmitForm">
+                  <span class="text-danger pull-right" [hidden]="!vehicle1YearModel.hasError('pattern')">Invalid
+                    Year</span>
+                </span>
+              </label>
+              <input type="text" id="Vehicle1_Year" name="Vehicle1_Year" [(ngModel)]="respondent.vehicle1Year"
+                class="form-control" [textMask]="{mask: yearMask, showMask: true, guide: false}" numeric
+                (ngModelChange)="respondent.vehicle1Year = unmask($event)" pattern=".{4,4}"
+                #vehicle1YearModel="ngModel">
+            </div>
+            <!-- <div>
+            <label class="control-label">Vehicle 1 Brand New</label>
+            <select class="form-control" name="respondent.vehicle1IsNew" [(ngModel)]="respondent.vehicle1IsNew">
+              <option [value]="true">Yes</option>
+              <option [value]="false">No</option>
+            </select>
+          </div> -->
+          </div>
+          <div class="no-padding-left" [class.col-md-6]="!isMyProfile" [class.col-md-12]="isMyProfile">
+            <div class="form-group has-feedback">
+              <label class="control-label w-100-pre">Vehicle 2 Make
+                <div class="pull-right">
+                  <label for="vehicle2IsNew"
+                    class="control-label ax-color-black pull-left m-b-0 font-normal font-12 no-padding">
+                    Brand New
+                  </label>
+                  <div class="checkbox checkbox-primary" style="margin: 0px 0px 0px 65px;">
+                    <input id="vehicle2IsNew" type="checkbox" [(ngModel)]="respondent.vehicle2IsNew"
+                      name="vehicle2IsNew" value="true">
+                    <label for="vehicle2IsNew" class="control-label ax-color-black no-padding">
+                    </label>
+                  </div>
+                </div>
+              </label>
+              <select id="Vehicle2_MakeID" name="Vehicle2_MakeID" class="form-control"
+                [(ngModel)]="respondent.vehicle2MakeId">
+                <option *ngFor="let vm of vehiclemakelist" [value]="vm.id">{{vm.description}}</option>
+              </select>
+            </div>
+            <div class="form-group">
+              <label class="control-label">Vehicle 2 Type</label>
+              <select id="Vehicle2_Type" name="Vehicle2_Type" class="form-control"
+                [(ngModel)]="respondent.vehicle2Type">
+                <option *ngFor="let vt of vehicletypelist" [value]="vt.description">{{vt.description}}</option>
+              </select>
+            </div>
+            <div class="form-group">
+              <label class="control-label w-100-pre">Vehicle 2 Model</label>
+              <input type="text" id="Vehicle2_Model" name="Vehicle2_Model" [(ngModel)]="respondent.vehicle2Model"
+                class="form-control">
+            </div>
+            <div class="form-group">
+              <label class="control-label w-100-pre">Vehicle 2 Year
+                <span [hidden]="vehicle2YearModel.valid || !isSubmitForm">
+                  <span class="text-danger pull-right" [hidden]="!vehicle2YearModel.hasError('pattern')">Invalid
+                    Year</span>
+                </span>
+              </label>
+              <input type="text" id="Vehicle2_Year" name="Vehicle2_Year" [(ngModel)]="respondent.vehicle2Year"
+                class="form-control" [textMask]="{mask: yearMask, showMask: true, guide: false}" numeric
+                (ngModelChange)="respondent.vehicle2Year = unmask($event)" pattern=".{4,4}"
+                #vehicle2YearModel="ngModel">
+            </div>
+            <!-- <div>
+            <label class="control-label">Vehicle 2 Brand New</label>
+            <select class="form-control" name="respondent.vehicle2IsNew" [(ngModel)]="respondent.vehicle2IsNew">
+              <option [value]="true">Yes</option>
+              <option [value]="false">No</option>
+            </select>
+          </div> -->
+          </div>
+        </ng-container>
+      </div>
+    </ng-container>
+    <div class="clearfix"></div>
+    <div *ngIf="respondent" class="col-md-12 no-padding m-b-0 newres-bottom">
+      <!-- <div class="pull-left" *ngIf="!isMyProfile">
+            <button class="btn btn-cocktail waves-effect waves-light btn-md">
+              Send Reset Password Link
+            </button>
+          </div> -->
+      <div class="col-md-6 font-10 no-padding" style="line-height: 34px">
+        <ng-container>
+          <b>Created:</b>
+          <ng-container *ngIf="respondent.dateCreated">
+            {{respondent.dateCreated | date: 'dd-MM-yyyy'}} &#160;
+          </ng-container>
+          <ng-container *ngIf="!respondent.dateCreated">
+            {{today | date: 'dd-MM-yyyy'}} &#160;
+          </ng-container>
+          <b>Last Updated:</b>
+          <ng-container *ngIf="respondent.dateLastUpdated">
+            {{respondent.dateLastUpdated | date: 'dd-MM-yyyy'}}
+          </ng-container>
+          <ng-container *ngIf="!respondent.dateLastUpdated">
+            {{today | date: 'dd-MM-yyyy'}}
+          </ng-container>
+        </ng-container>
+      </div>
+      <div class="col-md-6 text-right no-padding">
+        <button type="submit" (click)="updateSubmit(resTransportForm)" class="btn waves-effect waves-light btn-md"
+          [class.btn-ocean]="!isMyProfile" [class.btn-basil]="isMyProfile">
+          Submit
+        </button>
+        <!-- <a *ngIf="isMyProfile" class="btn btn-cocktail m-l-5" (click)="gotoTop()">Skip</a> -->
+      </div>
+    </div>
+  </form>
+</div>

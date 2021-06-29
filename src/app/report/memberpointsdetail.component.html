@@ -1,0 +1,153 @@
+<div class="wrapper">
+  <div class="container">
+    <div class="row">
+      <div class="col-sm-12">
+        <ol class="breadcrumb breadcrumb-arrow bg-white bx-shadow">
+          <li><a [routerLink]="['/dashboard']" class="home-breadcrumb"><i class="md md-home"></i></a></li>
+          <!-- <li><a [routerLink]="['/reports']" class="home-breadcrumb font-14">Reports</a></li> -->
+          <li><a>Member Points Detail Report</a></li>
+        </ol>
+      </div>
+      <div class="col-sm-12">
+        <div class="card-box">
+          <div class="portlet ax-border" id="jobs-filterBox">
+            <div class="portlet-heading portlet-default">
+              <div class="clearfix"></div>
+              <div id="bg-default" class="panel-collapse collapse in">
+                <div class="portlet-body no-padding m-t-0">
+                  <div class="col-md-12 no-padding">
+                    <form action="" class="ax-form">
+                      <div class="from-group col-md-1">
+                        <label class="control-label ax-color-black w-100-pre">Member Status</label>
+                        <select name="memberStatus" class="form-control" [(ngModel)]="reports.memberStatus">
+                          <option value="Active">Active</option>
+                          <option value="Inactive">Inactive</option>
+                          <option value="Both">Both</option>
+                        </select>
+                      </div>
+                      <div class="form-group col-md-2">
+                        <label class="control-label ax-color-black">Current Points</label>
+                        <div class="clearfix"></div>
+                        <div class="col-md-6 p-0">
+                          <input type="number" class="form-control" name="cpointstart" [(ngModel)]="cpointstart" />
+                        </div>
+                        <div class="col-md-6 p-0">
+                          <input type="number" class="form-control" name="cpointend" [(ngModel)]="cpointend" />
+                        </div>
+                      </div>
+                      <div class="form-group col-md-2">
+                        <label class="control-label ax-color-black">Paid Points</label>
+                        <div class="clearfix"></div>
+                        <div class="col-md-6 p-0">
+                          <input type="number" class="form-control" name="ppointstart" [(ngModel)]="ppointstart" />
+                        </div>
+                        <div class="col-md-6 p-0">
+                          <input type="number" class="form-control" name="ppointend" [(ngModel)]="ppointend" />
+                        </div>
+                      </div>
+                      <div class="form-group col-md-2">
+                        <label class="control-label ax-color-black w-100-pre">
+                          Total Points
+                        </label>
+                        <div class="clearfix"></div>
+                        <div class="col-md-6 p-0">
+                          <input type="number" class="form-control" name="tpointstart" [(ngModel)]="tpointstart" />
+                        </div>
+                        <div class="col-md-6 p-0">
+                          <input type="number" class="form-control" name="tpointend" [(ngModel)]="tpointend" />
+                        </div>
+                      </div>
+                      <div class="form-group col-md-2">
+                        <label class="control-label ax-color-black w-100-pre">Job Number</label>
+                        <select name="jobid" class="form-control" [(ngModel)]="reports.jobId">
+                          <option [ngValue]="0"></option>
+                          <option *ngFor="let jb of jobList;let i = index" [value]="jb.id">{{jb?.jobNumberAndName}}
+                          </option>
+                        </select>
+                      </div>
+                      <div class="form-group col-md-2">
+                        <label class="control-label ax-color-black w-100-pre">Event Type</label>
+                        <select name="eventtype" class="form-control" [(ngModel)]="reports.eventType">
+                          <option *ngFor="let ev of eventList;let i = index" [value]="ev.text">{{ev?.text}}</option>
+                        </select>
+                      </div>
+                      <div class="form-group col-md-1">
+                        <label class="control-label ax-color-black w-100-pre">Respondent Id</label>
+                        <input type="text" class="form-control" name="memberid" [(ngModel)]="reports.memberIds" />
+                      </div>
+                      <div class="clearfix"></div>
+                      <hr class="m-b-20 m-t-15">
+                      <div class="col-md-12 no-padding text-right">
+                        <a class="btn btn-cocktail" (click)="resetFilter()">Reset</a>&#160;
+                        <button class="btn btn-ocean" (click)="submitFilter()">Show Report</button>
+                      </div>
+                    </form>
+                  </div>
+                  <div class="clearfix"></div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div style="position: relative;min-height: 50px">
+            <ng-container *ngIf="data && data.length > 0">
+              <div class="btn-group">
+                <a class="btn btn-ocean btn-xs waves-effect btn-square m-l--1" id="deleteAlert"
+                  (click)="exportToExcel(grid)">
+                  Export to Excel
+                </a>
+                <a class="btn btn-cocktail btn-xs waves-effect btn-square" (click)="exportToPDF(grid)">
+                  Export to PDF
+                </a>
+              </div>
+              <kendo-grid #grid="kendoGrid" [data]="gridData" [pageSize]="state.take" [skip]="state.skip"
+                [sort]="state.sort" [group]="state.group" [sortable]="{ mode: 'multiple' }" [height]="'auto'"
+                [pageable]="true" [scrollable]="false" (dataStateChange)="dataStateChange($event)">
+                <kendo-grid-column field="respId" title="Respondent Id" [hidden]="true">
+                  <ng-template kendoGridGroupHeaderTemplate let-group let-field="field" let-value="value">
+                    <div class="w-100-pre">{{value}} - <span [innerHTML]="getNameById(value)"></span></div>
+                  </ng-template>
+                </kendo-grid-column>
+                <!-- <kendo-grid-column field="firstName" title="First Name" width="150">
+                </kendo-grid-column>
+                <kendo-grid-column field="lastName" title="Last Name" width="150">
+                </kendo-grid-column> -->
+                <kendo-grid-column field="jobNumber" title="Job Number" width="150">
+                </kendo-grid-column>
+                <kendo-grid-column field="jobName" title="Job Name" width="200">
+                </kendo-grid-column>
+                <kendo-grid-column field="eventDate" title="Event Date" width="100">
+                  <ng-template kendoGridCellTemplate let-dataItem let-rowIndex="rowIndex">
+                    {{ dataItem.eventDate | date: 'dd-MM-yyyy' }}
+                  </ng-template>
+                </kendo-grid-column>
+                <kendo-grid-column field="eventDescription" title="Event Description" width="300">
+                </kendo-grid-column>
+                <kendo-grid-column field="numberOfPoints" title="Points" width="120" [headerClass]="'text-right-imp'">
+                  <ng-template kendoGridCellTemplate let-dataItem>
+                    <div class="text-right-imp" [class.text-danger]="dataItem.numberOfPoints < 0">
+                      {{ dataItem.numberOfPoints }}
+                    </div>
+                  </ng-template>
+                  <ng-template kendoGridGroupFooterTemplate let-group="group" let-aggregates>
+                    <div class="text-right-imp" [class.text-danger]="aggregates['numberOfPoints'].sum < 0">Total: {{aggregates["numberOfPoints"].sum}}</div>
+                  </ng-template>
+                  <ng-template kendoGridFooterTemplate let-column="column">
+                    <div class="text-right-imp" [class.text-danger]="total['numberOfPoints'].sum < 0">Grand Total: {{total["numberOfPoints"].sum}}</div>
+                  </ng-template>
+                </kendo-grid-column>
+                <kendo-grid-column></kendo-grid-column>
+                <kendo-grid-pdf fileName="MemberProfilePoint.pdf" paperSize="auto" [scale]="0.8" [repeatHeaders]="true"
+                  [allPages]="true" [margin]="{ top: '0.2cm', left: '0.2cm', right: '0.2cm', bottom: '0.2cm' }">
+                </kendo-grid-pdf>
+                <kendo-grid-excel [fetchData]="allData" fileName="MemberProfilePoint.xlsx"></kendo-grid-excel>
+              </kendo-grid>
+            </ng-container>
+            <div class="card ax-border m-b-0 m-t-20 p-all-15" *ngIf="isSubmitForm && data && data.length == 0">No data
+              available</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div> <!-- end container -->
+</div>

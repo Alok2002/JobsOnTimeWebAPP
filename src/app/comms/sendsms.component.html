@@ -1,0 +1,123 @@
+<div class="wrapper">
+  <div class="container">
+    <div class="row">
+      <div class="col-sm-12">
+        <ol class="breadcrumb breadcrumb-arrow bg-white bx-shadow">
+          <li><a [routerLink]="['/dashboard']" class="home-breadcrumb"><i class="md md-home"></i></a></li>
+          <!-- <li><a [routerLink]="['/submenu/communication']" class="home-breadcrumb font-14">Communication</a></li> -->
+          <li><a>Send SMS</a></li>
+        </ol>
+      </div>
+      <div class="col-sm-12">
+        <div class="card-box">
+          <div class="portlet ax-border m-b-0" id="jobs-filterBox">
+            <div class="portlet-heading portlet-default">
+              <div class="clearfix"></div>
+              <div id="bg-default" class="panel-collapse collapse in">
+                <div class="portlet-body no-padding m-t-0">
+                  <div class="col-md-5 no-padding">
+                    <form class="ax-form" #smsForm="ngForm" *ngIf="!isLoading">
+                      <div class="form-group">
+                        <label class="control-label ax-color-black">Client</label>
+                        <select class="form-control" (change)="getJobsbyClientId(selectedClient)"
+                                [(ngModel)]="selectedClient" name="client">
+                          <ng-container *ngFor="let cl of eventClients">
+                            <option value="{{cl.value}}">{{cl.text}}</option>
+                          </ng-container>
+                        </select>
+                      </div>
+                      <div class="form-group">
+                        <label class="control-label ax-color-black">Job</label>
+                        <select class="form-control" (change)="getSessionbyJobId(selectedJob)" [(ngModel)]="selectedJob"
+                                name="job">
+                          <ng-container *ngFor="let js of eventJobs">
+                            <option value="{{js.value}}">{{js.text}}</option>
+                          </ng-container>
+                        </select>
+                      </div>
+                      <div class="form-group">
+                        <label class="control-label ax-color-black">Session</label>
+                        <select class="form-control" [(ngModel)]="selectedSession" name="session">
+                          <ng-container *ngFor="let se of eventJobSessions">
+                            <option value="{{se.value}}">{{se.text}}</option>
+                          </ng-container>
+                        </select>
+                      </div>
+
+                      <div class="form-group required">
+                        <label class="control-label ax-color-black w-100-pre">
+                          Mobile Numbers
+                          <span class="pull-right font-normal font-12">
+                            {{getMobileNumberCount()}} Recipients
+                          </span>
+
+                          <span *ngIf="mobileNumberstr?.length < 1 && isSubmitForm">
+                            <span class="text-danger pull-right">Required &#160;</span>
+                          </span>
+                        </label>
+                        <input type="text" class="form-control" [(ngModel)]="mobileNumberstr" name="mobilenumber">
+                        <!-- <tag-input [(ngModel)]='mobileNumbers' name="mobilenumber" theme='bootstrap'
+                                   [placeholder]="''" class="sendmobile-input" type="number"
+                                   [secondaryPlaceholder]="''" [separatorKeyCodes]="[9, 188]"></tag-input> -->
+                      </div>
+                      <div class="form-group">
+                        <label class="control-label ax-color-black">Subject</label>
+                        <input type="text" class="form-control" [(ngModel)]="subject" name="subject">
+                      </div>
+                      <!--<div class="form-group">-->
+                      <!--<label class="control-label ax-color-black">Provider</label>-->
+                      <!--<select class="form-control" [(ngModel)]="provider" name="provider">-->
+                      <!--<option value=""></option>-->
+                      <!--<option value="">Provider 1</option>-->
+                      <!--<option value="">Provider 2</option>-->
+                      <!--</select>-->
+                      <!--</div>-->
+                      <div class="form-group required">
+                        <label class="control-label ax-color-black w-100-pre">
+                          Message
+                          <span class="pull-right font-normal font-12">
+                            <span id="count" class="text-right">{{checkStringLength(message)}}</span> of 600 characters
+                          </span>
+
+                          <span [hidden]="textareaModel.valid || !isSubmitForm">
+                            <span class="text-danger pull-right" [hidden]="!textareaModel.hasError('required')">Required &#160;</span>
+                          </span>
+                        </label>
+                        <textarea rows="3" class="form-control" id="message" [(ngModel)]="message" name="message"
+                                  required #textareaModel="ngModel"></textarea>
+                      </div>
+                      <div class="col-md-12 no-padding m-b-0">
+                        <div class="pull-left">
+                          <div class="form-group">
+                            <label for="checkbox1" class="control-label ax-color-black pull-left">
+                              Add to Electronic Documents
+                            </label>
+                            <div class="checkbox checkbox-primary" style="margin-left: 190px;">
+                              <input id="checkbox1" type="checkbox" checked [(ngModel)]="isElectronicDoc"
+                                     name="isElectronicDoc">
+                              <label for="checkbox1" class="control-label ax-color-black">
+                              </label>
+                            </div>
+                          </div>
+                        </div>
+                        <div class="pull-right">
+                          <button (click)="sendSms(smsForm)"
+                                  class="btn btn-ocean waves-effect waves-light btn-md">
+                            Send SMS
+                          </button>
+                        </div>
+                      </div>
+                      <div class="clearfix"></div>
+                    </form>
+                  </div>
+                  <div class="clearfix"></div>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="clearfix"></div>
+        </div>
+      </div>
+    </div>
+  </div> <!-- end container -->
+</div>

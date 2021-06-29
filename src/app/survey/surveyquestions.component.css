@@ -1,0 +1,36 @@
+.search-question-container {
+  position: relative;
+}
+
+.search-question-container::before {
+  content: "\f05f";
+  font: normal normal normal 14px/1 'Material Design Iconic Font';
+  position: absolute;
+  left: 23px;
+  top: 25px;
+}
+
+.search-question-container .form-control {
+  padding-left: 25px;
+}
+
+.btn-grey {
+  background: #ececec;
+}
+
+.sqo-table>tbody+tbody {
+  border: none;
+}
+
+::ng-deep p {
+  margin: 0 !important;
+  display: inherit;
+}
+
+.selectedQuesNo:hover {
+  background: #dae6ec !important;
+}
+
+:host ::ng-deep .ck-editor__editable_inline {
+  min-height: 50px;
+}

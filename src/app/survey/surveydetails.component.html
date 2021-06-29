@@ -1,0 +1,115 @@
+<div class="wrapper">
+  <div class="container">
+    <div class="row">
+      <div class="col-sm-12">
+        <ol class="breadcrumb breadcrumb-arrow bg-white bx-shadow">
+          <li>
+            <a [routerLink]="['/dashboard']" class="home-breadcrumb">
+              <i class="md md-home"></i>
+            </a>
+          </li>
+          <li *ngIf="isUpdateSurvey"><a [routerLink]="['/client']" class="home-breadcrumb font-14">Client</a></li>
+          <li *ngIf="isUpdateSurvey && job?.clientId"><a [routerLink]="['/client/edit', job.clientId]"
+              class="home-breadcrumb font-14">{{job?.clientName}}</a></li>
+          <li>
+            <a [routerLink]="['/job']" class="home-breadcrumb font-14">Jobs</a>
+          </li>
+          <li>
+            <a [routerLink]="['/job/edit', jobId]" class="home-breadcrumb font-14">{{job?.jobBreadcrumbDetails}}</a>
+          </li>
+          <li>
+            <a *ngIf="surveyId && !survey?.isScreener">Manage Survey</a>
+            <a *ngIf="!surveyId && !survey?.isScreener">Create Survey</a>
+            <a *ngIf="surveyId && survey?.isScreener">Manage Screener</a>
+            <a *ngIf="!surveyId && survey?.isScreener">Create Screener</a>
+          </li>
+        </ol>
+      </div>
+      <div class="col-sm-12">
+        <div class="card-box">
+          <div class="btn btn-group jobs-top-btn-p" *ngIf="isUpdateSurvey">
+            <!--*ngIf="isUpdateSurvey && survey?.clientJobSurveyQuestions?.length >0"-->
+            <a class="btn btn-sand btn-xs btn-ocean waves-effect waves-light"
+              [routerLink]="['/surveypreview', survey.clientJobId, surveyId]">
+              <i class="md md-visibility"></i> Preview / Test
+            </a>
+            <a class="btn btn-cocktail btn-xs btn-square waves-effect waves-light" (click)="deleteSurvey()">
+              <i class="md md-remove-circle-outline"></i> Delete
+              <ng-container *ngIf="!survey?.isScreener">Survey</ng-container>
+              <ng-container *ngIf="survey?.isScreener">Screener</ng-container>
+            </a>
+            <a class="btn btn-sand btn-xs btn-square waves-effect waves-light"
+              href="{{apihost}}/api/survey-screener-document/{{surveyId}}/?token={{token}}">
+              <i class="md md-content-paste"></i> Preview Document
+            </a>
+            <a class="btn btn-pink btn-xs btn-square waves-effect waves-light"
+              (click)="getEmailData('CreateSurveyScreenerDocumentEmail', 'Send Document to Client')">
+              <i class="md md-link"></i> Send Document to Client
+            </a>
+            <a class="btn btn-blue btn-xs btn-square waves-effect waves-light"
+              (click)="getEmailData('CreateSurveySendLinkEmail', 'Send Link to Client')">
+              <i class="md md-link"></i> Send Link to Client
+            </a>
+            <button #emailmodalbtn data-toggle="modal" data-target="#emailModal" data-backdrop="static"
+              class="invisible"></button>
+            <a class="btn btn-green btn-xs btn-square waves-effect waves-light" (click)="startTracking()">
+              <i class="md md-play-circle-outline"></i> Start Tracking
+            </a>
+          </div>
+
+          <ul class="nav nav-tabs navtab-custom ax-nav-tabs">
+            <li [class.active]="selectedTab == 'surveyedit'">
+              <a (click)="selectedTabFn('surveyedit')">
+                <span class="hidden-xs1">Details</span>
+              </a>
+            </li>
+            <li [class.active]="selectedTab == 'surveystats'" [class.disable]="!isUpdateSurvey">
+              <a (click)="isUpdateSurvey && selectedTabFn('surveystats')">
+                <span class="hidden-xs1">Stats</span>
+              </a>
+            </li>
+            <li [class.active]="selectedTab == 'surveyquestions'" [class.disable]="!isUpdateSurvey">
+              <a (click)="isUpdateSurvey && selectedTabFn('surveyquestions')">
+                <span class="hidden-xs1">Questions</span>
+              </a>
+            </li>
+            <li [class.active]="selectedTab == 'surveyanswers'" [class.disable]="!isUpdateSurvey">
+              <a (click)="isUpdateSurvey && selectedTabFn('surveyanswers')">
+                <span class="hidden-xs1">Answers</span>
+              </a>
+            </li>
+            <li [class.active]="selectedTab == 'surveyevnets'" [class.disable]="!isUpdateSurvey">
+              <a (click)="isUpdateSurvey && selectedTabFn('surveyevnets')">
+                <span class="hidden-xs1">Events</span>
+              </a>
+            </li>
+          </ul>
+
+          <div *ngIf="!isLoading" class="tab-content no-margin ax-tab-content">
+            <div class="tab-pane active" id="details">
+              <SurveyEditComponent [surveyId]="surveyId" [jobId]="jobId" [isUpdateSurvey]="isUpdateSurvey"
+                [sessionid]="sessionid" *ngIf="selectedTab == 'surveyedit'"></SurveyEditComponent>
+              <SurveyStatsComponent [surveyId]="surveyId" [isUpdateSurvey]="isUpdateSurvey"
+                *ngIf="selectedTab == 'surveystats'"></SurveyStatsComponent>
+              <SurveyQuestionsComponent #childSurveyQuestion [surveyId]="surveyId" [jobId]="jobId"
+                [isUpdateSurvey]="isUpdateSurvey" style="display: block;width: 100%;height: 100%;"
+                *ngIf="selectedTab == 'surveyquestions'" (surveyQuestionUpdate)="surveyQuestionUpdate($event)"
+                (isDestorySurveyQuestion)="isDestorySurveyQuestion($event)">
+              </SurveyQuestionsComponent>
+              <SurveyAnswersGrid [jobId]="jobId" [surveyId]="surveyId" [isUpdateSurvey]="isUpdateSurvey"
+                [surveyquestions]="surveyquestions" [isScreener]="survey?.isScreener"
+                [noofrows]="surveyquestions?.length > 30 ? 25 : 50" *ngIf="selectedTab == 'surveyanswers' && surveyquestions">
+              </SurveyAnswersGrid>
+              <SurveyEventsComponent [jobId]="jobId" [isUpdateSurvey]="isUpdateSurvey" [isScreener]="survey?.isScreener"
+                *ngIf="selectedTab == 'surveyevnets'"></SurveyEventsComponent>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!--EMAIL-->
+<email-component *ngIf="emailData && (emailData | json) != ({} | json)" [(emailData)]="emailData"
+  [modalTitle]="emailModelTitle"></email-component>

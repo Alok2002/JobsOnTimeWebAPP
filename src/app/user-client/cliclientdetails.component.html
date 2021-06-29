@@ -1,0 +1,51 @@
+<div class="wrapper">
+  <div class="container">
+    <div class="row">
+      <div class="col-sm-12">
+        <ol class="breadcrumb breadcrumb-arrow bg-white bx-shadow">
+          <li><a [routerLink]="['/clihome']" class="home-breadcrumb"><i class="md md-home"></i></a></li>
+          <li><a>{{client?.name}}</a></li>
+        </ol>
+      </div>
+      <div *ngIf="editClientId" class="col-sm-12">
+        <div class="card-box">
+          <ul class="nav nav-tabs navtab-custom ax-nav-tabs">
+            <li [class.active]="selectedTab == 'clientdetails'">
+              <a href="#details" data-toggle="tab" aria-expanded="false" (click)="selectedTab = 'clientdetails'">
+                <span class="hidden-xs1">Details</span>
+              </a>
+            </li>
+            <li [class.active]="selectedTab == 'clientaddress'">
+              <a href="#details" data-toggle="tab" aria-expanded="false" (click)="selectedTab = 'clientaddress'">
+                <span class="hidden-xs1">Address</span>
+              </a>
+            </li>
+            <li [class.active]="selectedTab == 'clientcontact'">
+              <a href="#details" data-toggle="tab" aria-expanded="false" (click)="selectedTab = 'clientcontact'">
+                <span class="hidden-xs1">Contacts</span>
+              </a>
+            </li>
+            <li [class.active]="selectedTab == 'clientvenue'">
+              <a href="#details" data-toggle="tab" aria-expanded="false" (click)="selectedTab = 'clientvenue'">
+                <span class="hidden-xs1">Venue</span>
+              </a>
+            </li>
+          </ul>
+          <div class="tab-content no-margin ax-tab-content">
+            <div class="tab-pane active">
+              <CliEditComponent [id]="editClientId" [isUpdateClient]="isUpdateClient"
+                *ngIf="selectedTab == 'clientdetails'"></CliEditComponent>
+              <CliContactComponent [id]="editClientId" [isUpdateClient]="isUpdateClient"
+                *ngIf="selectedTab == 'clientcontact'"></CliContactComponent>
+              <CliAddressComponent [id]="editClientId" [isUpdateClient]="isUpdateClient"
+                *ngIf="selectedTab == 'clientaddress'"></CliAddressComponent>
+              <CliVenueComponent [id]="editClientId" [isUpdateClient]="isUpdateClient"
+                *ngIf="selectedTab == 'clientvenue'"></CliVenueComponent>
+              <div class="clearfix"></div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

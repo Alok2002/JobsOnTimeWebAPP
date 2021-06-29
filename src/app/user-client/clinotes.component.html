@@ -1,0 +1,117 @@
+<div class="wrapper">
+  <div class="container">
+    <div class="row">
+      <div class="col-sm-12">
+        <ol class="breadcrumb breadcrumb-arrow bg-white bx-shadow">
+          <li><a [routerLink]="['/dashboard']" class="home-breadcrumb"><i class="md md-home"></i></a></li>
+          <li><a>Notes</a></li>
+        </ol>
+      </div>
+
+      <div class="col-sm-12">
+        <div class="card-box">
+            <div id="client-notes" class='table-responsive no-border ax-data-table ax-data-table-no-min-height m-b-0 no-border-radius fadeIn animated'>              
+                <div class="ax-sysconfig-data-table-top ax-data-table-top-x700 col-md-6 no-padding">
+                    <div class="btn-group">
+                      <a class="btn btn-xs waves-effect m-l--1 btn-green-dark btn-square" (click)="exporttoExcel()">
+                        <i class="md md-file-download"></i>
+                      </a>
+                      <a class="btn btn-ocean btn-xs waves-effect btn-square"
+                         data-target="#add-new-notes-modal" data-toggle="modal" data-backdrop="static" (click)="addNew()">
+                        <i class="md md-add-circle-outline"></i> New
+                      </a>
+                      <a class="btn btn-cocktail btn-xs waves-effect btn-square m-l--1" id="deleteAlert" (click)="deleteNotes()">
+                        <i class="md md-remove-circle-outline"></i> Delete
+                      </a>
+                    </div>
+                  </div>
+                <table class="table ax-table table-striped table-bordered m-b-0">
+                  <thead class="ax-bg-e7e7e7">
+                    <tr>
+                      <th class="ax-width-30-imp">
+                        <span class="checkbox checkbox-primary ax-table-checkbox">
+                          <input type="checkbox" (change)="selectAll($event)">
+                          <label></label>
+                        </span>
+                      </th>
+                      <th class="ax-table-x150">Date</th>
+                      <th class="ax-table-x150">Type</th>
+                      <th class="ax-table-x150">User</th>
+                      <th>Notes</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <!--    <tr *ngFor="let nt of notesst; let i=index">-->
+                    <!--      <td>{{nt?.date}}</td>-->
+                    <!--      <td></td>-->
+                    <!--      <td></td>-->
+                    <!--      <td></td>-->
+                    <!--    </tr>-->
+                    <tr *ngFor="let nt of notes; let i=index">
+                      <td>
+                        <span class="checkbox checkbox-primary ax-table-checkbox">
+                          <input type="checkbox" [(ngModel)]="selected[i]" name="{{nt.id}}" value="{{nt.id}}"
+                                 (change)="updateDeleteList(nt.id, $event)">
+                          <label></label>
+                        </span>
+                      </td>
+                      <td>{{nt?.date | date: 'dd-MM-yyyy'}}</td>
+                      <td>{{nt?.summary}}</td>
+                      <td>
+                        {{nt?.username}}
+                      </td>
+                      <td>
+                        <a data-target="#add-new-notes-modal" data-toggle="modal" data-backdrop="static" class="ax-cursor-pointer"
+                           (click)="editNotes(nt.id)">{{nt?.notes}}</a>
+                      </td>
+                    </tr>
+                  </tbody>
+                </table>
+              </div>
+        </div>
+
+      </div>
+    </div>
+
+<!--ADD NEW NOTES MODAL-->
+<div id="add-new-notes-modal" class="modal fade" tabindex="-1" role="dialog"
+     aria-labelledby="full-width-modalLabel" aria-hidden="true" style="display: none;">
+  <div class="modal-dialog modal-md">
+    <div class="modal-content">
+      <div class="modal-header no-border ax-modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+        <h4 class="modal-title">
+          <ng-container *ngIf="note.id">Update Notes</ng-container>
+          <ng-container *ngIf="!note.id">Add New Notes</ng-container>
+        </h4>
+      </div>
+      <div class="modal-body no-padding">
+        <div class="col-md-12 no-padding">
+          <form class="ax-form" role="form" id="noteform" #cliNotesForm="ngForm">
+            <div class="form-group has-feedback required">
+              <label class="control-label w-100-pre">
+                Notes
+                <span [hidden]="notemodel.valid || !isSubmitForm">
+                  <span class="text-danger pull-right" [hidden]="!notemodel.hasError('required')">Required</span>
+                </span>
+              </label>
+              <textarea rows="3" class="form-control" name="notes" [(ngModel)]="note.notes" #notemodel="ngModel" required>
+              {{note.notes}}
+              </textarea>
+            </div>
+            <div class="col-md-12 no-padding text-right">
+              <i class="fa fa-spinner fa-pulse" *ngIf="isSubmitFormSpinner"></i>
+              <a id="notebtn" (click)="submitClientNotes(cliNotesForm)"
+                      class="btn btn-ocean waves-effect waves-light m-l-10 btn-md">
+                Save
+            </a>
+              <a data-dismiss="modal" aria-hidden="true" class="btn btn-cocktail m-l-5" #closeAddNewModal>
+                Cancel</a>
+            </div>
+          </form>
+        </div>
+        <div class="clearfix"></div>
+      </div>
+    </div><!-- /.modal-content -->
+  </div><!-- /.modal-dialog -->
+</div>

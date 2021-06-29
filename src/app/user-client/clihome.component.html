@@ -1,0 +1,52 @@
+<div class="wrapper">
+    <div class="container">
+        <h4 class="page-title m-t-15 m-b-15 mobile-text-center font-normal">
+            <b>Welcome</b> {{loginusername}}
+        </h4>
+        <div id="lobipanel-multiple" class="job-tracking dashboard-auto">
+            <div class="bs-example">
+                <div class="row">
+                    <div class="col-md-4 d-desktop-only ax-cursor-pointer" [routerLink]="['/cliclient']">
+                        <div class="panel panel-warning ax-panel-success">
+                            <div class="panel-heading">
+                                <div class="panel-title">
+                                    <h4>Client</h4>
+                                </div>
+                            </div>
+                            <div class="panel-body">
+                                <span [innerHTML]="welcomeCopies?.clientHomePageBox1 | safeHtml"></span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-4 d-desktop-only ax-cursor-pointer" [routerLink]="['/clijobs']">
+                        <div class="panel panel-warning ax-panel-warning">
+                            <div class="panel-heading">
+                                <div class="panel-title">
+                                    <h4>Jobs</h4>
+                                </div>
+                            </div>
+                            <div class="panel-body">
+                                <span [innerHTML]="welcomeCopies?.clientHomePageBox2 | safeHtml"></span>
+                                <br><br><br>
+                            </div>
+                        </div>
+                    </div>
+                    <div *ngIf="client?.allowPrivateList" class="col-md-4 d-desktop-only ax-cursor-pointer"
+                        [routerLink]="['/cliprivatelist']">
+                        <div class="panel panel-warning ax-panel-green">
+                            <div class="panel-heading">
+                                <div class="panel-title">
+                                    <h4>Private List</h4>
+                                </div>
+                            </div>
+                            <div class="panel-body">
+                                <span [innerHTML]="welcomeCopies?.clientHomePageBox3 | safeHtml"></span>
+                                <br><br><br>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div> <!-- end container -->
+</div>

@@ -1,0 +1,260 @@
+<div class="tab-pane" id="paymentsBanking">
+  <div class="col-sm-12 no-padding" [style.maxWidth.px]="isMyProfile ? 'auto' : 1498">
+    <ng-container *ngIf="!isMyProfile">
+      <div class="col-md-6" *ngIf="respondent && hasPermission" style="padding: 0px 10px 0px 0px;">
+        <div class="newres-tab-title">
+          <h5 class="no-margin">Banking Details</h5>
+        </div>
+      </div>
+      <div class="col-md-6 no-padding">
+        <div class="newres-tab-title">
+          <h5 class="no-margin">Points</h5>
+        </div>
+      </div>
+      <div class="clearfix"></div>
+      <br>
+    </ng-container>
+    <form class="ax-form" role="form" #resPaymentForm="ngForm">
+      <ng-container *ngIf="respondent && hasPermission">
+        <div class="no-padding-left" [class.col-md-6]="!isMyProfile" [class.col-md-12]="isMyProfile">
+          <div *ngIf="countrycode == 'AU'" class="form-group col-md-6 has-feedback pull-left no-padding-left required">
+            <label class="control-label w-100-pre">BSB
+              <span [hidden]="financeBsbModel.valid || !isSubmitForm">
+                <span class="text-danger pull-right" [hidden]="!financeBsbModel.hasError('required')">Required</span>
+                <span class="text-danger pull-right" [hidden]="!financeBsbModel.hasError('pattern')">Invalid BSB</span>
+              </span>
+            </label>
+            <input autocomplete="off" type="text" id="financeBsb" name="financeBsb" [(ngModel)]="respondent.financeBsb"
+              class="form-control" [textMask]="{mask: financeBSBMask, showMask: false}" numeric
+              (ngModelChange)="respondent.financeBsb = unmask($event)" [pattern]="financeBSBPattern"
+              #financeBsbModel="ngModel" required>
+          </div>
+          <div class="form-group pull-left no-padding required" [class.col-md-6]="countrycode == 'AU'"
+            [class.col-md-12]="countrycode != 'AU'">
+            <label class="control-label w-100-pre">Account Number
+              <span [hidden]="financeAccountNumberModel.valid || !isSubmitForm">
+                <span class="text-danger pull-right"
+                  [hidden]="!financeAccountNumberModel.hasError('required')">Required</span>
+
+                <span class="text-danger pull-right" [hidden]="!financeAccountNumberModel.hasError('pattern')">Invalid
+                  Account Number</span>
+              </span>
+            </label>
+            <input autocomplete="off" type="text" id="financeAccountNumber" name="financeAccountNumber"
+              [(ngModel)]="respondent.financeAccountNumber" class="form-control"
+              [textMask]="{mask: financeAccountMask, showMask: false}" numeric
+              (ngModelChange)="respondent.financeAccountNumber = unmask($event)" [pattern]="financeAccountPattern"
+              #financeAccountNumberModel="ngModel" required>
+          </div>
+          <div class="form-group col-md-6 pull-left no-padding-left required">
+            <label class="control-label w-100-pre">Account Name
+              <span [hidden]="financeAccountNameModel.valid || !isSubmitForm">
+                <span class="text-danger pull-right"
+                  [hidden]="!financeAccountNameModel.hasError('required')">Required</span>
+              </span>
+            </label>
+            <input autocomplete="off" type="text" id="financeAccountName" name="financeAccountName" required
+              [(ngModel)]="respondent.financeAccountName" class="form-control" #financeAccountNameModel="ngModel">
+          </div>
+          <div class="form-group col-md-6 pull-left no-padding">
+            <label class="control-label w-100-pre">Bank Name
+              <span [hidden]="financeBankNameModel.valid || !isSubmitForm">
+                <span class="text-danger pull-right"
+                  [hidden]="!financeBankNameModel.hasError('required')">Required</span>
+              </span>
+            </label>
+            <input autocomplete="off" type="text" id="financeBankName" name="financeBankName"
+              [(ngModel)]="respondent.financeBankName" class="form-control" #financeBankNameModel="ngModel">
+          </div>
+          <div class="clearfix"></div>
+        </div>
+      </ng-container>
+      <div class="no-padding-left" [class.col-md-6]="!isMyProfile" [class.col-md-12]="isMyProfile">
+        <div class="form-group col-md-4 no-padding-left">
+          <label class="control-label">Current Points</label>
+          <input autocomplete="off" type="text" id="accumulatedPoints" name="accumulatedPoints"
+            [(ngModel)]="respondent.accumulatedPoints" disabled class="form-control">
+        </div>
+
+        <div class="form-group col-md-4 no-padding">
+          <label class="control-label">Paid Points</label>
+          <input autocomplete="off" type="text" id="paidPoints" name="paidPoints" [(ngModel)]="respondent.paidPoints"
+            disabled class="form-control">
+        </div>
+
+        <div class="form-group col-md-4 no-padding-right">
+          <label class="control-label">Total Points</label>
+          <input autocomplete="off" type="text" id="totalPoints" name="totalPoints" [(ngModel)]="respondent.totalPoints"
+            class="form-control" disabled>
+        </div>
+      </div>
+      <div class="clearfix"></div>
+      <div *ngIf="respondent && hasPermission" class="col-md-6 no-padding-left">
+        <div class="col-md-12 no-padding m-b-0 newres-bottom pull-left">
+          <div class="col-md-6 font-10 no-padding" style="line-height: 34px">
+            <ng-container *ngIf="!isMyProfile">
+              <b>Created:</b>
+              <ng-container *ngIf="respondent.dateCreated">
+                {{respondent.dateCreated | date: 'dd-MM-yyyy'}} &#160;
+              </ng-container>
+              <ng-container *ngIf="!respondent.dateCreated">
+                {{today | date: 'dd-MM-yyyy'}} &#160;
+              </ng-container>
+              <b>Last Updated:</b>
+              <ng-container *ngIf="respondent.dateLastUpdated">
+                {{respondent.dateLastUpdated | date: 'dd-MM-yyyy'}}
+              </ng-container>
+              <ng-container *ngIf="!respondent.dateLastUpdated">
+                {{today | date: 'dd-MM-yyyy'}}
+              </ng-container>
+            </ng-container>
+          </div>
+          <div class="col-md-6 text-right no-padding">
+            <button type="submit" (click)="updateSubmit(resPaymentForm)"
+              class="btn btn-ocean waves-effect waves-light btn-md">
+              Submit
+            </button>
+          </div>
+        </div>
+      </div>
+
+      <div class="col-md-6 no-padding m-b-0 newres-bottom pull-left">
+        <div class="col-md-6 font-10 no-padding" style="line-height: 34px">
+          <ng-container *ngIf="!isMyProfile">
+            <b>Created:</b>
+            <ng-container *ngIf="respondent.dateCreated">
+              {{respondent.dateCreated | date: 'dd-MM-yyyy'}} &#160;
+            </ng-container>
+            <ng-container *ngIf="!respondent.dateCreated">
+              {{today | date: 'dd-MM-yyyy'}} &#160;
+            </ng-container>
+            <b>Last Updated:</b>
+            <ng-container *ngIf="respondent.dateLastUpdated">
+              {{respondent.dateLastUpdated | date: 'dd-MM-yyyy'}}
+            </ng-container>
+            <ng-container *ngIf="!respondent.dateLastUpdated">
+              {{today | date: 'dd-MM-yyyy'}}
+            </ng-container>
+          </ng-container>
+        </div>
+        <div class="col-md-6 text-right no-padding">
+          <button type="submit" (click)="updateSubmit(resPaymentForm)"
+            class="btn btn-ocean waves-effect waves-light btn-md">
+            Submit
+          </button>
+        </div>
+      </div>
+      <div class="clearfix"></div>
+    </form>
+    <div class="clearfix"></div>
+    <br>
+
+    <filter *ngIf="!isMyProfile" [entity]="'event'" [showFilter]="true" (filterSubmit)="filterSubmit($event)"
+      (filtersEmit)="filtersEmit($event)" [isUpdateFiler]="isUpdateFiler"></filter>
+    <div class="clearfix"></div>
+
+    <p-table #dt [columns]="selectedColumns" [value]="respayments" [lazy]="true" (onLazyLoad)="loadData($event)"
+      [paginator]="true" [paginatorPosition]="'top'" [pageLinks]="10" [rows]="noofrows" [totalRecords]="totalRecords"
+      [loading]="false" selectionMode="multiple" [(selection)]="selectedRowData" [metaKeySelection]="true"
+      [resizableColumns]="true" columnResizeMode="expand"
+      [tableStyleClass]="'table ax-table table-striped table-bordered m-b-0 border-color-e7e7e7'" [scrollable]="true"
+      scrollHeight="560px" sortField="eventDate" [sortOrder]="-1">
+
+      <ng-template pTemplate="caption">
+        <div class="pull-left col-md-6 no-padding text-left">
+          <div class="ax-sysconfig-data-table-top ax-data-table-top-x700 col-md-6 no-padding">
+            <div class="btn-group">
+              <ng-container *ngIf="!isMyProfile">
+                <a class="btn btn-xs waves-effect m-l--1 btn-green-dark btn-square" (click)="exporttoExcel()">
+                  <i class="md md-file-download"></i>
+                </a>
+                <a class="btn btn-ocean btn-xs waves-effect btn-square m-l--1" (click)="newResEvent()">
+                  <i class="md md-remove-circle-outline"></i> New Payment
+                </a>
+                <a class="btn btn-ocean btn-xs waves-effect btn-square m-l--1 hidden" #openEventModel
+                  data-toggle='modal' data-target='#add-new-event-modal' data-backdrop="static">
+                  <i class="md md-remove-circle-outline"></i> EventsBtn
+                </a>
+              </ng-container>
+            </div>
+          </div>
+        </div>
+
+        <div class="pull-right col-md-6 no-padding text-right ax-primeng-table-right">
+          <span class="ax-table-filter vertical-align-top">
+            <select name="noofrows" class="btn-default-border vertical-align-top" [(ngModel)]="noofrows"
+              (ngModelChange)="loadData({first:0, rows: noofrows});">
+              <option value="50">50</option>
+              <option value="100">100</option>
+              <option value="200">200</option>
+              <option value="300">300</option>
+              <option value="500">500</option>
+              <option value="1000">1,000</option>
+            </select>
+          </span>
+          <span class="m-l-1 btn btn-default btn-xs btn-square btn-default-border vertical-align-top">
+            Total {{totalRecords}} Records
+          </span>
+          <span class="m-l-1">
+            <p-multiSelect [options]="cols" [(ngModel)]="selectedColumns" optionLabel="header"
+              (onChange)="updateSelectedColumnsIndex()" selectedItemsLabel="Show Column" maxSelectedLabels="0"
+              [style]="{minWidth: 'auto'}" defaultLabel="Show Column" dropdownIcon='caret' [filter]="false"
+              [showToggleAll]="false" [showHeader]="false" [scrollHeight]="'300px'">
+            </p-multiSelect>
+          </span>
+          <span class="m-l-1 btn btn-default btn-xs btn-square btn-default-border vertical-align-top"
+            (click)="isShowFilter = !isShowFilter">
+            <ng-container *ngIf="isShowFilter"><i class="md md-visibility-off"></i> Hide Filter</ng-container>
+            <ng-container *ngIf="!isShowFilter"><i class="md md-visibility"></i> Show Filter</ng-container>
+          </span>
+        </div>
+        <div class="clearfix"></div>
+      </ng-template>
+
+      <ng-template pTemplate="colgroup" let-columns>
+        <colgroup>
+          <col *ngFor="let col of columns" [style.width.px]="col?.width">
+        </colgroup>
+      </ng-template>
+
+      <ng-template pTemplate="header" let-columns>
+        <tr>
+          <th *ngFor="let col of columns" pResizableColumn [style.width.px]="col?.width"
+            [style.textAlign]="col?.textAlign" [pSortableColumn]="col.sort ? col.field : ''">
+            {{col.header}}
+            <p-sortIcon *ngIf="col.sort" [field]="col.field" ariaLabel="Activate to sort"
+              ariaLabelDesc="Activate to sort in descending order" ariaLabelAsc="Activate to sort in ascending order">
+            </p-sortIcon>
+          </th>
+        </tr>
+      </ng-template>
+
+      <ng-template pTemplate="body" let-py let-i="rowIndex" let-columns="columns">
+        <tr [pSelectableRow]="py">
+          <ng-container *ngFor="let sc of selectedColumns;">
+            <ng-container [ngSwitch]="sc.field">
+              <td *ngSwitchCase="'eventDate'" [style.width.px]="sc.width" [style.textAlign]="sc?.textAlign">
+                {{py?.eventDate | date: 'dd-MM-yyyy hh:mm a'}}</td>
+              <ng-container *ngSwitchDefault>
+                <td [style.width.px]="sc.width" [style.textAlign]="sc?.textAlign">{{py[sc.field]}}</td>
+              </ng-container>
+            </ng-container>
+          </ng-container>
+        </tr>
+      </ng-template>
+
+      <ng-template pTemplate="emptymessage" let-columns>
+        <tr>
+          <td [attr.colspan]="columns.length">
+            No data available
+          </td>
+        </tr>
+      </ng-template>
+    </p-table>
+
+  </div>
+</div>
+
+<!--ADD New Event MODAL-->
+<EventModalComponent *ngIf="isOpenEventModal" [(resevent)]="resevent" [(selectedClient)]="selectedClient"
+  [(deleteItemIds)]="deleteResIds" (resetEventForm)="resetEventForm($event)"></EventModalComponent>

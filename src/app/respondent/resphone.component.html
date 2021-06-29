@@ -1,0 +1,178 @@
+<div class="tab-pane" id="phoneinternettv">
+  <ng-container *ngIf="!isMyProfile">
+    <div class="newres-tab-title">
+      <h5 class="no-margin">Phone, Internet & Tv</h5>
+    </div>
+    <br>
+  </ng-container>
+  <div class="no-padding-left" [class.col-md-2]="!isMyProfile" [class.col-md-12]="isMyProfile">
+    <div class="form-group has-feedback">
+      <label>Internet Provider</label>
+          <div *ngFor="let pp of internetproviders;let i = index" class="checkbox checkbox-primary pull-left m-t-5 m-b-5 m-r-10 w-100-pre">
+            <input name="internetproviders{{i}}" type="checkbox" [value]="pp.selected" class="form-control" [checked]="pp.selected" (change)="updateinternetproviders(i, $event)">
+            <label>{{pp.description}}</label>
+          </div>
+      <div class="clearfix"></div>
+      <br>
+      <label>Internet Type</label>
+      <!-- <div *ngFor="let il of internettypelist;let i = index;" class="checkbox checkbox-primary pull-left m-t-5 m-b-5 m-r-10 w-100-pre">
+        <input name="internettypelist{{i}}" type="checkbox" [value]="il.code" class="form-control" (change)="updateinternettypelist(i, $event)">
+        <label>{{il.desc}}</label>
+      </div> -->
+      <select name="internettype" class="form-control" [(ngModel)]="respondent.internetType">
+        <option *ngFor="let il of internettypelist;let i = index;" value="{{il.code}}">{{il.desc}}</option>
+      </select>
+    </div>
+  </div>
+
+  <div class="no-padding-left" [class.col-md-2]="!isMyProfile" [class.col-md-12]="isMyProfile">
+    <div class="form-group">
+      <label class="control-label">Phone Providers</label>
+      <div *ngFor="let pp of phoneproviders;let i = index" class="checkbox checkbox-primary pull-left m-t-5 m-b-5 m-r-10 w-100-pre">
+        <input name="phoneproviders{{i}}" type="checkbox" [value]="pp.selected" class="form-control" [checked]="pp.selected" (change)="updatephoneproviders(i, $event)">
+        <label>{{pp.description}}</label>
+      </div>
+    </div>
+  </div>
+
+  <div class="no-padding-left" [class.col-md-2]="!isMyProfile" [class.col-md-12]="isMyProfile">
+    <div class="form-group has-feedback">
+      <label>Technology Use</label>
+      <div class="clearfix"></div>
+
+      <div class="checkbox checkbox-primary pull-left m-t-5 m-b-5 m-r-10 w-100-pre">
+        <input id="mobileDevice|9" name="mobileDevice|9" type="checkbox" value="9">
+        <label>Amazon Kindle</label>
+      </div>
+      <div class="checkbox checkbox-primary pull-left m-t-5 m-b-5 m-r-10 w-100-pre">
+        <input id="mobileDevice|36" name="mobileDevice|36" type="checkbox" value="36">
+        <label>Android Smart Watch</label>
+      </div>
+      <div class="checkbox checkbox-primary pull-left m-t-5 m-b-5 m-r-10 w-100-pre">
+        <input id="mobileDevice|2" name="mobileDevice|2" type="checkbox" value="2">
+        <label>Apple iPad</label>
+      </div>
+      <div class="checkbox checkbox-primary pull-left m-t-5 m-b-5 m-r-10 w-100-pre">
+        <input id="mobileDevice|1" name="mobileDevice|1" type="checkbox" value="1">
+        <label>Apple iPhone</label>
+      </div>
+      <div class="checkbox checkbox-primary pull-left m-t-5 m-b-5 m-r-10 w-100-pre">
+        <input id="mobileDevice|29" name="mobileDevice|29" type="checkbox" value="29">
+        <label>Blackberry</label>
+      </div>
+      <div class="checkbox checkbox-primary pull-left m-t-5 m-b-5 m-r-10 w-100-pre">
+        <input id="mobileDevice|31" name="mobileDevice|31" type="checkbox" value="31">
+        <label>Desktop Computer</label>
+      </div>
+      <div class="checkbox checkbox-primary pull-left m-t-5 m-b-5 m-r-10 w-100-pre">
+        <input id="mobileDevice|37" name="mobileDevice|37" type="checkbox" value="37">
+        <label>Go Pro</label>
+      </div>
+      <div class="checkbox checkbox-primary pull-left m-t-5 m-b-5 m-r-10 w-100-pre">
+        <input id="mobileDevice|3" name="mobileDevice|3" type="checkbox" value="3">
+        <label>Google Android SmartPhone</label>
+      </div>
+      <div class="checkbox checkbox-primary pull-left m-t-5 m-b-5 m-r-10 w-100-pre">
+        <input id="mobileDevice|4" name="mobileDevice|4" type="checkbox" value="4">
+        <label>Google Android Tablet</label>
+      </div>
+      <div class="checkbox checkbox-primary pull-left m-t-5 m-b-5 m-r-10 w-100-pre">
+        <input id="mobileDevice|25" name="mobileDevice|25" type="checkbox" value="25">
+        <label>Google Nexus</label>
+      </div>
+      <div class="checkbox checkbox-primary pull-left m-t-5 m-b-5 m-r-10 w-100-pre">
+        <input id="mobileDevice|22" name="mobileDevice|22" type="checkbox" value="22">
+        <label>HTC Smartphone</label>
+      </div>
+      <div class="checkbox checkbox-primary pull-left m-t-5 m-b-5 m-r-10 w-100-pre">
+        <input id="mobileDevice|30" name="mobileDevice|30" type="checkbox" value="30">
+        <label>Laptop</label>
+      </div>
+      <div class="checkbox checkbox-primary pull-left m-t-5 m-b-5 m-r-10 w-100-pre">
+        <input id="mobileDevice|23" name="mobileDevice|23" type="checkbox" value="23">
+        <label>LG Flex</label>
+      </div>
+      <div class="checkbox checkbox-primary pull-left m-t-5 m-b-5 m-r-10 w-100-pre">
+        <input id="mobileDevice|6" name="mobileDevice|6" type="checkbox" value="6">
+        <label>Microsoft Tablet</label>
+      </div>
+      <div class="checkbox checkbox-primary pull-left m-t-5 m-b-5 m-r-10 w-100-pre">
+        <input id="mobileDevice|5" name="mobileDevice|5" type="checkbox" value="5">
+        <label>Microsoft Windows Phone</label>
+      </div>
+      <div class="checkbox checkbox-primary pull-left m-t-5 m-b-5 m-r-10 w-100-pre">
+        <input id="mobileDevice|26" name="mobileDevice|26" type="checkbox" value="26">
+        <label>Motorola Droid</label>
+      </div>
+      <div class="checkbox checkbox-primary pull-left m-t-5 m-b-5 m-r-10 w-100-pre">
+        <input id="mobileDevice|21" name="mobileDevice|21" type="checkbox" value="21">
+        <label>Motorola Moto </label>
+      </div>
+      <div class="checkbox checkbox-primary pull-left m-t-5 m-b-5 m-r-10 w-100-pre">
+        <input id="mobileDevice|24" name="mobileDevice|24" type="checkbox" value="24">
+        <label>Nokia Smartphone</label>
+      </div>
+      <div class="checkbox checkbox-primary pull-left m-t-5 m-b-5 m-r-10 w-100-pre">
+        <input id="mobileDevice|19" name="mobileDevice|19" type="checkbox" value="19">
+        <label>NON Smartphone (basic)</label>
+      </div>
+      <div class="checkbox checkbox-primary pull-left m-t-5 m-b-5 m-r-10 w-100-pre">
+        <input id="mobileDevice|35" name="mobileDevice|35" type="checkbox" value="35">
+        <label>Owns None, Uses None</label>
+      </div>
+      <div class="checkbox checkbox-primary pull-left m-t-5 m-b-5 m-r-10 w-100-pre">
+        <input id="mobileDevice|34" name="mobileDevice|34" type="checkbox" value="34">
+        <label>Owns None, Uses Public</label>
+      </div>
+      <div class="checkbox checkbox-primary pull-left m-t-5 m-b-5 m-r-10 w-100-pre">
+        <input id="mobileDevice|20" name="mobileDevice|20" type="checkbox" value="20">
+        <label>Samsung Galaxy Smartphone</label>
+      </div>
+      <div class="checkbox checkbox-primary pull-left m-t-5 m-b-5 m-r-10 w-100-pre">
+        <input id="mobileDevice|32" name="mobileDevice|32" type="checkbox" value="32">
+        <label>Samsung Galaxy Tablet</label>
+      </div>
+      <div class="checkbox checkbox-primary pull-left m-t-5 m-b-5 m-r-10 w-100-pre">
+        <input id="mobileDevice|33" name="mobileDevice|33" type="checkbox" value="33">
+        <label>SKYPE</label>
+      </div>
+      <div class="checkbox checkbox-primary pull-left m-t-5 m-b-5 m-r-10 w-100-pre">
+        <input id="mobileDevice|28" name="mobileDevice|28" type="checkbox" value="28">
+        <label>Sony Xperia</label>
+      </div>
+      <div class="checkbox checkbox-primary pull-left m-t-5 m-b-5 m-r-10 w-100-pre">
+        <input id="mobileDevice|38" name="mobileDevice|38" type="checkbox" value="38">
+        <label>Surface Pro</label>
+      </div>
+      <div class="checkbox checkbox-primary pull-left m-t-5 m-b-5 m-r-10 w-100-pre">
+        <input id="mobileDevice|7" name="mobileDevice|7" type="checkbox" value="7">
+        <label>Other SmartPhone</label>
+      </div>
+      <div class="checkbox checkbox-primary pull-left m-t-5 m-b-5 m-r-10 w-100-pre">
+        <input id="mobileDevice|8" name="mobileDevice|8" type="checkbox" value="8">
+        <label>Other Tablet</label>
+      </div>
+
+      <div class="clearfix"></div>
+    </div>
+  </div>
+
+  <div class="no-padding-left" [class.col-md-2]="!isMyProfile" [class.col-md-12]="isMyProfile">
+    <div class="form-group has-feedback">
+      <label class="control-label">TV Providers</label>
+      <div class="clearfix"></div>
+
+      <div *ngFor="let tv of tvprovider;let i = index" class="checkbox checkbox-primary pull-left m-t-5 m-b-5 m-r-10 w-100-pre">
+        <input name="tvprovider{{i}}" type="checkbox" [value]="tv.selected" class="form-control" [checked]="tv.selected" (change)="updatetvprovider(i, $event)">
+        <label>{{tv.description}}</label>
+      </div>
+
+      <div class="clearfix"></div>
+    </div>
+  </div>
+
+  <div class="clearfix"></div>
+  <div class="no-padding text-right col-md-12 newres-bottom">
+    <button class="btn btn-success" (click)="updateSubmit()">Submit</button>
+  </div>
+</div>

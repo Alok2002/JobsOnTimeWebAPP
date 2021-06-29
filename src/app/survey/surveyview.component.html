@@ -1,0 +1,885 @@
+<div class="no-padding" style="margin-bottom: -61px;">
+  <div class="home-bg-trans1" [class.home-bg]="!startSurvey" [class.w-100-pre]="!startSurvey">
+    <!-- Navigation Bar-->
+    <header *ngIf="!isLoggedIn" id="topnav">
+      <div class="topbar-main" style="height:60px">
+        <div class="container">
+          <!-- Logo container-->
+          <div class="logo">
+            <a class="logo" [title]="isFarronResearch ? 'Farron Research Logo' : 'Logo'">
+              <span class="hidden-xs"><img src="assets/images/fr-logo.png"
+                  [alt]="isFarronResearch ? 'Farron Research Logo' : 'Logo'"></span>
+              <span class="hidden-sm hidden-md hidden-lg">
+                <img src="assets/images/fr-only-logo.png" [alt]="isFarronResearch ? 'Farron Research Logo' : 'Logo'">
+              </span>
+            </a>
+          </div>
+          <!-- End Logo container-->
+          <div class="menu-extras">
+            <ul class="nav navbar-nav navbar-right pull-right ax-right-nav-btn">
+              <li>
+                <div class="input-group">
+                  <!-- <a class="btn btn-skyblue" [routerLink]="['/signup']">Join Our Panel</a> -->
+                </div>
+              </li>
+            </ul>
+          </div>
+        </div>
+      </div>
+      <!-- End topbar -->
+    </header>
+    <!-- End Navigation Bar-->
+    <!-- =======================
+  ===== START PAGE ======
+  ======================= -->
+
+
+    <div class="wrapper" [class.m-t-85]="!isLoggedIn" [class.login-page-wrapper]="!startSurvey"
+      style="margin-top: 125px !important;">
+      <div class="container">
+        <div class="row">
+          <ng-container *ngIf="!startSurvey">
+            <div class="text-center">
+              <div class="ax-login-panel text-left">
+                <div class="col-md-12">
+                  <div *ngIf="errorList.length > 0" class="card-box m-b-0">
+                    <!-- <h3 class="text-left no-margin">
+                      <i class="md md-warning"></i>
+                      <span class="text-danger"> Something went wrong</span>
+                    </h3> -->
+                    <h5 class="m-b-0 m-t-0 text-center text-danger">{{errorList[0]}}</h5>
+                  </div>
+                  <div *ngIf="errorList?.length < 1 && welcomePageData" class="card-box m-b-0">
+                    <form #form="ngForm">
+                      <div class="text-left ax-color-black" id="welcome1">
+                        <div>
+                          <h2 style="font-size: 18px; margin: 0;">Dear {{welcomePageData?.respondentName}},</h2>
+                          <p class="m-b-15">Below are the profile details we have on file for you. If any of these
+                            details are incorrect, can you please update the information and click <b
+                              style="color: #486824;">Save and Start Survey</b> button.</p>
+                          <div class="form-group required">
+                            <label class="control-label w-100-pre">
+                              Email Address
+                              <div class="pull-right">
+                                <span [hidden]="emailModel.valid || !isSubmitForm">
+                                  <span class="text-danger pull-right"
+                                    [hidden]="!emailModel.hasError('required')"><b>Required</b></span>
+                                  <span class="text-danger pull-right"
+                                    [hidden]="!emailModel.hasError('pattern')"><b>Invalid</b></span>
+                                </span>
+                              </div>
+                            </label>
+                            <input type="text" name="respondentEmail" class="form-control"
+                              [(ngModel)]="welcomePageData.respondentEmail" #emailModel="ngModel"
+                              pattern="^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,10})+$" required>
+                          </div>
+                          <div class="row">
+                            <div class="col-md-6 form-group required">
+                              <label class="control-label w-100-pre">
+                                Mobile Number
+                                <span [hidden]="phoneMobileModel.valid || !isSubmitForm">
+                                  <span class="text-danger pull-right"
+                                    [hidden]="!phoneMobileModel.hasError('required')"><b>Required</b></span>
+                                  <span class="text-danger pull-right"
+                                    [hidden]="!phoneMobileModel.hasError('pattern')">Invalid
+                                  </span>
+                                </span>
+                              </label>
+                              <input type="text" name="respondentMobil" [(ngModel)]="welcomePageData.respondentMobil"
+                                class="form-control" [textMask]="{mask: mobileMask, showMask: true, guide: false}"
+                                numeric (ngModelChange)="welcomePageData.respondentMobil = unmask($event)"
+                                [pattern]="mobilePattern" #phoneMobileModel="ngModel" maxlength="12" required>
+                            </div>
+                            <div class="col-md-6 form-group required">
+                              <label class="control-label w-100-pre">
+                                Post Code
+                                <span [hidden]="respondentPostcodeModel.valid || !isSubmitForm">
+                                  <span class="text-danger pull-right"
+                                    [hidden]="!respondentPostcodeModel.hasError('required')"><b>Required</b></span>
+                                  <span class="text-danger pull-right"
+                                    [hidden]="!respondentPostcodeModel.hasError('pattern')">Invalid
+                                  </span>
+                                </span>
+                              </label>
+                              <input type="text" name="respondentPostcode" class="form-control"
+                                [(ngModel)]="welcomePageData.respondentPostcode" required
+                                #respondentPostcodeModel="ngModel"
+                                [textMask]="{mask: postcodeMask, showMask: true, guide: false}" numeric [pattern]="postcodePattern">
+                            </div>
+                          </div>
+                        </div>
+                        <div *ngIf="!isLoggedIn" tabindex="0" class="control-label m-b-15">
+                          If the above is not your email address Please click <b style="color: #d41517;">This is not my Profile</b> button.
+                        </div>
+                      </div>
+                      <div class="row" id="start-btn1">
+                        <div *ngIf="!isLoggedIn" class="col-md-6">
+                          <!--<button class="btn btn-default">Stop</button>-->
+                          <button class="btn btn-cocktail btn-block font-16" (click)="notMyProfile()">
+                            This is not my Profile
+                          </button>
+                        </div>
+                        <div [class.col-md-6]="!isLoggedIn" [class.col-md-12]="isLoggedIn">
+                          <button tabindex="0" class="btn btn-basil btn-block font-16 mobile-m-t-10" id="startsurvey"
+                            (click)="startSurveyHelper(form)">
+                            Save and Start
+                            <ng-container *ngIf="!survey?.isScreener">Survey</ng-container>
+                            <ng-container *ngIf="survey?.isScreener">Screener</ng-container>
+                          </button>
+                        </div>
+                      </div>
+                    </form>
+                    <div class="clearfix"></div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </ng-container>
+
+          <div *ngIf="errorList.length < 1 && startSurvey" class="col-sm-12">
+            <div tabindex="0" class="breadcrumb breadcrumb-arrow bg-white bx-shadow home-breadcrumb p-l-10 font-14">
+              <b>
+                {{survey?.title}}
+              </b>
+            </div>
+          </div>
+          <div *ngIf="errorList.length < 1" class="col-sm-12">
+            <div *ngIf="startSurvey" class="breadcrumb breadcrumb-arrow bg-white bx-shadow survey-progress-container"
+              style="height: 40px">
+              <div class="progress progress-lg btn-square">
+                <div tabindex="0" *ngIf="surveyQuestions != null && surveyQuestions?.length > 0 && startSurvey"
+                  class="progress-bar progress-bar-success active" role="progressbar" aria-valuenow="56"
+                  aria-valuemin="0" aria-valuemax="100" style="line-height: 20px; background: #0372cc;"
+                  [style.width.%]="(((selectedIndex + 1) / (surveyQuestions?.length)) * 100)">
+                  {{selectedIndex + 1}} of {{surveyQuestions?.length}}
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div *ngIf="startSurvey" class="col-sm-12">
+            <div class="card-box">
+              <div class="portlet ax-border m-b-0" id="jobs-filterBox">
+                <div tabindex="0" *ngIf="errorList.length > 0" class="text-danger" style="padding: 15px">
+                  <ng-container *ngFor="let err of errorList">
+                    {{err}}<br>
+                  </ng-container>
+                </div>
+                <div *ngIf="errorList.length < 1" class="portlet-heading portlet-default">
+                  <div class="clearfix"></div>
+                  <ng-container *ngIf="startSurvey && !finishSurvey">
+                    <div class="clearfix"></div>
+                    <SurveyTemplateComponent [surveyQuestions]="surveyQuestions" *ngIf="surveyQuestions"
+                      [selectedIndex]="selectedIndex" (gotoNextQuestion)="gotoNextQuestion($event)">
+                    </SurveyTemplateComponent>
+
+                    <div class="clearfix"></div>
+                    <div class="col-md-12 no-padding text-left" id="bottom-btn">
+                      <!--                  <button class="btn btn-default"-->
+                      <!--                          (click)="submitQuestion(); selectedIndex = (selectedIndex - 1)"-->
+                      <!--                          *ngIf="selectedIndex > 0">-->
+                      <!--                    Previous-->
+                      <!--                  </button>-->
+                      <button id="nextbtn" class="btn btn-skyblue" (click)="submitQuestion();">
+                        Next
+                      </button>
+                      <!-- <button class="btn btn-skyblue" (click)="submitQuestion(); finishSurvey = true" *ngIf="surveyQuestions?.length == (selectedIndex + 1);">
+                        Next
+                      </button> -->
+                    </div>
+                    <div class="clearfix"></div>
+                  </ng-container>
+
+                  <ng-container *ngIf="finishSurvey">
+                    <ng-container *ngIf="responseSurveySuccess == false">
+                      <h3 tabindex="0" class="text-left no-margin">
+                        <!-- <i class="md md-close"></i> -->
+                        <span class="text-danger"> We're Sorry! You don't qualify for this survey</span>
+                      </h3>
+                      <h5 tabindex="0" class="m-b-0">
+                        <span [innerHtml]="responseMessage"></span>
+                      </h5>
+                    </ng-container>
+                    <ng-container *ngIf="responseSurveySuccess == true && !surveyPreQualRes.isPreQualSurvey">
+                      <h3 tabindex="0" class="text-left no-margin">
+                        <!-- <i class="md md-done-all"></i> -->
+                        <span class="text-success">
+                          <ng-container *ngIf="survey?.isScreener">Screener </ng-container>
+                          <ng-container *ngIf="!survey?.isScreener">Survey </ng-container>
+                          Completed
+                        </span>
+                      </h3>
+                      <h5 tabindex="0" class="m-b-0">
+                        <span [innerHtml]="responseMessage"></span>
+                      </h5>
+                      <br><br>
+                      <a tabindex="0" *ngIf="fbSucceeded && fbValue" [href]="fbValue" target="_blank">
+                        <img src="assets/images/like-us-on-facebook-button.jpg" style="width: 175px;height: auto;"
+                          alt="Like us on Facebook">
+                      </a>
+                    </ng-container>
+                    <ng-container *ngIf="responseSurveySuccess == true && surveyPreQualRes.isPreQualSurvey">
+                      <h3 tabindex="0" *ngIf="surveyPreQualRes.heading" class="text-left no-margin">
+                        <!-- <i class="md md-done-all"></i> -->
+                        <span class="text-success">
+                          {{surveyPreQualRes.heading}}
+                        </span>
+                      </h3>
+                      <h5 tabindex="0" *ngIf="surveyPreQualRes.statement1">
+                        <span [innerHtml]="surveyPreQualRes.statement1"></span>
+                      </h5>
+                      <h5 tabindex="0" *ngIf="surveyPreQualRes.statement2">
+                        <span [innerHtml]="surveyPreQualRes.statement2"></span>
+                        <span class="text-danger">{{surveyPreQualRes.respondentId}} </span>
+                        <a class="ccopy ax-cursor-pointer btn btn-xs btn-ocean btn-square text-white"
+                          [attr.data-clipboard-text]="surveyPreQualRes.respondentId" (click)="clipboardCopy()">
+                          Copy
+                        </a>
+                      </h5>
+                      <!-- [href]="surveyPreQualRes.url" -->
+                      <a tabindex="0" *ngIf="surveyPreQualRes.url" (click)="recordThirdPartySurveyClick()"
+                        class="btn btn-success">
+                        <ng-container *ngIf="surveyPreQualRes?.buttonText">{{surveyPreQualRes?.buttonText}}
+                        </ng-container>
+                        <ng-container *ngIf="!surveyPreQualRes?.buttonText">Start Paid Survey Now</ng-container>
+                      </a>
+                    </ng-container>
+                  </ng-container>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+
+    <!--<iframe src="../../assets/html/aug-fr-survey.html" frameborder="0"
+              style="overflow:hidden;min-height: calc(100vh - 70px);width:100%" height="100vh" width="100%"></iframe>-->
+    <!--
+  <div class="wrapper">
+    <div class="container">
+      <div class="row">
+        <div class="col-sm-12">
+          <div class="breadcrumb breadcrumb-arrow bg-white bx-shadow home-breadcrumb p-l-10 font-14">
+            <b>
+              Job No -
+              0245 - Survey
+              Title Here
+            </b>
+          </div>
+        </div>
+        <div class="col-sm-12">
+          <div class="breadcrumb breadcrumb-arrow bg-white bx-shadow survey-progress-container"
+               style="height: 40px">
+            <div class="progress progress-lg btn-square">
+              <div class="progress-bar progress-bar-success active" role="progressbar"
+                   aria-valuenow="56" aria-valuemin="0" aria-valuemax="100"
+                   style="width: 56%; line-height: 20px; background: #2ea2db;">
+                Question 1 of 25
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="col-sm-12">
+          <div class="card-box">
+            <div class="portlet ax-border m-b-0" id="jobs-filterBox">
+              <div class="portlet-heading portlet-default">
+                <div class="clearfix"></div>
+                <div id="bg-default" class="panel-collapse collapse in">
+                  <div class="portlet-body no-padding m-t-0">
+                    <div class="text-left ax-color-black" id="welcome">
+                      <label class="control-label m-b-10">
+                        Depending on your answers, you may or may
+                        not be
+                        given an opportunity to
+                        complete
+                        all questions.
+                      </label>
+                    </div>
+                    <div class="col-md-12 no-padding text-left" id="start-btn">
+                      <button class="btn btn-default">Stop</button>
+                      <button class="btn btn-skyblue" id="startsurvey">Start</button>
+                    </div>
+                    <form class="ax-form survey">
+                      <div class="form-group" id="survey1" data-id="1">
+                        <label class="control-label ax-color-black">
+                          What beachwear brands, if
+                          any,
+                          can you think of?
+                        </label>
+                        <div class="alert alert-success">
+                          <strong>Well done!</strong> You successfully read this important alert message.
+                        </div>
+                        <input type="text" class="form-control">
+                      </div>
+                      <div class="form-group survey-yesorno m-b-15" data-id="2">
+                        <label class="control-label ax-color-black">
+                          Had you heard of Origama®
+                          before
+                          today?
+                        </label><br>
+                        <div class="alert alert-success">
+                          <strong>Well done!</strong> You successfully read this important alert message.
+                        </div>
+                        <div class="yncontainer pull-left">
+                          <i class="md md-check icon" style="color: #1fb58f;"></i>
+                          <div class="text">
+                            Yes
+                          </div>
+                          <span><i class="md md-check"></i></span>
+                        </div>
+                        <div class="yncontainer pull-left m-l-10">
+                          <i class="md md-close icon" style="color: #f24c4e;"></i>
+                          <div class="text">
+                            No
+                          </div>
+                          <span><i class="md md-check"></i></span>
+                        </div>
+                        <div class="clearfix"></div>
+                      </div>
+                      <div class="form-group survey-list-rating m-b-10" data-id="3">
+                        <label class="control-label ax-color-black">
+                          How often do you use
+                          beachwear
+                          products?
+                        </label>
+                        <div class="alert alert-success">
+                          <strong>Well done!</strong> You successfully read this important alert message.
+                        </div>
+                        <ul>
+                          <li>
+                            <span class="number">0</span><span class="btn btn-default btn-square btn-xs text">More<br>Extremely<br>often</span>
+                          </li>
+                          <li>
+                            <span class="number">1</span> <span class="btn btn-default btn-square btn-xs text">More<br>Extremely<br>often</span>
+                          </li>
+                          <li>
+                            <span class="number">2</span> <span class="btn btn-default btn-square btn-xs text">More<br>Extremely<br>often</span>
+                          </li>
+                          <li>
+                            <span class="number">3</span> <span class="btn btn-default btn-square btn-xs text">More<br>Extremely<br>often</span>
+                          </li>
+                          <li>
+                            <span class="number">4</span> <span class="btn btn-default btn-square btn-xs text">More<br>Extremely<br>often</span>
+                          </li>
+                          <li>
+                            <span class="number">5</span> <span class="btn btn-default btn-square btn-xs text">More<br>Extremely<br>often</span>
+                          </li>
+                          <li>
+                            <span class="number">6</span> <span class="btn btn-default btn-square btn-xs text">More<br>Extremely<br>often</span>
+                          </li>
+                          <li>
+                            <span class="number">7</span> <span class="btn btn-default btn-square btn-xs text">More<br>Extremely<br>often</span>
+                          </li>
+                          <li>
+                            <span class="number">8</span> <span class="btn btn-default btn-square btn-xs text">More<br>Extremely<br>often</span>
+                          </li>
+                          <li>
+                            <span class="number">9</span> <span class="btn btn-default btn-square btn-xs text">More<br>Extremely<br>often</span>
+                          </li>
+                        </ul>
+                        <div class="clearfix"></div>
+                      </div>
+                      <div class="form-group survey-star-rating" data-id="4">
+                        <label class="control-label ax-color-black">
+                          How often do you use
+                          beachwear products?
+                        </label>
+                        <br>
+                        <div class="alert alert-danger">
+                          <strong>Oh snap!</strong> Change a few things up and try submitting again.
+                        </div>
+                        <ul>
+                          <li id="rating1" data-id="1"><i class="ion-ios7-star-outline"></i></li>
+                          <li id="rating2" data-id="2"><i class="ion-ios7-star-outline"></i></li>
+                          <li id="rating3" data-id="3"><i class="ion-ios7-star-outline"></i></li>
+                          <li id="rating4" data-id="4"><i class="ion-ios7-star-outline"></i></li>
+                          <li id="rating5" data-id="5"><i class="ion-ios7-star-outline"></i></li>
+                        </ul>
+                      </div>
+                      <div class="form-group survey-multi-select" data-id="5">
+                        <label class="control-label ax-color-black">
+                          If Origama® were a person,
+                          which
+                          of the following adjectives do you feel would best describe their
+                          personality?
+                        </label>
+                        <div class="clearfix"></div>
+                        <div class="alert alert-danger">
+                          <strong>Oh snap!</strong> Change a few things up and try submitting again.
+                        </div>
+                        <div class="col-md-4 no-padding-left">
+                          <ul>
+                            <li class="mobile-only-top-border">
+                              Tough <span>
+                                <i class="md md-check"></i>
+                              </span>
+                            </li>
+                            <li>Rugged <span><i class="md md-check"></i></span></li>
+                            <li>Reliable <span><i class="md md-check"></i></span></li>
+                            <li>Charming <span><i class="md md-check"></i></span></li>
+                            <li>Down-to-earth <span><i class="md md-check"></i></span></li>
+                          </ul>
+                        </div>
+                        <div class="col-md-4">
+                          <ul>
+                            <li>Cheerful <span><i class="md md-check"></i></span></li>
+                            <li>Intelligent <span><i class="md md-check"></i></span></li>
+                            <li>Daring <span><i class="md md-check"></i></span></li>
+                            <li>Successful <span><i class="md md-check"></i></span></li>
+                            <li>Spirited <span><i class="md md-check"></i></span></li>
+                          </ul>
+                        </div>
+                        <div class="col-md-4 no-padding-right">
+                          <ul>
+                            <li>Honest <span><i class="md md-check"></i></span></li>
+                            <li>Outdoorsy <span><i class="md md-check"></i></span></li>
+                            <li>Sophisticated <span><i class="md md-check"></i></span></li>
+                            <li>Upper-Class <span><i class="md md-check"></i></span></li>
+                            <li>Imaginative <span><i class="md md-check"></i></span></li>
+                          </ul>
+                        </div>
+                        <div class="clearfix"></div>
+                      </div>
+                      <div class="form-group survey-thumb" data-id="6">
+                        <label class="control-label ax-color-black">
+                          How would you rate your
+                          reaction to the new Origama® Sun Seat?
+                        </label>
+                        <div class="clearfix"></div>
+                        <div class="alert alert-danger">
+                          <strong>Oh snap!</strong> Change a few things up and try submitting again.
+                        </div>
+                        <span><i class="fa fa-thumbs-o-up success"></i></span>
+                        <span><i class="fa fa-thumbs-o-down danger"></i></span>
+                      </div>
+                      <div class="form-group survey-img" data-id="7">
+                        <label class="control-label ax-color-black">
+                          Had you heard of Origama®
+                          before
+                          today?
+                        </label>
+                        <div class="alert alert-success">
+                          <strong>Well done!</strong> You successfully read this important alert message.
+                        </div>
+                        <div class="alert alert-danger">
+                          <strong>Oh snap!</strong> Change a few things up and try submitting again.
+                        </div>
+                        <ul>
+                          <li class="mobile-only-top-border">
+                            <img src="assets/images/survey/survery-img-1.png">
+                            <span><i class="md md-check"></i></span>
+                          </li>
+                          <li>
+                            <img src="assets/images/survey/survery-img-2.png">
+                            <span><i class="md md-check"></i></span>
+                          </li>
+                          <li>
+                            <img src="assets/images/survey/survery-img-3.png">
+                            <span><i class="md md-check"></i></span>
+                          </li>
+                          <li>
+                            <img src="assets/images/survey/survery-img-4.png">
+                            <span><i class="md md-check"></i></span>
+                          </li>
+                        </ul>
+                      </div>
+                      <div class="form-group" data-id="8">
+                        <label class="control-label ax-color-black">Text Area Question?</label>
+                        <textarea name="" rows="3"
+                                  class="form-control"></textarea>
+                      </div>
+                      <div class="form-group" data-id="9">
+                        <label class="control-label ax-color-black">
+                          Radio Button
+                          Question?
+                        </label>
+                        <div class="radio radio-success">
+                          <input type="radio" name="radio" id="radio4" value="option4">
+                          <label for="radio4" class="ax-color-black">
+                            Option 1
+                          </label>
+                        </div>
+                        <div class="radio radio-success">
+                          <input type="radio" name="radio" id="radio5" value="option4">
+                          <label for="radio5" class="ax-color-black">
+                            Option 2
+                          </label>
+                        </div>
+                        <div class="radio radio-success">
+                          <input type="radio" name="radio" id="radio6" value="option4">
+                          <label for="radio6" class="ax-color-black">
+                            Option 3
+                          </label>
+                        </div>
+                        <div class="radio radio-success">
+                          <input type="radio" name="radio" id="radio7" value="option4">
+                          <label for="radio7" class="ax-color-black">
+                            Option 5
+                          </label>
+                        </div>
+                      </div>
+                      <div class="form-group" data-id="10">
+                        <label class="control-label ax-color-black">Select Question?</label>
+                        <select class="form-control">
+                          <option value="">Option 1</option>
+                          <option value="">Option 2</option>
+                        </select>
+                      </div>
+                      <div class="form-group" data-id="11">
+                        <label class="control-label ax-color-black">
+                          What is your Date of
+                          Birth?
+                        </label>
+                        <input type="text" class="form-control date-range">
+                      </div>
+                      <div class="form-group" data-id="12">
+                        <label for="range_01" class="control-label ax-color-black">
+                          What is your
+                          salary range?
+                        </label>
+                        <div>
+                          <input type="text" id="range_01">
+                        </div>
+                      </div>
+                      <div class="form-group survey-matrix" data-id="13">
+                        <label class="control-label ax-color-black">
+                          Which of the following days and
+                          time would you be available for a 90 minute research session for $100
+                          Cash
+                        </label>
+                        <div class="clearfix"></div>
+                        <div class="table-responsive m-b-0 no-border-radius">
+                          <table class="table ax-table table-bordered m-b-0">
+                            <tr>
+                              <td style="border-top:0px" class="bg"></td>
+                              <td class="bg no-border-top text-center">Thursday 15th June</td>
+                              <td class="bg no-border-top text-center">Thursday 15th June</td>
+                              <td class="bg no-border-top text-center">Thursday 15th June</td>
+                              <td class="bg no-border-top text-center">Thursday 15th June</td>
+                              <td class="bg no-border-top text-center">Thursday 15th June</td>
+                            </tr>
+                            <tr>
+                              <td class="bg">8.30am</td>
+                              <td class="text-center"><input type="checkbox"></td>
+                              <td class="text-center"><input type="checkbox"></td>
+                              <td class="text-center"><input type="checkbox"></td>
+                              <td class="text-center"><input type="checkbox"></td>
+                              <td class="text-center"><input type="checkbox"></td>
+                            </tr>
+                            <tr>
+                              <td class="bg">11.00am</td>
+                              <td class="text-center"><input type="checkbox"></td>
+                              <td class="text-center"><input type="checkbox"></td>
+                              <td class="text-center"><input type="checkbox"></td>
+                              <td class="text-center"><input type="checkbox"></td>
+                              <td class="text-center"><input type="checkbox"></td>
+                            </tr>
+                            <tr>
+                              <td class="bg">1.30am</td>
+                              <td class="text-center"><input type="checkbox"></td>
+                              <td class="text-center"><input type="checkbox"></td>
+                              <td class="text-center"><input type="checkbox"></td>
+                              <td class="text-center"><input type="checkbox"></td>
+                              <td class="text-center"><input type="checkbox"></td>
+                            </tr>
+                            <tr>
+                              <td class="bg">4.00pm</td>
+                              <td class="text-center"><input type="checkbox"></td>
+                              <td class="text-center"><input type="checkbox"></td>
+                              <td class="text-center"><input type="checkbox"></td>
+                              <td class="text-center"><input type="checkbox"></td>
+                              <td class="text-center"><input type="checkbox"></td>
+                            </tr>
+                            <tr>
+                              <td class="bg">All of the above</td>
+                              <td class="text-center"><input type="checkbox"></td>
+                              <td class="text-center"><input type="checkbox"></td>
+                              <td class="text-center"><input type="checkbox"></td>
+                              <td class="text-center"><input type="checkbox"></td>
+                              <td class="text-center"><input type="checkbox"></td>
+                            </tr>
+                            <tr>
+                              <td class="bg">None of the above</td>
+                              <td class="text-center"><input type="checkbox"></td>
+                              <td class="text-center"><input type="checkbox"></td>
+                              <td class="text-center"><input type="checkbox"></td>
+                              <td class="text-center"><input type="checkbox"></td>
+                              <td class="text-center"><input type="checkbox"></td>
+                            </tr>
+                          </table>
+                        </div>
+                      </div>
+                      <div class="form-group" data-id="14">
+                        <label class="control-label ax-color-black">
+                          Give us your comment after
+                          watching this video
+                        </label>
+                        <br>
+                        <div class="col-md-5 no-padding">
+                          <iframe width="100%" height="315" class="no-border"
+                                  src="https://www.youtube.com/embed/_gYdwWxSXBM"></iframe>
+                          <textarea rows="3" class="form-control m-t-10"></textarea>
+                        </div>
+                        <div class="clearfix"></div>
+                      </div>
+                      <div class="form-group survey-reorder" data-id="15">
+                        <label class="control-label ax-color-black">
+                          If Origama® were a person,
+                          which
+                          of the following adjectives do you feel would best describe their
+                          personality?
+                        </label>
+                        <div class="clearfix"></div>
+                        <div class="col-md-4 no-padding">
+                          <ul id="surveyReorder">
+                            <li class="mobile-only-top-border">Tough</li>
+                            <li>Rugged</li>
+                            <li>Reliable</li>
+                            <li>Charming</li>
+                            <li>Down-to-earth</li>
+                          </ul>
+                        </div>
+                        <div class="clearfix"></div>
+                      </div>
+                      <div class="form-group survey-yesorno m-b-15" data-id="16">
+                        <label class="control-label ax-color-black">What is your gender?</label><br>
+                        <div class="yncontainer pull-left">
+                          <i class="fa fa-male icon" style="color: #1fb58f; margin-top: 15px"></i>
+                          <div class="text">
+                            Male
+                          </div>
+                          <span><i class="md md-check"></i></span>
+                        </div>
+                        <div class="yncontainer pull-left m-l-10">
+                          <i class="fa fa-female icon"
+                             style="color: #1fb58f; margin-top: 15px"></i>
+                          <div class="text">
+                            Female
+                          </div>
+                          <span><i class="md md-check"></i></span>
+                        </div>
+                        <div class="yncontainer pull-left m-l-10">
+                          <i class="fa fa-adjust icon"
+                             style="color: #1fb58f; margin-top: 15px"></i>
+                          <div class="text">
+                            Other
+                          </div>
+                          <span><i class="md md-check"></i></span>
+                        </div>
+                        <div class="clearfix"></div>
+                      </div>
+                      <div class="form-group survey-yesorno m-b-15" data-id="17">
+                        <label class="control-label ax-color-black">
+                          Please choose the session, event and
+                          quotas you wish to record for this respondent.
+                        </label>
+                        <br>
+                        <br>
+                        <div class="col-md-4 no-padding">
+                          <div class="m-b-15 col-md-8 no-padding">
+                            <label class="control-label ax-color-black">
+                              Choose the
+                              Session
+                            </label>
+                            <select class="form-control">
+                              <option value=""></option>
+                              <option value="">1. Tuesday 14th March</option>
+                            </select>
+                          </div>
+                          <div class="m-b-15 col-md-4 no-padding-right">
+                            <label class="control-label ax-color-black">In-Depth Time</label>
+                            <select class="form-control">
+                              <option value=""></option>
+                            </select>
+                          </div>
+                          <div class="m-b-15">
+                            <label class="control-label ax-color-black">Incentive</label>
+                            <select class="form-control">
+                              <option value=""></option>
+                            </select>
+                          </div>
+                          <div class="m-b-15">
+                            <table class="table ax-table table-bordered m-b-0">
+                              <thead>
+                                <tr>
+                                  <th class="ax-table-x50">Fill</th>
+                                  <th>Quota</th>
+                                  <th class="ax-table-x150">Summary</th>
+                                </tr>
+                              </thead>
+                              <tbody>
+                                <tr>
+                                  <td class="text-center">
+                                    <div class="checkbox checkbox-primary no-margin">
+                                      <input id="checkbox1" type="checkbox">
+                                      <label for="checkbox1">
+                                      </label>
+                                    </div>
+                                  </td>
+                                  <td>Male</td>
+                                  <td>6 of 6 remaining</td>
+                                </tr>
+                                <tr>
+                                  <td class="text-center">
+                                    <div class="checkbox checkbox-primary no-margin">
+                                      <input id="checkbox1" type="checkbox">
+                                      <label for="checkbox1">
+                                      </label>
+                                    </div>
+                                  </td>
+                                  <td>Male Screener</td>
+                                  <td>3 of 6 remaining</td>
+                                </tr>
+                                <tr>
+                                  <td class="text-center">
+                                    <div class="checkbox checkbox-primary no-margin">
+                                      <input id="checkbox1" type="checkbox">
+                                      <label for="checkbox1">
+                                      </label>
+                                    </div>
+                                  </td>
+                                  <td>Female</td>
+                                  <td>6 of 6 remaining</td>
+                                </tr>
+                                <tr>
+                                  <td class="text-center">
+                                    <div class="checkbox checkbox-primary no-margin">
+                                      <input id="checkbox1" type="checkbox">
+                                      <label for="checkbox1">
+                                      </label>
+                                    </div>
+                                  </td>
+                                  <td>Female Screener</td>
+                                  <td>3 of 6 remaining</td>
+                                </tr>
+                                <tr>
+                                  <td class="text-center">
+                                    <div class="checkbox checkbox-primary no-margin">
+                                      <input id="checkbox1" type="checkbox">
+                                      <label for="checkbox1">
+                                      </label>
+                                    </div>
+                                  </td>
+                                  <td>0-3 Years</td>
+                                  <td>6 of 6 remaining</td>
+                                </tr>
+                                <tr>
+                                  <td class="text-center">
+                                    <div class="checkbox checkbox-primary no-margin">
+                                      <input id="checkbox1" type="checkbox">
+                                      <label for="checkbox1">
+                                      </label>
+                                    </div>
+                                  </td>
+                                  <td>0-3 Years Screener</td>
+                                  <td>4 of 6 remaining</td>
+                                </tr>
+                                <tr>
+                                  <td class="text-center">
+                                    <div class="checkbox checkbox-primary no-margin">
+                                      <input id="checkbox1" type="checkbox">
+                                      <label for="checkbox1">
+                                      </label>
+                                    </div>
+                                  </td>
+                                  <td>4-7 Years</td>
+                                  <td>5 of 6 remaining</td>
+                                </tr>
+                                <tr>
+                                  <td class="text-center">
+                                    <div class="checkbox checkbox-primary no-margin">
+                                      <input id="checkbox1" type="checkbox">
+                                      <label for="checkbox1">
+                                      </label>
+                                    </div>
+                                  </td>
+                                  <td>4-7 Years Screener</td>
+                                  <td>1 of 5 remaining</td>
+                                </tr>
+                                <tr>
+                                  <td class="text-center">
+                                    <div class="checkbox checkbox-primary no-margin">
+                                      <input id="checkbox1" type="checkbox">
+                                      <label for="checkbox1">
+                                      </label>
+                                    </div>
+                                  </td>
+                                  <td>8-10 Years</td>
+                                  <td>1 of 1 remaining</td>
+                                </tr>
+                                <tr>
+                                  <td class="text-center">
+                                    <div class="checkbox checkbox-primary no-margin">
+                                      <input id="checkbox1" type="checkbox">
+                                      <label for="checkbox1">
+                                      </label>
+                                    </div>
+                                  </td>
+                                  <td>8-10 Years Screener</td>
+                                  <td>0 of 1 remaining</td>
+                                </tr>
+                              </tbody>
+                            </table>
+                          </div>
+                          <div class="m-b-15" style="border: 1px solid #ddd">
+                            <div style="background: #dae6ec; color:#2a3142; padding: 6px; font-weight: bold">Choose action</div>
+                            <div class="radio radio-success m-l-15">
+                              <input type="radio" name="radio4" checked>
+                              <label class="ax-color-black">
+                                Qualify respondent
+                              </label>
+                            </div>
+                            <div class="radio radio-success m-l-15">
+                              <input type="radio" name="radio4">
+                              <label class="ax-color-black">
+                                Standby respondent
+                              </label>
+                            </div>
+                            <div class="radio radio-success m-l-15">
+                              <input type="radio" name="radio4">
+                              <label class="ax-color-black">
+                                Disqualify respondent
+                              </label>
+                            </div>
+                            <div class="radio radio-success m-l-15">
+                              <input type="radio" name="radio4">
+                              <label class="ax-color-black">
+                                'Hold' respondent
+                              </label>
+                            </div>
+                          </div>
+                        </div>
+                        <div class="clearfix"></div>
+                      </div>
+                      <div class="col-md-12 no-padding text-left hide" id="bottom-btn">
+                        <span id="prev" class="hide">
+                          <button class="btn btn-default">
+                            Previous
+                          </button>&#160;
+                        </span>
+                        <button class="btn btn-skyblue hide" id="next">Next</button>
+                        <button class="btn btn-skyblue hide" id="finish">Finish</button>
+                      </div>
+                    </form>
+                    <div class="text-left ax-color-black hide" id="end">
+                      <label class="control-label">
+                        Thankyou. You have been successfully qualified for
+                        the research. Our team
+                        member will contact you shortly.
+                      </label><br>
+                      <button class="btn btn-skyblue">Close</button>
+                    </div>
+                    <div class="clearfix"></div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  -->
+  </div>

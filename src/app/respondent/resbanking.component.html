@@ -1,0 +1,74 @@
+<div class="tab-pane" id="bankinginvestment">
+  <div *ngIf="!isMyProfile" class="newres-tab-title">
+    <h5 class="no-margin">Banking & Investment</h5>
+  </div>
+  <br>
+  <form *ngIf="!isLoading">
+    <div class="no-padding-left" [class.col-md-2]="!isMyProfile" [class.col-md-12]="!isMyProfile">
+      <div class="form-group">
+        <label class="control-label">My Main Bank</label>
+        <select class="form-control" name="mainBankId" [(ngModel)]="respondent.mainBankId">
+          <option *ngFor="let bk of otherBanks" [value]="bk.id">{{bk.description}}</option>
+        </select>
+      </div>
+      <!-- <div class="form-group">
+        <label class="control-label">My Home Loan Bank</label>
+        <select class="form-control"></select>
+      </div>
+      <div class="form-group">
+        <label class="control-label">My Personal Loan Bank</label>
+        <select class="form-control"></select>
+      </div>
+      <div class="form-group">
+        <label class="control-label">My Car Loan Bank</label>
+        <select class="form-control"></select>
+      </div>
+      <div class="form-group">
+        <label class="control-label">My Credit Union</label>
+        <select class="form-control"></select>
+      </div>
+      <div class="form-group has-feedback">
+        <label class="control-label">Other Banks</label>
+        <div class="clearfix"></div>
+              </div>
+      -->
+      <label class="control-label">Other Banks</label>
+        <div *ngFor="let bk of otherBanks;let i = index" class="checkbox checkbox-primary pull-left m-t-5 m-b-5 m-r-10 w-100-pre">
+          <input name="respbanks{{i}}" type="checkbox" [value]="bk.selected" class="form-control" [checked]="bk.selected" (change)="updateOtherBankDetails(i, $event)">
+          <label>{{bk.description}}</label>
+        </div>
+
+        <div class="clearfix"></div>
+    </div>
+    <div class="no-padding-right" [class.col-md-2]="!isMyProfile" [class.col-md-12]="!isMyProfile">
+      <div class="form-group has-feedback">
+        <label class="control-label">Superannuation</label>
+        <div class="clearfix"></div>
+
+        <div *ngFor="let sa of superannuation;let i = index" class="checkbox checkbox-primary pull-left m-t-5 m-b-5 m-r-10 w-100-pre">
+          <input name="superannuation{{i}}" type="checkbox" [value]="sa.selected" class="form-control" [checked]="sa.selected" (change)="updateSuperannuation(i, $event)">
+          <label>{{sa.description}}</label>
+        </div>
+
+        <div class="clearfix"></div>
+      </div>
+    </div>
+    <div class="no-padding-left" [class.col-md-2]="!isMyProfile" [class.col-md-12]="!isMyProfile">
+      <div class="form-group has-feedback">
+        <label class="control-label">Non-Super Investments</label>
+        <div class="clearfix"></div>
+
+        <div *ngFor="let in of investment;let i = index" class="checkbox checkbox-primary pull-left m-t-5 m-b-5 m-r-10 w-100-pre">
+          <input name="investment{{i}}" type="checkbox" [value]="in.selected" class="form-control" [checked]="in.selected" (change)="updateinvestment(i, $event)">
+          <label>{{in.description}}</label>
+        </div>
+
+        <div class="clearfix"></div>
+      </div>
+    </div>
+    <div class="clearfix"></div>
+    <div class="no-padding text-right col-md-12 newres-bottom">
+      <button class="btn" [class.btn-ocean]="!isMyProfile" [class.btn-basil]="isMyProfile" (click)="updateSubmit()">Submit</button>
+    </div>
+  </form>
+</div>

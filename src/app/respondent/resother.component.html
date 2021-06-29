@@ -1,0 +1,138 @@
+<div class="tab-pane" id="summary">
+  <div class="col-md-12 no-padding">
+    <!-- <ng-container *ngIf="!isMyProfile">
+      <div class="newres-tab-title">
+        <h5 class="no-margin">Other Details</h5>
+      </div>
+      <br>
+    </ng-container> -->
+
+    <div *ngIf="!isMyProfile" class="col-md-12 no-padding m-b-0 newres-bottom">
+      <div class="col-md-6 font-10 no-padding">
+        <h5 class="no-margin p-l-10" style="line-height: 34px">Other Details</h5>
+      </div>
+      <div class="col-md-6 text-right no-padding">
+        <button (click)="updateSubmit()" class="btn waves-effect waves-light btn-md" [class.btn-ocean]="!isMyProfile"
+          [class.btn-basil]="isMyProfile">
+          Submit
+        </button>
+      </div>
+    </div>
+    <div class="clearfix"></div>
+    <br>
+    <form *ngIf="!isLoading">
+      <div class="col-md-4 pull-left no-padding-left">
+        <div class="form-group">
+          <label>How did you hear about us?</label>
+          <select id="SourceType" name="SourceType" class="form-control" [(ngModel)]="respondent.sourceType">
+            <option *ngFor="let st of sourcetype" [value]="st.id">{{st.description}}</option>
+          </select>
+        </div>
+
+        <div class="form-group">
+          <label for="Source">Source Name</label>
+          <input autocomplete="off" id="Source" name="Source" type="text" class="form-control"
+            [(ngModel)]="respondent.source">
+        </div>
+
+        <div class="form-group">
+          <label for="SourceDetails">Source Email/Website</label>
+          <input autocomplete="off" id="SourceDetails" name="SourceDetails" type="text" class="form-control"
+            [(ngModel)]="respondent.sourceDetails">
+        </div>
+      </div>
+      <div *ngIf="!isMyProfile" class="col-md-4 pull-left no-padding">
+        <!-- <div class="form-group">
+          <label class="control-label">Private List Name</label>
+          <input autocomplete="off" type="text" id="privateListName" name=" privateListName"
+            [(ngModel)]="respondent. privateListName" class="form-control">
+        </div> -->
+
+        <div class="form-group">
+          <label class="control-label" for="sourceType">Secure List</label>
+          <select id="languageoutofhome" name="sourceType" [(ngModel)]="respondent.respondentListId"
+            class="form-control">
+            <option *ngFor="let st of secureList" [value]="st.id">{{st.description}}</option>
+          </select>
+        </div>
+
+        <div class="form-group">
+          <label class="control-label w-100-pre m-b-0">
+            Inactive Until
+
+            <div class="pull-right">
+              <label for="checkbox1" class="control-label ax-color-black pull-left m-b-0 font-normal font-12">
+                Inactive (Permanent)
+              </label>
+              <div class="checkbox checkbox-primary" style="margin: 0px 0px 0px 116px;">
+                <input id="checkbox1" type="checkbox" [(ngModel)]="respondent.inactive" name="inactive"
+                  [disabled]="initRespondentInactive">
+                <label for="checkbox1" class="control-label ax-color-black no-padding">
+                </label>
+              </div>
+            </div>
+          </label>
+          <!-- <input autocomplete="off" type="text" id="inactiveUntil" name="inactiveUntil"
+            [(ngModel)]="respondent.inactiveUntil" class="form-control" ngui-datetime-picker date-format="DD-MM-YYYY"
+            parse-format="YYYY-MM-DD HH:mm:ss" [close-on-select]="false" dateOnly /> -->
+          <kendo-datepicker name="inactiveUntil" [(ngModel)]="respondent.inactiveUntil" [format]="'dd-MM-yyyy'"
+            class="w-100-pre" placeholder="">
+          </kendo-datepicker>
+        </div>
+
+        <div class="form-group">
+          <label class="control-label" for="inactiveReason">Inactive Reason</label>
+          <textarea rows="7" id="inactiveReason" name="inactiveReason" [(ngModel)]="respondent.inactiveReason"
+            class="form-control"></textarea>
+        </div>
+      </div>
+      <div *ngIf="!isMyProfile" class="col-md-4 pull-left no-padding-right">
+        <div class="form-group">
+          <label class="control-label" for="other">Internal Notes</label>
+          <textarea rows="7" id="other" name="other" [(ngModel)]="respondent.other" class="form-control"></textarea>
+        </div>
+        <div class="form-group">
+          <label for="additionalnotes">Additional Notes</label>
+          <textarea rows="7" class="form-control" id="additionalnotes" name="additionalnotes"
+            [(ngModel)]="respondent.otherVisible"></textarea>
+        </div>
+      </div>
+      <div class="clearfix"></div>
+
+      <div *ngIf="respondent" class="col-md-12 no-padding m-b-0 newres-bottom">
+        <!-- <div class="pull-left" *ngIf="!isMyProfile">
+            <button class="btn btn-cocktail waves-effect waves-light btn-md">
+              Send Reset Password Link
+            </button>
+          </div> -->
+        <div class="col-md-6 font-10 no-padding" style="line-height: 34px">
+          <ng-container>
+            <b>Created:</b>
+            <ng-container *ngIf="respondent.dateCreated">
+              {{respondent.dateCreated | date: 'dd-MM-yyyy'}} &#160;
+            </ng-container>
+            <ng-container *ngIf="!respondent.dateCreated">
+              {{today | date: 'dd-MM-yyyy'}} &#160;
+            </ng-container>
+            <b>Last Updated:</b>
+            <ng-container *ngIf="respondent.dateLastUpdated">
+              {{respondent.dateLastUpdated | date: 'dd-MM-yyyy'}}
+            </ng-container>
+            <ng-container *ngIf="!respondent.dateLastUpdated">
+              {{today | date: 'dd-MM-yyyy'}}
+            </ng-container>
+          </ng-container>
+        </div>
+        <div class="col-md-6 text-right no-padding">
+          <button (click)="updateSubmit()" class="btn waves-effect waves-light btn-md" [class.btn-ocean]="!isMyProfile"
+            [class.btn-basil]="isMyProfile">
+            Submit
+          </button>
+          <!-- <a *ngIf="isMyProfile" class="btn btn-cocktail m-l-5" (click)="gotoTop()">Skip</a> -->
+        </div>
+      </div>
+
+    </form>
+  </div>
+  <div class="clearfix"></div>
+</div>

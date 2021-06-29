@@ -1,0 +1,215 @@
+<div class="tab-pane" id="familydetails">
+  <!-- <ng-container *ngIf="!isMyProfile">
+    <div class="newres-tab-title">
+      <h5 class="no-margin">Family Details</h5>
+    </div>
+    <br>
+  </ng-container> -->
+
+  <div *ngIf="!isMyProfile" class="col-md-12 no-padding m-b-0 newres-bottom">
+    <div class="col-md-6 font-10 no-padding">
+      <h5 class="no-margin p-l-10" style="line-height: 34px">Family Details</h5>
+    </div>
+    <div class="col-md-6 text-right no-padding">
+      <button type="submit" (click)="updateRespondent(resFamilyForm)" class="btn waves-effect waves-light btn-md"
+        [class.btn-ocean]="!isMyProfile" [class.btn-basil]="isMyProfile">
+        Submit
+      </button>
+    </div>
+  </div>
+  <div class="clearfix"></div>
+  <br>
+  <form *ngIf="!isLoading && respondent != null" class="ax-form" role="form" #resFamilyForm="ngForm">
+    <div class="no-padding" [class.col-md-4]="!isMyProfile" [class.col-md-12]="isMyProfile">
+      <div class="form-group has-feedback">
+        <label class="control-label">Home Ownership</label>
+        <ng-container *ngFor="let ba of residenceOwnershipList; let i = index">
+          <div class="checkbox checkbox-primary pull-left res-check-margin w-100-pre">
+            <input type="checkbox" name="homeownership{{i}}" id="homeownership{{i}}" [(ngModel)]="ba.selected"
+              value="true">
+            <label class="control-label" for="homeownership{{i}}">{{ba.description}}</label>
+          </div>
+        </ng-container>
+        <div class="clearfix"></div>
+      </div>
+
+      <div class="form-group has-feedback">
+        <label class="control-label">Residence Type</label>
+        <select name="residencytype" [(ngModel)]="respondent.residenceTypeId" class="form-control">
+          <option *ngFor="let re of residencytypelist" [value]="re.id">{{re.description}}</option>
+        </select>
+      </div>
+      <div class="form-group has-feedback">
+        <label class="control-label">Household Type</label>
+        <select class="form-control" name="householdTypeId" [(ngModel)]="respondent.householdTypeId">
+          <option *ngFor="let ht of householdtypelist" [value]="ht.id">{{ht.description}}</option>
+        </select>
+      </div>
+      <div class="form-group has-feedback">
+        <label class="control-label">Marital Status</label>
+        <select class="form-control" name="maritalStatusId" [(ngModel)]="respondent.maritalStatusId">
+          <option *ngFor="let ms of maritialstatuslist" [value]="ms.id">{{ms.description}}</option>
+        </select>
+      </div>
+      <!-- <div class="form-group has-feedback">
+              <label class="control-label">Personal Income Level</label>
+              <select class="form-control" name="" >
+                  <option value=""></option>
+              </select>
+          </div> -->
+      <div class="form-group has-feedback">
+        <label class="control-label">Household Income Level</label>
+        <select class="form-control" name="householdIncomeLevel" [(ngModel)]="respondent.householdIncomeLevel">
+          <option *ngFor="let hi of householdincomelist" [value]="hi.code">{{hi.desc}}</option>
+        </select>
+      </div>
+
+      <div class="form-group has-feedback">
+        <label class="control-label">Personal Income Level</label>
+        <select class="form-control" name="personalIncomeLevel" [(ngModel)]="respondent.personalIncomeLevel">
+          <option *ngFor="let hi of householdincomelist" [value]="hi.code">{{hi.desc}}</option>
+        </select>
+      </div>
+
+
+      <!-- <div *ngIf="!hasChild" class="form-group">
+        <label class="control-label">How many children do you have?</label>
+        <input type="text" class="form-control" name="howmanychildren" [(ngModel)]="howmanychildren" mask="9999999999" pattern=".{0,9}"
+          (ngModelChange)="generateChildren()">
+      </div> -->
+    </div>
+
+    <div class="no-padding-right" [class.col-md-8]="!isMyProfile" [class.col-md-12]="isMyProfile">
+      <div class="form-group has-feedback">
+        <label class="control-label">Children</label>
+        <div class="radio radio-primary pull-left res-check-margin w-100-pre">
+          <input type="radio" name="hasChildren" id="hasChildren" [value]="true"
+            (ngModelChange)="respondent.hasChildren = true; generateChildrenHasChild();respondent.hasNoChildren = false"
+            [(ngModel)]="respondent.hasChildren">
+          <label class="control-label" for="hasChildren">I have children</label>
+        </div>
+        <div class="radio radio-primary pull-left res-check-margin w-100-pre">
+          <input type="radio" name="hasChildren" id="hasNoChildren" (ngModelChange)="respondent.hasNoChildren = true"
+            [value]="false" [(ngModel)]="respondent.hasChildren">
+          <label class="control-label" for="hasNoChildren">I have no children</label>
+        </div>
+        <div class="clearfix"></div>
+      </div>
+      <div class="clearfix"></div>
+
+      <!-- <ng-container *ngIf="respondent.hasChildren || !respondent.hasNoChildren ||
+                    (howmanychildrenlist.length > 0 && howmanychildrenlist[0].childName != '' && howmanychildrenlist[0].childName != null)"> -->
+      <ng-container *ngIf="respondent.hasChildren">
+        <div class="form-group">
+          <div class="checkbox checkbox-primary pull-left res-check-margin w-100-pre">
+            <input type="checkbox" name="childrenAllowed" [(ngModel)]="respondent.childrenAllowed" value="true"
+              id="childrenAllowed">
+            <label class="control-label" for="childrenAllowed">
+              Please indicate if you are interested in allowing your children to
+              participate in paid market research.
+            </label>
+          </div>
+          <div class="clearfix"></div>
+        </div>
+        <div class="clearfix"></div>
+        <p>
+          To add more children please click the green plus symbol
+          <a class="ax-text-success" href="javascript:;"><i aria-hidden="true" class="fa fa-plus ax-plus-btn"></i></a>
+        </p>
+        <div *ngFor="let ch of howmanychildrenlist;let i = index" class="form-group">
+          <span class="pull-left">
+            <br>
+            <a class="ax-text-success" href="javascript:;" (click)="addChild()">
+              <i aria-hidden="true" class="fa fa-plus ax-plus-btn"></i>
+            </a>
+            <br>
+            <a class="ax-text-danger" href="javascript:;" (click)="removeChild(i, ch)">
+              <i aria-hidden="true" class="fa fa-minus ax-minus-btn"></i>
+            </a>
+          </span>
+          <span class="pull-left" style="width: calc(25% - 18px)">
+            <label class="control-label w-100-pre">
+              Name
+              <span class="pull-right font-normal font-12">
+                <ng-container *ngIf="ch.childYear">
+                  Age {{currentyear - ch.childYear}}
+                </ng-container>
+              </span>
+            </label>
+            <input type="text" class="form-control" name="name{{i}}" [(ngModel)]="ch.childName"
+              (keypress)="stringOnly($event)">
+          </span>
+          <span class="pull-left" style="width: calc(20% - 10px); margin-left:10px">
+            <label class="control-label">Gender</label>
+            <select class="form-control" name="childSex{{i}}" [(ngModel)]="ch.childSex">
+              <option *ngFor="let gl of genderList" [value]="gl.code">{{gl.desc}}</option>
+            </select>
+          </span>
+          <span class="pull-left" style="width: calc(20% - 10px); margin-left:10px">
+            <label class="control-label">Month of Birth</label>
+            <!-- <select class="form-control" [(ngModel)]="ch.childBirthMonth" name="childBirthMonth{{i}}">
+              <option *ngFor="let item of [1,2,3,4,5,6,7,8,9,10,11,12]" value="{{item}}">{{item}}</option>
+            </select> -->
+            <select class="form-control" [(ngModel)]="ch.childBirthMonth" name="childBirthMonth{{i}}">
+              <option *ngFor="let ml of monthList" [value]="ml.code">{{ml.desc}}</option>
+            </select>
+          </span>
+          <span class="pull-left" style="width: calc(20% - 10px); margin-left:10px">
+            <label class="control-label w-100-pre">Year of Birth
+              <span [hidden]="childYearModel.valid || !isSubmitForm">
+                <span class="text-danger pull-right" [hidden]="!childYearModel.hasError('pattern')">Invalid year</span>
+              </span>
+            </label>
+            <input type="text" class="form-control" name="childYear{{i}}" [(ngModel)]="ch.childYear"
+              [textMask]="{mask: yearMask, showMask: true, guide: false}" numeric
+              (ngModelChange)="ch.childYear = unmask($event)" pattern=".{4,4}" #childYearModel="ngModel">
+          </span>
+          <span class="pull-left" style="width: calc(15% - 10px); margin-left:10px">
+            <label class="control-label">Left Home</label>
+            <br>
+            <select class="form-control" name="lefthome{{i}}" [(ngModel)]="ch.childLeftHome">
+              <option value="true">Yes</option>
+              <option value="false">No</option>
+            </select>
+          </span>
+          <div class="clearfix"></div>
+        </div>
+      </ng-container>
+    </div>
+
+
+    <div class="col-md-12 no-padding m-b-0 newres-bottom">
+      <!-- <div class="pull-left" *ngIf="!isMyProfile">
+          <button class="btn btn-cocktail waves-effect waves-light btn-md">
+            Send Reset Password Link
+          </button>
+        </div> -->
+      <div class="col-md-6 font-10 no-padding" style="line-height: 34px">
+        <ng-container>
+          <b>Created:</b>
+          <ng-container *ngIf="respondent.dateCreated">
+            {{respondent.dateCreated | date: 'dd-MM-yyyy'}} &#160;
+          </ng-container>
+          <ng-container *ngIf="!respondent.dateCreated">
+            {{today | date: 'dd-MM-yyyy'}} &#160;
+          </ng-container>
+          <b>Last Updated:</b>
+          <ng-container *ngIf="respondent.dateLastUpdated">
+            {{respondent.dateLastUpdated | date: 'dd-MM-yyyy'}}
+          </ng-container>
+          <ng-container *ngIf="!respondent.dateLastUpdated">
+            {{today | date: 'dd-MM-yyyy'}}
+          </ng-container>
+        </ng-container>
+      </div>
+      <div class="col-md-6 text-right no-padding">
+        <button type="submit" (click)="updateRespondent(resFamilyForm)" class="btn waves-effect waves-light btn-md"
+          [class.btn-ocean]="!isMyProfile" [class.btn-basil]="isMyProfile">
+          Submit
+        </button>
+        <!-- <a *ngIf="isMyProfile" class="btn btn-cocktail m-l-5" (click)="gotoTop()">Skip</a> -->
+      </div>
+    </div>
+  </form>
+  <div class="clearfix"></div>
+</div>

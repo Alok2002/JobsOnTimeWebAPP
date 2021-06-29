@@ -1,0 +1,547 @@
+<div class="mob-without-no-padding-lr">
+  <div class="col-md-4 no-padding-left">
+    <form class="ax-form" role="form" #sessionform="ngForm" *ngIf="!isLoading">
+      <div *ngIf="preSessions && preSessions?.length > 0 && !id" class="form-group">
+        <label class="control-label w-100-pre">Copy Session</label>
+        <select class="form-control" name="CopyGroupId" [(ngModel)]="session.copyGroupId" #copyGroupIdModel="ngModel">
+          <option *ngFor="let ps of preSessions" [value]="ps.id">{{ps.name}}</option>
+        </select>
+      </div>
+
+      <div class="form-group required">
+        <label class="control-label w-100-pre">
+          <span class="d-desktop-only pull-left">Session Name</span>
+          <span class="d-mobile-only pull-left">Name</span>
+          <span [hidden]="nameModel.valid || !isSubmitForm">
+            <span class="text-danger pull-right" [hidden]="!nameModel.hasError('required')">Required</span>
+          </span>
+          <span class="pull-right m-r-5">
+            <div class="checkbox checkbox-primary no-margin">
+              <input id="rvrrecvd" type="checkbox" name="rvrrecvd" [(ngModel)]="session.validationReportReceived"
+                [disabled]="session?.validationReportReceived && session?.id">
+              <label for="rvrrecvd">
+                RVR Rcvd
+              </label>
+            </div>
+          </span>
+
+          <span class="pull-right m-r-10">
+            <div class="checkbox checkbox-primary no-margin">
+              <input id="rvrsent" type="checkbox" name="rvrsent" [(ngModel)]="session.validationReportSent">
+              <label for="rvrsent">
+                RVR Sent
+              </label>
+            </div>
+          </span>
+        </label>
+        <input type="text" class="form-control" name="name" [(ngModel)]="session.name" #nameModel="ngModel" required>
+      </div>
+
+      <div class="form-group col-md-6 no-padding-left">
+        <label class="control-label w-100-pre">
+          Session Type
+          <span [hidden]="groupTypeModel.valid || !isSubmitForm">
+            <span class="text-danger pull-right" [hidden]="!groupTypeModel.hasError('required')">Required</span>
+          </span>
+        </label>
+        <select class="form-control" name="groupType" [(ngModel)]="session.groupType" #groupTypeModel="ngModel">
+          <option value="{{jgt.code}}" *ngFor="let jgt of jobGroupTypes">{{jgt.desc}}</option>
+        </select>
+      </div>
+
+      <div class="form-group col-md-6 no-padding-right">
+        <label class="control-label w-100-pre">Respondents Required
+          <span [hidden]="respondentsRequiredModel.valid || !isSubmitForm">
+            <span class="text-danger pull-right"
+              [hidden]="!respondentsRequiredModel.hasError('required')">Required</span>
+          </span>
+        </label>
+        <input type="number" class="form-control" name="resrequired" #respondentsRequiredModel="ngModel"
+          [(ngModel)]="session.respondentsRequired">
+      </div>
+
+      <div class="form-group col-md-6 no-padding-left required">
+        <label class="control-label w-100-pre">Session Date
+          <span [hidden]="dateModel.valid || !isSubmitForm">
+            <span class="text-danger pull-right" [hidden]="!dateModel.hasError('required')">Required</span>
+          </span>
+        </label>
+        <!-- <input type="text" class="form-control datetimepicker" name="dateTime" [(ngModel)]="session.dateTime"
+             #dateModel="ngModel"
+             (paste)="preventInputOrPaste($event)" (keypress)="preventInputOrPaste($event)" ngui-datetime-picker
+             date-format="dddd DD-MMM-YY"
+             parse-format="YYYY-MM-DD" [close-on-select]="true" date-only="true" required> -->
+        <kendo-datepicker name="dateTime" [(ngModel)]="session.dateTime" [format]="'dd-MM-yyyy'" #dateModel="ngModel"
+          class="w-100-pre" placeholder="" required>
+        </kendo-datepicker>
+      </div>
+
+      <div class="form-group col-md-6 no-padding-right">
+        <label class="control-label w-100-pre">After Hour Session
+          <span [hidden]="afterHourSessionModel.valid || !isSubmitForm">
+            <span class="text-danger pull-right" [hidden]="!afterHourSessionModel.hasError('required')">Required</span>
+          </span>
+        </label>
+        <select class="form-control" name="afterHourSession" [(ngModel)]="session.afterHourSession"
+          #afterHourSessionModel="ngModel">
+          <option value=""></option>
+          <option value="true">Yes</option>
+          <option value="false">No</option>
+        </select>
+      </div>
+      <div class="clearfix"></div>
+
+      <!-- <div class="form-group">
+        <label class="control-label w-100-pre">Do not Reconfirm This Session
+          <span [hidden]="doNotReconfirmModel.valid || !isSubmitForm">
+            <span class="text-danger pull-right" [hidden]="!doNotReconfirmModel.hasError('required')">Required</span>
+          </span>
+        </label>
+        <select class="form-control" name="doNotReconfirm" [(ngModel)]="session.doNotReconfirm"
+          #doNotReconfirmModel="ngModel">
+          <option value=""></option>
+          <option value="true">Yes</option>
+          <option value="false">No</option>
+        </select>
+      </div> -->
+
+      <!-- <div class="form-group">
+      <label class="control-label" style="width: 100%;">
+        Venue
+        <a class="btn btn-ocean btn-xs btn-square pull-right" data-toggle="modal"
+           data-target="#add-new-venue-modal" (click)="selectedVenue=null" data-backdrop="static">Add New</a>
+           <span [hidden]="clientVenueModel.valid || !isSubmitForm">
+              <span class="text-danger pull-right"
+                [hidden]="!clientVenueModel.hasError('required')">Required</span>
+          </span>
+      </label>
+      <select class="form-control" name="clientVenueId" [(ngModel)]="session.clientVenueId" #clientVenueModel="ngModel">
+        <option value="{{ve.id}}" *ngFor="let ve of venues">{{ve.postcode}}, {{ve.suburb}}, {{ve.state}}</option>
+      </select>
+    </div>
+
+    <div class="form-group">
+      <label class="control-label">Duration</label>
+      <input type="text" class="form-control" name="duration" [(ngModel)]="session.duration">
+    </div> -->
+
+      <div class="form-group">
+        <label class="control-label w-100-pre">
+          Session Notes
+          <span class="pull-right">
+            <div class="checkbox checkbox-primary no-margin">
+              <input id="hasHomeworkTask" type="checkbox" name="hasHomeworkTask" [(ngModel)]="session.hasHomeworkTask">
+              <label for="hasHomeworkTask">
+                Has Homework Task
+              </label>
+            </div>
+          </span>
+          <span [hidden]="otherModel.valid || !isSubmitForm">
+            <span class="text-danger pull-right" [hidden]="!otherModel.hasError('required')">Required</span>
+          </span>
+        </label>
+        <textarea rows="3" class="form-control" name="other" [(ngModel)]="session.other"
+          #otherModel="ngModel"></textarea>
+      </div>
+
+      <div class="form-group">
+        <label class="control-label w-100-pre">
+          Venue Instructions
+        </label>
+        <!-- <textarea rows="3" class="form-control" name="additionVenueInstruction" [(ngModel)]="session.venueInstructions"
+          #additionVenueInstructionModel="ngModel"></textarea> -->
+        <ckeditor name="venueInstructions" [(ngModel)]="session.venueInstructions" [config]="ckEditorConfig"></ckeditor>
+      </div>
+      
+      <div class="col-md-12 no-padding text-right">
+        <div class="pull-left">
+          <div class="form-group m-b-0">
+            <label for="doNotReconfirm" class="control-label ax-color-black pull-left">
+              Do not Reconfirm This Session
+            </label>
+            <div class="checkbox checkbox-primary" style="margin-left: 200px;">
+              <input id="doNotReconfirm" type="checkbox" name="doNotReconfirm" [(ngModel)]="session.doNotReconfirm">
+              <label for="doNotReconfirm" class="control-label ax-color-black left-label">
+              </label>
+            </div>
+          </div>
+        </div>
+        <button type="button" id="addclientbtn" (click)="updateorCreateSession(sessionform)"
+          class="btn btn-ocean waves-effect waves-light m-l-10 btn-md">
+          Save
+        </button>
+      </div>
+    </form>
+  </div>
+</div>
+
+<div class="col-md-5 mobile-m-t-10" *ngIf="session?.id">
+  <div class="panel panel-warning ax-panel-tab">
+    <div class="panel-heading">
+      <div class="panel-title">
+        <h4>
+          <span class="d-desktop-only pull-left">Incentives and Duration</span>
+          <span class="d-mobile-only pull-left">Incentives</span>
+          <a class="btn btn-ocean btn-xs waves-effect btn-square pull-right" data-target="#add-new-incentive-modal"
+            data-backdrop="static" data-toggle="modal" (click)="addNewIncentive()">Add New
+          </a>
+          <div class="clearfix"></div>
+        </h4>
+      </div>
+    </div>
+    <div class="panel-body">
+      <div class="form-group m-b-0">
+        <ng-container *ngFor="let ba of incentives; let i = index">
+          <div class="checkbox checkbox-primary pull-left res-check-margin w-100-pre">
+            <input type="checkbox" name="incentive{{i}}" [(ngModel)]="ba.selected" value="true"
+              (ngModelChange)="updateSessionIncentives()">
+            <label class="control-label">
+              {{ba.incentiveAmount}} - {{ba.incentiveType}}
+              <ng-container *ngIf="ba?.formattedDuration">-</ng-container>
+              {{ba.formattedDuration}}
+              <ng-container *ngIf="ba?.description">-</ng-container>
+              {{ba.description}}
+              <i *ngIf="ba.notes" class="md md-info text-warning" data-target="#view-notes-modal" data-backdrop="static"
+                data-toggle="modal" (click)="viewIncentive = ba"></i>
+            </label>
+          </div>
+        </ng-container>
+        <ng-container *ngIf="incentives && incentives?.length < 1">No data available</ng-container>
+        <div class="clearfix"></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- <div class="col-md-3" *ngIf="session?.id">
+  <div class="panel panel-warning ax-panel-tab">
+    <div class="panel-heading">
+      <div class="panel-title">
+        <h4>Duration
+          <a class="btn btn-ocean btn-xs waves-effect btn-square pull-right" data-target="#add-new-duration-modal"
+            data-backdrop="static" data-toggle="modal" (click)="addNewDuration()">Add New
+          </a>
+        </h4>
+      </div>
+    </div>
+    <div class="panel-body">
+      <div class="form-group m-b-0">
+        <ng-container *ngFor="let ba of durations; let i = index">
+          <div class="checkbox checkbox-primary pull-left res-check-margin w-100-pre">
+            <input type="checkbox" name="disabiltyassistance{{i}}" [(ngModel)]="ba.selected" value="true">
+            <label class="control-label">{{ba.durations}} hr</label>
+          </div>
+        </ng-container>
+        <ng-container *ngIf="durations && durations?.length < 1">No data available</ng-container>
+        <div class="clearfix"></div>
+      </div>
+    </div>
+  </div>
+</div> -->
+
+<div class="col-md-2 no-padding-right" *ngIf="session?.id">
+  <div class="panel panel-warning ax-panel-tab">
+    <div class="panel-heading">
+      <div class="panel-title">
+        <h4>Session Time
+          <a class="btn btn-ocean btn-xs waves-effect btn-square pull-right" data-target="#add-new-session-modal"
+            data-toggle="modal" data-backdrop="static" (click)="addNewSessionTime()">Add New
+          </a>
+        </h4>
+      </div>
+    </div>
+    <div class="panel-body">
+      <div class="form-group m-b-0">
+        <ng-container *ngFor="let st of sessiontimes; let i = index">
+          <!--<div class="checkbox checkbox-primary pull-left res-check-margin w-100-pre">-->
+          <!--<input type="checkbox" name="sessiontime{{i}}" value="true">-->
+          <div>
+            <label class="control-label font-normal">{{st.formattedGroupTime}}
+              <a class="text-danger" (click)="deleteSessionTime(st.id)"><i class="md md-clear"></i></a>
+            </label>
+          </div>
+          <!--</div>-->
+        </ng-container>
+        <ng-container *ngIf="sessiontimes && sessiontimes?.length < 1">Various Times</ng-container>
+        <div class="clearfix"></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div *ngIf="session?.redirectionLink" class="col-md-7 p-r-0">
+  <div class="panel panel-warning ax-panel-tab">
+    <div class="panel-heading">
+      <div class="panel-title">
+        <h4>
+          <span class="pull-left">Qualified Redirect Link:&#160;</span>
+          <span
+            style="font-weight: normal;white-space: nowrap;overflow: hidden;text-overflow: ellipsis;display: block;max-width: calc(100% - 155px);float: left;">
+            {{session?.redirectionLink}}</span>
+          <a class="ccopy btn btn-ocean btn-xs btn-square pull-right"
+            [attr.data-clipboard-text]="session?.redirectionLink" (click)="clipboardCopy()">
+            Copy
+          </a>
+          <span class="clearfix"></span>
+        </h4>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div *ngIf="session?.redirectionLinkDisqualified" class="col-md-7 p-r-0">
+  <div class="panel panel-warning ax-panel-tab">
+    <div class="panel-heading">
+      <div class="panel-title">
+        <h4>
+          <span class="pull-left">Disqualified Redirect Link:&#160;</span>
+          <span
+            style="font-weight: normal;white-space: nowrap;overflow: hidden;text-overflow: ellipsis;display: block;max-width: calc(100% - 155px);float: left;">
+            {{session?.redirectionLinkDisqualified}}</span>
+          <a class="ccopy btn btn-ocean btn-xs btn-square pull-right"
+            [attr.data-clipboard-text]="session?.redirectionLinkDisqualified" (click)="clipboardCopy()">
+            Copy
+          </a>
+          <span class="clearfix"></span>
+        </h4>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div *ngIf="session?.redirectionLinkQuotaFull" class="col-md-7 p-r-0">
+  <div class="panel panel-warning ax-panel-tab">
+    <div class="panel-heading">
+      <div class="panel-title">
+        <h4>
+          <span class="pull-left">Quota Full Redirect Link:&#160;</span>
+          <span
+            style="font-weight: normal;white-space: nowrap;overflow: hidden;text-overflow: ellipsis;display: block;max-width: calc(100% - 155px);float: left;">
+            {{session?.redirectionLinkQuotaFull}}</span>
+          <a class="ccopy btn btn-ocean btn-xs btn-square pull-right"
+            [attr.data-clipboard-text]="session?.redirectionLinkQuotaFull" (click)="clipboardCopy()">
+            Copy
+          </a>
+          <span class="clearfix"></span>
+        </h4>
+      </div>
+    </div>
+  </div>
+</div>
+<div class="clearfix"></div>
+
+
+<!--ADD NEW VENUE NOTES MODAL-->
+<VenueModalComponent [(clientId)]="clientId" [(venue)]="selectedVenue" (response)="response($event)">
+</VenueModalComponent>
+
+<!-- Add New Incentive Modal -->
+<div class="modal fade bs-example-modal-lg" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel"
+  aria-hidden="true" style="display: none;" id="add-new-incentive-modal">
+  <div class="modal-dialog modal-md">
+    <div class="modal-content">
+      <div class="modal-header no-border ax-modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+        <h4 class="modal-title">
+          <ng-container *ngIf="incentive.id">Update Incentive</ng-container>
+          <ng-container *ngIf="!incentive.id">Add New Incentive</ng-container>
+        </h4>
+      </div>
+      <div class="modal-body no-padding">
+        <form class="ax-form" role="form" #sessionIncentiveForm="ngForm">
+          <div class="form-group required">
+            <label class="control-label w-100-pre">
+              Incentive Type
+              <span class="pull-right">
+                <div class="checkbox checkbox-primary no-margin">
+                  <input id="checkbox2" type="checkbox" name="autoPay" [(ngModel)]="incentive.autoPay">
+                  <label for="checkbox2">
+                    Auto Pay
+                  </label>
+                </div>
+              </span>
+              <span [hidden]="incentiveTypeModel.valid || !isSubmitForm">
+                <span class="text-danger pull-right" [hidden]="!incentiveTypeModel.hasError('required')">Required</span>
+              </span>
+            </label>
+            <select class="form-control" #incentiveTypeModel="ngModel" name="incentivetype"
+              [(ngModel)]="incentive.incentiveType" required>
+              <option [value]="itype.code" *ngFor="let itype of incentivesTypes">{{itype.desc}}</option>
+            </select>
+          </div>
+
+          <div class="form-group required">
+            <label class="control-label w-100-pre">
+              Incentives
+              <span [hidden]="incentiveAmountModel.valid || !isSubmitForm">
+                <span class="text-danger pull-right"
+                  [hidden]="!incentiveAmountModel.hasError('required')">Required</span>
+              </span>
+            </label>
+            <select name="incentiveAmount" class="form-control" [(ngModel)]="incentive.incentiveAmount" required
+              #incentiveAmountModel="ngModel">
+              <option *ngFor="let ina of incentivesAmoutPoints" [value]="ina.description">{{ina.description}}</option>
+            </select>
+            <!--<input type="text" class="form-control" required #incentiveAmountModel="ngModel" name="incentiveAmount"-->
+            <!--[(ngModel)]="incentive.incentiveAmount" mask="9999999999" pattern=".{0,9}">-->
+          </div>
+
+          <div class="form-group">
+            <label class="control-label w-100-pre">
+              Invoice Item
+              <span [hidden]="invoiceItemIdModel.valid || !isSubmitForm">
+                <span class="text-danger pull-right" [hidden]="!invoiceItemIdModel.hasError('required')">Required</span>
+              </span>
+            </label>
+            <select name="invoiceItemId" class="form-control" [(ngModel)]="incentive.invoiceItemId"
+              #invoiceItemIdModel="ngModel">
+              <option></option>
+              <option *ngFor="let inv of invoices" [value]="inv.id">{{inv.itemDescription}}</option>
+            </select>
+          </div>
+
+          <div class="form-group">
+            <label class="control-label w-100-pre">Description</label>
+            <textarea class="form-control" name="description" [(ngModel)]="incentive.description"></textarea>
+          </div>
+
+          <div class="form-group">
+            <label class="control-label w-100-pre">
+              Duration in Hours and Minutes (hh:mm)
+              <span [hidden]="durationModel.valid || !isSubmitForm">
+                <span class="text-danger pull-right" [hidden]="!durationModel.hasError('pattern')">Invalid
+                  Duration</span>
+              </span>
+            </label>
+            <input type="text" class="form-control" name="duration" [(ngModel)]="incentive.duration"
+              #durationModel="ngModel" [textMask]="{mask: timeMask, showMask: true}"
+              pattern="([01]?[0-9]|2[0-3]):[0-5][0-9]">
+          </div>
+
+          <div class="form-group">
+            <label class="control-label w-100-pre">Notes</label>
+            <textarea class="form-control" name="notes" [(ngModel)]="incentive.notes"></textarea>
+          </div>
+
+          <div class="col-md-12 no-padding text-right">
+            <i class="fa fa-spinner fa-pulse" *ngIf="isSubmitFormSpinner"></i>
+            <a (click)="updateorCreateSessionIncentive(sessionIncentiveForm)"
+              class="btn btn-success waves-effect waves-light m-l-10 btn-md">
+              Save
+            </a>
+            <a data-dismiss="modal" aria-hidden="true" class="btn btn-cocktail m-l-5" #closeAddNewModal>
+              Cancel</a>
+          </div>
+        </form>
+        <div class="clearfix"></div>
+      </div>
+    </div><!-- /.modal-content -->
+  </div><!-- /.modal-dialog -->
+</div><!-- /.modal -->
+
+
+<!--ADD NEW SESSION TIME MODAL-->
+<div id="add-new-session-modal" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="full-width-modalLabel"
+  aria-hidden="true" style="display: none;">
+  <div class="modal-dialog modal-md">
+    <div class="modal-content">
+      <div class="modal-header no-border ax-modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+        <h4 class="modal-title">
+          <ng-container *ngIf="sessiontime.id">Edit Session Time</ng-container>
+          <ng-container *ngIf="!sessiontime.id">Add Session Time</ng-container>
+        </h4>
+      </div>
+      <div class="modal-body no-padding">
+        <div class="col-md-12 no-padding">
+          <form class="ax-form" role="form" id="noteform" #sessiontimeform="ngForm">
+            <div class="form-group col-md-12 no-padding required">
+              <label class="control-label w-100-pre" for="email">
+                Session Time
+                <span [hidden]="grouptimemodal.valid || !isSubmitForm">
+                  <span class="text-danger pull-right" [hidden]="!grouptimemodal.hasError('required')">Required</span>
+                </span>
+              </label>
+              <input type="time" class="form-control" name="grouptime" [(ngModel)]="sessiontime.groupTime"
+                #grouptimemodal="ngModel" required>
+            </div>
+
+            <div class="col-md-12 no-padding text-right">
+              <i class="fa fa-spinner fa-pulse" *ngIf="isSubmitFormSpinner"></i>
+              <a id="notebtn" (click)="submitSessionTime(sessiontimeform)"
+                class="btn btn-ocean waves-effect waves-light m-l-10 btn-md">
+                Save
+              </a>
+              <a data-dismiss="modal" aria-hidden="true" class="btn btn-cocktail m-l-5"
+                #closeAddNewSessionTimeModal>Cancel</a>
+            </div>
+          </form>
+        </div>
+        <div class="clearfix"></div>
+      </div>
+    </div><!-- /.modal-content -->
+  </div><!-- /.modal-dialog -->
+</div>
+
+<!--ADD NEW DURATION MODAL-->
+<div id="add-new-duration-modal" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="full-width-modalLabel"
+  aria-hidden="true" style="display: none;">
+  <div class="modal-dialog modal-md">
+    <div class="modal-content">
+      <div class="modal-header no-border ax-modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+        <h4 class="modal-title">
+          <ng-container *ngIf="duration.id">Edit Session Duration</ng-container>
+          <ng-container *ngIf="!duration.id">Add Session Duration</ng-container>
+        </h4>
+      </div>
+      <div class="modal-body no-padding" #container>
+        <div class="col-md-12 no-padding">
+          <form class="ax-form" role="form" id="noteform" #durationform="ngForm">
+            <div class="form-group col-md-12 no-padding required">
+              <label class="control-label w-100-pre" for="email">
+                Duration
+                <span [hidden]="durationsmodel.valid || !isSubmitForm">
+                  <span class="text-danger pull-right" [hidden]="!durationsmodel.hasError('required')">Required</span>
+                </span>
+              </label>
+              <!-- <input type="text" class="form-control" name="durations" ngui-datetime-picker time-only="true"
+                date-format="hh:mm" [(ngModel)]="duration.durations" #durationsmodel="ngModel" required> -->
+              <kendo-timepicker name="durations" [(ngModel)]="duration.durations" #durationsmodel="ngModel" required
+                [popupSettings]="{ appendTo: containerRef }" class="w-100-pre"></kendo-timepicker>
+            </div>
+
+            <div class="col-md-12 no-padding text-right">
+              <i class="fa fa-spinner fa-pulse" *ngIf="isSubmitFormSpinner"></i>
+              <a id="notebtn" (click)="updateSessionDuration(durationform)"
+                class="btn btn-ocean waves-effect waves-light m-l-10 btn-md">
+                Save
+              </a>
+              <a data-dismiss="modal" aria-hidden="true" class="btn btn-cocktail m-l-5"
+                #closeAddNewDurationModal>Cancel</a>
+            </div>
+          </form>
+        </div>
+        <div class="clearfix"></div>
+      </div>
+    </div><!-- /.modal-content -->
+  </div><!-- /.modal-dialog -->
+</div>
+
+<!--View Notes MODAL-->
+<div id="view-notes-modal" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="full-width-modalLabel"
+  aria-hidden="true" style="display: none;">
+  <div class="modal-dialog modal-md">
+    <div class="modal-content">
+      <div class="modal-header no-border ax-modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+        <h4 class="modal-title">
+          Incentive Notes
+        </h4>
+      </div>
+      <div class="modal-body no-padding">
+        {{viewIncentive?.notes}}
+      </div>
+    </div>
+  </div>
+</div>

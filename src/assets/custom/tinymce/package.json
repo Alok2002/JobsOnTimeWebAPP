@@ -1,0 +1,87 @@
+{
+  "_args": [
+    [
+      {
+        "raw": "tinymce@^4.5.6",
+        "scope": null,
+        "escapedName": "tinymce",
+        "name": "tinymce",
+        "rawSpec": "^4.5.6",
+        "spec": ">=4.5.6 <5.0.0",
+        "type": "range"
+      },
+      "D:\\Projects\\fr\\ASP\\Angular\\MarketResearch.Web\\node_modules\\angular2-tinymce"
+    ]
+  ],
+  "_from": "tinymce@>=4.5.6 <5.0.0",
+  "_id": "tinymce@4.7.5",
+  "_inCache": true,
+  "_location": "/tinymce",
+  "_nodeVersion": "8.9.3",
+  "_npmOperationalInternal": {
+    "host": "s3://npm-registry-packages",
+    "tmp": "tmp/tinymce-4.7.5.tgz_1516626943660_0.662510288413614"
+  },
+  "_npmUser": {
+    "name": "ephox",
+    "email": "is-accounts@ephox.com"
+  },
+  "_npmVersion": "5.5.1",
+  "_phantomChildren": {},
+  "_requested": {
+    "raw": "tinymce@^4.5.6",
+    "scope": null,
+    "escapedName": "tinymce",
+    "name": "tinymce",
+    "rawSpec": "^4.5.6",
+    "spec": ">=4.5.6 <5.0.0",
+    "type": "range"
+  },
+  "_requiredBy": [
+    "/angular2-tinymce"
+  ],
+  "_resolved": "https://registry.npmjs.org/tinymce/-/tinymce-4.7.5.tgz",
+  "_shasum": "941fd0daaca661cacb85a44a6d478e709d3f85cb",
+  "_shrinkwrap": null,
+  "_spec": "tinymce@^4.5.6",
+  "_where": "D:\\Projects\\fr\\ASP\\Angular\\MarketResearch.Web\\node_modules\\angular2-tinymce",
+  "author": {
+    "name": "Ephox Corporation"
+  },
+  "bugs": {
+    "url": "https://github.com/tinymce/tinymce/issues"
+  },
+  "dependencies": {},
+  "description": "Web based JavaScript HTML WYSIWYG editor control.",
+  "devDependencies": {},
+  "directories": {},
+  "dist": {
+    "integrity": "sha512-DowTLjPyQDUWNowB3w+G9FFa29mftqMggYTobP5uWFURS/g0FEjHDzuA5LLFN19ErzjN2f10ybEEsNuyoJ27lQ==",
+    "shasum": "941fd0daaca661cacb85a44a6d478e709d3f85cb",
+    "tarball": "https://registry.npmjs.org/tinymce/-/tinymce-4.7.5.tgz"
+  },
+  "keywords": [
+    "editor",
+    "wysiwyg",
+    "tinymce",
+    "richtext",
+    "javascript",
+    "html"
+  ],
+  "license": "LGPL-2.1",
+  "main": "tinymce.js",
+  "maintainers": [
+    {
+      "name": "ephox",
+      "email": "is-accounts@ephox.com"
+    },
+    {
+      "name": "spocke",
+      "email": "spocke@moxiecode.com"
+    }
+  ],
+  "name": "tinymce",
+  "optionalDependencies": {},
+  "readme": "ERROR: No README data found!",
+  "version": "4.7.5"
+}

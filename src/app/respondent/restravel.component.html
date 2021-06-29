@@ -1,0 +1,219 @@
+<div class="tab-pane" id="productusage">
+  <!-- <div *ngIf="!isMyProfile" class="newres-tab-title">
+    <h5 class="no-margin">Travel & Loyalty Program</h5>
+  </div> -->
+
+  <div *ngIf="!isMyProfile" class="col-md-12 no-padding m-b-0 newres-bottom">
+    <div class="col-md-6 font-10 no-padding">
+      <h5 class="no-margin p-l-10" style="line-height: 34px">Travel & Loyalty Program</h5>
+    </div>
+    <div class="col-md-6 text-right no-padding">
+      <button (click)="updateSubmit()" class="btn waves-effect waves-light btn-md" [class.btn-ocean]="!isMyProfile"
+        [class.btn-basil]="isMyProfile">
+        Submit
+      </button>
+    </div>
+  </div>
+  <div class="clearfix"></div>
+  <br>
+  <form *ngIf="!isLoading && respondent != null">
+    <div class="col-md-4 no-padding-left">
+      <div class="form-group">
+        <label class="control-label">Frequent Flyer Membership</label>
+        <ng-container *ngFor="let ba of frequentFlyerProgramList; let i = index">
+          <div class="checkbox checkbox-primary pull-left res-check-margin w-100-pre">
+            <input type="checkbox" name="frequentflyermembership{{i}}" id="frequentflyermembership{{i}}"
+              [(ngModel)]="ba.selected" value="true">
+            <label class="control-label" for="frequentflyermembership{{i}}">{{ba.description}}</label>
+          </div>
+        </ng-container>
+        <div class="clearfix"></div>
+      </div>
+      <div class="form-group">
+        <label class="control-label  panel-member-heading-label">Loyalty Programmes</label>
+        <ng-container *ngFor="let ba of loyaltyProgrammesList; let i = index">
+          <div class="checkbox checkbox-primary pull-left res-check-margin w-100-pre">
+            <input type="checkbox" name="loyaltyprogrammes{{i}}" id="loyaltyprogrammes{{i}}" [(ngModel)]="ba.selected"
+              value="true">
+            <label class="control-label" for="loyaltyprogrammes{{i}}">{{ba.description}}</label>
+          </div>
+        </ng-container>
+        <div class="clearfix"></div>
+      </div>
+      <div class="form-group">
+        <label class="control-label  panel-member-heading-label">Travel Apps</label>
+        <ng-container *ngFor="let ba of travelAppsList; let i = index">
+          <div class="checkbox checkbox-primary pull-left res-check-margin w-100-pre">
+            <input type="checkbox" name="travelapps{{i}}" id="travelapps{{i}}" [(ngModel)]="ba.selected" value="true">
+            <label class="control-label" for="travelapps{{i}}">{{ba.description}}</label>
+          </div>
+        </ng-container>
+        <div class="clearfix"></div>
+      </div>
+      <div class="form-group">
+        <label class="control-label  panel-member-heading-label">Travel Websites</label>
+        <ng-container *ngFor="let ba of travelWebsitesList; let i = index">
+          <div class="checkbox checkbox-primary pull-left res-check-margin w-100-pre">
+            <input type="checkbox" name="travelwebsites{{i}}" id="travelwebsites{{i}}" [(ngModel)]="ba.selected"
+              value="true">
+            <label class="control-label" for="travelwebsites{{i}}">{{ba.description}}</label>
+          </div>
+        </ng-container>
+        <div class="clearfix"></div>
+      </div>
+    </div>
+    <div class="col-md-4 no-padding">
+      <div class="form-group">
+        <label class="control-label">Travel Packages</label>
+        <ng-container *ngFor="let ba of travelPackagesList; let i = index">
+          <div class="checkbox checkbox-primary pull-left res-check-margin w-100-pre">
+            <input type="checkbox" name="travelpackages{{i}}" id="travelpackages{{i}}" [(ngModel)]="ba.selected"
+              value="true">
+            <label class="control-label" for="travelpackages{{i}}">{{ba.description}}</label>
+          </div>
+        </ng-container>
+        <div class="clearfix"></div>
+      </div>
+      <div class="form-group">
+        <label class="control-label  panel-member-heading-label">Tour Operators</label>
+        <ng-container *ngFor="let ba of tourOperatorsList; let i = index">
+          <div class="checkbox checkbox-primary pull-left res-check-margin w-100-pre">
+            <input type="checkbox" name="touroperators{{i}}" id="touroperators{{i}}" [(ngModel)]="ba.selected"
+              value="true">
+            <label class="control-label" for="touroperators{{i}}">{{ba.description}}</label>
+          </div>
+        </ng-container>
+        <div class="clearfix"></div>
+      </div>
+      <div class="form-group">
+        <label class="control-label  panel-member-heading-label">Travel Agents</label>
+        <ng-container *ngFor="let ba of travelAgentsList; let i = index">
+          <div class="checkbox checkbox-primary pull-left res-check-margin w-100-pre">
+            <input type="checkbox" name="travelagents{{i}}" id="travelagents{{i}}" [(ngModel)]="ba.selected"
+              value="true">
+            <label class="control-label" for="travelagents{{i}}">{{ba.description}}</label>
+          </div>
+        </ng-container>
+        <div class="clearfix"></div>
+      </div>
+    </div>
+    <div class="col-md-4 no-padding-right">
+      <div class="form-group">
+        <label class="control-label">Travel Booking Methods</label>
+        <ng-container *ngFor="let ba of travelBookingMethodsList; let i = index">
+          <div class="checkbox checkbox-primary pull-left res-check-margin w-100-pre">
+            <input type="checkbox" name="travelbookingmethods{{i}}" id="travelbookingmethods{{i}}"
+              [(ngModel)]="ba.selected" value="true">
+            <label class="control-label" for="travelbookingmethods{{i}}">{{ba.description}}</label>
+          </div>
+        </ng-container>
+        <div class="clearfix"></div>
+      </div>
+      <div class="form-group">
+        <label class="control-label  panel-member-heading-label">Travel Destinations</label>
+        <ng-container *ngFor="let ba of travelDestinationsList; let i = index">
+          <div class="checkbox checkbox-primary pull-left res-check-margin w-100-pre">
+            <input type="checkbox" name="traveldestinations{{i}}" id="traveldestinations{{i}}" [(ngModel)]="ba.selected"
+              value="true">
+            <label class="control-label" for="traveldestinations{{i}}">{{ba.description}}</label>
+          </div>
+        </ng-container>
+        <div class="clearfix"></div>
+      </div>
+      <div class="form-group">
+        <label class="control-label  panel-member-heading-label">Travel Frequency</label>
+        <!-- <ng-container *ngFor="let ba of travelFrequencyList; let i = index">
+          <div class="checkbox checkbox-primary pull-left res-check-margin w-100-pre">
+            <input type="checkbox" name="travelfrequency{{i}}" id="travelfrequency{{i}}" [(ngModel)]="ba.selected" value="true">
+            <label class="control-label" for="travelfrequency{{i}}">{{ba.description}}</label>
+          </div>
+        </ng-container> -->
+        <select class="form-control" name="travelfrequency" [(ngModel)]="respondent.travelFrequency">
+          <option *ngFor="let tf of travelFrequencyList" [value]="tf.description">{{tf.description}}</option>
+        </select>
+        <div class="clearfix"></div>
+      </div>
+      <div class="form-group">
+        <label class="control-label  panel-member-heading-label">Travel Location</label>
+        <select class="form-control" name="travellocation" [(ngModel)]="respondent.travelLocationId">
+          <option *ngFor="let tl of travelLocationList" [value]="tl.id">{{tl.description}}</option>
+        </select>
+        <!-- <ng-container *ngFor="let ba of travelLocationList; let i = index">
+          <div class="checkbox checkbox-primary pull-left res-check-margin w-100-pre">
+            <input type="checkbox" name="travellocation{{i}}" [(ngModel)]="ba.selected" value="true">
+            <label class="control-label">{{ba.description}}</label>
+          </div>
+        </ng-container> -->
+        <div class="clearfix"></div>
+      </div>
+      <div class="form-group">
+        <label class="control-label  panel-member-heading-label">Travel Reason</label>
+        <select class="form-control" name="travelreason" [(ngModel)]="respondent.travelReasonId">
+          <option *ngFor="let tl of travelReasonList" [value]="tl.id">{{tl.description}}</option>
+        </select>
+        <!-- <ng-container *ngFor="let ba of travelReasonList; let i = index">
+          <div class="checkbox checkbox-primary pull-left res-check-margin w-100-pre">
+            <input type="checkbox" name="travelreason{{i}}" [(ngModel)]="ba.selected" value="true">
+            <label class="control-label">{{ba.description}}</label>
+          </div>
+        </ng-container> -->
+        <div class="clearfix"></div>
+      </div>
+      <div class="form-group">
+        <label class="control-label  panel-member-heading-label">Travel Companions</label>
+        <ng-container *ngFor="let ba of travelCompanionsList; let i = index">
+          <div class="checkbox checkbox-primary pull-left res-check-margin w-100-pre">
+            <input type="checkbox" name="travelcompanions{{i}}" id="travelcompanions{{i}}" [(ngModel)]="ba.selected"
+              value="true">
+            <label class="control-label" for="travelcompanions{{i}}">{{ba.description}}</label>
+          </div>
+        </ng-container>
+        <div class="clearfix"></div>
+      </div>
+      <div class="form-group">
+        <label class="control-label  panel-member-heading-label">Travel Type</label>
+        <ng-container *ngFor="let ba of travelTypesList; let i = index">
+          <div class="checkbox checkbox-primary pull-left res-check-margin w-100-pre">
+            <input type="checkbox" name="traveltype{{i}}" id="traveltype{{i}}" [(ngModel)]="ba.selected" value="true">
+            <label class="control-label" for="traveltype{{i}}">{{ba.description}}</label>
+          </div>
+        </ng-container>
+        <div class="clearfix"></div>
+      </div>
+    </div>
+    <div class="clearfix"></div>
+    <div class="col-md-12 no-padding m-b-0 newres-bottom">
+      <!-- <div class="pull-left" *ngIf="!isMyProfile">
+                <button class="btn btn-cocktail waves-effect waves-light btn-md">
+                  Send Reset Password Link
+                </button>
+              </div> -->
+      <div class="col-md-6 font-10 no-padding" style="line-height: 34px">
+        <ng-container>
+          <b>Created:</b>
+          <ng-container *ngIf="respondent.dateCreated">
+            {{respondent.dateCreated | date: 'dd-MM-yyyy'}} &#160;
+          </ng-container>
+          <ng-container *ngIf="!respondent.dateCreated">
+            {{today | date: 'dd-MM-yyyy'}} &#160;
+          </ng-container>
+          <b>Last Updated:</b>
+          <ng-container *ngIf="respondent.dateLastUpdated">
+            {{respondent.dateLastUpdated | date: 'dd-MM-yyyy'}}
+          </ng-container>
+          <ng-container *ngIf="!respondent.dateLastUpdated">
+            {{today | date: 'dd-MM-yyyy'}}
+          </ng-container>
+        </ng-container>
+      </div>
+      <div class="col-md-6 text-right no-padding">
+        <button (click)="updateSubmit()" class="btn waves-effect waves-light btn-md" [class.btn-ocean]="!isMyProfile"
+          [class.btn-basil]="isMyProfile">
+          Submit
+        </button>
+        <!-- <a *ngIf="isMyProfile" class="btn btn-cocktail m-l-5" (click)="gotoTop()">Skip</a> -->
+      </div>
+    </div>
+  </form>
+  <div class="clearfix"></div>
+</div>

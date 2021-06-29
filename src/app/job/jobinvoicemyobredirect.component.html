@@ -1,0 +1,25 @@
+<div class="wrapper">
+  <div class="container">
+    <div class="row">
+      <div class="col-sm-12">
+        <ol class="breadcrumb breadcrumb-arrow bg-white box-card-shadow">
+          <li><a [routerLink]="['/dashboard']" class="home-breadcrumb"><i class="md md-home"></i></a></li>
+          <li><a>MYOB Error</a></li>
+        </ol>
+      </div>
+      <div class="col-sm-12">
+        <div class="card-box">
+          <div class="col-md-12">
+            <ul class="no-padding no-margin">
+              <li *ngFor="let err of errorList" class="text-danger">
+                {{err}}
+              </li>
+            </ul>
+            <a class="btn btn-ocean waves-effect waves-light btn-md" [routerLink]="['/job/edit', jobId]">Back to Job</a>
+          </div>
+          <div class="clearfix"></div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

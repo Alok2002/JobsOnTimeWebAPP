@@ -1,0 +1,874 @@
+<div class="wrapper">
+  <div class="container">
+    <div class="row">
+      <div class="col-sm-12">
+        <ol class="breadcrumb breadcrumb-arrow bg-white bx-shadow">
+          <li>
+            <a [routerLink]="['/dashboard']" class="home-breadcrumb">
+              <i class="md md-home"></i>
+            </a>
+          </li>
+          <!-- <li><a [routerLink]="['/submenu/admin']" class="home-breadcrumb font-14">Admin</a></li> -->
+          <li>
+            <a>System Users</a>
+          </li>
+        </ol>
+      </div>
+      <div class="col-sm-12">
+        <div class="card-box">
+          <div class="clearfix"></div>
+          <p-table #dt [columns]="selectedColumns" [value]="users" [paginator]="true" [paginatorPosition]="'top'"
+            [pageLinks]="10" [rows]="noofrows" [totalRecords]="users?.length" [loading]="false" selectionMode="multiple"
+            [(selection)]="selectedRowData" [metaKeySelection]="true" [resizableColumns]="true"
+            columnResizeMode="expand"
+            [tableStyleClass]="'table ax-table table-striped table-bordered m-b-0 border-color-e7e7e7'"
+            [scrollable]="true" scrollHeight="550px">
+
+            <ng-template pTemplate="caption">
+              <div class="pull-left col-md-6 no-padding text-left">
+                <div class="ax-sysconfig-data-table-top ax-data-table-top-x700 col-md-6 no-padding">
+                  <div class="btn-group">
+                    <a class="btn btn-xs waves-effect m-l--1 btn-green-dark btn-square" (click)="exporttoExcel()">
+                      <i class="md md-file-download"></i>
+                    </a>
+                    <a class="btn btn-ocean btn-xs waves-effect btn-square" data-target="#add-new-system-config-modal"
+                      data-backdrop="static" data-toggle="modal" (click)="addNew()">
+                      <i class="md md-add-circle-outline"></i> New
+                    </a>
+                    <a class="btn btn-cocktail btn-xs waves-effect btn-square m-l--1" id="deleteAlert"
+                      (click)="deactivateUser()">
+                      <i class="md md-remove-circle-outline"></i> Deactive
+                    </a>
+                  </div>
+                </div>
+              </div>
+
+              <div class="pull-right col-md-6 no-padding text-right ax-primeng-table-right">
+                <span class="ax-table-search vertical-align-top">
+                  <span class="btn btn-default btn-xs btn-square btn-default-border vertical-align-top">
+                    <i class="md md-search"></i>
+                  </span>
+                  <input [(ngModel)]="ptablesearch" type="text" pInputText size="50" placeholder="Search"
+                    (input)="dt.filterGlobal($event.target.value, 'contains')" style="width:150px"
+                    class="vertical-align-top ptable-search-input">
+                  <span class="btn btn-default btn-xs btn-square btn-default-border vertical-align-top"
+                    (click)="dt.filterGlobal(null, 'contains');ptablesearch = null">
+                    <i class="md md-clear"></i>
+                  </span>
+                </span>
+
+                <span class="m-l-1 ax-table-filter vertical-align-top">
+                  <select name="noofrows" class="btn-default-border vertical-align-top" [(ngModel)]="noofrows">
+                    <option value="50">50</option>
+                    <option value="100">100</option>
+                    <option value="200">200</option>
+                    <option value="300">300</option>
+                    <option value="500">500</option>
+                    <option value="1000">1,000</option>
+                  </select>
+                </span>
+                <span class="m-l-1 btn btn-default btn-xs btn-square btn-default-border vertical-align-top">
+                  Total {{users?.length}} Records
+                </span>
+                <span class="m-l-1">
+                  <p-multiSelect [options]="cols" [(ngModel)]="selectedColumns" optionLabel="header"
+                    (onChange)="updateSelectedColumnsIndex()" selectedItemsLabel="Show Column" maxSelectedLabels="0"
+                    [style]="{minWidth: 'auto'}" defaultLabel="Show Column" dropdownIcon='caret' [filter]="false"
+                    [showToggleAll]="false" [showHeader]="false">
+                  </p-multiSelect>
+                </span>
+              </div>
+              <div class="clearfix"></div>
+            </ng-template>
+
+            <ng-template pTemplate="colgroup" let-columns>
+              <colgroup>
+                <col *ngFor="let col of columns" [style.width.px]="col?.width">
+              </colgroup>
+            </ng-template>
+
+            <ng-template pTemplate="header" let-columns>
+              <tr>
+                <th *ngFor="let col of columns" pResizableColumn [style.width.px]="col?.width"
+                  [style.textAlign]="col?.textAlign" [pSortableColumn]="col.sort ? col.field : ''">
+                  {{col.header}}
+                  <p-sortIcon *ngIf="col.sort" [field]="col.field" ariaLabel="Activate to sort"
+                    ariaLabelDesc="Activate to sort in descending order"
+                    ariaLabelAsc="Activate to sort in ascending order">
+                  </p-sortIcon>
+                </th>
+              </tr>
+            </ng-template>
+
+            <ng-template pTemplate="body" let-user let-i="rowIndex" let-columns="columns">
+              <tr [pSelectableRow]="user">
+                <ng-container *ngFor="let sc of selectedColumns;">
+                  <ng-container [ngSwitch]="sc.field">
+                    <td [style.width.px]="sc.width" [style.textAlign]="sc.textAlign">
+                      <ng-container *ngSwitchCase="'inactive'">
+                        <i *ngIf="!user.inactive" class="md md-check text-success"></i>
+                        <i *ngIf="user.inactive" class="md md-close text-danger"></i>
+                      </ng-container>
+                      <ng-container *ngSwitchCase="'username'">
+                        <a data-target="#add-new-system-config-modal" class="ax-cursor-pointer" data-backdrop="static"
+                          data-toggle="modal" (click)="updateUser(user)">{{user.username}}</a>
+                      </ng-container>
+                      <ng-container *ngSwitchCase="'emailAddress'">
+                        <a href="mailto:{{user?.emailAddress}}">{{user?.emailAddress}}</a>
+                      </ng-container>
+                      <ng-container *ngSwitchCase="'personalEmail'">
+                        <a href="mailto:{{user?.personalEmail}}">{{user?.personalEmail}}</a>
+                      </ng-container>
+                      <ng-container *ngSwitchCase="'security'">
+                        <i class="fa fa-lock"></i>&#160;
+                        <a data-target="#security-modal" data-toggle="modal" data-backdrop="static"
+                          class="ax-cursor-pointer" (click)="updateUser(user)">Manage Security</a>
+                      </ng-container>
+                      <ng-container *ngSwitchCase="'formattedMobile'">
+                        <a href="tel:{{user?.formattedMobile}}">{{user?.formattedMobile}}</a>
+                      </ng-container>
+                      <ng-container *ngSwitchCase="'enable2FA'">
+                        <i *ngIf="user.enable2FA" class="md md-check text-success"></i>
+                        <i *ngIf="!user.enable2FA" class="md md-close text-danger"></i>
+                      </ng-container>
+                      <ng-container *ngSwitchCase="'skip2FA'">
+                        <i *ngIf="user.skip2FA" class="md md-check text-success"></i>
+                        <i *ngIf="!user.skip2FA" class="md md-close text-danger"></i>
+                      </ng-container>
+                      <ng-container *ngSwitchDefault>
+                        {{user[sc.field]}}
+                      </ng-container>
+                    </td>
+                  </ng-container>
+                </ng-container>
+              </tr>
+            </ng-template>
+
+            <ng-template pTemplate="emptymessage" let-columns>
+              <tr>
+                <td [attr.colspan]="columns.length">
+                  No data available
+                </td>
+              </tr>
+            </ng-template>
+          </p-table>
+        </div>
+      </div>
+    </div>
+
+    <!--Add Useruser management-->
+    <div class="modal fade bs-example-modal-lg" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel"
+      aria-hidden="true" style="display: none;" id="add-new-system-config-modal">
+      <div class="modal-dialog modal-md">
+        <div class="modal-content">
+          <div class="modal-header no-border ax-modal-header">
+            <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+            <h4 class="modal-title">
+              <ng-container *ngIf="user.username">Edit User</ng-container>
+              <ng-container *ngIf="!user.username">Add User</ng-container>
+            </h4>
+          </div>
+          <div class="modal-body no-padding" #container>
+            <form class="ax-form" #manageUserForm="ngForm">
+              <div class="col-md-6 no-padding-left">
+                <div class="form-group required">
+                  <label for="" class="control-label w-100-pre">
+                    First Name
+                    <span [hidden]="firstName.valid || !isSubmitForm">
+                      <span class="text-danger pull-right" [hidden]="!firstName.hasError('required')">Required</span>
+                    </span>
+                  </label>
+                  <input type="text" class="form-control" #firstName="ngModel" name="firstname"
+                    [(ngModel)]="user.firstName" required>
+                </div>
+              </div>
+              <div class="col-md-6 no-padding-right required">
+                <div class="form-group required">
+                  <label for="" class="control-label w-100-pre">
+                    Last Name
+                    <span [hidden]="lastName.valid || !isSubmitForm">
+                      <span class="text-danger pull-right" [hidden]="!lastName.hasError('required')">Required</span>
+                    </span>
+                  </label>
+                  <input type="text" class="form-control" required #lastName="ngModel" name="lastName"
+                    [(ngModel)]="user.lastName">
+                </div>
+              </div>
+
+              <div class="form-group required col-md-6 no-padding-left">
+                <label for="" class="control-label w-100-pre">
+                  Username
+                  <span [hidden]="userName.valid || !isSubmitForm">
+                    <span class="text-danger pull-right" [hidden]="!userName.hasError('required')">Required</span>
+                  </span>
+                </label>
+                <input type="text" class="form-control" required #userName="ngModel" name="userName"
+                  [(ngModel)]="user.username" [disabled]="user?.id == 0">
+              </div>
+
+              <div class="form-group required no-padding-right col-md-6">
+                <label for="" class="control-label w-100-pre">
+                  Date of Birth
+                  <span [hidden]="formattedDateofBirth.valid || !isSubmitForm">
+                    <span class="text-danger pull-right"
+                      [hidden]="!formattedDateofBirth.hasError('required')">Required</span>
+                  </span>
+                </label>
+                <!-- <input type="text" class="form-control" #formattedDateofBirth="ngModel" ngui-datetime-picker
+                    date-format="DD-MM-YYYY" [close-on-select]="true" parse-format="YYYY-MM-DD" date-only="true"
+                    required name="formattedDateofBirth" [(ngModel)]="user.dateofBirth"> -->
+                <kendo-datepicker name="formattedDateofBirth" [(ngModel)]="user.dateofBirth"
+                  [popupSettings]="{ appendTo: containerRef }" [format]="'dd-MM-yyyy'" class="w-100-pre" placeholder=""
+                  #formattedDateofBirth="ngModel" required>
+                </kendo-datepicker>
+              </div>
+
+              <!-- <div class="form-group col-md-4 no-padding-right required">
+                  <label for="" class="control-label w-100-pre">
+                    Password
+                    <span [hidden]="password.valid || !isSubmitForm">
+                      <span class="text-danger pull-right" [hidden]="!password.hasError('required')">Required</span>
+                    </span>
+                  </label>
+                  <input type="text" class="form-control" required #password="ngModel" name="password"
+                    [(ngModel)]="user.passwordRaw">
+                </div> -->
+
+              <div class="col-md-6 no-padding-left">
+                <div class="form-group required">
+                  <label for="" class="control-label w-100-pre">
+                    Employee Type
+                    <span [hidden]="employeeType.valid || !isSubmitForm">
+                      <span class="text-danger pull-right" [hidden]="!employeeType.hasError('required')">Required</span>
+                    </span>
+                  </label>
+                  <select name="employeeType" class="form-control" #employeeType="ngModel" required
+                    [(ngModel)]="user.employeeType">
+                    <option value="Permanent">Permanent</option>
+                    <option value="Casual">Casual</option>
+                  </select>
+                </div>
+              </div>
+              <div class="col-md-6 no-padding-right">
+                <div class="form-group">
+                  <label for="" class="control-label w-100-pre">
+                    Employee Position
+                  </label>
+                  <select class="form-control" name="employeePosition" [(ngModel)]="user.employeePosition">
+                    <option *ngFor="let ep of employeePosition;" [value]="ep.code">{{ep.desc}}</option>
+                    <!-- <option value="Manager">Manager</option>
+                          <option value="Assistant Manager">Assistant Manager</option>
+                          <option value="Recuriter">Recuriter</option>
+                          <option value="Accountant">Accountant</option>
+                          <option value="Director">Director</option>
+                          <option value="Other">Other</option> -->
+                  </select>
+                </div>
+              </div>
+              <div class="col-md-6 no-padding-left">
+                <div class="form-group pull-left" style="width: calc(100% - 60px)">
+                  <label for="" class="control-label w-100-pre">
+                    Direct Line
+                    <span [hidden]="admindirectlinemodel.valid || !isSubmitForm">
+                      <span class="text-danger pull-right" [hidden]="!admindirectlinemodel.hasError('pattern')">Invalid
+                        Direct Line</span>
+                    </span>
+                  </label>
+                  <input type="text" class="form-control" [textMask]="{mask: phoneMask, showMask: false, guide: true}"
+                    numeric (ngModelChange)="user.directLine = unmask($event)" [pattern]="phonePattern"
+                    [ngModel]="user.directLine" name="directLine" #admindirectlinemodel="ngModel">
+                </div>
+
+                <div class="form-group pull-right" style="width: 50px">
+                  <label for="" class="control-label">Ext</label>
+                  <input type="text" class="form-control" name="extension" [(ngModel)]="user.extension"
+                    mask="9999999999" pattern=".{0,9}">
+                </div>
+              </div>
+              <div class="col-md-6 no-padding-right">
+                <div class="form-group">
+                  <label class="control-label w-100-pre">
+                    Mobile
+                    <span [hidden]="adminmobilemodel.valid || !isSubmitForm">
+                      <span class="text-danger pull-right" [hidden]="!adminmobilemodel.hasError('pattern')">Invalid
+                        Mobile</span>
+                      <span class="text-danger pull-right"
+                        [hidden]="!adminmobilemodel.hasError('required')">Required</span>
+                    </span>
+                  </label>
+                  <input type="text" class="form-control" name="mobile"
+                    [textMask]="{mask: mobileMask, showMask: true, guide: false}" numeric
+                    (ngModelChange)="user.mobile = unmask($event)" [pattern]="mobilePattern" [ngModel]="user.mobile"
+                    #adminmobilemodel="ngModel">
+                </div>
+              </div>
+              <div class="col-md-6 no-padding-left">
+                <div class="form-group required">
+                  <label for="" class="control-label w-100-pre">
+                    Office Email Address
+                    <span [hidden]="officeEmail.valid || !isSubmitForm">
+                      <span class="text-danger pull-right" [hidden]="!officeEmail.hasError('pattern')">Invalid
+                        Email</span>
+                      <span class="text-danger pull-right" [hidden]="!officeEmail.hasError('required')">Required</span>
+                    </span>
+                  </label>
+                  <input type="text" class="form-control" #officeEmail="ngModel" required
+                    pattern="^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,10})+$" [(ngModel)]="user.emailAddress"
+                    name="officeEmail">
+                </div>
+              </div>
+              <div class="col-md-6 no-padding-right">
+                <div class="form-group required">
+                  <label class="control-label w-100-pre">
+                    Personal Email Address
+                    <span [hidden]="personalEmailModel.valid || !isSubmitForm">
+                      <span class="text-danger pull-right" [hidden]="!personalEmailModel.hasError('pattern')">Invalid
+                        Email</span>
+                      <span class="text-danger pull-right"
+                        [hidden]="!personalEmailModel.hasError('required')">Required</span>
+                    </span>
+                  </label>
+                  <input type="text" class="form-control" name="personalEmail" #personalEmailModel="ngModel" required
+                    pattern="^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,10})+$" [(ngModel)]="user.personalEmail">
+                </div>
+              </div>
+              <div class="clearfix"></div>
+              <div class="col-md-12 no-padding text-right">
+                <div class="pull-left">
+                  <div class="checkbox checkbox-primary checkbox-inline m-l-22-checkbox" style="margin: 7px 7px 7px 0px;">
+                    <input type="checkbox" id="inlineCheckbox1" [(ngModel)]="user.inactive" name="inactive"
+                      [value]="user.inactive">
+                    <label for="inlineCheckbox1"> Inactive </label>
+                  </div>
+                  <div class="checkbox checkbox-primary checkbox-inline m-l-22-checkbox" style="margin: 7px 7px 7px 0px;">
+                    <input type="checkbox" id="inlineCheckbox2" [(ngModel)]="user.skip2FA" name="skip2FA"
+                      [value]="user.skip2FA">
+                    <label for="inlineCheckbox2"> Skip 2FA </label>
+                  </div>
+                  <div class="checkbox checkbox-primary checkbox-inline m-l-22-checkbox" style="margin: 7px 0px;">
+                    <input type="checkbox" id="enable2FA" [(ngModel)]="user.enable2FA" name="enable2FA"
+                      [value]="user.enable2FA">
+                    <label for="enable2FA"> Enable 2FA </label>
+                  </div>
+                </div>
+                <div class="pull-right">
+                  <a id="addclientbtn" (click)="submitConfigItem(manageUserForm)"
+                    class="btn btn-ocean waves-effect waves-light m-l-10 btn-md">
+                    Save
+                  </a>
+                  <a data-dismiss="modal" aria-hidden="true" class="btn btn-cocktail m-l-5 ax-cursor-pointer"
+                    #closeAddNewModal>Cancel</a>
+                </div>
+              </div>
+            </form>
+            <div class="clearfix"></div>
+          </div>
+        </div>
+        <!-- /.modal-content -->
+      </div>
+      <!-- /.modal-dialog -->
+    </div>
+    <!-- /.modal -->
+    <!--Security Modal-->
+    <div class="modal fade bs-example-modal-lg" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel"
+      aria-hidden="true" style="display: none;" id="security-modal">
+      <div class="modal-dialog modal-md">
+        <div class="modal-content">
+          <div class="modal-header no-border ax-modal-header">
+            <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+            <h4 class="modal-title">Security Information - {{user.fullName}}</h4>
+          </div>
+          <!-- <div class="form-group">
+            <div class="checkbox checkbox-primary pull-right no-margin">
+              <input id="sec-aci" type="checkbox" name="selectAll" (change)="selectAllSecutriyQuestion($event)">
+              <label for="sec-aci">Select All</label>
+            </div>
+            <div class="clearfix"></div>
+          </div> -->
+          <div *ngIf="user" class="modal-body no-padding">
+            <form class="ax-form manageuser-securiy" #securityInfoForm="ngForm">
+              <div class="panel-group" id="security-accordion">
+                <div class="panel ax-panel-darkbg">
+                  <div class="panel-heading">
+                    <h4 class="panel-title">
+                      <a data-toggle="collapse" data-parent="#security-accordion" href="#GeneralSecurity"
+                        aria-expanded="true">
+                        General Security
+                      </a>
+                    </h4>
+                  </div>
+                  <div id="GeneralSecurity" class="panel-collapse collapse in" aria-expanded="true">
+                    <div class="panel-body">
+                      <!-- <div class="form-group pull-right m-b-0">
+                        <div class="checkbox checkbox-primary pull-right no-margin">
+                          <input id="sec-generalsecurity" type="checkbox" name="generalsecurity" (change)="toggleSecurityOptions($event, 'generalsecurity')">
+                          <label for="sec-generalsecurity">Select All</label>
+                        </div>
+                        <div class="clearfix"></div>
+                      </div> -->
+                      <a class="btn btn-ocean btn-xs btn-square ax-cursor-pointer pull-right"
+                        (click)="toggleSecurityOptions(true, 'generalsecurity')">Select
+                        All</a>
+
+                      <div class="checkbox checkbox-primary pull-left">
+                        <input id="sec-aci" type="checkbox" name="Security_RLI" [(ngModel)]="user.security_RLI">
+                        <label for="sec-aci">Allow Remote Login</label>
+                      </div>
+                      <div class="clearfix"></div>
+                      <div class="checkbox checkbox-primary pull-left">
+                        <input id="sec-reports" type="checkbox" name="Security_EXP" [(ngModel)]="user.security_EXP">
+                        <label for="sec-reports">Export all Results</label>
+                      </div>
+                      <div class="clearfix"></div>
+                      <div class="checkbox checkbox-primary pull-left">
+                        <input id="sec-resreports" type="checkbox" name="Security_EXR" [(ngModel)]="user.security_EXR">
+                        <label for="sec-resreports">Export Respondents</label>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+
+                <div class="panel ax-panel-darkbg">
+                  <div class="panel-heading">
+                    <h4 class="panel-title">
+                      <a data-toggle="collapse" data-parent="#security-accordion" href="#ClientLevelSecurity"
+                        aria-expanded="true">
+                        Client Level Security
+                      </a>
+                    </h4>
+                  </div>
+                  <div id="ClientLevelSecurity" class="panel-collapse collapse" aria-expanded="true">
+                    <div class="panel-body">
+                      <!-- <div class="form-group pull-right m-b-0">
+                        <div class="checkbox checkbox-primary pull-right no-margin">
+                          <input id="sec-clientlevelsecurity" type="checkbox" name="clientlevelsecurity" (change)="toggleSecurityOptions($event, 'clientlevelsecurity')">
+                          <label for="sec-clientlevelsecurity">Select All</label>
+                        </div>
+                        <div class="clearfix"></div>
+                      </div> -->
+                      <a class="btn btn-ocean btn-xs btn-square ax-cursor-pointer pull-right"
+                        (click)="toggleSecurityOptions(true, 'clientlevelsecurity')">Select
+                        All</a>
+
+                      <div class="checkbox checkbox-primary pull-left">
+                        <input id="sec-security_CEN" type="checkbox" name="Security_CEN"
+                          [(ngModel)]="user.security_CEN">
+                        <label for="sec-security_CEN">Allow to Post Client External Notes</label>
+                      </div>
+                      <div class="clearfix"></div>
+                      <div class="checkbox checkbox-primary pull-left">
+                        <input id="sec-security_CLI" type="checkbox" name="Security_CLI"
+                          [(ngModel)]="user.security_CLI">
+                        <label for="sec-security_CLI">Allow to Delete Client, Contact, Notes, Feedback, Venue</label>
+                      </div>                      
+                    </div>
+                  </div>
+                </div>
+
+                <div class="panel ax-panel-darkbg">
+                  <div class="panel-heading">
+                    <h4 class="panel-title">
+                      <a data-toggle="collapse" data-parent="#security-accordion" href="#JobLevelSecurity"
+                        aria-expanded="true">
+                        Job Level Security
+                      </a>
+                    </h4>
+                  </div>
+                  <div id="JobLevelSecurity" class="panel-collapse collapse" aria-expanded="true">
+                    <div class="panel-body">
+                      <!-- <div class="form-group pull-right m-b-0">
+                        <div class="checkbox checkbox-primary pull-right no-margin">
+                          <input id="sec-joblevelsecurity" type="checkbox" name="joblevelsecurity" (change)="toggleSecurityOptions($event, 'joblevelsecurity')">
+                          <label for="sec-joblevelsecurity">Select All</label>
+                        </div>
+                        <div class="clearfix"></div>
+                      </div> -->
+                      <a class="btn btn-ocean btn-xs btn-square ax-cursor-pointer pull-right"
+                        (click)="toggleSecurityOptions(true, 'joblevelsecurity')">Select
+                        All</a>
+
+                      <div class="checkbox checkbox-primary pull-left">
+                        <input id="sec-security_JOB" type="checkbox" name="Security_JOB"
+                          [(ngModel)]="user.security_JOB">
+                        <label for="sec-security_JOB">Manage Job Information</label>
+                      </div>
+                      <div class="clearfix"></div>
+                      <div class="checkbox checkbox-primary pull-left">
+                        <input id="sec-ear" type="checkbox" name="Security_INV" [(ngModel)]="user.security_INV">
+                        <label for="sec-ear">Allow Invoicing</label>
+                      </div>
+                      <div class="clearfix"></div>
+                      <div class="checkbox checkbox-primary pull-left">
+                        <input id="sec-incentives" type="checkbox" name="Security_QTE" [(ngModel)]="user.security_QTE">
+                        <label for="sec-incentives">Allow Quoting</label>
+                      </div>
+                      <div class="clearfix"></div>
+                      <div class="checkbox checkbox-primary pull-left">
+                        <input id="sec-cn" type="checkbox" name="Security_ICV" [(ngModel)]="user.security_ICV">
+                        <label for="sec-cn">Allow to Manage Incentives</label>
+                      </div>
+                      <div class="clearfix"></div>
+                      <div class="checkbox checkbox-primary pull-left">
+                        <input id="sec-myob" type="checkbox" name="Security_MYOB" [(ngModel)]="user.security_MYOB">
+                        <label for="sec-myob">Allow to Push Invoice to {{accountingSystemName}}</label>
+                      </div>
+                      <div class="clearfix"></div>
+                      <div class="checkbox checkbox-primary pull-left">
+                        <input id="sec-rja" type="checkbox" name="Security_RJA" [(ngModel)]="user.security_RJA">
+                        <label for="sec-rja">Allow to Roster Allocation</label>
+                      </div>
+                      <div class="clearfix"></div>
+                      <div class="checkbox checkbox-primary pull-left">
+                        <input id="sec-smr" type="checkbox" name="Security_SMR" [(ngModel)]="user.security_SMR">
+                        <label for="sec-smr">Allow Map Reference to Survey Questions</label>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+
+                <div class="panel ax-panel-darkbg">
+                  <div class="panel-heading">
+                    <h4 class="panel-title">
+                      <a data-toggle="collapse" data-parent="#security-accordion" href="#ReportsLevelSecurity"
+                        aria-expanded="true">
+                        Reports Level Security
+                      </a>
+                    </h4>
+                  </div>
+                  <div id="ReportsLevelSecurity" class="panel-collapse collapse" aria-expanded="true">
+                    <div class="panel-body">
+                      <!-- <div class="form-group pull-right m-b-0">
+                        <div class="checkbox checkbox-primary pull-right no-margin">
+                          <input id="sec-reportslevelsecurity" type="checkbox" name="reportslevelsecurity" (change)="toggleSecurityOptions($event, 'reportslevelsecurity')">
+                          <label for="sec-reportslevelsecurity">Select All</label>
+                        </div>
+                        <div class="clearfix"></div>
+                      </div> -->
+                      <a class="btn btn-ocean btn-xs btn-square ax-cursor-pointer pull-right"
+                        (click)="toggleSecurityOptions(true, 'reportslevelsecurity')">Select
+                        All</a>
+
+                      <div class="checkbox checkbox-primary pull-left">
+                        <input id="sec-security_SRRPT" type="checkbox" name="Security_SRRPT"
+                          [(ngModel)]="user.security_SRRPT">
+                        <label for="sec-security_SRRPT">Access Session Recruitment Report</label>
+                      </div>
+                      <div class="clearfix"></div>
+                      <div class="checkbox checkbox-primary pull-left">
+                        <input id="sec-security_JRRPT" type="checkbox" name="Security_JRRPT"
+                          [(ngModel)]="user.security_JRRPT">
+                        <label for="sec-security_JRRPT">Access Job Recruitment Report</label>
+                      </div>
+                      <div class="clearfix"></div>
+                      <div class="checkbox checkbox-primary pull-left">
+                        <input id="sec-security_JSRPT" type="checkbox" name="Security_JSRPT"
+                          [(ngModel)]="user.security_JSRPT">
+                        <label for="sec-security_JSRPT">Access PM Job Summary Report</label>
+                      </div>
+                      <div class="clearfix"></div>
+                      <div class="checkbox checkbox-primary pull-left">
+                        <input id="sec-security_JDRPT" type="checkbox" name="Security_JDRPT"
+                          [(ngModel)]="user.security_JDRPT">
+                        <label for="sec-security_JDRPT">Access PM Job Detail Report</label>
+                      </div>
+                      <div class="clearfix"></div>
+                      <div class="checkbox checkbox-primary pull-left">
+                        <input id="sec-security_JORPT" type="checkbox" name="Security_JORPT"
+                          [(ngModel)]="user.security_JORPT">
+                        <label for="sec-security_JORPT">Access Job Order Report</label>
+                      </div>
+                      <div class="clearfix"></div>
+                      <div class="checkbox checkbox-primary pull-left">
+                        <input id="sec-security_SLRPT" type="checkbox" name="Security_SLRPT"
+                          [(ngModel)]="user.security_SLRPT">
+                        <label for="sec-security_SLRPT">Access Sales Report</label>
+                      </div>
+                      <div class="clearfix"></div>
+                      <div class="checkbox checkbox-primary pull-left">
+                        <input id="sec-security_MPRPT" type="checkbox" name="Security_MPRPT"
+                          [(ngModel)]="user.security_MPRPT">
+                        <label for="sec-security_MPRPT">Access Member Point Report</label>
+                      </div>
+                      <div class="clearfix"></div>
+                      <div class="checkbox checkbox-primary pull-left">
+                        <input id="sec-security_SKRPT" type="checkbox" name="Security_SKRPT"
+                          [(ngModel)]="user.security_SKRPT">
+                        <label for="sec-security_SKRPT">Access Staff KPI Report</label>
+                      </div>
+                      <div class="clearfix"></div>
+                      <div class="checkbox checkbox-primary pull-left">
+                        <input id="sec-security_SARPT" type="checkbox" name="Security_SARPT"
+                          [(ngModel)]="user.security_SARPT">
+                        <label for="sec-security_SARPT">Access Staff Attendance Report</label>
+                      </div>
+                      <div class="clearfix"></div>
+                      <div class="checkbox checkbox-primary pull-left">
+                        <input id="sec-security_SPKRPT" type="checkbox" name="Security_SPKRPT"
+                          [(ngModel)]="user.security_SPKRPT">
+                        <label for="sec-security_SPKRPT">Access Staff Payroll Report</label>
+                      </div>
+                      <div class="clearfix"></div>
+                      <div class="checkbox checkbox-primary pull-left">
+                        <input id="sec-security_INCRPT" type="checkbox" name="Security_INCRPT"
+                          [(ngModel)]="user.security_INCRPT">
+                        <label for="sec-security_INCRPT">Access Incentive Report</label>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+
+                <div class="panel ax-panel-darkbg">
+                  <div class="panel-heading">
+                    <h4 class="panel-title">
+                      <a data-toggle="collapse" data-parent="#security-accordion" href="#RespondentLevelSecurity"
+                        aria-expanded="true">
+                        Respondent Level Security
+                      </a>
+                    </h4>
+                  </div>
+                  <div id="RespondentLevelSecurity" class="panel-collapse collapse" aria-expanded="true">
+                    <div class="panel-body">
+                      <!-- <div class="form-group pull-right m-b-0">
+                        <div class="checkbox checkbox-primary pull-right no-margin">
+                          <input id="sec-repondentlevelsecurity" type="checkbox" name="repondentlevelsecurity" (change)="toggleSecurityOptions($event, 'repondentlevelsecurity')">
+                          <label for="sec-repondentlevelsecurity">Select All</label>
+                        </div>
+                        <div class="clearfix"></div>
+                      </div> -->
+                      <a class="btn btn-ocean btn-xs btn-square ax-cursor-pointer pull-right"
+                        (click)="toggleSecurityOptions(true, 'repondentlevelsecurity')">Select
+                        All</a>
+
+                      <div class="checkbox checkbox-primary pull-left">
+                        <input id="sec-mui" type="checkbox" name="Security_RES" [(ngModel)]="user.security_RES">
+                        <label for="sec-mui">Allow to Delete Respondents and Events</label>
+                      </div>
+                      <div class="clearfix"></div>
+                      <div class="checkbox checkbox-primary pull-left">
+                        <input id="sec-mrefd" type="checkbox" name="Security_BNK" [(ngModel)]="user.security_BNK">
+                        <label for="sec-mrefd">Access Respondent Banking Information</label>
+                      </div>
+                      <div class="clearfix"></div>
+                      <div class="checkbox checkbox-primary pull-left">
+                        <input id="sec-mact" type="checkbox" name="Security_RSP" [(ngModel)]="user.security_RSP">
+                        <label for="sec-mact">Manage Respondent Password</label>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+
+                <div class="panel ax-panel-darkbg">
+                  <div class="panel-heading">
+                    <h4 class="panel-title">
+                      <a data-toggle="collapse" data-parent="#security-accordion" href="#AdminLevelSecurity"
+                        aria-expanded="true">
+                        Admin Level Security
+                      </a>
+                    </h4>
+                  </div>
+                  <div id="AdminLevelSecurity" class="panel-collapse collapse" aria-expanded="true">
+                    <div class="panel-body">
+                      <!-- <div class="form-group pull-right m-b-0">
+                        <div class="checkbox checkbox-primary pull-right no-margin">
+                          <input id="sec-adminlevelsecurity" type="checkbox" name="adminlevelsecurity" (change)="toggleSecurityOptions($event, 'adminlevelsecurity')">
+                          <label for="sec-adminlevelsecurity">Select All</label>
+                        </div>
+                        <div class="clearfix"></div>
+                      </div> -->
+                      <a class="btn btn-ocean btn-xs btn-square ax-cursor-pointer pull-right"
+                        (click)="toggleSecurityOptions(true, 'adminlevelsecurity')">Select All</a>
+
+                      <div class="checkbox checkbox-primary pull-left">
+                        <input id="sec-q" type="checkbox" name="Security_USR" [(ngModel)]="user.security_USR">
+                        <label for="sec-q">Manage System User Information</label>
+                      </div>
+                      <div class="clearfix"></div>
+                      <div class="checkbox checkbox-primary pull-left">
+                        <input id="sec-mrp" type="checkbox" name="Security_REF" [(ngModel)]="user.security_REF">
+                        <label for="sec-mrp">Manage Reference Data</label>
+                      </div>
+                      <div class="clearfix"></div>
+                      <div class="checkbox checkbox-primary pull-left">
+                        <input id="sec-mrd" type="checkbox" name="Security_CFG" [(ngModel)]="user.security_CFG">
+                        <label for="sec-mrd">Manage Configuration Information</label>
+                      </div>
+                      <div class="clearfix"></div>
+                      <!-- <div class="checkbox checkbox-primary pull-left">
+                          <input id="sec-dread" type="checkbox" name="Security_LST" [(ngModel)]="user.security_LST">
+                          <label for="sec-dread">Manage Private Lists</label>
+                        </div>
+                        <div class="clearfix"></div> -->
+                      <div class="checkbox checkbox-primary pull-left">
+                        <input id="sec-rla" type="checkbox" name="Security_RME" [(ngModel)]="user.security_RME">
+                        <label for="sec-rla">Manage ResearchMe Licences</label>
+                      </div>
+                      <div class="clearfix"></div>
+                      <div class="checkbox checkbox-primary pull-left">
+                        <input id="sec-invoicing" type="checkbox" name="Security_TKT" [(ngModel)]="user.security_TKT">
+                        <label for="sec-invoicing">Create and Manage Support Tickets</label>
+                      </div>
+                      <div class="clearfix"></div>
+                      <div class="checkbox checkbox-primary pull-left">
+                        <input id="sec-eta" type="checkbox" name="Security_ETA" [(ngModel)]="user.security_ETA">
+                        <label for="sec-eta">Manage Email & SMS Templates</label>
+                      </div>
+                      <div class="clearfix"></div>
+                      <div class="checkbox checkbox-primary pull-left">
+                        <input id="sec-esa" type="checkbox" name="Security_ESA" [(ngModel)]="user.security_ESA">
+                        <label for="sec-esa">Manage Email Sender</label>
+                      </div>
+                      <div class="clearfix"></div>
+                      <div class="checkbox checkbox-primary pull-left">
+                        <input id="sec-laa" type="checkbox" name="Security_LAA" [(ngModel)]="user.security_LAA">
+                        <label for="sec-laa">Manage Login Audit</label>
+                      </div>
+                      <div class="clearfix"></div>
+                      <div class="checkbox checkbox-primary pull-left">
+                        <input id="sec-mgq" type="checkbox" name="Security_MGQ" [(ngModel)]="user.security_MGQ">
+                        <label for="sec-mgq">Manage Global Queries</label>
+                      </div>
+                      <div class="clearfix"></div>                      
+                      <div class="checkbox checkbox-primary pull-left">
+                        <input id="sec-security_LST" type="checkbox" name="Security_LST"
+                          [(ngModel)]="user.security_LST">
+                        <label for="sec-security_LST">Manage Private Lists</label>
+                      </div>
+                      <div class="clearfix"></div>
+                      <div class="checkbox checkbox-primary pull-left">
+                        <input id="sec-security_SEV" type="checkbox" name="Security_SEV"
+                          [(ngModel)]="user.security_SEV">
+                        <label for="sec-security_SEV">Manage Search Events</label>
+                      </div>
+                      <div class="clearfix"></div>
+                      <div class="checkbox checkbox-primary pull-left">
+                        <input id="sec-security_MSA" type="checkbox" name="Security_MSA"
+                          [(ngModel)]="user.security_MSA">
+                        <label for="sec-security_MSA">Manage Staff Attendance</label>
+                      </div>
+                      <div class="clearfix"></div>
+                    </div>
+                  </div>
+                </div>
+
+              </div>
+              <!--
+                <div class="clearfix"></div>
+  
+                <div class="clearfix"></div>
+  
+                <div class="clearfix"></div>
+  
+                <div class="clearfix"></div>
+  
+                <div class="clearfix"></div>
+  
+                <div class="clearfix"></div>
+  
+                <div class="clearfix"></div>
+  
+                <div class="clearfix"></div>
+  
+                <div class="clearfix"></div>
+  
+                <div class="clearfix"></div>
+  
+                <div class="clearfix"></div>
+  
+                <div class="clearfix"></div>
+  
+                <div class="clearfix"></div>
+  
+                <div class="clearfix"></div>
+                <div class="checkbox checkbox-primary pull-left">
+                  <input id="sec-sr" type="checkbox" name="Security_RPT" [(ngModel)]="user.security_RPT">
+                  <label for="sec-sr">Reports</label>
+                </div>
+                <div class="clearfix"></div>
+                <div class="checkbox checkbox-primary pull-left">
+                  <input id="sec-mr" type="checkbox" name="Security_MRPT" [(ngModel)]="user.security_MRPT">
+                  <label for="sec-mr">Manager Reports</label>
+                </div>
+                <div class="clearfix"></div>
+                <div class="checkbox checkbox-primary pull-left">
+                  <input id="sec-skr" type="checkbox" name="Security_ARPT" [(ngModel)]="user.security_ARPT">
+                  <label for="sec-skr">Admin Reports</label>
+                </div>
+                <div class="clearfix"></div>
+                <div class="checkbox checkbox-primary pull-left">
+                  <input id="sec-mrl" type="checkbox" name="Security_SRPT" [(ngModel)]="user.security_SRPT">
+                  <label for="sec-mrl">Staff Reports</label>
+                </div>
+                <div class="clearfix"></div>
+                <div class="checkbox checkbox-primary pull-left">
+                  <input id="sec-skreport" type="checkbox" name="Security_KRPT" [(ngModel)]="user.security_KRPT">
+                  <label for="sec-skreport">Staff KPI Reports</label>
+                </div>
+                <div class="clearfix"></div>
+  
+                <div class="clearfix"></div>
+                <div class="checkbox checkbox-primary pull-left">
+                  <input id="sec-joborderreport" type="checkbox" name="Security_ORPT" [(ngModel)]="user.security_ORPT">
+                  <label for="sec-joborderreport">Job Order Report</label>
+                </div>
+                <div class="clearfix"></div>
+  
+                <div class="clearfix"></div>
+                 -->
+              <div class="clearfix"></div>
+              <div class="col-md-12 no-padding text-right m-t-20">
+                <a (click)="submitConfigItem(securityInfoForm)"
+                  class="btn btn-ocean waves-effect waves-light m-l-10 btn-md">
+                  Save
+                </a>
+                <a data-dismiss="modal" aria-hidden="true" class="btn btn-cocktail m-l-5 ax-cursor-pointer"
+                  #closeSecurityModal>Cancel</a>
+              </div>
+            </form>
+            <div class="clearfix"></div>
+          </div>
+        </div>
+        <!-- /.modal-content -->
+      </div>
+      <!-- /.modal-dialog -->
+    </div>
+    <!-- /.modal -->
+    <!-- SJob job query Modal -->
+    <div class="modal fade bs-example-modal-lg" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel"
+      aria-hidden="true" style="display: none;" id="save-job-query-modal">
+      <div class="modal-dialog modal-md">
+        <div class="modal-content">
+          <div class="modal-header no-border ax-modal-header">
+            <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+            <h4 class="modal-title" id="full-width-modalLabel">Save current query</h4>
+          </div>
+          <div class="modal-body no-padding">
+            <form class="ax-form" role="form" id="contactform">
+              <!-- <div class="save-query-btn btn-group btn-group-justified m-b-10">
+                  <a class="btn btn-default waves-effect waves-light btn-primary" role="button">
+                    Save
+                    Global Query
+                  </a>
+                  <a class="btn btn-default waves-effect waves-light" role="button">Save Local Query</a>
+                </div> -->
+              <div class="form-group has-feedback">
+                <label class="control-label" for="queryname">Name of the Query</label>
+                <input type="text" id="queryname" name="queryname" class="form-control" required>
+              </div>
+              <div class="col-md-12 no-padding text-right">
+                <a id="contactbtn" class="btn btn-success waves-effect waves-light m-l-10 btn-md">
+                  Save
+                </a>
+                <a data-dismiss="modal" aria-hidden="true" class="btn btn-cocktail m-l-5">Cancel</a>
+              </div>
+            </form>
+            <div class="clearfix"></div>
+          </div>
+        </div>
+        <!-- /.modal-content -->
+      </div>
+      <!-- /.modal-dialog -->
+    </div>
+    <!-- /.modal -->
+  </div>
+  <!-- end container -->
+</div>

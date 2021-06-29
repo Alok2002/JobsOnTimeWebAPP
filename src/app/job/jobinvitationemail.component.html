@@ -1,0 +1,167 @@
+<div class="col-md-4 no-padding">
+  <form class="ax-form" role="form" #jobInvitationEmailForm="ngForm" *ngIf="!isLoading">
+    <label class="control-label w-100-pre">Invite Image</label>
+    <div class="input-group form-group">
+      <input type="text" disabled name="attachment1" class="form-control" [value]="job?.inviteImageUrl">
+      <span class="input-group-addon no-padding">
+        <button class="btn btn-blue btn-square m-t--1" (click)="attachment.click()">Choose</button>
+        <button class="btn btn-danger btn-square m-t--1" (click)="job.inviteImageUrl = null">
+          <i class="md md-clear"></i>
+        </button>
+      </span>
+    </div>
+    <input #attachment type="file" name="inviteimage" (change)="uploadFile($event)"
+      style="visibility: hidden;height: 0;width: 0;">
+
+    <div class="form-group">
+      <label class="control-label w-100-pre">
+        Session Type on the Invite
+      </label>
+      <input type="text" name="invitejobtype" [(ngModel)]="job.inviteJobType" class="form-control">
+    </div>
+    <div class="form-group">
+      <label class="control-label w-100-pre">
+        Date on the Invite Subject
+      </label>
+      <input class="form-control" id="inviteDate" name="inviteDate" [(ngModel)]="job.inviteDate">
+    </div>
+    <div class="form-group">
+      <label class="control-label w-100-pre">
+        Time on the Invite
+      </label>
+      <input type="text" name="inviteTime" [(ngModel)]="job.inviteTime" class="form-control">
+    </div>
+    <div class="form-group">
+      <label class="control-label w-100-pre">
+        Location
+      </label>
+      <input type="text" name="invitelocation" [(ngModel)]="job.inviteLocation" class="form-control">
+    </div>
+    <div class="form-group">
+      <label class="control-label w-100-pre">
+        Client Survey Link
+        <span class="pull-right">
+          <div class="checkbox checkbox-primary no-margin">
+            <input id="autoForward" type="checkbox" name="autoForward" [(ngModel)]="job.autoForward">
+            <label for="autoForward">
+              Auto Forward
+            </label>
+          </div>
+        </span>
+      </label>
+      <input type="text" name="clientSurveyLink" [(ngModel)]="job.clientSurveyLink" class="form-control">
+    </div>
+    <div class="form-group">
+      <label class="control-label w-100-pre">
+        Job Description on the Invite
+      </label>
+      <!-- <textarea class="form-control" name="inviteJobDescription" [(ngModel)]="job.inviteJobDescription">
+      </textarea> -->
+      <ckeditor name="inviteJobDescription" [(ngModel)]="job.inviteJobDescription"
+        [config]="ckEditorConfig"></ckeditor>
+    </div>
+    <div class="form-group">
+      <label class="control-label w-100-pre">
+        Job Detailed Description on the Invite
+      </label>      
+      <ckeditor name="inviteDetailedDescription" [(ngModel)]="job.inviteDetailedDescription"
+        [config]="ckEditorConfig"></ckeditor>
+    </div>
+    <div class="form-group">
+      <label class="control-label">Survey Duration on the Invite</label>
+      <input type="text" name="surveyDuration" class="form-control" [(ngModel)]="job.surveyDuration">
+    </div>
+    <div class="form-group">
+      <label class="control-label w-100-pre">
+        Study Details
+        <span class="pull-right font-normal font-12">
+          <span id="count" class="text-right">{{checkStringLength(job?.studyDetails)}}</span> of 50 characters
+        </span>
+      </label>
+      <input type="text" name="studyDetails" class="form-control" [(ngModel)]="job.studyDetails" maxlength="50">
+    </div>
+    <div class="form-group">
+      <label class="control-label w-100-pre">
+        Homework Task on Confirmation Email
+      </label>
+      <!-- <textarea class="form-control" name="homeworkTask" [(ngModel)]="job.homeworkTask">
+      </textarea> -->
+      <ckeditor name="homeworkTask" [(ngModel)]="job.homeworkTask"
+        [config]="ckEditorConfig"></ckeditor>
+    </div>    
+    <ng-container *ngIf="job?.sessionType == 'Online Survey'">
+      <div class="form-group">
+        <label class="control-label w-100-pre">
+          Pre-Qualification Complete Message
+        </label>
+        <textarea class="form-control" name="preQualCompleteMsg" [(ngModel)]="job.preQualCompleteMsg">
+      </textarea>
+      </div>
+      <div class="form-group">
+        <label class="control-label w-100-pre">
+          Pre-Qualification Button Text
+        </label>
+        <textarea class="form-control" name="preQualButtonText" [(ngModel)]="job.preQualButtonText">
+      </textarea>
+      </div>
+    </ng-container>
+
+    <div class="col-md-12 no-padding text-right">
+      <button (click)="updateJob(jobInvitationEmailForm)" class="btn btn-ocean waves-effect waves-light m-l-10 btn-md">
+        Save
+      </button>
+    </div>
+  </form>
+</div>
+
+<div *ngIf="job?.sessionType == 'Online Survey'" class="col-md-8 p-l-20">
+  <div class="panel panel-warning ax-panel-tab">
+    <div class="panel-heading">
+      <div class="panel-title">
+        <h4>Link Generator</h4>
+      </div>
+    </div>
+    <form #linkgenform="ngForm">
+      <div class="panel-body">
+        <div class="form-group required">
+          <label class="control-label w-100-pre">
+            Provider
+            <span [hidden]="providerModel.valid || !isSubmitForm">
+              <span class="text-danger pull-right" [hidden]="!providerModel.hasError('required')">Required</span>
+            </span>
+          </label>
+          <select name="provider" class="form-control" [(ngModel)]="provider" #providerModel="ngModel" required>
+            <option *ngFor="let pr of providersList" [value]="pr.code">{{pr.desc}}</option>
+          </select>
+        </div>
+        <div class="form-group required">
+          <label class="control-label w-100-pre">
+            Original Link
+            <span [hidden]="linkModel.valid || !isSubmitForm">
+              <span class="text-danger pull-right" [hidden]="!linkModel.hasError('required')">Required</span>
+            </span>
+          </label>
+          <input type="text" class="form-control" name="link" [(ngModel)]="link" #linkModel="ngModel" required>
+        </div>
+      </div>
+      <div class="panel-heading">
+        <div class="panel-title">
+          <button class="btn btn-ocean pull-right" (click)="generateLink(linkgenform)">Generate</button>
+          <div class="clearfix"></div>
+        </div>
+      </div>
+      <div *ngIf="generatedlink" class="panel-heading m-t-20">
+        <div class="panel-title" style="display: flex;align-items: center;justify-content: space-between;">
+          <span style="font-weight: normal;text-transform: none;flex-grow: 1;"><b>New
+              Link:</b>&#160;{{generatedlink}}</span>
+          <button class="ccopy btn btn-ocean btn-square pull-right" [attr.data-clipboard-text]="generatedlink"
+            (click)="clipboardCopy()">
+            Copy
+          </button>
+          <div class="clearfix"></div>
+        </div>
+      </div>
+    </form>
+  </div>
+</div>
+<div class="clearfix"></div>

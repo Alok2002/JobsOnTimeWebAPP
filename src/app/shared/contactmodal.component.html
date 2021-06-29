@@ -1,0 +1,238 @@
+<!--ADD NEW CONTACT MODAL-->
+<div id="add-new-contact-modal" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="full-width-modalLabel"
+  aria-hidden="true" style="display: none;">
+  <div class="modal-dialog modal-md" style="width: 780px;">
+    <div class="modal-content">
+      <div class="modal-header no-border ax-modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+        <h4 class="modal-title">
+          <ng-container *ngIf="!isAccountContact">
+            <ng-container *ngIf="clientcontact.id">Update Contact</ng-container>
+            <ng-container *ngIf="!clientcontact.id">Add New Contact</ng-container>
+          </ng-container>
+          <ng-container *ngIf="isAccountContact">
+            <ng-container *ngIf="clientcontact.id">Update Accounts Contact</ng-container>
+            <ng-container *ngIf="!clientcontact.id">Add New Accounts Contact</ng-container>
+          </ng-container>
+        </h4>
+      </div>
+      <div class="modal-body no-padding">
+        <div class="col-md-12 no-padding" *ngIf="!isLoading">
+          <div *ngIf="!client?.allowOnlineAccess" class="alert alert-danger">
+            <b>Note:</b> Online Access is not allowed for {{client?.name}}
+          </div>
+          <div class="clearfix"></div>
+          <form class="ax-form" role="form" #contactForm="ngForm">
+            <div class="form-group has-feedback required col-md-6 no-padding">
+              <label class="control-label w-100-pre">
+                First Name
+                <span [hidden]="firstName.valid || !isSubmitForm">
+                  <span class="text-danger pull-right" [hidden]="!firstName.hasError('required')">Required</span>
+                </span>
+              </label>
+              <input type="text" name="contactname" class="form-control" [(ngModel)]="clientcontact.firstname"
+                #firstName="ngModel" required id="contactname" (ngModelChange)="autoUpperFirstLetter('firstname')">
+            </div>
+            <div class="form-group has-feedback required col-md-6 no-padding-right">
+              <label class="control-label w-100-pre">
+                Last Name
+                <span [hidden]="lastName.valid || !isSubmitForm">
+                  <span class="text-danger pull-right" [hidden]="!lastName.hasError('required')">Required</span>
+                </span>
+              </label>
+              <input type="text" name="lastname" class="form-control" [(ngModel)]="clientcontact.lastname"
+                #lastName="ngModel" (ngModelChange)="autoUpperFirstLetter('lastname')" required>
+            </div>
+            <div class="clearfix"></div>
+
+            <div *ngIf="isAccountContact" class="form-group has-feedback col-md-6 no-padding required">
+              <label class="control-label w-100-pre">
+                Contact Position
+                <span [hidden]="contactPositionModel.valid || !isSubmitForm">
+                  <span class="text-danger pull-right"
+                    [hidden]="!contactPositionModel.hasError('required')">Required</span>
+                </span>
+              </label>
+              <select class="form-control" [(ngModel)]="clientcontact.contactType" name="contactType"
+                #contactPositionModel="ngModel" required>
+                <option value="{{ct.description}}" *ngFor="let ct of contactTypes">{{ct.description}}</option>
+              </select>
+            </div>
+            <div *ngIf="!isAccountContact" class="form-group has-feedback col-md-6 no-padding">
+              <label class="control-label w-100-pre">
+                Contact Position
+                <span [hidden]="contactPositionModel.valid || !isSubmitForm">
+                  <span class="text-danger pull-right"
+                    [hidden]="!contactPositionModel.hasError('required')">Required</span>
+                </span>
+              </label>
+              <select class="form-control" [(ngModel)]="clientcontact.contactType" name="contactType"
+                #contactPositionModel="ngModel">
+                <option value="{{ct.description}}" *ngFor="let ct of contactTypes">{{ct.description}}</option>
+              </select>
+            </div>
+
+            <div class="form-group col-md-3 no-padding-right">
+              <label class="control-label w-100-pre" for="cardId">
+                <span>Allow Online Access</span>
+                <!-- <div class="pull-right" style="height: 0;">
+                  <label for="checkbox1" class="control-label ax-color-black pull-left m-b-0 font-normal font-12">
+                    Allow Online Access
+                  </label>
+                  <div class="checkbox checkbox-primary" style="margin: 0px 0px 0px 115px;">
+                    <input id="checkbox1" type="checkbox" [(ngModel)]="clientcontact.onlineAccess" name="onlineAccess"
+                      [value]="clientcontact.onlineAccess" [disabled]="!client?.allowOnlineAccess">
+                    <label for="checkbox1" class="control-label ax-color-black">
+                    </label>
+                  </div>
+                </div> -->
+              </label>
+              <select class="form-control" [(ngModel)]="clientcontact.onlineAccess" name="onlineAccess"
+                [disabled]="!client?.allowOnlineAccess">
+                <option value="true">Yes</option>
+                <option value="false">No</option>
+              </select>
+              <!-- <input type="text" id="password" name="password" [(ngModel)]="clientcontact.passwordRaw" class="form-control"
+                (keypress)="_keyPressMaxLength($event, 'passwordRaw', 9)" [disabled]="!client?.allowOnlineAccess"> -->
+            </div>
+
+            <div class="form-group col-md-3 no-padding-right">
+              <label class="control-label w-100-pre">Stakeholder</label>
+              <select class="form-control" [(ngModel)]="clientcontact.stakeholder" name="stakeholder">
+                <option value="true">Yes</option>
+                <option value="false">No</option>
+              </select>
+            </div>
+            <div class="clearfix"></div>
+
+            <div class="form-group has-feedback col-md-6 no-padding">
+              <label class="control-label w-100-pre" for="contactphone">
+                Phone
+                <span [hidden]="contactphonemodel.valid || !isSubmitForm">
+                  <span class="text-danger pull-right" [hidden]="!contactphonemodel.hasError('pattern')">Invalid
+                    Phone</span>
+                </span>
+              </label>
+              <input type="text" [pattern]="phonePattern" [textMask]="{mask: phoneMask, showMask: false, guide: true}"
+                numeric (ngModelChange)="clientcontact.phone = unmask($event)" id="contactphone" name="contactphone"
+                #contactphonemodel="ngModel" [(ngModel)]="clientcontact.phone" class="form-control">
+            </div>
+            <div class="form-group has-feedback col-md-6 no-padding-right">
+              <label class="control-label w-100-pre" for="contactfax">
+                Mobile
+                <span [hidden]="contactmobilemodel.valid || !isSubmitForm">
+                  <span class="text-danger pull-right" [hidden]="!contactmobilemodel.hasError('pattern')">Invalid
+                    Mobile</span>
+                </span>
+              </label>
+              <input type="text" [pattern]="mobilePattern" [textMask]="{mask: mobileMask, showMask: true, guide: false}"
+                numeric (ngModelChange)="clientcontact.mobile = unmask($event)" #contactmobilemodel="ngModel"
+                id="contactfax" name="mobile" class="form-control" [(ngModel)]="clientcontact.mobile">
+            </div>
+            <div class="clearfix"></div>
+            <div class="form-group has-feedback col-md-6 no-padding">
+              <label class="control-label w-100-pre">After Hours
+                <span [hidden]="afterHoursModel.valid || !isSubmitForm">
+                  <span class="text-danger pull-right" [hidden]="!afterHoursModel.hasError('pattern')">Invalid After
+                    Hours</span>
+                </span>
+              </label>
+              <input type="text" [pattern]=" countrycode == 'AU' ? '.{11,12}' : '.{0,99}'" id="contactafterhours"
+                name="contactafterhours" [(ngModel)]="clientcontact.afterhours" class="form-control"
+                #afterHoursModel="ngModel" (keypress)="_keyPress($event)">
+            </div>
+
+            <div class="form-group has-feedback col-md-6 no-padding-right">
+              <label class="control-label w-100-pre">
+                Email
+                <span [hidden]="emailModel.valid || !isSubmitForm">
+                  <span class="text-danger pull-right" [hidden]="!emailModel.hasError('pattern')">Invalid Email</span>
+                  <span class="text-danger pull-right" [hidden]="!emailModel.hasError('required')">Required</span>
+                </span>
+              </label>
+              <input type="text" name="contactemail" [(ngModel)]="clientcontact.emailAddress"
+                pattern="^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,10})+$" #emailModel="ngModel" class="form-control">
+            </div>
+
+
+            <div class="clearfix"></div>
+            <div class="form-group has-feedback">
+              <label class="control-label" for="contactemail">Comment</label>
+              <textarea name="contactcomment" [(ngModel)]="clientcontact.comment" class="form-control"
+                rows="3"></textarea>
+            </div>
+            <div class="col-md-12 no-padding">
+              <!-- <div class="pull-left">
+                <div class="form-group m-b-0">
+                  <label for="checkbox1" class="control-label ax-color-black pull-left m-b-0">
+                    Allow Online Access
+                  </label>
+                  <div class="checkbox checkbox-primary" style="margin-left: 190px;margin-bottom:0px">
+                    <input id="checkbox1" type="checkbox" [(ngModel)]="clientcontact.onlineAccess" name="onlineAccess"
+                      [value]="clientcontact.onlineAccess" [disabled]="!client?.allowOnlineAccess">
+                    <label for="checkbox1" class="control-label ax-color-black">
+                    </label>
+                  </div>
+                </div>
+              </div> -->
+
+              <div class="form-group required" *ngIf="clientJobId != null && !clientcontact.id">
+                <label class="control-label w-100-pre">How do you want to link this contact to the Job?
+                  <span [hidden]="jobContactTypeModel.valid || !isSubmitForm">
+                    <span class="text-danger pull-right"
+                      [hidden]="!jobContactTypeModel.hasError('required')">Required</span>
+                  </span>
+                </label>
+                <select #jobContactTypeModel="ngModel" class="form-control" name="jobContactType"
+                  [(ngModel)]="jobContactType" required>
+                  <option></option>
+                  <option value="{{jgct?.code}}" *ngFor="let jgct of jobcontacttype">{{jgct?.desc}}</option>
+                </select>
+              </div>
+              <div class="form-group required" *ngIf="clientJobId != null && !clientcontact.id">
+                <label class="control-label w-100-pre">Do you want to allow online access to the Job?
+                  <span [hidden]="onlineAccessThisJobModel.valid || !isSubmitForm">
+                    <span class="text-danger pull-right"
+                      [hidden]="!onlineAccessThisJobModel.hasError('required')">Required</span>
+                  </span>
+                </label>
+                <select #onlineAccessThisJobModel="ngModel" class="form-control" name="onlineAccessThisJob"
+                  [(ngModel)]="clientcontact.onlineAccessThisJob" required>
+                  <option></option>
+                  <option value="true">Yes</option>
+                  <option value="false">No</option>
+                </select>
+              </div>
+
+              <!-- <div class="pull-left p-0">
+                <div class="form-group m-b-0">
+                  <label for="checkbox1" class="control-label ax-color-black pull-left">
+                    Allow Online Access
+                  </label>
+                  <div class="checkbox checkbox-primary" style="margin-left: 135px;">
+                    <input id="checkbox1" type="checkbox" checked [(ngModel)]="clientcontact.onlineAccess" name="onlineAccess"
+                      [value]="clientcontact.onlineAccess" [disabled]="!client?.allowOnlineAccess">
+                    <label for="checkbox1" class="control-label ax-color-black">
+                    </label>
+                  </div>
+                </div>
+              </div> -->
+
+              <div class="pull-right col-md-6 p-0">
+                <div class="text-right">
+                  <a class="btn btn-ocean waves-effect waves-light m-l-5 btn-md"
+                    (click)="updateorCreateClientContact(contactForm)">
+                    Save
+                  </a>
+                  <a data-dismiss="modal" aria-hidden="true" class="btn btn-cocktail m-l-5" #closeAddNewModal>
+                    Cancel</a>
+                </div>
+              </div>
+            </div>
+          </form>
+        </div>
+        <div class="clearfix"></div>
+      </div>
+    </div><!-- /.modal-content -->
+  </div><!-- /.modal-dialog -->
+</div>

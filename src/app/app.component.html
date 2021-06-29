@@ -1,0 +1,15 @@
+<ngx-loading-bar [includeSpinner]="false"></ngx-loading-bar>
+
+<StaffMenuComponent *ngIf="!isSigninPage && !isSignupPage && loginuserrole == 'Staff'"></StaffMenuComponent>
+<ResMenuComponent *ngIf="!isSigninPage && !isSignupPage && loginuserrole == 'Respondent'"></ResMenuComponent>
+<ClientMenuComponent *ngIf="!isSigninPage && !isSignupPage && loginuserrole == 'Client'"></ClientMenuComponent>
+
+<!--<StaffMenuComponent *ngIf="isSurveyPage"></StaffMenuComponent>-->
+<router-outlet></router-outlet>
+<FooterComponent></FooterComponent>
+
+<div class="full-page-loading" *ngIf="loader.progress$ | async">
+  <div style="position: fixed;top: 50%;left: 50%;color: #fff;font-size: 14px">
+    <img src="assets/images/loading.svg" width="75" alt="loading">
+  </div>
+</div>

@@ -1,0 +1,65 @@
+﻿<div class="no-padding home-bg" style="margin-bottom: -61px;">
+  <div class="home-bg-trans1">
+    <!-- Navigation Bar-->
+    <header id="topnav">
+      <div class="topbar-main" style="height: 60px;">
+        <div class="container">
+          <!-- Logo container-->
+          <div class="logo">
+            <a class="logo" [title]="isFarronResearch ? 'Farron Research Logo' : 'Logo'">
+              <span class="hidden-xs"><img src="assets/images/fr-logo.png"
+                  [alt]="isFarronResearch ? 'Farron Research Logo' : 'Logo'"></span>
+              <span class="hidden-sm hidden-md hidden-lg">
+                <img src="assets/images/fr-only-logo.png" [alt]="isFarronResearch ? 'Farron Research Logo' : 'Logo'">
+              </span>
+            </a>
+          </div>
+          <!-- End Logo container-->
+          <div class="menu-extras">
+            <ul class="nav navbar-nav navbar-right pull-right ax-right-nav-btn">
+              <li>
+                <!-- <div class="input-group">
+                  <a class="btn btn-skyblue" [routerLink]="['/signin']">Login</a>
+                </div> -->
+              </li>
+            </ul>
+          </div>
+        </div>
+      </div>
+      <!-- End topbar -->
+    </header>
+    <!-- End Navigation Bar-->
+    <!-- =======================
+          ===== START PAGE ======
+          ======================= -->
+
+    <div class="wrapper login-page-wrapper">
+      <div class="container min-width-100vw text-center">
+        <div class="container" [class.text-center]="errors.length < 1">
+          <div class="row">
+            <!--<div class="col-sm-2"></div>-->
+            <div class="ax-login-panel">
+              <div class="col-md-12">
+                <div *ngIf="errors?.length > 0" class="card-box m-b-0">
+                  <!-- <h3 class="text-left no-margin">
+                    <i class="md md-warning"></i>
+                    <span class="text-danger"> Something went wrong</span>
+                  </h3> -->
+                  <h5 class="m-b-0 m-t-0 text-center text-danger">{{errors[0]}}</h5>
+                </div>
+                <div *ngIf="errors?.length < 1" class="card-box m-b-0">
+                  <!-- <h3 class="text-left no-margin">
+                    <i class="md md-check"></i>
+                    <span class="text-success"> Successfully Changed</span>
+                  </h3> -->
+                  <h5 class="m-b-0 m-t-0 text-center text-success">{{revertChanges?.successMsg}}</h5>
+                </div>
+              </div>
+            </div>
+            <!--<div class="col-sm-2"></div>-->
+          </div><!-- end container -->
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

@@ -1,0 +1,296 @@
+<div class="no-padding home-bg" style="margin-bottom: -61px;">
+  <div class="home-bg-trans1">
+    <!-- Navigation Bar-->
+    <header id="topnav">
+      <div class="topbar-main" style="height:60px">
+        <div class="container">
+          <!-- Logo container-->
+          <div class="logo">
+            <a class="logo" [title]="isFarronResearch ? 'Farron Research Logo' : 'Logo'">
+              <span class="hidden-xs"><img src="assets/images/fr-logo.png"
+                  [alt]="isFarronResearch ? 'Farron Research Logo' : 'Logo'"></span>
+              <span class="hidden-sm hidden-md hidden-lg">
+                <img src="assets/images/fr-only-logo.png" [alt]="isFarronResearch ? 'Farron Research Logo' : 'Logo'">
+              </span>
+            </a>
+          </div>
+          <!-- End Logo container-->
+          <div class="menu-extras">
+            <ul class="nav navbar-nav navbar-right pull-right ax-right-nav-btn">
+              <li>
+                <div class="input-group">
+                  <a [routerLink]="['/signin']" class="btn btn-basil">Login</a>
+                </div>
+              </li>
+            </ul>
+          </div>
+        </div>
+      </div>
+      <!-- End topbar -->
+      <!-- Navbar Start -->
+      <!-- end navbar-custom -->
+    </header>
+    <!-- End Navigation Bar-->
+    <!-- =======================
+         ===== START PAGE ======
+         ======================= -->
+
+    <div class="wrapper login-page-wrapper">
+      <div class="container min-width-100vw text-center">
+        <div class="row">
+          <!--<div class="col-sm-2"></div>-->
+          <div class="ax-login-panel" style="max-width: 960px">
+            <h1 class="text-center login-card-header text-white" style="background: #486824;"><i class="fa fa-lock"></i>
+              &#160;Join Our Disability Panel</h1>
+            <div class="col-md-12">
+              <div class="card-box m-b-0 login-card">
+                <div class="col-md-5 no-padding-left login-card-left no-padding-mob"
+                  style="font-size: 13px; padding-right: 30px">
+                  <img src="assets/images/login-left.png" style="max-width:100%" alt="Farron Join Our Disability Panel">
+                  <!-- <h5 style="font-size: 18px; margin-bottom: 20px;color: #0f90d2;" class="m-t-30"> -->
+                  <!-- Join and Get Paid $$$ for Your Opinion -->
+                  <span [innerHTML]="welcomeCopies?.signUpPageText1 | safeHtml"></span>
+                  <!-- </h5> -->
+                  <p>
+                    <span [innerHTML]="welcomeCopies?.signUpPageText2 | safeHtml"></span>
+                    <!-- Make a difference by sharing your opinion.<br>
+                    When you participate in a market research session with Farron Research you are helping to shape and
+                    improve the product and services that our clients offer.<br>
+                    Your submission is encrypted and personally identifiable information is never shared with any third
+                    parties without your written consent. -->
+                  </p>
+                  <p style="margin-top: 22px; margin-bottom: 0px;" class="hidden-xs">
+                    <a [routerLink]="['/signin']"
+                      class="btn btn-skyblue waves-effect waves-light btn-md btn-block font-16">Existing
+                      member login here</a>
+                  </p>
+                </div>
+
+                <div class="col-md-7 no-padding-right no-padding-mob m-t-15-mob no-border-mob"
+                  style="padding-left: 30px; border-left:1px solid #e6e7e8">
+                  <!-- <img src="assets/images/fr-only-logo.png" class="ax-login-panel-logo"> -->
+                  <form class="text-left ax-form" role="form" id="loginForm" #signUpImpairmentForm="ngForm">
+                    <div class="form-group col-md-6 no-padding required">
+                      <label class="control-label w-100-pre" for="FirstName">
+                        First Name
+                        <span class="label-error-msg" [hidden]="givenNamesmodel.valid || !isSubmitForm">
+                          <span class="text-danger pull-right" [hidden]="!givenNamesmodel.hasError('required')">Enter
+                            your First Name</span>
+                        </span>
+                      </label>
+                      <input id="FirstName" type="text" name="givenname" [(ngModel)]="respondent.givenNames"
+                        class="form-control" required (ngModelChange)="autoUpperFirstLetter('givenNames')"
+                        #givenNamesmodel="ngModel" (keypress)="stringOnly($event)" autocomplete="on">
+                    </div>
+                    <div class="form-group col-md-6 no-padding-right required no-padding-mob">
+                      <label class="control-label w-100-pre" for="LastName">
+                        Last Name
+                        <span class="label-error-msg" [hidden]="lastNamemodel.valid || !isSubmitForm">
+                          <span class="text-danger pull-right" [hidden]="!lastNamemodel.hasError('required')">Enter your
+                            Last Name</span>
+                        </span>
+                      </label>
+                      <input id="LastName" type="text" name="lastname" [(ngModel)]="respondent.lastName"
+                        class="form-control" required (ngModelChange)="autoUpperFirstLetter('lastName')"
+                        #lastNamemodel="ngModel" (keypress)="stringOnly($event)" autocomplete="on">
+                    </div>
+
+                    <div class="form-group col-md-6 no-padding required">
+                      <label class="control-label w-100-pre" for="YearofBirth">
+                        Year of Birth
+                        <span class="label-error-msg" [hidden]="yearofbirthmodel.valid || !isSubmitForm">
+                          <span class="text-danger pull-right" [hidden]="!yearofbirthmodel.hasError('required')">Select
+                            your Year of Birth</span>
+                          <span class="text-danger pull-right" [hidden]="!yearofbirthmodel.hasError('pattern')">Invalid
+                            Year</span>
+                        </span>
+                      </label>
+                      <!-- <input type="text" class="form-control" [(ngModel)]="respondent.birthYear" name="birthyear" mask="0000"
+                          pattern=".{4,4}" required #yearofbirthmodel="ngModel"> -->
+                      <select id="YearofBirth" name="year" class="form-control" [(ngModel)]="respondent.birthYear"
+                        #yearofbirthmodel="ngModel" required autocomplete="on">
+                        <option *ngFor="let gl of yearList" [value]="gl.code">{{gl.desc}}</option>
+                      </select>
+                    </div>
+
+                    <div class="form-group col-md-6 required no-padding-right no-padding-mob">
+                      <label class="control-label w-100-pre" for="gender">
+                        Gender
+                        <span class="label-error-msg" [hidden]="gendermodel.valid || !isSubmitForm">
+                          <span class="text-danger pull-right" [hidden]="!gendermodel.hasError('required')">Select your
+                            Gender</span>
+                        </span>
+                      </label>
+                      <select id="gender" name="gender" class="form-control" [(ngModel)]="respondent.gender"
+                        #gendermodel="ngModel" required>
+                        <option *ngFor="let gl of genderList" [value]="gl.code">{{gl.desc}}</option>
+                      </select>
+                    </div>
+
+                    <div class="form-group required">
+                      <label class="control-label w-100-pre" for="Postcode">Postcode
+                        <span class="label-error-msg" [hidden]="postcodeHomemodel.valid || !isSubmitForm">
+                          <span class="text-danger pull-right" [hidden]="!postcodeHomemodel.hasError('required')">Enter
+                            your Postcode</span>
+                          <span class="text-danger pull-right" [hidden]="!postcodeHomemodel.hasError('pattern')">
+                            Enter a Postcode in the correct format e.g. 2000
+                          </span>
+                        </span>
+                      </label>
+                      <!--<input auto-complete [source]="locationAPI" no-match-found-text="No Data Found" list-formatter="suggestion"-->
+                      <!--path-to-data="value" display-property-name="postcode" loading-text="Loading..." max-num-list="5"-->
+                      <!--min-chars="2" placeholder="" autocomplete="off" type="text" class="form-control" name="postcodeHome"-->
+                      <!--[(ngModel)]="respondent.postcodeHome" required #postcodeHomemodel="ngModel"-->
+                      <!--(ngModelChange)="setLocation(respondent.postcodeHome)">-->
+                      <input id="Postcode" autocomplete="off" type="text" class="form-control" name="postcodeHome"
+                        [(ngModel)]="respondent.postcodeHome" required #postcodeHomemodel="ngModel"
+                        [textMask]="{mask: postcodeMask, showMask: true, guide: false}" numeric
+                        (ngModelChange)="respondent.postcodeHome = unmask($event)" [pattern]="postcodePattern"
+                        autocomplete="on">
+                      <!-- pattern="^(0[289][0-9]{2})|([1345689][0-9]{3})|(2[0-8][0-9]{2})|(290[0-9])|(291[0-4])|(7[0-4][0-9]{2})|(7[8-9][0-9]{2})$" -->
+                    </div>
+
+                    <div class="form-group required">
+                      <label class="control-label w-100-pre" for="Email">
+                        Email
+                        <div class="pull-right">
+                          <span class="label-error-msg" [hidden]="emailModel.valid || !isSubmitForm">
+                            <span class="text-danger pull-right" [hidden]="!emailModel.hasError('required')"><b>Enter
+                                your Email Address</b></span>
+                            <span class="text-danger pull-right" [hidden]="!emailModel.hasError('pattern')"><b>
+                                Enter an Email Address in the correct format e.g. name@example.com
+                              </b></span>
+                          </span>
+                        </div>
+                      </label>
+                      <input id="Email" type="text" class="form-control" [(ngModel)]="respondent.email" name="email"
+                        #emailModel="ngModel" pattern="^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,10})+$" required
+                        autocomplete="on">
+                    </div>
+
+                    <div class="form-group">
+                      <label class="control-label w-100-pre" for="mobile">
+                        Mobile
+                        <span class="label-error-msg" [hidden]="phoneMobileModel.valid || !isSubmitForm">
+                          <span class="text-danger pull-right" [hidden]="!phoneMobileModel.hasError('required')">
+                            Enter your Mobile Number
+                          </span>
+                          <span class="text-danger pull-right" [hidden]="!phoneMobileModel.hasError('pattern')">
+                            Enter a Mobile Number in the correct format e.g. 0412123456
+                          </span>
+                        </span>
+                      </label>
+                      <input type="text" id="mobile" name="mobilephone" [(ngModel)]="respondent.phoneMobile"
+                        class="form-control" [textMask]="{mask: mobileMask, showMask: true, guide: false}" numeric
+                        (ngModelChange)="respondent.phoneMobile = unmask($event)" [pattern]="mobilePattern"
+                        #phoneMobileModel="ngModel" autocomplete="on">
+                      <!-- ^04[0-9]{8} -->
+                    </div>
+
+                    <div class="form-group">
+                      <label class="control-label w-100-pre" for="phone">
+                        Phone
+                        <span class="label-error-msg" [hidden]="phoneHomeModel.valid || !isSubmitForm">
+                          <span class="text-danger pull-right" [hidden]="!phoneHomeModel.hasError('required')">
+                            Enter a Phone Number
+                          </span>
+                          <span class="text-danger pull-right" [hidden]="!phoneHomeModel.hasError('pattern')">
+                            Enter a Phone Number in the correct format e.g. 0212345678
+                          </span>
+                        </span>
+                      </label>
+                      <input type="text" id="phone" name="homephone" [(ngModel)]="respondent.phoneHome"
+                        class="form-control" [textMask]="{mask: phoneMask, showMask: false, guide: true}" numeric
+                        (ngModelChange)="respondent.phoneHome = unmask($event)" [pattern]="phonePattern"
+                        #phoneHomeModel="ngModel" autocomplete="on">
+                    </div>
+
+                    <div class="form-group required">
+                      <label class="control-label w-100-pre" for="Password">Password
+                        <span class="label-error-msg" [hidden]="passwordModel.valid || !isSubmitForm"
+                          class="pull-right">
+                          <span class="text-danger pull-left" [hidden]="!passwordModel.hasError('required')">Enter your
+                            Password</span>
+                          <!-- <span class="text-danger pull-left" [hidden]="!passwordModel.hasError('minlength')">
+                            <span class="pull-right ax-cursor-pointer" data-toggle="tooltip" data-placement="top"
+                              title="" data-html="true"
+                              [attr.data-original-title]="'Password must contain at least 6 characters'">                              
+                              Password must contain at least 8 characters
+                            </span>
+                          </span> -->
+                          <span class="text-danger pull-left" [hidden]="!passwordModel.hasError('pattern')">
+                            <span class="pull-right ax-cursor-pointer" data-toggle="tooltip" data-placement="top"
+                              title="" data-html="true"
+                              [attr.data-original-title]="'At Least 8 characters with number, symbol and an uppercase letter'">
+                              &#160;<i class="fa fa-info-circle" style="color: #F24C4E"></i>
+                            </span>
+                          </span>
+                        </span>
+                      </label>
+                      <input id="Password" type="password" name="password" [(ngModel)]="respondent.passwordRaw"
+                        [pattern]="pattern" class="form-control" minlength="8" maxlength="20" required
+                        #passwordModel="ngModel">
+                    </div>
+
+                    <div class="clearfix"></div>
+                    <div class="text-left">
+                      <div class="col-md-12 float-left no-padding">
+                        <div class="form-group m-b-0">
+                          <div class="checkbox checkbox-primary w-100-pre">
+                            <input id="checkbox1" type="checkbox" [(ngModel)]="respondent.isTermsAgreed"
+                              name="termandcondition" for="I agree to the terms & conditions" autocomplete="on"
+                              required>
+                            <label for="checkbox1" class="control-label no-padding"> &#160;
+                              <span>I agree to the
+                                <a href="{{termsUrl}}" target="_blank">terms &
+                                  conditions</a>
+                                <b class="text-danger" *ngIf="isSubmitForm && !respondent.isTermsAgreed"> Agree to the
+                                  terms & conditions</b>
+                              </span>
+                            </label>
+                          </div>
+                        </div>
+                      </div>
+                      <div class="clearfix"></div>
+                      <div class="text-right">
+                        <!-- <span class="pull-right"> -->
+                        <!-- <i class="fa fa-spinner fa-pulse" *ngIf="isSubmitFormSpinner"></i>&#160; -->
+                        <button (click)="updateRespondent(signUpImpairmentForm)"
+                          class="btn btn-basil waves-effect waves-light btn-md">
+                          Join Now
+                        </button>
+                        <!-- </span> -->
+                      </div>
+                    </div>
+                    <div class="clearfix"></div>
+                    <div class="text-center error-box" *ngIf="loginerrmsg">
+                      <b>{{loginerrmsg}}</b>
+                    </div>
+                    <div class="clearfix"></div>
+                  </form>
+                  <!--
+                  <h2 class="line-text"><span>or</span></h2>
+                  <div class="text-center">
+                    <a href="home.html" class="btn btn-facebook btn-block">
+                      <i class="fa fa-facebook"></i>
+                      &nbsp;&nbsp;Sign Up with Facebook
+                    </a>
+                    <h2 class="line-text"><span>or</span></h2>
+                    <a href="home.html" class="btn btn-cocktail btn-block m-b-10">
+                      <i class="fa fa-google-plus"></i>
+                      &nbsp;&nbsp;Sign Up with Google+
+                    </a>
+                  </div>
+                    -->
+                </div>
+
+                <div class="clearfix"></div>
+              </div>
+            </div>
+          </div>
+          <!--<div class="col-sm-2"></div>-->
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

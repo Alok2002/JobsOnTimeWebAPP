@@ -1,0 +1,109 @@
+<div class="wrapper">
+  <div class="container">
+    <div class="row">
+      <div class="col-sm-12">
+        <ol class="breadcrumb breadcrumb-arrow bg-white bx-shadow">
+          <li>
+            <a [routerLink]="['/reshome']" class="home-breadcrumb" title="Home">
+              <i class="md md-home"></i>
+              <span class="d-none">Home</span>
+            </a>
+          </li>
+          <li><a>My Bank Details</a></li>
+        </ol>
+      </div>
+
+      <div class="col-sm-12">
+        <div class="card-box user-res-payments" *ngIf="respondent">
+          <div class="col-sm-12 no-padding">
+            <form class="ax-form" role="form" #resPaymentForm="ngForm">
+              <ng-container *ngIf="respondent">
+                <div class="col-md-3 no-padding">
+                  <div class="form-group required">
+                    <label class="control-label w-100-pre" for="AccountName">Account Name
+                      <span [hidden]="financeAccountNameModel.valid || !isSubmitForm">
+                        <span class="text-danger pull-right"
+                          [hidden]="!financeAccountNameModel.hasError('required')">Enter Account Name</span>
+                      </span>
+                    </label>
+                    <input autocomplete="off" type="text" name="financeAccountName"
+                      [(ngModel)]="respondent.financeAccountName" class="form-control"
+                      #financeAccountNameModel="ngModel" id="AccountName" required>
+                  </div>
+                  <div *ngIf="countrycode == 'AU'" class="form-group required">
+                    <label class="control-label w-100-pre" for="BSB">BSB
+                      <span [hidden]="financeBsbModel.valid || !isSubmitForm">
+                        <span class="text-danger pull-right" [hidden]="!financeBsbModel.hasError('required')">Enter BSB
+                          Number</span>
+                        <span class="text-danger pull-right" [hidden]="!financeBsbModel.hasError('pattern')">Invalid
+                          BSB</span>
+                      </span>
+                    </label>
+                    <input autocomplete="off" type="text" id="BSB" name="financeBsb" [(ngModel)]="respondent.financeBsb"
+                      class="form-control" [textMask]="{mask: financeBSBMask, showMask: false}" numeric
+                      (ngModelChange)="respondent.financeBsb = unmask($event)" [pattern]="financeBSBPattern"
+                      #financeBsbModel="ngModel" required>
+                  </div>
+                  <div class="form-group required">
+                    <label class="control-label w-100-pre" for="AccountNumber">Account Number
+                      <span [hidden]="financeAccountNumberModel.valid || !isSubmitForm">
+                        <span class="text-danger pull-right"
+                          [hidden]="!financeAccountNumberModel.hasError('required')">Enter Account Number</span>
+
+                        <span class="text-danger pull-right"
+                          [hidden]="!financeAccountNumberModel.hasError('pattern')">Invalid Account Number</span>
+                      </span>
+                    </label>
+                    <input autocomplete="off" type="text" id="AccountNumber" name="financeAccountNumber"
+                      [(ngModel)]="respondent.financeAccountNumber" class="form-control"
+                      [textMask]="{mask: financeAccountMask, showMask: false}" numeric
+                      (ngModelChange)="respondent.financeAccountNumber = unmask($event)"
+                      [pattern]="financeAccountPattern" #financeAccountNumberModel="ngModel" required>
+                  </div>
+                  <!-- <div class="form-group col-md-6 pull-left no-padding">
+                      <label class="control-label w-100-pre">Bank Name
+                        <span [hidden]="financeBankNameModel.valid || !isSubmitForm">
+                          <span class="text-danger pull-right"
+                            [hidden]="!financeBankNameModel.hasError('required')">Required</span>
+                        </span>
+                      </label>
+                      <input autocomplete="off" type="text" id="financeBankName" name="financeBankName"
+                        [(ngModel)]="respondent.financeBankName" class="form-control" #financeBankNameModel="ngModel">
+                    </div> -->
+                  <div class="clearfix"></div>
+                </div>
+              </ng-container>
+
+              <div class="clearfix"></div>
+              <div class="col-md-3 no-padding m-b-0">
+                <div class="text-right no-padding">
+                  <button type="button" (click)="clearResPayment()"
+                    class="btn btn-cocktail waves-effect waves-light btn-md">
+                    Clear
+                  </button>&#160;
+                  <button type="submit" (click)="updateSubmit(resPaymentForm);isSubmitForm = true"
+                    class="btn btn-basil waves-effect waves-light btn-md">
+                    Submit
+                  </button>
+                </div>
+                <div class="card-box respondent-card-box m-t-15 m-b-0">
+                  <p tabindex="0">
+                    <!-- Due to security reasons, we do not keep banking details on file and they get deleted once the
+                    payment has been made.
+                    You will need to provide them after every study you do with
+                    {{countrycode == 'AU' ? 'Farron' : 'Prime'}} Research. -->
+                    Due to security reasons, we do not keep banking details on file and they are deleted once a payment
+                    has been made. You will need to re-enter them after every study to receive payment by EFT.
+                  </p>
+                </div>
+              </div>
+              <div class="clearfix"></div>
+            </form>
+            <div class="clearfix"></div>
+          </div>
+          <div class="clearfix"></div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

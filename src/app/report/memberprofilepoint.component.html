@@ -1,0 +1,138 @@
+<div class="wrapper">
+  <div class="container">
+    <div class="row">
+      <div class="col-sm-12">
+        <ol class="breadcrumb breadcrumb-arrow bg-white bx-shadow">
+          <li><a [routerLink]="['/dashboard']" class="home-breadcrumb"><i class="md md-home"></i></a></li>
+          <!-- <li><a [routerLink]="['/reports']" class="home-breadcrumb font-14">Reports</a></li> -->
+          <li><a>Member Profile Point Report</a></li>
+        </ol>
+      </div>
+      <div class="col-sm-12">
+        <div class="card-box">
+          <div class="portlet ax-border" id="jobs-filterBox">
+            <div class="portlet-heading portlet-default">
+              <div class="clearfix"></div>
+              <div id="bg-default" class="panel-collapse collapse in">
+                <div class="portlet-body no-padding m-t-0">
+                  <div class="col-md-12 no-padding">
+                    <form action="" class="ax-form">
+                      <div class="from-group col-md-2">
+                        <label class="control-label ax-color-black w-100-pre">Member Status</label>
+                        <select name="memberStatus" class="form-control" [(ngModel)]="reports.memberStatus">
+                          <option value="Active">Active</option>
+                          <option value="Inactive">Inactive</option>
+                          <option value="Both">Both</option>
+                        </select>
+                      </div>
+                      <div class="form-group col-md-2">
+                        <label class="control-label ax-color-black">Current Points</label>
+                        <div class="clearfix"></div>
+                        <div class="col-md-6 p-0">
+                          <input type="number" class="form-control" name="cpointstart" [(ngModel)]="cpointstart" />
+                        </div>
+                        <div class="col-md-6 p-0">
+                          <input type="number" class="form-control" name="cpointend" [(ngModel)]="cpointend" />
+                        </div>
+                      </div>
+                      <div class="form-group col-md-2">
+                        <label class="control-label ax-color-black">Paid Points</label>
+                        <div class="clearfix"></div>
+                        <div class="col-md-6 p-0">
+                          <input type="number" class="form-control" name="ppointstart" [(ngModel)]="ppointstart" />
+                        </div>
+                        <div class="col-md-6 p-0">
+                          <input type="number" class="form-control" name="ppointend" [(ngModel)]="ppointend" />
+                        </div>
+                      </div>
+                      <div class="form-group col-md-2">
+                        <label class="control-label ax-color-black w-100-pre">
+                          Total Points
+                          <span class="pull-right">
+                            <div class="checkbox checkbox-primary no-margin">
+                              <input id="pointsMismatch" type="checkbox" name="pointsMismatch"
+                                [(ngModel)]="reports.pointsMismatch">
+                              <label for="pointsMismatch">Show Incorrect Points</label>
+                            </div>
+                          </span>
+                        </label>
+                        <div class="clearfix"></div>
+                        <div class="col-md-6 p-0">
+                          <input type="number" class="form-control" name="tpointstart" [(ngModel)]="tpointstart" />
+                        </div>
+                        <div class="col-md-6 p-0">
+                          <input type="number" class="form-control" name="tpointend" [(ngModel)]="tpointend" />
+                        </div>
+                      </div>
+                      <div class="clearfix"></div>
+                      <hr class="m-b-20 m-t-15">
+                      <div class="col-md-12 no-padding text-right">
+                        <a class="btn btn-cocktail" (click)="resetFilter()">Reset</a>&#160;
+                        <button class="btn btn-ocean" (click)="submitFilter()">Show Report</button>
+                      </div>
+                    </form>
+                  </div>
+                  <div class="clearfix"></div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div style="position: relative;min-height: 50px">
+            <ng-container *ngIf="data && data.length > 0">
+              <div class="btn-group">
+                <a class="btn btn-ocean btn-xs waves-effect btn-square m-l--1" id="deleteAlert"
+                  (click)="exportToExcel(grid)">
+                  Export to Excel
+                </a>
+                <a class="btn btn-cocktail btn-xs waves-effect btn-square" (click)="exportToPDF(grid)">
+                  Export to PDF
+                </a>
+              </div>
+              <kendo-grid #grid="kendoGrid" [data]="gridData" [pageSize]="state.take" [skip]="state.skip"
+                [sort]="state.sort" [group]="state.group" [sortable]="{ mode: 'multiple' }" [height]="'auto'"
+                [pageable]="true" [scrollable]="false" (dataStateChange)="dataStateChange($event)">
+                <kendo-grid-column field="respId" title="Member Id" width="100">
+                </kendo-grid-column>
+                <kendo-grid-column field="firstName" title="First Name" width="150">
+                </kendo-grid-column>
+                <kendo-grid-column field="lastName" title="Last Name" width="150">
+                </kendo-grid-column>
+                <kendo-grid-column field="currentPoints" title="Current Points" width="120"
+                  [headerClass]="'text-right-imp'">
+                  <ng-template kendoGridCellTemplate let-dataItem>
+                    <div class="text-right-imp">
+                      {{ dataItem.currentPoints }}
+                    </div>
+                  </ng-template>
+                </kendo-grid-column>
+                <kendo-grid-column field="paidPoints" title="Paid Points" width="120" [headerClass]="'text-right-imp'">
+                  <ng-template kendoGridCellTemplate let-dataItem>
+                    <div class="text-right-imp">
+                      {{ dataItem.paidPoints }}
+                    </div>
+                  </ng-template>
+                </kendo-grid-column>
+                <kendo-grid-column field="totalPoints" title="Total Points" width="120"
+                  [headerClass]="'text-right-imp'">
+                  <ng-template kendoGridCellTemplate let-dataItem>
+                    <div class="text-right-imp">
+                      {{ dataItem.totalPoints }}
+                    </div>
+                  </ng-template>
+                </kendo-grid-column>
+                <kendo-grid-column></kendo-grid-column>
+                <kendo-grid-pdf fileName="MemberProfilePoint.pdf" paperSize="auto" [scale]="0.8" [repeatHeaders]="true"
+                  [allPages]="true" [margin]="{ top: '0.2cm', left: '0.2cm', right: '0.2cm', bottom: '0.2cm' }">
+                </kendo-grid-pdf>
+                <kendo-grid-excel [fetchData]="allData" fileName="MemberProfilePoint.xlsx"></kendo-grid-excel>
+              </kendo-grid>
+            </ng-container>
+            <div class="card ax-border m-b-0 m-t-20 p-all-15" *ngIf="isSubmitForm && data && data.length == 0">No data
+              available</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div> <!-- end container -->
+</div>

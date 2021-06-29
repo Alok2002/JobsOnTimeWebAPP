@@ -1,0 +1,25 @@
+<div class="tab-pane" id="loyalteeprograms">
+  <ng-container *ngIf="!isMyProfile">
+  <div class="newres-tab-title">
+    <h5 class="no-margin">Loyaltee Programs</h5>
+  </div>
+  <br>
+</ng-container>
+  <form>
+    <div class="no-padding-left" [class.col-md-2]="!isMyProfile" [class.col-md-12]="isMyProfile">
+      <div class="form-group has-feedback">
+        <label>Frequent Flyer Programmes</label>
+        <div class="clearfix"></div>
+        <div *ngFor="let lp of frequentflyers;let i = index" class="checkbox checkbox-primary pull-left res-check-margin w-100-pre">
+          <input name="flyer{{i}}" type="checkbox" [value]="lp.selected" class="form-control" [checked]="lp.selected" (change)="updateFreqFlyersDetails(i, $event)">
+          <label>{{lp.description}}</label>
+        </div>
+        <div class="clearfix"></div>
+      </div>
+    </div>
+    <div class="clearfix"></div>
+    <div class="no-padding text-right col-md-12 newres-bottom">
+      <button class="btn btn-success" (click)="updateSubmit()">Submit</button>
+    </div>
+  </form>
+</div>

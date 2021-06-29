@@ -1,0 +1,59 @@
+<div class="wrapper">
+  <div class="container">
+    <div class="row">
+      <div class="col-sm-12">
+        <ol class="breadcrumb breadcrumb-arrow bg-white bx-shadow">
+          <li>
+            <a [routerLink]="['/reshome']" class="home-breadcrumb" title="Home">
+              <i class="md md-home"></i>
+              <span class="d-none">Home</span>
+            </a>
+          </li>
+          <li><a>My Points</a></li>
+        </ol>
+      </div>
+
+      <div class="col-sm-12">
+        <div class="card-box user-res-payments" *ngIf="respondent">
+          <div class="col-sm-12 no-padding">
+            <form class="ax-form" role="form" #resPaymentForm="ngForm">
+              <ng-container *ngIf="respondent">
+                <div class="col-md-3 no-padding">
+                  <div class="form-group">
+                    <label class="control-label" for="CurrentPoints">Current Points</label>
+                    <input autocomplete="off" type="text" id="CurrentPoints" name="accumulatedPoints"
+                      [(ngModel)]="respondent.accumulatedPoints" readonly class="form-control">
+                  </div>
+
+                  <div class="form-group">
+                    <label class="control-label" for="PaidPoints">Paid Points</label>
+                    <input autocomplete="off" type="text" id="PaidPoints" name="paidPoints"
+                      [(ngModel)]="respondent.paidPoints" readonly class="form-control">
+                  </div>
+
+                  <div class="form-group">
+                    <label class="control-label" for="TotalPoints">Total Points</label>
+                    <input autocomplete="off" type="text" id="TotalPoints" name="totalPoints"
+                      [(ngModel)]="respondent.totalPoints" class="form-control" readonly>
+                  </div>
+
+                  <div class="card-box respondent-card-box m-t-15 m-b-0">
+                    <p tabindex="0">
+                      <!-- Once you have reached a total of 50 points, you are entitled to $50 EFT from Farron Research.
+                      Make sure you have filled out your Banking Details to receive the payment.  -->
+                      Once you have reached a total of 50 points, you are entitled to $50 EFT. Make sure you have filled
+                      out your Banking Details to receive the payment.
+                    </p>
+                  </div>
+                </div>
+              </ng-container>
+              <div class="clearfix"></div>
+            </form>
+            <div class="clearfix"></div>
+          </div>
+          <div class="clearfix"></div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

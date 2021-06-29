@@ -1,0 +1,93 @@
+<div class="tab-pane" id="serviceutilities">
+  <!-- <ng-container *ngIf="!isMyProfile">
+    <div class="newres-tab-title">
+      <h5 class="no-margin">Services & Utilities</h5>
+    </div>
+    <br>
+  </ng-container> -->
+
+  <div *ngIf="!isMyProfile" class="col-md-12 no-padding m-b-0 newres-bottom">
+    <div class="col-md-6 font-10 no-padding">
+      <h5 class="no-margin p-l-10" style="line-height: 34px">Services & Utilities</h5>
+    </div>
+    <div class="col-md-6 text-right no-padding">
+      <button (click)="updateSubmit()" class="btn waves-effect waves-light btn-md" [class.btn-ocean]="!isMyProfile"
+        [class.btn-basil]="isMyProfile">
+        Submit
+      </button>
+    </div>
+  </div>
+  <div class="clearfix"></div>
+  <br>
+
+  <div class="col-md-4 no-padding-left">
+    <div class="form-group">
+      <label class="control-label">Energy Providers</label>
+      <ng-container *ngFor="let ba of energyProvidersList; let i = index">
+        <div class="checkbox checkbox-primary pull-left res-check-margin w-100-pre">
+          <input type="checkbox" name="energyproviders{{i}}" id="energyproviders{{i}}" [(ngModel)]="ba.selected"
+            value="true">
+          <label class="control-label" for="energyproviders{{i}}">{{ba.description}}</label>
+        </div>
+      </ng-container>
+      <div class="clearfix"></div>
+    </div>
+  </div>
+
+  <div class="col-md-4 no-padding">
+    <div class="form-group">
+      <label class="control-label">Services</label>
+      <ng-container *ngFor="let ba of servicesTypeList; let i = index">
+        <div class="checkbox checkbox-primary pull-left res-check-margin w-100-pre">
+          <input type="checkbox" name="services{{i}}" id="services{{i}}" [(ngModel)]="ba.selected" value="true">
+          <label class="control-label" for="services{{i}}">{{ba.description}}</label>
+        </div>
+      </ng-container>
+      <div class="clearfix"></div>
+    </div>
+    <div class="form-group">
+      <label class="control-label">Solar</label>
+      <ng-container *ngFor="let ba of solarQuestionsList; let i = index">
+        <div class="checkbox checkbox-primary pull-left res-check-margin w-100-pre">
+          <input type="checkbox" name="solar{{i}}" id="solar{{i}}" [(ngModel)]="ba.selected" value="true">
+          <label class="control-label" for="solar{{i}}">{{ba.description}}</label>
+        </div>
+      </ng-container>
+      <div class="clearfix"></div>
+    </div>
+  </div>
+
+  <div class="clearfix"></div>
+  <div *ngIf="respondent" class="col-md-12 no-padding m-b-0 newres-bottom">
+    <!-- <div class="pull-left" *ngIf="!isMyProfile">
+        <button class="btn btn-cocktail waves-effect waves-light btn-md">
+          Send Reset Password Link
+        </button>
+      </div> -->
+    <div class="col-md-6 font-10 no-padding" style="line-height: 34px">
+      <ng-container>
+        <b>Created:</b>
+        <ng-container *ngIf="respondent.dateCreated">
+          {{respondent.dateCreated | date: 'dd-MM-yyyy'}} &#160;
+        </ng-container>
+        <ng-container *ngIf="!respondent.dateCreated">
+          {{today | date: 'dd-MM-yyyy'}} &#160;
+        </ng-container>
+        <b>Last Updated:</b>
+        <ng-container *ngIf="respondent.dateLastUpdated">
+          {{respondent.dateLastUpdated | date: 'dd-MM-yyyy'}}
+        </ng-container>
+        <ng-container *ngIf="!respondent.dateLastUpdated">
+          {{today | date: 'dd-MM-yyyy'}}
+        </ng-container>
+      </ng-container>
+    </div>
+    <div class="col-md-6 text-right no-padding">
+      <button (click)="updateSubmit()" class="btn waves-effect waves-light btn-md" [class.btn-ocean]="!isMyProfile"
+        [class.btn-basil]="isMyProfile">
+        Submit
+      </button>
+      <!-- <a *ngIf="isMyProfile" class="btn btn-cocktail m-l-5" (click)="gotoTop()">Skip</a> -->
+    </div>
+  </div>
+</div>

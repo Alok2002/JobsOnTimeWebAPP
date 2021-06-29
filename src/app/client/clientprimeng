@@ -1,0 +1,62 @@
+
+    updateSelectedRowData(event, data) {
+        if (event.target.checked) {
+            if (data == 0) {
+                this.clients.forEach(cl => {
+                    var index = this.selectedRowData.findIndex(sr => sr.id == cl.id);
+                    if (index < 0)
+                        this.selectedRowData.push(cl);
+                });
+            }
+            else {
+                this.selectedRowData.push(data);
+            }
+        }
+        else {
+            if (data == 0) {
+                this.clients.forEach(cl => {
+                    var index = this.selectedRowData.findIndex(sr => sr.id == cl.id);
+                    this.selectedRowData.splice(index, 1);
+                });
+            }
+            else {
+                var index = this.selectedRowData.findIndex(sr => sr.id == data.id);
+                if (index >= 0)
+                    this.selectedRowData.splice(index, 1);
+            }
+        }
+    }
+
+    checkSelectedRow(data) {
+        var ret = false;
+        if (data != 0) {
+            var index = this.selectedRowData.findIndex(sr => sr.id == data.id);
+            if (index >= 0)
+                ret = true;
+        }
+        else if (data == 0) {
+            ret = true;
+            this.clients.forEach(cl => {
+                var index = this.selectedRowData.findIndex(sr => sr.id == cl.id);
+                if (index < 0) ret = false;
+            })
+        }
+        return ret;
+    }
+
+        selectAll(e) {
+        if (e.target.checked) {
+            this.clients.forEach((item) => {
+                this.deleteItemIds.push(item.id);
+            });
+            this.isSelectAllItem = true;
+        }
+        else {
+            this.deleteItemIds = [];
+            this.isSelectAllItem = false;
+        }
+
+        for (var i = 0; i < this.clients.length; i++) {
+            this.selected[i] = e.target.checked;
+        }
+    }

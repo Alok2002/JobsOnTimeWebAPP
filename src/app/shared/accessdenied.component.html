@@ -1,0 +1,30 @@
+<div class="wrapper">
+  <div class="container">
+    <div class="row">
+      <!-- <div class="col-sm-12">
+        <ol class="breadcrumb breadcrumb-arrow bg-white box-card-shadow">
+          <li><a [routerLink]="['/dashboard']" class="home-breadcrumb"><i class="md md-home"></i></a></li>
+          <li><a>Access Denied</a></li>
+        </ol>
+      </div> -->
+      <div class="col-sm-12">
+        <div class="card-box">
+          <h3 class="text-left no-margin">
+            <i class="md md-lock-outline"></i>
+            <span class="text-danger"> Access Denied</span>
+            <!-- <ng-container *ngIf="securitydata == null || securitydata == ''">
+              Only staff with the appropriate security can access this feature!
+            </ng-container>
+            <ng-container *ngIf="securitydata != null && securitydata != ''">
+              <ng-container *ngFor="let err of errors">
+                {{err}} <br>
+              </ng-container>
+            </ng-container> -->
+          </h3>
+          <!--<h5>Only staff with the appropriate security can access this feature!</h5>-->
+          <h5 class="m-b-0">You don't have permission to access this page. Please contact system administrator.</h5>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

@@ -1,0 +1,164 @@
+<div class="no-padding home-bg" style="margin-bottom: -61px;">
+  <div class="home-bg-trans1">
+    <!-- Navigation Bar-->
+    <header id="topnav">
+      <div class="topbar-main">
+        <div class="container">
+          <!-- Logo container-->
+          <div class="logo">
+            <a class="logo" [title]="isFarronResearch ? 'Farron Research Logo' : 'Logo'">
+              <span class="hidden-xs"><img src="assets/images/fr-logo.png"
+                  [alt]="isFarronResearch ? 'Farron Research Logo' : 'Logo'"></span>
+              <span class="hidden-sm hidden-md hidden-lg">
+                <img src="assets/images/fr-only-logo.png" [alt]="isFarronResearch ? 'Farron Research Logo' : 'Logo'">
+              </span>
+            </a>
+          </div>
+          <!-- End Logo container-->
+          <div class="menu-extras">
+            <ul class="nav navbar-nav navbar-right pull-right ax-right-nav-btn">
+              <li>
+                <div class="input-group">
+                  <a class="btn btn-skyblue" [routerLink]="['/signup']">Join Our Panel</a>
+                </div>
+              </li>
+            </ul>
+          </div>
+        </div>
+      </div>
+      <!-- End topbar -->
+    </header>
+    <!-- End Navigation Bar-->
+    <!-- =======================
+    ===== START PAGE ======
+    ======================= -->
+
+    <div class="wrapper login-page-wrapper">
+      <div class="container min-width-100vw text-center">
+        <div class="row">
+          <!--<div class="col-sm-2"></div>-->
+          <div class="container" style="max-width: 1170px;">
+            <div class="pull-left">
+              <h3 style="color: #fff;line-height: 100px">Earn Cash & Rewards for Your Opinions</h3>
+            </div>
+            <div class="ax-login-panel pull-right">
+              <div class="col-md-12">
+                <div class="card-box text-center m-b-0">
+                  <img src="assets/images/fr-only-logo.png" class="ax-login-panel-logo">
+                  <h3 class="text-center" style="margin: 20px 0px;">
+                    <i class="fa fa-lock"></i> Secure Login
+                  </h3>
+
+                  <ul class="nav nav-tabs navtab-custom ax-nav-tabs">
+                    <li [class.active]="selectedTab == 'member'" style="width: 33.33%;">
+                      <a data-toggle="tab" aria-expanded="false"
+                        (click)="selectedTab = 'member'; newLoginUser(); storeLoginTabs('member')">
+                        <span class="hidden-xs1">Member</span>
+                      </a>
+                    </li>
+                    <li [class.active]="selectedTab == 'staff'" style="width: 33.33%;">
+                      <a data-toggle="tab" aria-expanded="false"
+                        (click)="selectedTab = 'staff'; newLoginUser(); storeLoginTabs('staff')">
+                        <span class="hidden-xs1">Staff</span>
+                      </a>
+                    </li>
+                    <li [class.active]="selectedTab == 'client'" style="width: 33.33%;">
+                      <a data-toggle="tab" aria-expanded="false"
+                        (click)="selectedTab = 'client'; newLoginUser(); storeLoginTabs('client')">
+                        <span class="hidden-xs1">Client</span>
+                      </a>
+                    </li>
+                  </ul>
+                  <div class="tab-content no-margin ax-tab-content">
+                    <div class="tab-pane active" id="clientaddform">
+                      <form class="form-horizontal ax-form" role="form" id="loginForm" #signInForm="ngForm">
+                        <div class="form-group" *ngIf="selectedTab == 'member'">
+                          <!--                        <label class="control-label w-100-pre">-->
+                          <!--                          <span [hidden]="emailModel.valid || !isSubmitForm">-->
+                          <!--                            <span class="text-danger pull-right" [hidden]="!emailModel.hasError('pattern')">Invalid Email</span>-->
+                          <!--                            <span class="text-danger pull-right" [hidden]="!emailModel.hasError('required')">Required</span>-->
+                          <!--                          </span>-->
+                          <!--                        </label>-->
+                          <input type="text" id="email" name="email" class="form-control"
+                            pattern="^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,10})+$"
+                            [class.invalid-field]="!emailModel.valid && isSubmitForm" (blur)="checkDuplicateUser()"
+                            placeholder="Email Address" [(ngModel)]="loginUser.emailAddress" #emailModel="ngModel"
+                            required autocomplete="off">
+                        </div>
+                        <div class="form-group" *ngIf="selectedTab != 'member'">
+                          <input type="text" id="username" name="username" class="form-control"
+                            [class.invalid-field]="!usernameModel.valid && isSubmitForm" placeholder="Username"
+                            [(ngModel)]="loginUser.userName" #usernameModel="ngModel" required autocomplete="off">
+                        </div>
+                        <div class="form-group" *ngIf="selectedTab == 'member' && isDuplicateUser">
+                          <input type="text" id="mobile" name="mobile" class="form-control"
+                            [class.invalid-field]="!mobileModel.valid && isSubmitForm" mask="0000 000 000"
+                            [pattern]="mobilePattern" placeholder="Mobile Number" [(ngModel)]="loginUser.mobileNo"
+                            #mobileModel="ngModel" required autocomplete="off">
+                        </div>
+                        <div class="form-group">
+                          <!--                        <label class="control-label w-100-pre">-->
+                          <!--                          <span [hidden]="passwordModel.valid || !isSubmitForm">-->
+                          <!--                            <span class="text-danger pull-right" [hidden]="!passwordModel.hasError('required')">Required</span>-->
+                          <!--                          </span>-->
+                          <!--                        </label>-->
+                          <input type="password" id="password" name="password" class="form-control"
+                            [class.invalid-field]="!passwordModel.valid && isSubmitForm" placeholder="Password"
+                            [(ngModel)]="loginUser.password" #passwordModel="ngModel" required autocomplete="off">
+                        </div>
+                        <!-- <div class="form-group col-md-12 no-padding"> -->
+                        <!-- <div class="checkbox checkbox-primary pull-left">
+                          <input id="checkbox2" type="checkbox">
+                          <label for="checkbox2">
+                            Remember me
+                          </label>
+                        </div> -->
+                        <a (click)="forgotPassword()"
+                          class="btn btn-link waves-effect waves-light btn-md pull-left p-r-0 ax-cursor-pointer p-l-0">
+                          Forgot your password?
+                        </a>
+                        <!-- </div> -->
+                        <!-- <div class="clearfix"></div> -->
+                        <!--<hr class="m-b-15 m-t-15">-->
+                        <div class="text-left">
+                          <button (click)="loginFormSubmit(signInForm)"
+                            class="btn btn-ocean waves-effect waves-light btn-md pull-right">
+                            Login
+                          </button>
+                        </div>
+                        <div class="text-center error-box" *ngIf="loginerrmsg">
+                          <b>{{loginerrmsg}}</b>
+                        </div>
+                        <div class="clearfix"></div>
+                      </form>
+                    </div>
+                  </div>
+                  <!--
+                <div class="clearfix"></div>
+                <h2 class="line-text"><span>or</span></h2>
+                <a href="signintype.html" class="btn btn-facebook btn-block">
+                  <i class="fa fa-facebook"></i>
+                  &nbsp;&nbsp;Login with Facebook
+                </a>
+                <h2 class="line-text"><span>or</span></h2>
+                <a href="signintype.html" class="btn btn-cocktail btn-block m-b-10" style="margin-top: 3px">
+                  <i class="fa fa-google-plus"></i>
+                  &nbsp;&nbsp;Login with Google+
+                </a>
+                </div>-->
+                </div>
+              </div>
+              <!--<div class="col-sm-2"></div>-->
+            </div>
+          </div>
+          <br>
+          <br>
+          <br>
+          <br>
+          <!-- Footer -->
+          <!-- End Footer -->
+        </div> <!-- end container -->
+      </div>
+    </div>
+  </div>
+</div>

@@ -1,0 +1,35 @@
+#topnav .navigation-menu>li>a:hover,
+#topnav .navigation-menu>li>a:hover i,
+#topnav .navigation-menu>li>a:active,
+#topnav .navigation-menu>li>a:active i,
+#topnav .navigation-menu>li>a:focus,
+#topnav .navigation-menu>li>a:focus i,
+#topnav .has-submenu.active a,
+#topnav .has-submenu.active a i,
+#topnav .has-submenu.active .submenu li.active>a,
+#topnav .navigation-menu>li.has-submenu.open>a,
+#topnav .navigation-menu>li .submenu li a:hover,
+#topnav .navigation-menu>li:hover a,
+#topnav .navigation-menu>li:hover a i {
+  color: #0372cc;
+}
+
+#topnav .navigation-menu>li .submenu li a:hover,
+#topnav .navigation-menu>li .submenu li a:focus,
+#topnav .navigation-menu>li>a:hover,
+#topnav .navigation-menu>li>a:active,
+#topnav .navigation-menu>li>a:focus {
+  color: #0372cc
+}
+
+a:focus,
+.btn:focus {
+  outline: 5px auto #0372cc !important;
+}
+
+#topnav .navigation-menu>li.has-submenu:focus>.submenu,
+#topnav .navigation-menu>li.has-submenu:focus-within>.submenu {
+  visibility: visible;
+  opacity: 1;
+  margin-top: 0;
+}

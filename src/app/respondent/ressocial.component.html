@@ -1,0 +1,255 @@
+<div class="tab-pane" id="vehicledetails">
+  <!-- <ng-container *ngIf="!isMyProfile">
+    <div class="newres-tab-title">
+      <h5 class="no-margin">Social</h5>
+    </div>
+    <br>
+  </ng-container> -->
+
+  <div *ngIf="!isMyProfile" class="col-md-12 no-padding m-b-0 newres-bottom">
+    <div class="col-md-6 font-10 no-padding">
+      <h5 class="no-margin p-l-10" style="line-height: 34px">Social</h5>
+    </div>
+    <div class="col-md-6 text-right no-padding">
+      <button (click)="updateSubmit()" class="btn waves-effect waves-light btn-md" [class.btn-ocean]="!isMyProfile"
+        [class.btn-basil]="isMyProfile">
+        Submit
+      </button>
+    </div>
+  </div>
+  <div class="clearfix"></div>
+  <br>
+  <ng-container *ngIf="!isLoading">
+    <div class="col-md-3 no-padding-left">
+      <div class="form-group">
+        <label class="control-label">Alcohol Retailers</label>
+        <ng-container *ngFor="let ba of alcoholRetailersList; let i = index">
+          <div class="checkbox checkbox-primary pull-left res-check-margin w-100-pre">
+            <input type="checkbox" name="alcoholretailers{{i}}" id="alcoholretailers{{i}}" [(ngModel)]="ba.selected"
+              value="true">
+            <label class="control-label" for="alcoholretailers{{i}}">{{ba.description}}</label>
+          </div>
+        </ng-container>
+        <div class="clearfix"></div>
+      </div>
+      <div class="form-group">
+        <label class="control-label panel-member-heading-label">Alcohol Drinks</label>
+        <ng-container *ngFor="let ba of drinkTypeList; let i = index">
+          <div class="checkbox checkbox-primary pull-left res-check-margin w-100-pre">
+            <input type="checkbox" name="alcoholdrinks{{i}}" id="alcoholdrinks{{i}}" [(ngModel)]="ba.selected"
+              value="true">
+            <label class="control-label" for="alcoholdrinks{{i}}">{{ba.description}}</label>
+          </div>
+        </ng-container>
+        <div class="clearfix"></div>
+      </div>
+      <div class="form-group">
+        <label class="control-label panel-member-heading-label">Non Alcoholic Drinks</label>
+        <ng-container *ngFor="let ba of nonAlcoholicDrinksList; let i = index">
+          <div class="checkbox checkbox-primary pull-left res-check-margin w-100-pre">
+            <input type="checkbox" name="nonalcoholicdrinks{{i}}" id="nonalcoholicdrinks{{i}}" [(ngModel)]="ba.selected"
+              value="true">
+            <label class="control-label" for="nonalcoholicdrinks{{i}}">{{ba.description}}</label>
+          </div>
+        </ng-container>
+        <div class="clearfix"></div>
+      </div>
+      <div class="form-group">
+        <label class="control-label panel-member-heading-label">Alcohol Habits</label>
+        <ng-container *ngFor="let ba of alcoholHabitsList; let i = index">
+          <div class="checkbox checkbox-primary pull-left res-check-margin w-100-pre">
+            <input type="checkbox" name="alcoholhabits{{i}}" id="alcoholhabits{{i}}" [(ngModel)]="ba.selected"
+              value="true">
+            <label class="control-label" for="alcoholhabits{{i}}">{{ba.description}}</label>
+          </div>
+        </ng-container>
+        <div class="clearfix"></div>
+      </div>
+    </div>
+
+    <div class="col-md-3 no-padding">
+      <div class="form-group">
+        <label class="control-label">Food Choices</label>
+        <ng-container *ngFor="let ba of foodChoicesList; let i = index">
+          <div class="checkbox checkbox-primary pull-left res-check-margin w-100-pre">
+            <input type="checkbox" name="foodchoices{{i}}" id="foodchoices{{i}}" [(ngModel)]="ba.selected" value="true">
+            <label class="control-label" for="foodchoices{{i}}">{{ba.description}}</label>
+          </div>
+        </ng-container>
+        <div class="clearfix"></div>
+      </div>
+      <div class="form-group">
+        <label class="control-label panel-member-heading-label">Gaming Choices</label>
+        <ng-container *ngFor="let ba of gamingChoicesList; let i = index">
+          <div class="checkbox checkbox-primary pull-left res-check-margin w-100-pre">
+            <input type="checkbox" name="gamingchoices{{i}}" id="gamingchoices{{i}}" [(ngModel)]="ba.selected"
+              value="true">
+            <label class="control-label" for="gamingchoices{{i}}">{{ba.description}}</label>
+          </div>
+        </ng-container>
+        <div class="clearfix"></div>
+      </div>
+      <div class="form-group">
+        <label class="control-label panel-member-heading-label">Gaming Websites</label>
+        <ng-container *ngFor="let ba of gamingWebsitesList; let i = index">
+          <div class="checkbox checkbox-primary pull-left res-check-margin w-100-pre">
+            <input type="checkbox" name="gamingwebsites{{i}}" id="gamingwebsites{{i}}" [(ngModel)]="ba.selected"
+              value="true">
+            <label class="control-label" for="gamingwebsites{{i}}">{{ba.description}}</label>
+          </div>
+        </ng-container>
+        <div class="clearfix"></div>
+      </div>
+      <div class="form-group">
+        <label class="control-label panel-member-heading-label">Shopping Retailers</label>
+        <ng-container *ngFor="let ba of shoppingRetailersList; let i = index">
+          <div class="checkbox checkbox-primary pull-left res-check-margin w-100-pre">
+            <input type="checkbox" name="shoppingretailers{{i}}" id="shoppingretailers{{i}}" [(ngModel)]="ba.selected"
+              value="true">
+            <label class="control-label" for="shoppingretailers{{i}}">{{ba.description}}</label>
+          </div>
+        </ng-container>
+        <div class="clearfix"></div>
+      </div>
+      <div class="form-group">
+        <label class="control-label panel-member-heading-label">Sports Watched</label>
+        <ng-container *ngFor="let ba of watchedSportsList; let i = index">
+          <div class="checkbox checkbox-primary pull-left res-check-margin w-100-pre">
+            <input type="checkbox" name="sportswatched{{i}}" id="sportswatched{{i}}" [(ngModel)]="ba.selected"
+              value="true">
+            <label class="control-label" for="sportswatched{{i}}">{{ba.description}}</label>
+          </div>
+        </ng-container>
+        <div class="clearfix"></div>
+      </div>
+      <div class="form-group">
+        <label class="control-label panel-member-heading-label">Hobbies</label>
+        <ng-container *ngFor="let ba of hobbiesList; let i = index">
+          <div class="checkbox checkbox-primary pull-left res-check-margin w-100-pre">
+            <input type="checkbox" name="hobbies{{i}}" id="hobbies{{i}}" [(ngModel)]="ba.selected" value="true">
+            <label class="control-label" for="hobbies{{i}}">{{ba.description}}</label>
+          </div>
+        </ng-container>
+        <div class="clearfix"></div>
+      </div>
+    </div>
+
+    <div class="col-md-3 no-padding-right">
+      <div class="form-group">
+        <label class="control-label">Pets</label>
+        <ng-container *ngFor="let ba of petsList; let i = index">
+          <div class="checkbox checkbox-primary pull-left res-check-margin w-100-pre">
+            <input type="checkbox" name="pets{{i}}" id="pets{{i}}" [(ngModel)]="ba.selected" value="true">
+            <label class="control-label" for="pets{{i}}">{{ba.description}}</label>
+          </div>
+        </ng-container>
+        <div class="clearfix"></div>
+      </div>
+      <div class="form-group">
+        <label class="control-label panel-member-heading-label">General Products</label>
+        <ng-container *ngFor="let ba of generalProductList; let i = index">
+          <div class="checkbox checkbox-primary pull-left res-check-margin w-100-pre">
+            <input type="checkbox" name="generalproducts{{i}}" id="generalproducts{{i}}" [(ngModel)]="ba.selected"
+              value="true">
+            <label class="control-label" for="generalproducts{{i}}">{{ba.description}}</label>
+          </div>
+        </ng-container>
+        <div class="clearfix"></div>
+      </div>
+
+      <div class="form-group">
+        <label class="control-label panel-member-heading-label">Sports Played</label>
+        <ng-container *ngFor="let ba of sportsList; let i = index">
+          <div class="checkbox checkbox-primary pull-left res-check-margin w-100-pre">
+            <input type="checkbox" name="sportsplayed{{i}}" id="sportsplayed{{i}}" [(ngModel)]="ba.selected"
+              value="true">
+            <label class="control-label" for="sportsplayed{{i}}">{{ba.description}}</label>
+          </div>
+        </ng-container>
+        <div class="clearfix"></div>
+      </div>
+    </div>
+
+    <div class="col-md-3">
+      <div class="form-group">
+        <label class="control-label panel-member-heading-label">Cigarette Frequency</label>
+        <ng-container *ngFor="let ba of cigaretteFrequencyList; let i = index">
+          <div class="checkbox checkbox-primary pull-left res-check-margin w-100-pre">
+            <input type="checkbox" name="cigarettefrequency{{i}}" id="cigarettefrequency{{i}}"
+              (change)="updateCigaretteFrequencyList(ba)" [checked]="ba.selected" value="true">
+            <label class="control-label" for="cigarettefrequency{{i}}">{{ba.description}}</label>
+          </div>
+        </ng-container>
+        <div class="clearfix"></div>
+      </div>
+      <ng-container *ngIf="checkIDontSmoke()">
+        <div class="form-group">
+          <label class="control-label panel-member-heading-label">Cigarette Brands</label>
+          <ng-container *ngFor="let ba of smokeBrandList; let i = index">
+            <div class="checkbox checkbox-primary pull-left res-check-margin w-100-pre">
+              <input type="checkbox" name="cigarettebrands{{i}}" id="cigarettebrands{{i}}" [(ngModel)]="ba.selected"
+                value="true">
+              <label class="control-label" for="cigarettebrands{{i}}">{{ba.description}}</label>
+            </div>
+          </ng-container>
+          <div class="clearfix"></div>
+        </div>
+        <div class="form-group">
+          <label class="control-label panel-member-heading-label">Quit Methods</label>
+          <ng-container *ngFor="let ba of smokeQuitMethodList; let i = index">
+            <div class="checkbox checkbox-primary pull-left res-check-margin w-100-pre">
+              <input type="checkbox" name="quitmethods{{i}}" id="quitmethods{{i}}" [(ngModel)]="ba.selected"
+                value="true">
+              <label class="control-label" for="quitmethods{{i}}">{{ba.description}}</label>
+            </div>
+          </ng-container>
+          <div class="clearfix"></div>
+        </div>
+        <div class="form-group">
+          <label class="control-label panel-member-heading-label">Nicotine Replacements</label>
+          <ng-container *ngFor="let ba of smokeNRTTypeList; let i = index">
+            <div class="checkbox checkbox-primary pull-left res-check-margin w-100-pre">
+              <input type="checkbox" name="nicotinereplacements{{i}}" id="nicotinereplacements{{i}}"
+                [(ngModel)]="ba.selected" value="true">
+              <label class="control-label" for="nicotinereplacements{{i}}">{{ba.description}}</label>
+            </div>
+          </ng-container>
+          <div class="clearfix"></div>
+        </div>
+      </ng-container>
+    </div>
+  </ng-container>
+  <div class="clearfix"></div>
+  <div *ngIf="respondent" class="col-md-12 no-padding m-b-0 newres-bottom">
+    <!-- <div class="pull-left" *ngIf="!isMyProfile">
+            <button class="btn btn-cocktail waves-effect waves-light btn-md">
+              Send Reset Password Link
+            </button>
+          </div> -->
+    <div class="col-md-6 font-10 no-padding" style="line-height: 34px">
+      <ng-container>
+        <b>Created:</b>
+        <ng-container *ngIf="respondent.dateCreated">
+          {{respondent.dateCreated | date: 'dd-MM-yyyy'}} &#160;
+        </ng-container>
+        <ng-container *ngIf="!respondent.dateCreated">
+          {{today | date: 'dd-MM-yyyy'}} &#160;
+        </ng-container>
+        <b>Last Updated:</b>
+        <ng-container *ngIf="respondent.dateLastUpdated">
+          {{respondent.dateLastUpdated | date: 'dd-MM-yyyy'}}
+        </ng-container>
+        <ng-container *ngIf="!respondent.dateLastUpdated">
+          {{today | date: 'dd-MM-yyyy'}}
+        </ng-container>
+      </ng-container>
+    </div>
+    <div class="col-md-6 text-right no-padding">
+      <button (click)="updateSubmit()" class="btn waves-effect waves-light btn-md" [class.btn-ocean]="!isMyProfile"
+        [class.btn-basil]="isMyProfile">
+        Submit
+      </button>
+      <!-- <a *ngIf="isMyProfile" class="btn btn-cocktail m-l-5" (click)="gotoTop()">Skip</a> -->
+    </div>
+  </div>
+</div>

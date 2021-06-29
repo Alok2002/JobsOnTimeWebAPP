@@ -1,0 +1,339 @@
+<ng-container *ngIf="isShowPage">
+
+  <div class="no-padding home-bg" style="margin-bottom: -61px;">
+    <div class="home-bg-trans1">
+      <!-- Navigation Bar-->
+      <header id="topnav">
+        <div class="topbar-main" style="height:60px">
+          <div class="container">
+            <!-- Logo container-->
+            <div class="logo">
+              <a class="logo" [title]="isFarronResearch ? 'Farron Research Logo' : 'Logo'">
+                <span class="hidden-xs"><img src="assets/images/fr-logo.png"
+                    [alt]="isFarronResearch ? 'Farron Research Logo' : 'Logo'"></span>
+                <span class="hidden-sm hidden-md hidden-lg">
+                  <img src="assets/images/fr-only-logo.png" [alt]="isFarronResearch ? 'Farron Research Logo' : 'Logo'">
+                </span>
+              </a>
+            </div>
+            <!-- End Logo container-->
+            <div class="menu-extras">
+              <ul class="nav navbar-nav navbar-right pull-right ax-right-nav-btn">
+                <li>
+                  <div class="input-group">
+                    <!-- <a class="btn btn-skyblue" [routerLink]="['/signup']">Join Our Panel</a> -->
+                  </div>
+                </li>
+              </ul>
+            </div>
+          </div>
+        </div>
+        <!-- End topbar -->
+      </header>
+      <!-- End Navigation Bar-->
+      <!-- =======================
+      ===== START PAGE ======
+      ======================= -->
+
+      <div class="wrapper login-page-wrapper">
+        <div class="container min-width-100vw text-center">
+          <div class="row">
+            <!--<div class="col-sm-2"></div>-->
+            <div class="ax-login-panel" style="max-width: 850px">
+              <h1 class="login-card-header">
+                <i class="fa fa-lock"></i> &#160;Secure Login
+              </h1>
+              <div class="col-md-12">
+                <div class="card-box m-b-0 login-card">
+                  <!-- <img src="assets/images/fr-only-logo.png" class="ax-login-panel-logo"> -->
+
+                  <div class="col-md-6 no-padding-left login-card-left no-padding-mob"
+                    style="font-size: 12px;padding-right: 30px;">
+                    <!-- <h4 class="text-center" style="margin-top: 0;margin-bottom: 20px;"> -->
+                    <!-- New to Farron Research? -->
+                    <span [innerHTML]="welcomeCopies?.signInPageText1 | safeHtml"></span>
+                    <!-- </h4> -->
+                    <p class="text-justify" style="margin-bottom: 20px;">
+                      <span [innerHTML]="welcomeCopies?.signInPageText2 | safeHtml"></span>
+                      <!-- We are Australia’s leading provider
+                      of research recruitment services to both local & international organisations wanting
+                      to implement research projects. <b>Join Now</b> into one of our panels listed below and get
+                      paid for your valuable opinion. -->
+                    </p>
+                    <p class="m-b-15">
+                      <a *ngIf="surveyRedirecJobId" [routerLink]="['/signup', surveyRedirecJobId]"
+                        class="btn btn-skyblue waves-effect waves-light btn-md btn-block font-16">Join
+                        Our Consumer Panel</a>
+                      <a *ngIf="!surveyRedirecJobId" [routerLink]="['/signup']"
+                        class="btn btn-skyblue waves-effect waves-light btn-md btn-block font-16">Join
+                        Our Consumer Panel</a>
+                    </p>
+                    <p class="m-b-15">
+                      <a *ngIf="isBusinessPanelAllowed" [routerLink]="['/signup-business']"
+                        class="btn btn-warning waves-effect waves-light btn-md btn-block font-16">Join
+                        Our Business Panel</a>
+                    </p>
+                    <p class="m-b-0">
+                      <a *ngIf="isDisabilityPanelAllowed" [routerLink]="['/signup-impairment']"
+                        class="btn btn-basil waves-effect waves-light btn-md btn-block font-16">Join
+                        Our Disability Panel</a>
+                    </p>
+                  </div>
+
+                  <div class="col-md-6 no-padding-right no-padding-mob m-t-30-mob no-border-mob"
+                    style="padding-left: 30px; border-left: 1px solid #e6e7e8">
+                    <h4 class="text-center" style="margin-top: 0;margin-bottom: 20px;">Existing Member
+                      Login</h4>
+                    <ng-container *ngIf="!isShow2FAOTP && !isShowClientOtpForm">
+                      <ul class="nav nav-tabs navtab-custom ax-nav-tabs text-center">
+                        <li [class.active]="selectedTab == 'Respondent'" style="width: 33.33%;">
+                          <a data-toggle="tab" aria-expanded="false"
+                            (click)="selectedTab = 'Respondent'; newLoginUser(); storeLoginTabs('Respondent'); loginerrmsg = null">
+                            <span class="hidden-xs1">Member</span>
+                          </a>
+                        </li>
+                        <li [class.active]="selectedTab == 'Staff'" style="width: 33.33%;">
+                          <a data-toggle="tab" aria-expanded="false"
+                            (click)="selectedTab = 'Staff'; newLoginUser(); storeLoginTabs('Staff'); loginerrmsg = null">
+                            <span class="hidden-xs1">Staff</span>
+                          </a>
+                        </li>
+                        <li [class.active]="selectedTab == 'Client'" style="width: 33.33%;">
+                          <a data-toggle="tab" aria-expanded="false"
+                            (click)="selectedTab = 'Client'; newLoginUser(); storeLoginTabs('Client'); loginerrmsg = null">
+                            <span class="hidden-xs1">Client</span>
+                          </a>
+                        </li>
+                      </ul>
+                      <div class="tab-content no-margin ax-tab-content">
+                        <div class="tab-pane active" id="clientaddform">
+                          <form autocomplete="nope" role="presentation" class="form-horizontal ax-form" role="form"
+                            id="loginForm" #signInForm="ngForm">
+                            <div class="form-group" *ngIf="selectedTab == 'Respondent' || selectedTab == 'Client'">
+                              <!--                        <label class="control-label w-100-pre">-->
+                              <!--                          <span [hidden]="emailModel.valid || !isSubmitForm">-->
+                              <!--                            <span class="text-danger pull-right" [hidden]="!emailModel.hasError('pattern')">Invalid Email</span>-->
+                              <!--                            <span class="text-danger pull-right" [hidden]="!emailModel.hasError('required')">Required</span>-->
+                              <!--                          </span>-->
+                              <!--                        </label>-->
+                              <label for="emailAddress" class="d-none">Email Address</label>
+                              <input type="text" id="emailAddress" name="abc" class="form-control"
+                                [class.invalid-field]="!emailModel.valid && isSubmitForm" (blur)="checkDuplicateUser()"
+                                [placeholder]="selectedTab == 'Respondent' ? 'Email Address / Mobile' : 'Email Address'"
+                                [(ngModel)]="loginUser.emailAddress" #emailModel="ngModel" required autocomplete="off"
+                                role="presentation"
+                                [attr.for]="selectedTab == 'Respondent' ? 'Email Address / Mobile' : 'Email Address'">
+                            </div>
+                            <div class="form-group" *ngIf="selectedTab != 'Respondent' && selectedTab != 'Client'">
+                              <label for="username" class="d-none">Username</label>
+                              <input type="text" id="username" name="username" class="form-control"
+                                [class.invalid-field]="!usernameModel.valid && isSubmitForm" placeholder="Username"
+                                [(ngModel)]="loginUser.userName" #usernameModel="ngModel" required autocomplete="off"
+                                [attr.for]="'Username'">
+                            </div>
+                            <div class="form-group">
+                              <!--                        <label class="control-label w-100-pre">-->
+                              <!--                          <span [hidden]="passwordModel.valid || !isSubmitForm">-->
+                              <!--                            <span class="text-danger pull-right" [hidden]="!passwordModel.hasError('required')">Required</span>-->
+                              <!--                          </span>-->
+                              <!--                        </label>-->
+                              <label for="password" class="d-none">Password</label>
+                              <input type="password" id="password" name="password" class="form-control"
+                                [class.invalid-field]="!passwordModel.valid && isSubmitForm" placeholder="Password"
+                                [(ngModel)]="loginUser.password" #passwordModel="ngModel" required autocomplete="off"
+                                [attr.for]="'Password'">
+                            </div>
+
+                            <!-- *ngIf="selectedTab == 'Respondent' && isDuplicateUser && loginUser.emailAddress" -->
+                            <div class="form-group"
+                              *ngIf="selectedTab == 'Respondent' && isDuplicateUser && loginUser.emailAddress">
+                              <!-- <input type="text" id="mobile" name="mobile" class="form-control" [class.invalid-field]="!mobileModel.valid && isSubmitForm"
+                              mask="0000 000 000" pattern=".{10,10}" placeholder="Mobile Number" [(ngModel)]="loginUser.mobileNo"
+                              #mobileModel="ngModel" required autocomplete="off"> -->
+                              <div class="col-md-6 no-padding m-b-15">
+                                <label for="firstname" class="d-none">First Name</label>
+                                <input type="text" class="form-control" name="firstname"
+                                  [(ngModel)]="loginUser.firstName" placeholder="First Name" required
+                                  [class.invalid-field]="!firstNameModel.valid && isSubmitForm"
+                                  #firstNameModel="ngModel" for="First Name" id="firstname">
+                              </div>
+                              <div class="col-md-6 no-padding">
+                                <label for="lastname" class="d-none">Last Name</label>
+                                <input type="text" class="form-control" name="lastname" [(ngModel)]="loginUser.lastName"
+                                  placeholder="Last Name" required
+                                  [class.invalid-field]="!lastNameModel.valid && isSubmitForm" #lastNameModel="ngModel"
+                                  for="Last Name" id="lastname">
+                              </div>
+                            </div>
+
+                            <!-- <div class="form-group col-md-12 no-padding"> -->
+                            <!-- <div class="checkbox checkbox-primary pull-left">
+                            <input id="checkbox2" type="checkbox">
+                            <label for="checkbox2">
+                              Remember me
+                            </label>
+                          </div> -->
+                            <a (click)="forgotPassword()" href="javascript:;"
+                              class="btn btn-link waves-effect waves-light btn-md pull-left p-r-0 ax-cursor-pointer p-l-0">
+                              Forgot your password?
+                            </a>
+                            <!-- </div> -->
+                            <!-- <div class="clearfix"></div> -->
+                            <!--<hr class="m-b-15 m-t-15">-->
+
+                            <div class="text-left">
+                              <span class="pull-right">
+                                <button (click)="loginFormSubmit(signInForm)"
+                                  class="btn btn-basil waves-effect waves-light btn-md">
+                                  Login
+                                </button>
+                              </span>
+                            </div>
+                            <div class="clearfix"></div>
+                            <div tabindex="0" class="text-center error-box" *ngIf="loginerrmsg">
+                              <b>{{loginerrmsg}}</b>
+                            </div>
+                            <div class="clearfix"></div>
+                          </form>
+                        </div>
+                      </div>
+                    </ng-container>
+
+                    <ng-container *ngIf="isShow2FAOTP">
+                      <ul class="nav nav-tabs navtab-custom ax-nav-tabs text-center">
+                        <li style="width: 100%;">
+                          <a data-toggle="tab" aria-expanded="false" (click)="loginerrmsg = null">
+                            <span class="hidden-xs1">Enter code from Authenticator App</span>
+                          </a>
+                        </li>
+                      </ul>
+                      <div class="tab-content no-margin ax-tab-content">
+                        <div class="tab-pane active" id="clientaddform">
+                          <form #faForm="ngForm">
+                            <div class="form-group">
+                              <ng-otp-input #show2FAOTP (onInputChange)="onOtpChange($event)"
+                                [config]="{length:6,inputClass:'form-control d-inline-block otp-input',allowNumbersOnly: true}"></ng-otp-input>
+                            </div>
+                            <div class="text-right">
+                              <button class="btn btn-cocktail waves-effect waves-light btn-md"
+                                (click)="backtoStaffForm()">
+                                Back
+                              </button>&#160;
+                              <button (click)="clear2FAOTP()" class="btn btn-warning waves-effect waves-light btn-md">
+                                Clear
+                              </button>&#160;
+                              <button (click)="validateTwoFactorPIN(faForm)"
+                                class="btn btn-basil waves-effect waves-light btn-md">
+                                Continue
+                              </button>
+                            </div>
+                            <div class="clearfix"></div>
+                            <div tabindex="0" class="text-center" style="height: 30px;" [class.error-box]="loginerrmsg || otpError">
+                              <ng-container *ngIf="loginerrmsg || otpError">
+                                <b>{{loginerrmsg}}</b>
+                                <b *ngIf="otpError">{{otpError}}</b>
+                              </ng-container>
+                            </div>
+                            <div class="clearfix"></div>
+                          </form>
+                        </div>
+                      </div>
+                    </ng-container>
+
+                    <ng-container *ngIf="isShowClientOtpForm">
+                      <ul class="nav nav-tabs navtab-custom ax-nav-tabs text-center">
+                        <li style="width: 100%;">
+                          <a data-toggle="tab" aria-expanded="false" (click)="loginerrmsg = null">
+                            <span class="hidden-xs1">Enter OTP sent to you mobile</span>
+                          </a>
+                        </li>
+                      </ul>
+                      <div class="tab-content no-margin ax-tab-content">
+                        <div class="tab-pane active" id="clientaddform">
+                          <form #otpform="ngForm">
+                            <div class="form-group">
+                              <ng-otp-input #showClientOTP (onInputChange)="onClientOtpChange($event)"
+                                [config]="{length:6,inputClass:'form-control d-inline-block otp-input',allowNumbersOnly: true}"></ng-otp-input>
+                            </div>
+                            <div class="text-right">
+                              <button class="btn btn-cocktail waves-effect waves-light btn-md"
+                                (click)="backtoClientLogin()">
+                                Back
+                              </button>&#160;
+                              <button (click)="clearClientOTP()"
+                                class="btn btn-warning waves-effect waves-light btn-md">
+                                Clear
+                              </button>&#160;
+                              <a class="btn btn-ocean waves-effect waves-light btn-md"
+                                (click)="createClientLoginOTP(client.id, true);loginerrmsg = null">Resend</a>&#160;
+                              <button (click)="validateClientLoginOTP(faForm)"
+                                class="btn btn-basil waves-effect waves-light btn-md">
+                                Continue
+                              </button>
+                            </div>
+                            <div class="clearfix"></div>
+                            <div tabindex="0" class="text-center" style="height: 30px;" [class.error-box]="loginerrmsg || otpError">
+                              <ng-container *ngIf="loginerrmsg || otpError">
+                                <b>{{loginerrmsg}}</b>
+                                <b *ngIf="otpError">{{otpError}}</b>
+                              </ng-container>
+                            </div>
+                            <div class="clearfix"></div>
+                          </form>
+                        </div>
+                      </div>
+                    </ng-container>
+                  </div>
+                  <div class="clearfix"></div>
+                  <!--
+                  <div class="clearfix"></div>
+                  <h2 class="line-text"><span>or</span></h2>
+                  <a href="signintype.html" class="btn btn-facebook btn-block">
+                    <i class="fa fa-facebook"></i>
+                    &nbsp;&nbsp;Login with Facebook
+                  </a>
+                  <h2 class="line-text"><span>or</span></h2>
+                  <a href="signintype.html" class="btn btn-cocktail btn-block m-b-10" style="margin-top: 3px">
+                    <i class="fa fa-google-plus"></i>
+                    &nbsp;&nbsp;Login with Google+
+                  </a>
+                  </div>-->
+                </div>
+              </div>
+              <!--<div class="col-sm-2"></div>-->
+            </div>
+            <br>
+            <br>
+            <br>
+            <br>
+            <!-- Footer -->
+            <!-- End Footer -->
+          </div> <!-- end container -->
+        </div>
+      </div>
+    </div>
+  </div>
+</ng-container>
+
+<!-- <a href="maps://maps.google.com/maps?daddr=lat,long&amp;ll=">Take me there!</a> -->
+<button class="btn d-none" style="display: none;" #termsBtn data-toggle="modal" data-backdrop="static"
+  data-target="#termsModal">Terms and conditions</button>
+<div class="modal fade bs-example-modal-md client-email" tabindex="-1" role="dialog" style="display: none;" id="termsModal">
+  <div class="modal-dialog modal-md">
+    <div class="modal-content">
+      <div class="modal-header no-border ax-modal-header">
+        <button type="button" #termsBtnClose class="close" data-dismiss="modal" aria-hidden="true">×</button>
+        <h4 class="modal-title">Terms and conditions</h4>
+      </div>
+      <div class="modal-body no-padding">
+        <div style="font-size: 11px;text-align: justify;"
+          [innerHTML]="welcomeCopies?.clientTermsAndConditions | safeHtml">
+        </div>
+        <div class="text-center m-t-15">
+          <button class="btn btn-basil" (click)="updateClient()">I agree to the terms and conditions</button>&#160;
+          <button class="btn btn-cocktail" (click)="reload()">I don't agree</button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

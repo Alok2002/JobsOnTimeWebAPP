@@ -1,0 +1,428 @@
+<div class="wrapper resprofile">
+  <div class="container">
+    <div class="row">
+      <div class="col-sm-12">
+        <ol class="breadcrumb breadcrumb-arrow bg-white bx-shadow">
+          <li><a [routerLink]="['/reshome']" class="home-breadcrumb" title="Home">
+              <i class="md md-home"></i>
+              <span style="display: none;">Home</span></a></li>
+          <li><a>My Profile</a></li>
+        </ol>
+      </div>
+
+      <div class="col-sm-12" *ngIf="isLoading">
+        <div class="card-box" style="position: relative;height: 200px;">
+          <div class="ax-loading-indicator-tab" style="background: transparent">
+            <div class="ax-loading-spinner"></div>
+          </div>
+        </div>
+      </div>
+
+      <div class="col-sm-12"
+        *ngIf="resId && respondent != null && !respondent.businessRego && !respondent.disabilityRego">
+        <div class="card-box">
+          <div class="col-md-8 no-padding">
+            <div class="widget-simple-chart text-left card-box">
+              <h1 tabindex="0" class="text-primary m-t-0 font-20" style="line-height: 30px;">
+                Please complete your profile. Enter as much detail as
+                possible to ensure you get selected for Research Sessions</h1>
+              <p tabindex="0" class="text-muted">
+                All details entered on this form will be kept confidential and will be exclusively used
+                for identifying people to invite to participate in paid market research.
+              </p>
+              <p tabindex="0" class="text-muted m-b-0">
+                This website is secured using SSL and all data is encrypted and secured. You can
+                also confirm this by the presence of a 'lock' symbol in your web browser.
+              </p>
+            </div>
+          </div>
+          <div class="clearfix"></div>
+          <div *ngIf="resId" class="panel-group panel-group-joined no-margin no-padding col-md-8" id="accordion-test">
+            <div class="panel ax-panel-darkbg">
+              <div class="panel-heading" (click)="selectedAcc = 'rescontact'">
+                <h4 class="panel-title">
+                  <a data-toggle="collapse" data-parent="#accordion-test" href="#contactdetails" class="collapsed"
+                    aria-expanded="false">
+                    Contact Details
+                    <!-- <i class="pull-right md md-check text-success pro-completed-indicator"></i> -->
+                  </a>
+                </h4>
+              </div>
+              <div id="contactdetails" class="panel-collapse collapse" aria-expanded="false" style="height: 0px;">
+                <div class="panel-body">
+                  <ResContactComponent [resId]="resId" [isMyProfile]="true" *ngIf="selectedAcc == 'rescontact'">
+                  </ResContactComponent>
+                </div>
+              </div>
+            </div>
+
+            <div class="panel ax-panel-darkbg">
+              <div class="panel-heading" (click)="selectedAcc = 'respersonal'">
+                <h4 class="panel-title">
+                  <a data-toggle="collapse" data-parent="#accordion-test" href="#personaldetails" class="collapsed"
+                    aria-expanded="false">
+                    Personal Details
+                  </a>
+                </h4>
+              </div>
+              <div id="personaldetails" class="panel-collapse collapse" aria-expanded="false" style="height: 0px;">
+                <div class="panel-body">
+                  <ResPersonalComponent [resId]="resId" [isMyProfile]="true" *ngIf="selectedAcc == 'respersonal'">
+                  </ResPersonalComponent>
+                </div>
+              </div>
+            </div>
+
+            <div class="panel ax-panel-darkbg">
+              <div class="panel-heading" (click)="selectedAcc = 'resresearch'">
+                <h4 class="panel-title">
+                  <a data-toggle="collapse" data-parent="#accordion-test" href="#researchpreferences" class="collapsed"
+                    aria-expanded="false">
+                    Research Preferences
+                    <!-- <i class="pull-right md md-check text-success pro-completed-indicator"></i> -->
+                  </a>
+                </h4>
+              </div>
+              <div id="researchpreferences" class="panel-collapse collapse" aria-expanded="false" style="height: 0px;">
+                <div class="panel-body">
+                  <ResResearchComponent [resId]="resId" [isMyProfile]="true" *ngIf="selectedAcc == 'resresearch'">
+                  </ResResearchComponent>
+                </div>
+              </div>
+            </div>
+
+            <div class="panel ax-panel-darkbg">
+              <div class="panel-heading" (click)="selectedAcc = 'resoccupation'">
+                <h4 class="panel-title">
+                  <a data-toggle="collapse" data-parent="#accordion-test" href="#occupationdetails" class="collapsed"
+                    aria-expanded="false">
+                    Occupation Details
+                  </a>
+                </h4>
+              </div>
+              <div id="occupationdetails" class="panel-collapse collapse" aria-expanded="false" style="height: 0px;">
+                <div class="panel-body">
+                  <ResOccupationComponent [resId]="resId" [isMyProfile]="true" *ngIf="selectedAcc == 'resoccupation'">
+                  </ResOccupationComponent>
+                </div>
+              </div>
+            </div>
+
+            <div class="panel ax-panel-darkbg">
+              <div class="panel-heading" (click)="selectedAcc = 'resfamily'">
+                <h4 class="panel-title">
+                  <a data-toggle="collapse" data-parent="#accordion-test" href="#familydetails" class="collapsed"
+                    aria-expanded="false">
+                    Family Details
+                    <!-- <i class="pull-right md md-check text-success pro-completed-indicator"></i> -->
+                  </a>
+                </h4>
+              </div>
+              <div id="familydetails" class="panel-collapse collapse" aria-expanded="false" style="height: 0px;">
+                <div class="panel-body">
+                  <ResFamilyComponent [resId]="resId" [isMyProfile]="true" *ngIf="selectedAcc == 'resfamily'">
+                  </ResFamilyComponent>
+                </div>
+              </div>
+            </div>
+
+            <div class="panel ax-panel-darkbg">
+              <div class="panel-heading" (click)="selectedAcc = 'resfinance'">
+                <h4 class="panel-title">
+                  <a data-toggle="collapse" data-parent="#accordion-test" href="#financedetails" class="collapsed"
+                    aria-expanded="false">
+                    Finance
+                    <!-- <i class="pull-right md md-check text-success pro-completed-indicator"></i> -->
+                  </a>
+                </h4>
+              </div>
+              <div id="financedetails" class="panel-collapse collapse" aria-expanded="false" style="height: 0px;">
+                <div class="panel-body">
+                  <ResFinanceComponent [resId]="resId" [isMyProfile]="true" *ngIf="selectedAcc == 'resfinance'">
+                  </ResFinanceComponent>
+                </div>
+              </div>
+            </div>
+
+            <div class="panel ax-panel-darkbg">
+              <div class="panel-heading" (click)="selectedAcc = 'reshealth'">
+                <h4 class="panel-title">
+                  <a data-toggle="collapse" data-parent="#accordion-test" href="#healthdetails" class="collapsed"
+                    aria-expanded="false">
+                    Health Details
+                    <!-- <i class="pull-right md md-check text-success pro-completed-indicator"></i> -->
+                  </a>
+                </h4>
+              </div>
+              <div id="healthdetails" class="panel-collapse collapse" aria-expanded="false" style="height: 0px;">
+                <div class="panel-body">
+                  <ResHealthComponent [resId]="resId" [isMyProfile]="true" *ngIf="selectedAcc == 'reshealth'">
+                  </ResHealthComponent>
+                </div>
+              </div>
+            </div>
+
+            <div class="panel ax-panel-darkbg">
+              <div class="panel-heading" (click)="selectedAcc = 'resinsurance'">
+                <h4 class="panel-title">
+                  <a data-toggle="collapse" data-parent="#accordion-test" href="#insurance" class="collapsed"
+                    aria-expanded="false">
+                    Insurance & Government
+                    <!-- <i class="pull-right md md-check text-success pro-completed-indicator"></i> -->
+                  </a>
+                </h4>
+              </div>
+              <div id="insurance" class="panel-collapse collapse" aria-expanded="false" style="height: 0px;">
+                <div class="panel-body">
+                  <ResInsuranceComponent [resId]="resId" [isMyProfile]="true" *ngIf="selectedAcc == 'resinsurance'">
+                  </ResInsuranceComponent>
+                </div>
+              </div>
+            </div>
+
+            <div class="panel ax-panel-darkbg">
+              <div class="panel-heading" (click)="selectedAcc = 'resservices'">
+                <h4 class="panel-title">
+                  <a data-toggle="collapse" data-parent="#accordion-test" href="#services" class="collapsed"
+                    aria-expanded="false">
+                    Services & Utilities
+                    <!-- <i class="pull-right md md-check text-success pro-completed-indicator"></i> -->
+                  </a>
+                </h4>
+              </div>
+              <div id="services" class="panel-collapse collapse" aria-expanded="false" style="height: 0px;">
+                <div class="panel-body">
+                  <ResServicesComponent [resId]="resId" [isMyProfile]="true" *ngIf="selectedAcc == 'resservices'">
+                  </ResServicesComponent>
+                </div>
+              </div>
+            </div>
+
+            <div class="panel ax-panel-darkbg">
+              <div class="panel-heading" (click)="selectedAcc = 'ressocial'">
+                <h4 class="panel-title">
+                  <a data-toggle="collapse" data-parent="#accordion-test" href="#social" class="collapsed"
+                    aria-expanded="false">
+                    Social
+                    <!-- <i class="pull-right md md-check text-success pro-completed-indicator"></i> -->
+                  </a>
+                </h4>
+              </div>
+              <div id="social" class="panel-collapse collapse" aria-expanded="false" style="height: 0px;">
+                <div class="panel-body">
+                  <ResSocialComponent [resId]="resId" [isMyProfile]="true" *ngIf="selectedAcc == 'ressocial'">
+                  </ResSocialComponent>
+                </div>
+              </div>
+            </div>
+
+            <div class="panel ax-panel-darkbg">
+              <div class="panel-heading" (click)="selectedAcc = 'restechnology'">
+                <h4 class="panel-title">
+                  <a data-toggle="collapse" data-parent="#accordion-test" href="#technology" class="collapsed"
+                    aria-expanded="false">
+                    Technology
+                    <!-- <i class="pull-right md md-check text-success pro-completed-indicator"></i> -->
+                  </a>
+                </h4>
+              </div>
+              <div id="technology" class="panel-collapse collapse" aria-expanded="false" style="height: 0px;">
+                <div class="panel-body">
+                  <ResTechnologyComponent [resId]="resId" [isMyProfile]="true" *ngIf="selectedAcc == 'restechnology'">
+                  </ResTechnologyComponent>
+                </div>
+              </div>
+            </div>
+
+            <div class="panel ax-panel-darkbg">
+              <div class="panel-heading" (click)="selectedAcc = 'restelecommunications'">
+                <h4 class="panel-title">
+                  <a data-toggle="collapse" data-parent="#accordion-test" href="#telecomminucation" class="collapsed"
+                    aria-expanded="false">
+                    Telecommunications
+                    <!-- <i class="pull-right md md-check text-success pro-completed-indicator"></i> -->
+                  </a>
+                </h4>
+              </div>
+              <div id="telecomminucation" class="panel-collapse collapse" aria-expanded="false" style="height: 0px;">
+                <div class="panel-body">
+                  <ResTeleCommunicationsComponent [resId]="resId" [isMyProfile]="true"
+                    *ngIf="selectedAcc == 'restelecommunications'"></ResTeleCommunicationsComponent>
+                </div>
+              </div>
+            </div>
+
+            <div class="panel ax-panel-darkbg">
+              <div class="panel-heading" (click)="selectedAcc = 'restransport'">
+                <h4 class="panel-title">
+                  <a data-toggle="collapse" data-parent="#accordion-test" href="#transport" class="collapsed"
+                    aria-expanded="false">
+                    Transport
+                    <!-- <i class="pull-right md md-check text-success pro-completed-indicator"></i> -->
+                  </a>
+                </h4>
+              </div>
+              <div id="transport" class="panel-collapse collapse" aria-expanded="false" style="height: 0px;">
+                <div class="panel-body">
+                  <ResTransportComponent [resId]="resId" [isMyProfile]="true" *ngIf="selectedAcc == 'restransport'">
+                  </ResTransportComponent>
+                </div>
+              </div>
+            </div>
+
+            <div class="panel ax-panel-darkbg">
+              <div class="panel-heading" (click)="selectedAcc = 'restravel'">
+                <h4 class="panel-title">
+                  <a data-toggle="collapse" data-parent="#accordion-test" href="#travel" class="collapsed"
+                    aria-expanded="false">
+                    Travel & Loyalty Program
+                    <!-- <i class="pull-right md md-check text-success pro-completed-indicator"></i> -->
+                  </a>
+                </h4>
+              </div>
+              <div id="travel" class="panel-collapse collapse" aria-expanded="false" style="height: 0px;">
+                <div class="panel-body">
+                  <ResTravelComponent [resId]="resId" [isMyProfile]="true" *ngIf="selectedAcc == 'restravel'">
+                  </ResTravelComponent>
+                </div>
+              </div>
+            </div>
+
+            <div class="panel ax-panel-darkbg">
+              <div class="panel-heading" (click)="selectedAcc = 'resother'">
+                <h4 class="panel-title">
+                  <a data-toggle="collapse" data-parent="#accordion-test" href="#otherdetails" class="collapsed"
+                    aria-expanded="false">
+                    Other
+                  </a>
+                </h4>
+              </div>
+              <div id="otherdetails" class="panel-collapse collapse" aria-expanded="false" style="height: 0px;">
+                <div class="panel-body">
+                  <ResOtherComponent [resId]="resId" [isMyProfile]="true" *ngIf="selectedAcc == 'resother'">
+                  </ResOtherComponent>
+                </div>
+              </div>
+            </div>
+
+            <!-- <div class="panel ax-panel-darkbg">
+              <div class="panel-heading" (click)="selectedAcc = 'rescustomfields'">
+                <h4 class="panel-title">
+                  <a data-toggle="collapse" data-parent="#accordion-test" href="#customfields" class="collapsed"
+                    aria-expanded="false">
+                    Custom Fields
+                  </a>
+                </h4>
+              </div>
+              <div id="customfields" class="panel-collapse collapse" aria-expanded="false" style="height: 0px;">
+                <div class="panel-body">
+                  <ResCustomFieldsComponent [resId]="resId" [isMyProfile]="true" *ngIf="selectedAcc == 'rescustomfields'">
+                  </ResCustomFieldsComponent>
+                </div>
+              </div>
+            </div> -->
+          </div>
+          <div class="clearfix"></div>
+        </div>
+      </div>
+
+      <div class="col-sm-12" *ngIf="resId && respondent != null && respondent.businessRego">
+        <div class="card-box">
+          <div class="col-md-8 no-padding">
+            <div class="widget-simple-chart text-left card-box">
+              <h3 tabindex="0" class="text-primary m-t-0 font-20">Please complete your profile. Enter as much detail as
+                possible to ensure you get selected for Research Sessions.</h3>
+              <p tabindex="0" class="text-muted">
+                All details entered on this form will be kept confidential and will be exclusively used
+                for identifying people to invite to participate in paid market research.
+              </p>
+              <p tabindex="0" class="text-muted m-b-0">
+                This website is secured using SSL and all data is encrypted and secured. You can
+                also confirm this by the presence of a 'lock' symbol in your web browser.
+              </p>
+            </div>
+          </div>
+          <div class="clearfix"></div>
+          <div *ngIf="resId" class="panel-group panel-group-joined no-margin no-padding col-md-8" id="accordion-test">
+            <div class="panel ax-panel-darkbg">
+              <div class="panel-heading" (click)="selectedAcc = 'bpmcontact'">
+                <h4 class="panel-title">
+                  <a data-toggle="collapse" data-parent="#accordion-test" href="#contactdetails" class="collapsed"
+                    aria-expanded="false">
+                    Contact Details
+                    <!-- <i class="pull-right md md-check text-success pro-completed-indicator"></i> -->
+                  </a>
+                </h4>
+              </div>
+              <div id="contactdetails" class="panel-collapse collapse" aria-expanded="false" style="height: 0px;">
+                <div class="panel-body">
+                  <BPMContactComponent [resId]="resId" [isMyProfile]="true" *ngIf="selectedAcc == 'bpmcontact'">
+                  </BPMContactComponent>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="clearfix"></div>
+        </div>
+      </div>
+
+      <div class="col-sm-12" *ngIf="resId && respondent != null && respondent.disabilityRego">
+        <div class="card-box">
+          <div class="col-md-8 no-padding">
+            <div class="widget-simple-chart text-left card-box">
+              <h3 tabindex="0" class="text-primary m-t-0 font-20">Please complete your profile. Enter as much detail as
+                possible to ensure you get selected for Research Sessions.</h3>
+              <p tabindex="0" class="text-muted">
+                All details entered on this form will be kept confidential and will be exclusively used
+                for identifying people to invite to participate in paid market research.
+              </p>
+              <p tabindex="0" class="text-muted m-b-0">
+                This website is secured using SSL and all data is encrypted and secured. You can
+                also confirm this by the presence of a 'lock' symbol in your web browser.
+              </p>
+            </div>
+          </div>
+          <div class="clearfix"></div>
+          <div *ngIf="resId" class="panel-group panel-group-joined no-margin no-padding col-md-8" id="accordion-test">
+            <div class="panel ax-panel-darkbg">
+              <div class="panel-heading" (click)="selectedAcc = 'ipmcontact'">
+                <h4 class="panel-title">
+                  <a data-toggle="collapse" data-parent="#accordion-test" href="#contactdetails" class="collapsed"
+                    aria-expanded="false">
+                    Contact Details
+                    <!-- <i class="pull-right md md-check text-success pro-completed-indicator"></i> -->
+                  </a>
+                </h4>
+              </div>
+              <div id="contactdetails" class="panel-collapse collapse" aria-expanded="false" style="height: 0px;">
+                <div class="panel-body">
+                  <IPMContactComponent [resId]="resId" [isMyProfile]="true" *ngIf="selectedAcc == 'ipmcontact'">
+                  </IPMContactComponent>
+                </div>
+              </div>
+            </div>
+            <div class="panel ax-panel-darkbg">
+              <div class="panel-heading" (click)="selectedAcc = 'ipmdetails'">
+                <h4 class="panel-title">
+                  <a data-toggle="collapse" data-parent="#accordion-test" href="#impdetails" class="collapsed"
+                    aria-expanded="false">
+                    Disability Details
+                    <!-- <i class="pull-right md md-check text-success pro-completed-indicator"></i> -->
+                  </a>
+                </h4>
+              </div>
+              <div id="impdetails" class="panel-collapse collapse" aria-expanded="false" style="height: 0px;">
+                <div class="panel-body">
+                  <IPMDetailsComponent [resId]="resId" [isMyProfile]="true" *ngIf="selectedAcc == 'ipmdetails'">
+                  </IPMDetailsComponent>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="clearfix"></div>
+        </div>
+      </div>
+
+    </div>
+  </div> <!-- end container -->
+</div>

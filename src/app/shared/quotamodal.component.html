@@ -1,0 +1,59 @@
+<!--ADD New Quota MODAL-->
+<div id="add-new-quota-modal" class="modal fade" tabindex="-1" role="dialog"
+     aria-labelledby="full-width-modalLabel" aria-hidden="true" style="display: none;">
+  <div class="modal-dialog modal-md">
+    <div class="modal-content">
+      <div class="modal-header no-border ax-modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+        <h4 class="modal-title">
+          <ng-container *ngIf="jobQuota.id">Edit Quota</ng-container>
+          <ng-container *ngIf="!jobQuota.id">Add Quota</ng-container>
+        </h4>
+      </div>
+      <div class="modal-body no-padding">
+        <div class="col-md-12 no-padding">
+          <form #quotaForm="ngForm">
+            <div class="form-group">
+              <label for="" class="control-label w-100-pre">
+                Quota Description
+                <div class="checkbox checkbox-primary pull-right no-margin font-12" style="margin-left: 10px !important;"
+                     *ngIf="!jobQuota.id">
+                  <input id="addquota2allscreeners2" type="checkbox" name="isAllSessions" [(ngModel)]="jobQuota.isAllSessions">
+                  <label for="addquota2allscreeners2">
+                    Add to All Sessions
+                  </label>
+                </div>
+              </label>
+              <input type="text" class="form-control" name="description" [(ngModel)]="jobQuota.description">
+            </div>
+
+            <div class="form-group">
+              <label for="" class="control-label">
+                Total Number Required
+                <span [hidden]="positionsModel.valid || !isSubmitForm">
+                  <span class="text-danger pull-right" [hidden]="!positionsModel.hasError('pattern')">
+                    Invalid Total Number Required
+                  </span>
+                </span>
+              </label>
+              <input type="text" class="form-control" name="positions" pattern="[0-9]" mask="99999" #positionsModel="ngModel"
+                     [(ngModel)]="jobQuota.positions">
+            </div>
+
+            <div class="clearfix"></div>
+            <div class="col-md-12 no-padding text-right">
+              <i class="fa fa-spinner fa-pulse" *ngIf="isSubmitFormSpinner"></i>
+              <a id="notebtn" (click)="submitQuota(quotaForm)"
+                      class="btn btn-ocean waves-effect waves-light m-l-10 btn-md">
+                Save
+            </a>
+              <a data-dismiss="modal" aria-hidden="true" class="btn btn-cocktail m-l-5" #closeAddNewModal>
+                Cancel</a>
+            </div>
+          </form>
+        </div>
+        <div class="clearfix"></div>
+      </div>
+    </div><!-- /.modal-content -->
+  </div><!-- /.modal-dialog -->
+</div>

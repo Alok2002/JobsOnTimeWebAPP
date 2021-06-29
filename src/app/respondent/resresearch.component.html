@@ -1,0 +1,134 @@
+<div class="tab-pane" id="preferences">
+  <!-- <ng-container *ngIf="!isMyProfile">
+    <div class="newres-tab-title">
+      <h5 class="no-margin">Research Preferences</h5>
+    </div>
+    <br>
+  </ng-container> -->
+
+  <div *ngIf="!isMyProfile" class="col-md-12 no-padding m-b-0 newres-bottom">
+    <div class="col-md-6 font-10 no-padding">
+      <h5 class="no-margin p-l-10" style="line-height: 34px">Research Preferences</h5>
+    </div>
+    <div class="col-md-6 text-right no-padding">
+      <button (click)="updateRespondent()" class="btn waves-effect waves-light btn-md" [class.btn-ocean]="!isMyProfile"
+        [class.btn-basil]="isMyProfile">
+        Submit
+      </button>      
+    </div>
+  </div>
+  <div class="clearfix"></div>
+  <br>
+
+  <form *ngIf="!isLoading">
+    <div [class.col-md-3]="!isMyProfile" [class.col-md-12]="isMyProfile">
+      <div class="col-md-12 no-padding-left">
+        <!-- <div class="form-group">
+          <label class="control-label">How long would you travel from home to participate in a research session?</label>
+          <input type="text" class="form-control" name="homeReseachDistance" [(ngModel)]="respondent.homeReseachDistance">
+        </div>
+        <div class="form-group">
+          <label class="control-label">How long would you travel from work to participate in a research session?</label>
+          <input type="text" class="form-control" name="workResearchDistance" [(ngModel)]="respondent.workResearchDistance">
+        </div> -->
+        <div class="form-group">
+          <label class="control-label w-100-pre">
+            Closest Main City
+          </label>
+          <!-- <input type="text" name="largestCity" class="form-control" [(ngModel)]="respondent.closeCity"
+            (keypress)="stringOnly($event)"> -->
+          <select name="largestCity" class="form-control" [(ngModel)]="respondent.closestMainCity">
+            <option [ngValue]="null"></option>
+            <option *ngFor="let ba of mainCityLocationList" [value]="ba.description">{{ba.description}}</option>
+          </select>
+        </div>
+
+        <div class="form-group">
+          <label class="control-label">Preferred Contact Method</label>
+          <div class="clearfix"></div>
+          <div *ngFor="let cm of contactMethods;let i = index;" class="checkbox checkbox-primary res-check-margin">
+            <input id="cmemail{{i}}" type="checkbox" name="contactmethod{{i}}" [(ngModel)]="cm.selected" [value]="true"
+              [checked]="cm.selected">
+            <label for="cmemail{{i}}">
+              {{cm.desc}}
+            </label>
+          </div>
+        </div>
+        <div class="form-group has-feedback container no-padding full-width">
+          <label class="control-label">Preferred Contact Time</label>
+          <div class="clearfix"></div>
+          <div *ngFor="let ct of contactTime;let i = index;" class="checkbox checkbox-primary res-check-margin">
+            <input id="contacttime{{i}}" type="checkbox" name="contacttime{{i}}" [(ngModel)]="ct.selected"
+              [value]="true" [checked]="ct.selected">
+            <label for="contacttime{{i}}">
+              {{ct.desc}}
+            </label>
+          </div>
+        </div>
+      </div>
+      <div class="clearfix"></div>
+      <div class="col-md-6 no-padding-left">
+        <div class="form-group has-feedback container no-padding full-width">
+          <label class="control-label">Session Type</label>
+          <div class="clearfix"></div>
+          <div *ngFor="let st of sessionType;let i = index;" class="checkbox checkbox-primary res-check-margin">
+            <input id="sessionType{{i}}" type="checkbox" name="sessionType{{i}}" [(ngModel)]="st.selected"
+              [value]="true" [checked]="st.selected">
+            <label for="sessionType{{i}}">
+              {{st.desc}}
+            </label>
+          </div>
+          <div class="clearfix"></div>
+        </div>
+      </div>
+    </div>
+
+    <div [class.col-md-4]="!isMyProfile" [class.col-md-12]="isMyProfile">
+      <div class="form-group">
+        <label class="control-label panel-member-heading-label">Preferred Research Locations</label>
+        <ng-container *ngFor="let ba of researchLocationList; let i = index">
+          <div class="checkbox checkbox-primary pull-left res-check-margin w-100-pre">
+            <input type="checkbox" id="dietaryrequirement{{i}}" name="dietaryrequirement{{i}}" [(ngModel)]="ba.selected"
+              value="true">
+            <label class="control-label" for="dietaryrequirement{{i}}">{{ba.description}}</label>
+          </div>
+        </ng-container>
+        <div class="clearfix"></div>
+      </div>
+    </div>
+
+
+    <div class="col-md-12 no-padding m-b-0 newres-bottom">
+      <!-- <div class="pull-left" *ngIf="!isMyProfile">
+          <button class="btn btn-cocktail waves-effect waves-light btn-md">
+            Send Reset Password Link
+          </button>
+        </div> -->
+      <div class="col-md-6 font-10 no-padding" style="line-height: 34px">
+        <ng-container>
+          <b>Created:</b>
+          <ng-container *ngIf="respondent.dateCreated">
+            {{respondent.dateCreated | date: 'dd-MM-yyyy'}} &#160;
+          </ng-container>
+          <ng-container *ngIf="!respondent.dateCreated">
+            {{today | date: 'dd-MM-yyyy'}} &#160;
+          </ng-container>
+          <b>Last Updated:</b>
+          <ng-container *ngIf="respondent.dateLastUpdated">
+            {{respondent.dateLastUpdated | date: 'dd-MM-yyyy'}}
+          </ng-container>
+          <ng-container *ngIf="!respondent.dateLastUpdated">
+            {{today | date: 'dd-MM-yyyy'}}
+          </ng-container>
+        </ng-container>
+      </div>
+      <div class="col-md-6 text-right no-padding">
+        <button (click)="updateRespondent()" class="btn waves-effect waves-light btn-md"
+          [class.btn-ocean]="!isMyProfile" [class.btn-basil]="isMyProfile">
+          Submit
+        </button>
+        <!-- <a *ngIf="isMyProfile" class="btn btn-cocktail m-l-5" (click)="gotoTop()">Skip</a> -->
+      </div>
+    </div>
+  </form>
+</div>
