@@ -24,4 +24,12 @@ export class Ticket {
     public designTask: string;
     public developmentTask: string;
     public completedTask: string;
+    public sprintNo: string;
+    public devReleaseNo: string;
+    public uatReleaseNo: string;
+    public productionReleaseNo: string;
+    public assignedToSprintNo: string;
+    public assignedToVersionNo: string;
+    public assignedToMultipleStaff: string;
+    public assignedToMultipleStaffList: Array<string> | Array<any>;
 }

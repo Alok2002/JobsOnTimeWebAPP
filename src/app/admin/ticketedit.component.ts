@@ -1,3 +1,4 @@
+import { CookieService } from 'ngx-cookie-service';
 // import 'tinymce/tinymce.min';
 import { Component, EventEmitter, Inject, OnInit, Output, PLATFORM_ID } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
@@ -11,13 +12,15 @@ import { UserServices } from '../services/user.services';
 import { ckEditorConfig, timeMask } from '../app.component';
 // import * as Editor from './../../assets/ckeditor/build/ckeditor';
 import { isPlatformBrowser } from '@angular/common';
+import * as JWT from 'jwt-decode';
 
 declare var jQuery: any;
 // declare var tinymce: any;
 
 @Component({
   selector: 'TicketEditComponent',
-  templateUrl: './ticketedit.component.html'
+  templateUrl: './ticketedit.component.html',
+  styleUrls: ['./ticket.component.css']
 })
 
 export class TicketEditComponent implements OnInit {
@@ -50,18 +53,28 @@ export class TicketEditComponent implements OnInit {
   timeMask = timeMask;
   ckEditorConfig = JSON.parse(JSON.stringify(ckEditorConfig));
   isBrowser = false;
+  dTaskConfig: any;
+  cTaskConfig: any;
+  isShowAssginedToUserList = false;
+  loginusername: string;
 
   constructor(private router: Router, private sharedservice: SharedServices, private _userService: UserServices,
-    private activateroute: ActivatedRoute, private _ticketService: TicketServices, @Inject(PLATFORM_ID) platformId: Object) {
-      /*this.isBrowser = isPlatformBrowser(platformId);
-      if(this.isBrowser) {
-        const ClassicEditor = require('./../../assets/ckeditor/build/ckeditor');
-        this.editor = ClassicEditor;
-      }*/
+    private activateroute: ActivatedRoute, private _ticketService: TicketServices, @Inject(PLATFORM_ID) platformId: Object,
+    private cookieservice: CookieService,) {
+    /*this.isBrowser = isPlatformBrowser(platformId);
+    if(this.isBrowser) {
+      const ClassicEditor = require('./../../assets/ckeditor/build/ckeditor');
+      this.editor = ClassicEditor;
+    }*/
     // tinymce.remove();
   }
 
   ngOnInit() {
+    this.dTaskConfig = JSON.parse(JSON.stringify(this.ckEditorConfig));
+    this.dTaskConfig.height = 333;
+    this.cTaskConfig = JSON.parse(JSON.stringify(this.ckEditorConfig));
+    this.cTaskConfig.height = 295;
+
     this.activateroute.params.subscribe(params => {
       if (params['id']) {
         this.editId = params['id'];
@@ -74,13 +87,13 @@ export class TicketEditComponent implements OnInit {
       this.addNew();
     }
 
+    this.getLoginUserRoles();
     this.getUsers();
     // this.initTinymce();
     this.getTicketPriorityList();
     this.getTicketModuleList();
     this.getTicketStatusList();
     this.getTicketTypeList();
-
   }
 
   addNew() {
@@ -94,6 +107,9 @@ export class TicketEditComponent implements OnInit {
     this._userService.getAllUser()
       .subscribe((res: any) => {
         this.users = res.value;
+        this.users.forEach((usr) => {
+          usr['fullNameWithLoginUserName'] = usr.fullName + ' (' + this.loginusername + ')';
+        })
       });
   }
 
@@ -155,8 +171,10 @@ export class TicketEditComponent implements OnInit {
     this._ticketService.getTicketById(id)
       .subscribe((res: any) => {
         this.ticket = res.value;
-
-        console.log(res);
+        this.ticket.assignedToMultipleStaffList.forEach((sl,i) => {
+          this.ticket.assignedToMultipleStaffList[i] = { display: sl }
+        })
+        console.log(this.ticket);
       });
   }
 
@@ -204,6 +222,9 @@ export class TicketEditComponent implements OnInit {
     }
     else {
       console.log(this.ticket);
+      if (this.ticket.assignedToMultipleStaffList && this.ticket.assignedToMultipleStaffList.length > 0)
+        this.ticket.assignedToMultipleStaff = this.ticket.assignedToMultipleStaffList.map((elem) => { return elem.display; }).join("~");
+      debugger;
       this._ticketService.postTicket(this.ticket)
         .subscribe(res => {
           console.log(res);
@@ -246,5 +267,24 @@ export class TicketEditComponent implements OnInit {
         else this.ticket.ticketImageUrls = null;
       }
     });
+  }
+
+  changeAssignedTo(e) {
+    console.log(e);
+  }
+
+  getLoginUserRoles() {
+    var token = this.getToken();
+    console.log(token);
+    this.loginusername = token["unique_name"];
+  }
+
+  getToken() {
+    let cookieExists = this.cookieservice.check('auth_token');
+    console.log(cookieExists);
+    if (cookieExists) {
+      var token = JWT(this.cookieservice.get('auth_token'));
+      return token;
+    }
   }
 }

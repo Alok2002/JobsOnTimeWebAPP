@@ -15,6 +15,7 @@ import { TextMaskModule } from 'angular2-text-mask';
 import { NguiAutoCompleteModule } from '@ngui/auto-complete';
 import { FilterModule } from './filter.module';
 import { CKEditorModule } from 'ckeditor4-angular';
+import { TagInputModule } from 'ngx-chips';
 
 export const route: Routes = [
   { path: '', component: TicketComponent, pathMatch: 'full', data: { securityData: SecurityRights.ResearchMeLicence }, resolve: { securityInfo: SecurityInfoResolve } },
@@ -35,7 +36,8 @@ export const route: Routes = [
     CKEditorModule,
     TextMaskModule,
     NguiAutoCompleteModule,
-    FilterModule
+    FilterModule,
+    TagInputModule
   ],
   declarations: [
     TicketComponent,

@@ -16,7 +16,8 @@ declare var $: any;
 
 @Component({
   selector: 'TicketComponent',
-  templateUrl: './ticket.component.html'
+  templateUrl: './ticket.component.html',
+  styleUrls: ['./ticket.component.css']
 })
 
 export class TicketComponent implements OnInit {
@@ -58,8 +59,10 @@ export class TicketComponent implements OnInit {
       { field: 'priority', header: 'Priority', width: '100', sort: true, index: 3 },
       { field: 'createdByStaff', header: 'Created By', width: '150', sort: true, index: 5 },
       { field: 'assignedToStaff', header: 'Assigned To', width: '150', sort: true, index: 6 },
-      { field: 'formattedCreatedDate', header: 'Created Date', width: '150', sort: true, index: 7 },
-      { field: 'formattedLastChangedDate', header: 'Last Changed', width: '150', sort: true, index: 8 },
+      { field: 'estimDevDuration', header: 'Est Dev Time', width: '100', sort: true, index: 7 },
+      { field: 'estimTestDuration', header: 'Est Test Time', width: '100', sort: true, index: 8 },
+      { field: 'formattedCreatedDate', header: 'Created Date', width: '150', sort: true, index: 9 },
+      { field: 'formattedLastChangedDate', header: 'Last Changed', width: '150', sort: true, index: 10 },
     ];
     this.selectedColumns = this.cols;
 
