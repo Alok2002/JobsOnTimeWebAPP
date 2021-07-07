@@ -12,7 +12,7 @@ declare var jQuery: any;
 
 // export var apiHost = 'https://dev.logajob.com.au';
 // export var apiHost = '';
-export var apiHost = 'http://localhost:56477';
+export var apiHost = 'http://localhost:56478';
 
 export var phoneMask = ['(', /[0-9]/, /[0-9]/, ')', ' ', /[0-9]/, /[0-9]/, /[0-9]/, /[0-9]/, ' ', /[0-9]/, /[0-9]/, /[0-9]/, /[0-9]/];
 export var mobileMask = [/[0-9]/, /[0-9]/, /[0-9]/, /[0-9]/, ' ', /[0-9]/, /[0-9]/, /[0-9]/, ' ', /[0-9]/, /[0-9]/, /[0-9]/];

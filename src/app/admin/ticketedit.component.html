@@ -108,33 +108,40 @@
                         </div>
                       </div>
                       <div class="col-md-6">
+                        <div class="row">
+                          <div class="form-group col-md-6">
+                            <label class="control-label ax-color-black w-100-pre">
+                              Assigned To
+                            </label>
+                            <select class="form-control" [(ngModel)]="ticket.assignedToStaff" name="assignedToStaff"
+                              (ngModelChange)="changeAssignedTo()">
+                              <option [ngValue]="null" disabled></option>
+                              <option *ngFor="let user of users" value="{{user.username}}">
+                                {{user.fullName}}
+                              </option>
+                            </select>
+                          </div>
+                          <div class="form-group col-md-6">
+                            <label class="control-label ax-color-black w-100-pre">
+                              Assigned By
+                            </label>
+                            <select class="form-control" [(ngModel)]="ticket.assignedByStaff" name="assignedByStaff"
+                              disabled>
+                              <option [ngValue]="null" disabled></option>
+                              <option *ngFor="let user of users" value="{{user.username}}">
+                                {{user.fullName}}
+                              </option>
+                            </select>
+                          </div>
+                        </div>
+
                         <div class="form-group">
                           <label class="control-label ax-color-black w-100-pre">
-                            Assigned To
-                            <span class="pull-right">
-                              <!-- <span>
-                              <button *ngIf="!isShowAssginedToUserList" type="button"
-                                class="btn btn-ocean btn-xs waves-effect btn-square"
-                                (click)="isShowAssginedToUserList = true">
-                                <i class="fa fa-plus-circle"></i> Add New
-                              </button>
-                              <select *ngIf="isShowAssginedToUserList" class="form-control"
-                                style="width: 150px;max-height: 22px;" (change)="changeAssignedTo($event)">
-                                <option [ngValue]="null" disabled></option>
-                                <option *ngFor="let user of users" value="{{user.username}}">
-                                  {{user.fullName}}
-                                </option>
-                              </select>
-                            </span> -->
-                              <span [hidden]="assignedToStaff.valid || !isSubmitForm">
-                                <span class="text-danger"
-                                  [hidden]="!assignedToStaff.hasError('required')">Required</span>
-                              </span>
-                            </span>
+                            Assigned To History
                           </label>
-                          <tag-input [(ngModel)]="ticket.assignedToMultipleStaffList" name="assignedToMultipleStaffList"
+                          <tag-input [(ngModel)]="ticket.assignedToStaffHistoryList" name="assignedToStaffHistoryList"
                             #assignedToStaff="ngModel" [onlyFromAutocomplete]="true" theme='bootstrap'
-                            [placeholder]="''" class="sendmobile-input" [secondaryPlaceholder]="''">
+                            [placeholder]="''" class="sendmobile-input" [secondaryPlaceholder]="''" [disable]="true">
                             <tag-input-dropdown [showDropdownIfEmpty]="true" [dynamicUpdate]="false"
                               [focusFirstElement]="true" [displayBy]="'fullNameWithLoginUserName'"
                               [identifyBy]="'fullNameWithLoginUserName'" [autocompleteItems]="users">
@@ -266,18 +273,39 @@
                             [(ngModel)]="ticket.assignedToVersionNo">
                         </div>
                       </div>
-                      <div class="col-md-5">
-                        <div class="form-group" id="emailbody">
-                          <label class="control-label ax-color-black">Design Task</label>
-                          <!-- <textarea id="elm1" class="tinymce-editor" name="designtask" [(ngModel)]="ticket.requiredEffect"></textarea> -->
-                          <ckeditor name="elm1" [(ngModel)]="ticket.designTask" [config]="dTaskConfig"></ckeditor>
+                      <div class="col-md-10">
+                        <div class="acc-container m-b-15">
+                          <div class="acc-header">
+                            <div style="flex:1"><label class="control-label ax-color-black m-b-0">Design Task</label></div>
+                            <div style="width: 30px;" class="text-right ax-cursor-pointer" (click)="toggleAccordion('design')">
+                              <i *ngIf="checkAccOpen('design')" class="md md-expand-more font-18" style="height: 20px;"></i>
+                              <i *ngIf="!checkAccOpen('design')" class="md md-expand-less font-18"  style="height: 20px;"></i>
+                            </div>
+                          </div>
+                          <div class="acc-body" *ngIf="checkAccOpen('design')">
+                            <div class="form-group" id="emailbody">
+                              <!-- <label class="control-label ax-color-black">Design Task</label> -->
+                              <!-- <textarea id="elm1" class="tinymce-editor" name="designtask" [(ngModel)]="ticket.requiredEffect"></textarea> -->
+                              <ckeditor name="elm1" [(ngModel)]="ticket.designTask" [config]="dTaskConfig"></ckeditor>
+                            </div>
+                          </div>
                         </div>
-                      </div>
-                      <div class="col-md-5">
-                        <div class="form-group">
-                          <label class="control-label ax-color-black">Development Task</label>
-                          <!-- <textarea id="elm2" class="tinymce-editor" name="developmenttask" [(ngModel)]="ticket.description"></textarea> -->
-                          <ckeditor name="elm2" [(ngModel)]="ticket.developmentTask" [config]="dTaskConfig"></ckeditor>
+                        <div class="acc-container m-b-15">
+                          <div class="acc-header">
+                            <div style="flex:1"><label class="control-label ax-color-black">Development Task</label></div>
+                            <div style="width: 30px;" class="text-right ax-cursor-pointer" (click)="toggleAccordion('development')">
+                              <i *ngIf="checkAccOpen('development')" class="md md-expand-more font-18" style="height: 20px;"></i>
+                              <i *ngIf="!checkAccOpen('development')" class="md md-expand-less font-18"  style="height: 20px;"></i>
+                            </div>
+                          </div>
+                          <div class="acc-body" *ngIf="checkAccOpen('development')">
+                            <div class="form-group">
+                              <!-- <label class="control-label ax-color-black">Development Task</label> -->
+                              <!-- <textarea id="elm2" class="tinymce-editor" name="developmenttask" [(ngModel)]="ticket.description"></textarea> -->
+                              <ckeditor name="elm2" [(ngModel)]="ticket.developmentTask" [config]="dTaskConfig">
+                              </ckeditor>
+                            </div>
+                          </div>
                         </div>
                       </div>
                     </div>

@@ -30,6 +30,6 @@ export class Ticket {
     public productionReleaseNo: string;
     public assignedToSprintNo: string;
     public assignedToVersionNo: string;
-    public assignedToMultipleStaff: string;
-    public assignedToMultipleStaffList: Array<string> | Array<any>;
+    public assignedToStaffHistory: string;
+    public assignedToStaffHistoryList: any;//Array<string> | Array<any>;
 }

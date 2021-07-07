@@ -1,3 +1,17 @@
 ::ng-deep .ng2-tag-input.bootstrap {
-  height: 108px;
+  /* height: 108px; */
+}
+
+.acc-container {
+  border: 1px solid #e6e7e8;
+}
+
+.acc-header {
+  background: #f1f1f1;
+  display: flex;
+  padding: 10px;
+}
+
+.acc-body {
+  padding: 10px;
 }

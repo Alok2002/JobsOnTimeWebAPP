@@ -55,8 +55,10 @@ export class TicketEditComponent implements OnInit {
   isBrowser = false;
   dTaskConfig: any;
   cTaskConfig: any;
-  isShowAssginedToUserList = false;
+
   loginusername: string;
+  initTicket: Ticket;
+  accordionList =[];
 
   constructor(private router: Router, private sharedservice: SharedServices, private _userService: UserServices,
     private activateroute: ActivatedRoute, private _ticketService: TicketServices, @Inject(PLATFORM_ID) platformId: Object,
@@ -71,9 +73,10 @@ export class TicketEditComponent implements OnInit {
 
   ngOnInit() {
     this.dTaskConfig = JSON.parse(JSON.stringify(this.ckEditorConfig));
-    this.dTaskConfig.height = 333;
+    this.dTaskConfig.height = 150;
     this.cTaskConfig = JSON.parse(JSON.stringify(this.ckEditorConfig));
     this.cTaskConfig.height = 295;
+    this.accordionList.push('design');
 
     this.activateroute.params.subscribe(params => {
       if (params['id']) {
@@ -171,8 +174,10 @@ export class TicketEditComponent implements OnInit {
     this._ticketService.getTicketById(id)
       .subscribe((res: any) => {
         this.ticket = res.value;
-        this.ticket.assignedToMultipleStaffList.forEach((sl,i) => {
-          this.ticket.assignedToMultipleStaffList[i] = { display: sl }
+        this.initTicket = JSON.parse(JSON.stringify(this.ticket));
+        debugger
+        this.ticket.assignedToStaffHistoryList.forEach((sl, i) => {
+          this.ticket.assignedToStaffHistoryList[i] = { display: sl }
         })
         console.log(this.ticket);
       });
@@ -222,8 +227,19 @@ export class TicketEditComponent implements OnInit {
     }
     else {
       console.log(this.ticket);
-      if (this.ticket.assignedToMultipleStaffList && this.ticket.assignedToMultipleStaffList.length > 0)
-        this.ticket.assignedToMultipleStaff = this.ticket.assignedToMultipleStaffList.map((elem) => { return elem.display; }).join("~");
+      /*if (this.ticket.assignedToStaffHistoryList && this.ticket.assignedToStaffHistoryList.length > 0)
+        this.ticket.assignedToStaffHistory = this.ticket.assignedToStaffHistoryList.map((elem) => { return elem.display; }).join("~");*/
+
+      if (this.ticket.id) {
+        if (this.ticket.assignedToStaff != this.initTicket.assignedToStaff) {
+          if (!this.initTicket.assignedToStaffHistoryList) this.initTicket.assignedToStaffHistoryList = [];
+          this.initTicket.assignedToStaffHistoryList.push(this.initTicket.assignedToStaff + ' (' + this.initTicket.assignedByStaff + ')');
+          this.ticket.assignedToStaffHistory = this.initTicket.assignedToStaffHistoryList.join('~');
+        } else {
+          this.ticket.assignedByStaff = this.initTicket.assignedByStaff;
+        }
+      }
+
       debugger;
       this._ticketService.postTicket(this.ticket)
         .subscribe(res => {
@@ -269,8 +285,8 @@ export class TicketEditComponent implements OnInit {
     });
   }
 
-  changeAssignedTo(e) {
-    console.log(e);
+  changeAssignedTo() {
+    this.ticket.assignedByStaff = this.loginusername;
   }
 
   getLoginUserRoles() {
@@ -286,5 +302,18 @@ export class TicketEditComponent implements OnInit {
       var token = JWT(this.cookieservice.get('auth_token'));
       return token;
     }
+  }
+
+  checkAccOpen(tab) {
+    var ret = false;
+    var index = this.accordionList.indexOf(tab);
+    if (index >= 0) ret = true;
+    return ret;
+  }
+
+  toggleAccordion(tab) {
+    var index = this.accordionList.indexOf(tab);
+    if (index >= 0) this.accordionList.splice(index, 1);
+    else this.accordionList.push(tab);
   }
 }
