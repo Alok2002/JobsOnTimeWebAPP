@@ -13,6 +13,7 @@ import { ckEditorConfig, timeMask } from '../app.component';
 // import * as Editor from './../../assets/ckeditor/build/ckeditor';
 import { isPlatformBrowser } from '@angular/common';
 import * as JWT from 'jwt-decode';
+import * as moment from 'moment';
 
 declare var jQuery: any;
 // declare var tinymce: any;
@@ -58,7 +59,7 @@ export class TicketEditComponent implements OnInit {
 
   loginusername: string;
   initTicket: Ticket;
-  accordionList =[];
+  accordionList = [];
 
   constructor(private router: Router, private sharedservice: SharedServices, private _userService: UserServices,
     private activateroute: ActivatedRoute, private _ticketService: TicketServices, @Inject(PLATFORM_ID) platformId: Object,
@@ -77,6 +78,7 @@ export class TicketEditComponent implements OnInit {
     this.cTaskConfig = JSON.parse(JSON.stringify(this.ckEditorConfig));
     this.cTaskConfig.height = 295;
     this.accordionList.push('design');
+    this.accordionList.push('development');
 
     this.activateroute.params.subscribe(params => {
       if (params['id']) {
@@ -174,8 +176,10 @@ export class TicketEditComponent implements OnInit {
     this._ticketService.getTicketById(id)
       .subscribe((res: any) => {
         this.ticket = res.value;
+        if (this.ticket.dateAssignedToUat)
+          this.ticket.dateAssignedToUat = moment(this.ticket.dateAssignedToUat).toDate();
+
         this.initTicket = JSON.parse(JSON.stringify(this.ticket));
-        debugger
         this.ticket.assignedToStaffHistoryList.forEach((sl, i) => {
           this.ticket.assignedToStaffHistoryList[i] = { display: sl }
         })
@@ -240,7 +244,6 @@ export class TicketEditComponent implements OnInit {
         }
       }
 
-      debugger;
       this._ticketService.postTicket(this.ticket)
         .subscribe(res => {
           console.log(res);
