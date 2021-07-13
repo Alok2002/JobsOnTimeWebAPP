@@ -295,7 +295,7 @@ export class TicketEditComponent implements OnInit {
   getLoginUserRoles() {
     var token = this.getToken();
     console.log(token);
-    this.loginusername = token["unique_name"];
+    this.loginusername = token["primarysid"];
   }
 
   getToken() {
