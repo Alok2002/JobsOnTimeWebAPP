@@ -21,7 +21,8 @@
             "tsConfig": "src/tsconfig.app.json",
             "assets": [
               "src/favicon.ico",
-              "src/assets"
+              "src/assets",
+              "./src/config.js"
             ],
             "styles": [
               "./node_modules/primeicons/primeicons.css",
@@ -41,7 +42,8 @@
               "src/assets/css/axstyle.css",
               "src/assets/css/axsurvey.css",
               "src/assets/plugins/bootstrap-sweetalert/sweet-alert.css",
-              "src/styles.scss"
+              "src/styles.scss",
+              "src/assets/css/theme-orange.css"
             ],
             "scripts": [
               "src/assets/js/jquery.min.js",

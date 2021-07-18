@@ -13,8 +13,10 @@ import { AuthService } from './../services/auth.services';
 import { ClientServices } from './../services/client.services';
 import { SurveyServices } from './../services/survey.services';
 import swal from 'sweetalert2';
+import { siteTheme } from '../app.component';
 
 @Component({
+  moduleId: module.id,
   selector: "SignInComponent",
   templateUrl: "./signin.component.html",
   styleUrls: ['../../assets/css/disability.css']
@@ -52,7 +54,9 @@ export class SignInComponent implements OnInit {
   clientOtp: string;
 
   @ViewChild('show2FAOTP') show2FAOTP: any;
-  @ViewChild('showClientOTP') showClientOTP: any;
+  @ViewChild('showClientOTP') showClientOTP: any;  
+  @ViewChild('faSubmit') faSubmit: any;
+  siteTheme = siteTheme;
 
   constructor(private router: Router, private cookieService: CookieService, private authservice: AuthService,
     private userservice: UserServices, private sharedService: SharedServices, private activateroute: ActivatedRoute,
@@ -203,8 +207,12 @@ export class SignInComponent implements OnInit {
             this.userservice.getUser2FAStatus(t['primarysid'])
               .subscribe((res: any) => {
                 console.log(res)
-                if (!res.value.skip2FA && res.value.enable2FA)
+                if (!res.value.skip2FA && res.value.enable2FA) {
                   this.isShow2FAOTP = true;
+                  setTimeout(() => {
+                    this.register2FAEnter();
+                  }, 1000)
+                }
                 else {
                   this.setAuthCookie(this.tempToken);
                   window.location.href = "/dashboard";
@@ -414,5 +422,15 @@ export class SignInComponent implements OnInit {
     this.loginUser.userName = null;
     this.loginUser.password = null;*/
     window.location.reload();
+  }
+
+  register2FAEnter() {
+    var node: any = document.getElementsByClassName("tfaform")[0];
+    node.addEventListener("keydown", ({ key }) => {
+      if (key === "Enter") {
+        if (this.faSubmit && this.faSubmit.nativeElement)
+          this.faSubmit.nativeElement.click();
+      }
+    })
   }
 }

@@ -1,4 +1,5 @@
-﻿import { SurveyServices } from './../services/survey.services';
+﻿import { siteTheme } from './../app.component';
+import { SurveyServices } from './../services/survey.services';
 import { Component, OnInit } from '@angular/core';
 import * as JWT from 'jwt-decode';
 import { CookieService } from 'ngx-cookie-service';
@@ -16,7 +17,7 @@ declare var jQuery: any;
 
 @Component({
     selector: 'SignUpComponent',
-    templateUrl: './signup.component.html'
+    templateUrl: './signup.component.html'    
 })
 
 export class SignUpComponent implements OnInit {
@@ -42,6 +43,7 @@ export class SignUpComponent implements OnInit {
     isFarronResearch = false;
     pattern = passwordPattern;
     termsUrl: string;
+    siteTheme = siteTheme;
 
     constructor(private userservice: UserServices, public sharedservice: SharedServices, public respondentservice: RespondentServices, private inpService: InputServices,
         private cookieService: CookieService, private activateroute: ActivatedRoute, private surveyservice: SurveyServices, public httpClient: HttpClient) { }

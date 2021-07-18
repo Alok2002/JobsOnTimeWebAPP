@@ -7,13 +7,9 @@ import * as JWT from 'jwt-decode';
 import * as moment from 'moment';
 import { CookieService } from 'ngx-cookie-service';
 import { filter } from 'rxjs/operators';
+import { environment } from './../environments/environment';
 
 declare var jQuery: any;
-
-// export var apiHost = 'https://dev.logajob.com.au';
-// export var apiHost = '';
-export var apiHost = 'http://localhost:56478';
-
 export var phoneMask = ['(', /[0-9]/, /[0-9]/, ')', ' ', /[0-9]/, /[0-9]/, /[0-9]/, /[0-9]/, ' ', /[0-9]/, /[0-9]/, /[0-9]/, /[0-9]/];
 export var mobileMask = [/[0-9]/, /[0-9]/, /[0-9]/, /[0-9]/, ' ', /[0-9]/, /[0-9]/, /[0-9]/, ' ', /[0-9]/, /[0-9]/, /[0-9]/];
 export var postcodeMask = [/[0-9]/, /[0-9]/, /[0-9]/, /[0-9]/];
@@ -80,7 +76,7 @@ export var ckEditorConfigV5 = {
     }
   },
   language: 'en'
-}
+};
 export var ckEditorConfig = {
   toolbarGroups: [
     { name: 'colors', groups: ['colors'] },
@@ -94,6 +90,10 @@ export var ckEditorConfig = {
   allowedContent: true, scayt_autoStartup: true, height: 200, forcePasteAsPlainText: true, autoParagraph: false, enterMode: 2,
   contentsCss: ["body {font-size: 14px;font-family: 'Roboto', sans-serif;}"]
 };
+export var reCaptchaSiteKey = "6Le9PaMbAAAAAMaJQE2jbCT9DXyAGsZJZk17kD1_";
+export var reCaptchaSecretKey = "6Le9PaMbAAAAAD-tmTa9DqIINgQy6dTbbXLVySXa";
+export var apiHost = environment.apiHost;
+export var siteTheme = environment.siteTheme;
 
 @Component({
   selector: 'app-root',
