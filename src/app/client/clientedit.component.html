@@ -3,10 +3,17 @@
     <div class="form-group required has-feedback">
       <label class="control-label w-100-pre" for="name">
         Client Name
-        <span [hidden]="clientnamemodel.valid || !isSubmitForm">
-          <span class="text-danger pull-right" [hidden]="!clientnamemodel.hasError('required')">Required</span>
+        <span class="pull-right">
+          <div class="checkbox checkbox-primary no-margin">
+            <input id="checkbox2" type="checkbox" name="isActive" [(ngModel)]="client.isActive">
+            <label for="checkbox2">
+              Active
+            </label>
+          </div>
         </span>
-
+        <span [hidden]="clientnamemodel.valid || !isSubmitForm">
+          <span class="text-danger pull-right" [hidden]="!clientnamemodel.hasError('required')"> Required</span>
+        </span>
         <!-- <div class="pull-right">
           <label for="checkbox1"
                  class="control-label ax-color-black pull-left m-b-0 font-normal font-12 no-required">

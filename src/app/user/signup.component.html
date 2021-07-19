@@ -20,7 +20,8 @@
               <li>
                 <div class="input-group">
                   <a *ngIf="!surveyRedirecJobId" [routerLink]="['/signin']" class="btn btn-basil">Login</a>
-                  <a *ngIf="surveyRedirecJobId" [routerLink]="['/signin', surveyRedirecJobId]" class="btn btn-basil">Login</a>
+                  <a *ngIf="surveyRedirecJobId" [routerLink]="['/signin', surveyRedirecJobId]"
+                    class="btn btn-basil">Login</a>
                 </div>
               </li>
             </ul>
@@ -200,7 +201,7 @@
                           <span class="text-danger pull-left"
                             [hidden]="!passwordModel.hasError('required')">Required</span>                          
                         </span> -->
-                        
+
                         <span class="pull-right" *ngIf="passwordModel.dirty || (!passwordModel.valid && isSubmitForm)"
                           [class.text-danger]="!passwordModel.valid && isSubmitForm" style="font-size: 12px;">
                           <span class="pull-right ax-cursor-pointer">
@@ -212,6 +213,19 @@
                         [pattern]="pattern" minlength="8" maxlength="20" required #passwordModel="ngModel">
                     </div>
 
+                    <div class="clearfix"></div>
+                    <div class="form-group required">
+                      <label class="control-label">
+                        Captcha                        
+                      </label>
+                      <span class="p-l-5">
+                        <b class="text-danger" *ngIf="isSubmitForm && !recaptcha"> Required</b>
+                      </span>
+                      <ngx-recaptcha2 #captchaElem [siteKey]="reCaptchaSiteKey" (success)="handleSuccess($event)"
+                        [theme]="'light'" [type]="'image'" [size]="'normal'" name="recaptcha" [(ngModel)]="recaptcha"
+                        required>
+                      </ngx-recaptcha2>
+                    </div>
                     <div class="clearfix"></div>
                     <div class="text-left">
                       <div class="col-md-8 float-left no-padding">
