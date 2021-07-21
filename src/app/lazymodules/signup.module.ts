@@ -24,11 +24,11 @@ export const route: Routes = [
     TextMaskModule,
     NumericModule,
     SafeHtmlPipeModule,
-    NgxCaptchaModule 
+    NgxCaptchaModule
   ],
   declarations: [
-      SignUpComponent
-    ]
+    SignUpComponent
+  ]
 })
 
 export class SignupModule { }

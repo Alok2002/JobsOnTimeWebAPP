@@ -140,7 +140,7 @@ export class ResFamilyComponent implements OnInit {
     this.howmanychildrenlist = [];
     for (var i = 0; i < this.howmanychildren; i++) {
       var children = new Children();
-      children.resId = this.resId;      
+      children.resId = this.resId;
       children.childYear = null;
       children.childBirthMonth = null;
 
@@ -217,7 +217,7 @@ export class ResFamilyComponent implements OnInit {
   }
   addChild() {
     var children = new Children();
-    children.resId = this.resId;    
+    children.resId = this.resId;
     children.childYear = null;
     children.childBirthMonth = null;
 
@@ -246,7 +246,7 @@ export class ResFamilyComponent implements OnInit {
       });
   }
 
-  unmask(value){
+  unmask(value) {
     var ret = value.replace(/\D+/g, '');
     return ret;
   }
@@ -254,6 +254,30 @@ export class ResFamilyComponent implements OnInit {
   gotoTop() {
     if (isPlatformBrowser(this.platformId)) {
       window.scrollTo(0, 0)
+    }
+  }
+
+  changeChildrenSection(currentModel, event) {
+    console.log(event);
+    var val = event;
+    if (currentModel == 'hasChildren') {
+      if (val) {        
+        this.respondent.hasNoChildren = false;
+      }
+    }
+    if (currentModel == 'hasNoChildren') {
+      if (val) {
+        this.respondent.hasChildren = false;
+        this.respondent.childrenLeftHome = false;
+      }
+    }
+    if (currentModel == 'childrenLeftHome') {
+      if (val) {
+        this.respondent.hasChildren = true;        
+        this.respondent.hasNoChildren = false;
+      } else {
+        this.respondent.hasChildren = false;
+      }
     }
   }
 }

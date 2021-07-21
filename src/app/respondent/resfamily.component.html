@@ -82,16 +82,20 @@
     <div class="no-padding-right" [class.col-md-8]="!isMyProfile" [class.col-md-12]="isMyProfile">
       <div class="form-group has-feedback">
         <label class="control-label">Children</label>
-        <div class="radio radio-primary pull-left res-check-margin w-100-pre">
-          <input type="radio" name="hasChildren" id="hasChildren" [value]="true"
-            (ngModelChange)="respondent.hasChildren = true; generateChildrenHasChild();respondent.hasNoChildren = false"
-            [(ngModel)]="respondent.hasChildren">
+        <div class="checkbox checkbox-primary pull-left res-check-margin w-100-pre">
+          <input type="checkbox" name="hasChildren" id="hasChildren" [value]="true" [(ngModel)]="respondent.hasChildren" 
+            (ngModelChange)="generateChildrenHasChild();changeChildrenSection('hasChildren', respondent.hasChildren)" [checked]="respondent.hasChildren">
           <label class="control-label" for="hasChildren">I have children</label>
         </div>
-        <div class="radio radio-primary pull-left res-check-margin w-100-pre">
-          <input type="radio" name="hasChildren" id="hasNoChildren" (ngModelChange)="respondent.hasNoChildren = true"
-            [value]="false" [(ngModel)]="respondent.hasChildren">
+        <div class="checkbox checkbox-primary pull-left res-check-margin w-100-pre">
+          <input type="checkbox" name="hasNoChildren" id="hasNoChildren" [value]="true" [(ngModel)]="respondent.hasNoChildren"
+            (ngModelChange)="changeChildrenSection('hasNoChildren', respondent.hasNoChildren)" [checked]="respondent.hasNoChildren">
           <label class="control-label" for="hasNoChildren">I have no children</label>
+        </div>
+        <div class="checkbox checkbox-primary pull-left res-check-margin w-100-pre">
+          <input type="checkbox" name="childrenLeftHome" id="childrenLeftHome" [value]="true" [(ngModel)]="respondent.childrenLeftHome"
+            (ngModelChange)="changeChildrenSection('childrenLeftHome', respondent.childrenLeftHome)" [checked]="respondent.childrenLeftHome">
+          <label class="control-label" for="childrenLeftHome">My children have left home</label>
         </div>
         <div class="clearfix"></div>
       </div>

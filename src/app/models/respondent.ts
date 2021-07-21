@@ -164,4 +164,6 @@ export class Respondent {
     public customField5: string;
     public customField6: string;
     public customField7: string;
+
+    public childrenLeftHome: boolean;
 }
