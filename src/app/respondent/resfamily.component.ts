@@ -268,16 +268,7 @@ export class ResFamilyComponent implements OnInit {
     if (currentModel == 'hasNoChildren') {
       if (val) {
         this.respondent.hasChildren = false;
-        this.respondent.childrenLeftHome = false;
       }
-    }
-    if (currentModel == 'childrenLeftHome') {
-      if (val) {
-        this.respondent.hasChildren = true;        
-        this.respondent.hasNoChildren = false;
-      } else {
-        this.respondent.hasChildren = false;
-      }
-    }
+    }    
   }
 }
