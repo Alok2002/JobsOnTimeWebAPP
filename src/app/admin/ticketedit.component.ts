@@ -1,3 +1,4 @@
+import { CookieService } from 'ngx-cookie-service';
 // import 'tinymce/tinymce.min';
 import { Component, EventEmitter, Inject, OnInit, Output, PLATFORM_ID } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
@@ -11,13 +12,16 @@ import { UserServices } from '../services/user.services';
 import { ckEditorConfig, timeMask } from '../app.component';
 // import * as Editor from './../../assets/ckeditor/build/ckeditor';
 import { isPlatformBrowser } from '@angular/common';
+import * as JWT from 'jwt-decode';
+import * as moment from 'moment';
 
 declare var jQuery: any;
 // declare var tinymce: any;
 
 @Component({
   selector: 'TicketEditComponent',
-  templateUrl: './ticketedit.component.html'
+  templateUrl: './ticketedit.component.html',
+  styleUrls: ['./ticket.component.css']
 })
 
 export class TicketEditComponent implements OnInit {
@@ -50,18 +54,32 @@ export class TicketEditComponent implements OnInit {
   timeMask = timeMask;
   ckEditorConfig = JSON.parse(JSON.stringify(ckEditorConfig));
   isBrowser = false;
+  dTaskConfig: any;
+  cTaskConfig: any;
+
+  loginusername: string;
+  initTicket: Ticket;
+  accordionList = [];
 
   constructor(private router: Router, private sharedservice: SharedServices, private _userService: UserServices,
-    private activateroute: ActivatedRoute, private _ticketService: TicketServices, @Inject(PLATFORM_ID) platformId: Object) {
-      /*this.isBrowser = isPlatformBrowser(platformId);
-      if(this.isBrowser) {
-        const ClassicEditor = require('./../../assets/ckeditor/build/ckeditor');
-        this.editor = ClassicEditor;
-      }*/
+    private activateroute: ActivatedRoute, private _ticketService: TicketServices, @Inject(PLATFORM_ID) platformId: Object,
+    private cookieservice: CookieService,) {
+    /*this.isBrowser = isPlatformBrowser(platformId);
+    if(this.isBrowser) {
+      const ClassicEditor = require('./../../assets/ckeditor/build/ckeditor');
+      this.editor = ClassicEditor;
+    }*/
     // tinymce.remove();
   }
 
   ngOnInit() {
+    this.dTaskConfig = JSON.parse(JSON.stringify(this.ckEditorConfig));
+    this.dTaskConfig.height = 150;
+    this.cTaskConfig = JSON.parse(JSON.stringify(this.ckEditorConfig));
+    this.cTaskConfig.height = 295;
+    this.accordionList.push('design');
+    this.accordionList.push('development');
+
     this.activateroute.params.subscribe(params => {
       if (params['id']) {
         this.editId = params['id'];
@@ -74,13 +92,13 @@ export class TicketEditComponent implements OnInit {
       this.addNew();
     }
 
+    this.getLoginUserRoles();
     this.getUsers();
     // this.initTinymce();
     this.getTicketPriorityList();
     this.getTicketModuleList();
     this.getTicketStatusList();
     this.getTicketTypeList();
-
   }
 
   addNew() {
@@ -94,6 +112,9 @@ export class TicketEditComponent implements OnInit {
     this._userService.getAllUser()
       .subscribe((res: any) => {
         this.users = res.value;
+        this.users.forEach((usr) => {
+          usr['fullNameWithLoginUserName'] = usr.fullName + ' (' + this.loginusername + ')';
+        })
       });
   }
 
@@ -155,8 +176,14 @@ export class TicketEditComponent implements OnInit {
     this._ticketService.getTicketById(id)
       .subscribe((res: any) => {
         this.ticket = res.value;
+        if (this.ticket.dateAssignedToUat)
+          this.ticket.dateAssignedToUat = moment(this.ticket.dateAssignedToUat).toDate();
 
-        console.log(res);
+        this.initTicket = JSON.parse(JSON.stringify(this.ticket));
+        this.ticket.assignedToStaffHistoryList.forEach((sl, i) => {
+          this.ticket.assignedToStaffHistoryList[i] = { display: sl }
+        })
+        console.log(this.ticket);
       });
   }
 
@@ -204,6 +231,19 @@ export class TicketEditComponent implements OnInit {
     }
     else {
       console.log(this.ticket);
+      /*if (this.ticket.assignedToStaffHistoryList && this.ticket.assignedToStaffHistoryList.length > 0)
+        this.ticket.assignedToStaffHistory = this.ticket.assignedToStaffHistoryList.map((elem) => { return elem.display; }).join("~");*/
+
+      if (this.ticket.id) {
+        if (this.ticket.assignedToStaff != this.initTicket.assignedToStaff) {
+          if (!this.initTicket.assignedToStaffHistoryList) this.initTicket.assignedToStaffHistoryList = [];
+          this.initTicket.assignedToStaffHistoryList.push(this.initTicket.assignedToStaff + ' (' + this.initTicket.assignedByStaff + ')');
+          this.ticket.assignedToStaffHistory = this.initTicket.assignedToStaffHistoryList.join('~');
+        } else {
+          this.ticket.assignedByStaff = this.initTicket.assignedByStaff;
+        }
+      }
+
       this._ticketService.postTicket(this.ticket)
         .subscribe(res => {
           console.log(res);
@@ -246,5 +286,37 @@ export class TicketEditComponent implements OnInit {
         else this.ticket.ticketImageUrls = null;
       }
     });
+  }
+
+  changeAssignedTo() {
+    this.ticket.assignedByStaff = this.loginusername;
+  }
+
+  getLoginUserRoles() {
+    var token = this.getToken();
+    console.log(token);
+    this.loginusername = token["primarysid"];
+  }
+
+  getToken() {
+    let cookieExists = this.cookieservice.check('auth_token');
+    console.log(cookieExists);
+    if (cookieExists) {
+      var token = JWT(this.cookieservice.get('auth_token'));
+      return token;
+    }
+  }
+
+  checkAccOpen(tab) {
+    var ret = false;
+    var index = this.accordionList.indexOf(tab);
+    if (index >= 0) ret = true;
+    return ret;
+  }
+
+  toggleAccordion(tab) {
+    var index = this.accordionList.indexOf(tab);
+    if (index >= 0) this.accordionList.splice(index, 1);
+    else this.accordionList.push(tab);
   }
 }

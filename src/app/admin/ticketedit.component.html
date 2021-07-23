@@ -20,234 +20,348 @@
               <div id="bg-default" class="panel-collapse collapse in">
                 <div class="portlet-body no-padding m-t-0 ax-color-black">
                   <form #ticketForm="ngForm" *ngIf="ticket?.id || editId == null">
-                    <div class="col-md-4">
-                      <div class="form-group required">
-                        <label class="control-label ax-color-black w-100-pre">
-                          Title
-                          <span [hidden]="summary.valid || !isSubmitForm">
-                            <span class="text-danger pull-right"
-                              [hidden]="!summary.hasError('required')">Required</span>
-                          </span>
+                    <div class="row">
+                      <div class="col-md-6">
+                        <div class="form-group required">
+                          <label class="control-label ax-color-black w-100-pre">
+                            Title
+                            <span [hidden]="summary.valid || !isSubmitForm">
+                              <span class="text-danger pull-right"
+                                [hidden]="!summary.hasError('required')">Required</span>
+                            </span>
 
-                          <span class="font-10 no-padding pull-right">
-                            <ng-container *ngIf="ticket?.id">
-                              <b>Created:</b> {{ticket?.createdDate | date: 'dd-MM-yyyy'}} &#160;
-                              <b>Last Updated:</b> {{ticket?.lastChangedDate | date: 'dd-MM-yyyy'}}
-                            </ng-container>
-                          </span>
+                            <span class="font-10 no-padding pull-right">
+                              <ng-container *ngIf="ticket?.id">
+                                <b>Created:</b> {{ticket?.createdDate | date: 'dd-MM-yyyy'}} &#160;
+                                <b>Last Updated:</b> {{ticket?.lastChangedDate | date: 'dd-MM-yyyy'}}
+                              </ng-container>
+                            </span>
 
-                        </label>
-                        <input type="text" class="form-control" name="summary" [(ngModel)]="ticket.summary" required
-                          #summary="ngModel">
+                          </label>
+                          <input type="text" class="form-control" name="summary" [(ngModel)]="ticket.summary" required
+                            #summary="ngModel">
+                        </div>
+                        <div class="row">
+                          <div class="col-md-6">
+                            <div class="form-group required">
+                              <label class="control-label ax-color-black w-100-pre">
+                                Created By
+                                <span [hidden]="createdByStaff.valid || !isSubmitForm">
+                                  <span class="text-danger pull-right"
+                                    [hidden]="!createdByStaff.hasError('required')">Required</span>
+                                </span>
+                              </label>
+                              <select class="form-control" name="createdByStaff" [(ngModel)]="ticket.createdByStaff"
+                                #createdByStaff="ngModel" required>
+                                <option [ngValue]="null" disabled></option>
+                                <option *ngFor="let user of users" value="{{user.username}}">
+                                  {{user.fullName}}
+                                </option>
+                              </select>
+                            </div>
+                            <div class="form-group required">
+                              <label class="control-label ax-color-black w-100-pre">
+                                Ticket Status
+                                <span [hidden]="status.valid || !isSubmitForm">
+                                  <span class="text-danger pull-right"
+                                    [hidden]="!status.hasError('required')">Required</span>
+                                </span>
+                              </label>
+                              <select class="form-control" name="status" [(ngModel)]="ticket.status" #status="ngModel"
+                                required>
+                                <option value="{{ts.code}}" *ngFor="let ts of ticketstatuslist">{{ts.desc}}</option>
+                              </select>
+                            </div>
+                          </div>
+                          <div class="col-md-6">
+                            <div class="form-group required">
+                              <label class="control-label ax-color-black w-100-pre">
+                                Reported By
+                                <span [hidden]="reportedByStaff.valid || !isSubmitForm">
+                                  <span class="text-danger pull-right"
+                                    [hidden]="!reportedByStaff.hasError('required')">Required</span>
+                                </span>
+                              </label>
+                              <select class="form-control" name="reportedBy" [(ngModel)]="ticket.createdByStaff"
+                                #reportedByStaff="ngModel" required>
+                                <option [ngValue]="null" disabled></option>
+                                <option *ngFor="let user of users" value="{{user.username}}">
+                                  {{user.fullName}}
+                                </option>
+                              </select>
+                            </div>
+                            <div class="form-group required">
+                              <label class="control-label ax-color-black w-100-pre">
+                                Priority
+                                <span [hidden]="priority.valid || !isSubmitForm">
+                                  <span class="text-danger pull-right"
+                                    [hidden]="!priority.hasError('required')">Required</span>
+                                </span>
+                              </label>
+                              <select class="form-control" name="priority" [(ngModel)]="ticket.priority"
+                                #priority="ngModel" required>
+                                <option [ngValue]="null" disabled></option>
+                                <option value="{{tp.code}}" *ngFor="let tp of ticketprioritylist">{{tp.desc}}</option>
+                              </select>
+                            </div>
+                          </div>
+                        </div>
                       </div>
-                    </div>
-                    <div class="col-md-4">
-                      <div class="row">
-                        <div class="form-group col-md-6">
+                      <div class="col-md-6">
+                        <div class="row">
+                          <div class="form-group col-md-6 required">
+                            <label class="control-label ax-color-black w-100-pre">
+                              Assigned To
+                              <span [hidden]="assignedToStaffModel.valid || !isSubmitForm">
+                                <span class="text-danger pull-right"
+                                  [hidden]="!assignedToStaffModel.hasError('required')">Required</span>
+                              </span>
+                            </label>
+                            <select class="form-control" [(ngModel)]="ticket.assignedToStaff" name="assignedToStaff"
+                              (ngModelChange)="changeAssignedTo()" required #assignedToStaffModel="ngModel">
+                              <option [ngValue]="null" disabled></option>
+                              <option *ngFor="let user of users" [value]="user.username">{{user.fullName}}</option>
+                            </select>
+                          </div>
+                          <div class="form-group col-md-6">
+                            <label class="control-label ax-color-black w-100-pre">
+                              Assigned By
+                            </label>
+                            <select class="form-control" [(ngModel)]="ticket.assignedByStaff" name="assignedByStaff"
+                              disabled>
+                              <option [ngValue]="null" disabled></option>
+                              <option *ngFor="let user of users" [value]="user.username">{{user.fullName}}</option>
+                            </select>
+                          </div>
+                        </div>
+
+                        <div class="form-group">
+                          <label class="control-label ax-color-black w-100-pre">
+                            Assigned To History
+                          </label>
+                          <tag-input [(ngModel)]="ticket.assignedToStaffHistoryList" name="assignedToStaffHistoryList"
+                            #assignedToStaff="ngModel" [onlyFromAutocomplete]="true" theme='bootstrap'
+                            [placeholder]="''" class="sendmobile-input" [secondaryPlaceholder]="''" [disable]="true">
+                            <tag-input-dropdown [showDropdownIfEmpty]="true" [dynamicUpdate]="false"
+                              [focusFirstElement]="true" [displayBy]="'fullNameWithLoginUserName'"
+                              [identifyBy]="'fullNameWithLoginUserName'" [autocompleteItems]="users">
+                              <ng-template let-item="item" let-index="index">
+                                {{ item?.fullName }}
+                              </ng-template>
+                            </tag-input-dropdown>
+                          </tag-input>
+                          <!-- <tag-input [(ngModel)]="ticket.assignedToStaffList" name="assignedToStaffList"
+                          #assignedToStaff="ngModel" theme='bootstrap' [placeholder]="''" class="sendmobile-input"
+                          [secondaryPlaceholder]="''" [separatorKeyCodes]="[9, 188]" style="height: 182px;">
+                        </tag-input> -->
+
+                          <!-- <textarea class="form-control" name="assignedToStaff" [(ngModel)]="ticket.assignedToStaff"
+                          #assignedToStaff="ngModel" style="height: 182px;" disabled></textarea> -->
+                          <!-- <select class="form-control" name="assignedToStaff" [(ngModel)]="ticket.assignedToStaff"
+                          #assignedToStaff="ngModel">
+                          <option [ngValue]="null" disabled></option>
+                          <option *ngFor="let user of users" value="{{user.username}}">
+                            {{user.fullName}}
+                          </option>
+                        </select> -->
+                        </div>
+                        <div class="row">
+                          <div class="col-md-6">
+                            <div class="form-group required">
+                              <label class="control-label ax-color-black w-100-pre">
+                                Module
+                                <span [hidden]="module.valid || !isSubmitForm">
+                                  <span class="text-danger pull-right"
+                                    [hidden]="!module.hasError('required')">Required</span>
+                                </span>
+                              </label>
+                              <input auto-complete [(ngModel)]="ticket.module" name="module" required #module="ngModel"
+                                [source]="ticketmodulelist" class="form-control" [re-focus-after-select]="false" />
+                            </div>
+                          </div>
+                          <div class="col-md-6">
+                            <div class="form-group required">
+                              <label class="control-label ax-color-black w-100-pre">
+                                Ticket Type
+                                <span [hidden]="ticketType.valid || !isSubmitForm">
+                                  <span class="text-danger pull-right"
+                                    [hidden]="!ticketType.hasError('required')">Required</span>
+                                </span>
+                              </label>
+                              <select class="form-control" name="ticketType" [(ngModel)]="ticket.ticketType"
+                                #ticketType="ngModel" required>
+                                <option value="{{ts.code}}" *ngFor="let ts of tickettypelist">{{ts.desc}}</option>
+                              </select>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                    </div>                    
+                    <div class="row">                      
+                      <div class="col-md-2">
+                        <div class="form-group">
                           <label class="control-label ax-color-black w-100-pre">Estimated Dev Time
                             <span [hidden]="estimateddevtimeModel.valid || !isSubmitForm">
                               <span class="text-danger pull-right"
                                 [hidden]="!estimateddevtimeModel.hasError('pattern')">Invalid</span>
                             </span>
                           </label>
-                          <input type="text" class="form-control" name="estimateddevtime"
-                            [(ngModel)]="ticket.estimDevDuration" #estimateddevtimeModel="ngModel"
-                            [textMask]="{mask: timeMask, showMask: true}" pattern="([01]?[0-9]|2[0-3]):[0-5][0-9]">
+                          <!-- [textMask]="{mask: timeMask, showMask: true}" pattern="([01]?[0-9]|2[0-3]):[0-5][0-9]" -->
+                          <input type="number" class="form-control" name="estimateddevtime"
+                            [(ngModel)]="ticket.estimDevDuration" #estimateddevtimeModel="ngModel">
                         </div>
-                        <div class="form-group col-md-6">
+                        <div class="form-group">
                           <label class="control-label ax-color-black w-100-pre">Exact Dev Time
                             <span [hidden]="actualDevDurationModel.valid || !isSubmitForm">
                               <span class="text-danger pull-right"
                                 [hidden]="!actualDevDurationModel.hasError('pattern')">Invalid</span>
                             </span>
                           </label>
-                          <input type="text" class="form-control" name="actualDevDuration"
-                            [(ngModel)]="ticket.actualDevDuration" #actualDevDurationModel="ngModel"
-                            [textMask]="{mask: timeMask, showMask: true}" pattern="([01]?[0-9]|2[0-3]):[0-5][0-9]">
+                          <!-- [textMask]="{mask: timeMask, showMask: true}" pattern="([01]?[0-9]|2[0-3]):[0-5][0-9]" -->
+                          <input type="number" class="form-control" name="actualDevDuration"
+                            [(ngModel)]="ticket.actualDevDuration" #actualDevDurationModel="ngModel">
                         </div>
-                      </div>
-                    </div>
-                    <div class="col-md-4">
-                      <div class="row">
-                        <div class="form-group col-md-6">
+                        <div class="form-group">
                           <label class="control-label ax-color-black w-100-pre">Estimated Test Time
                             <span [hidden]="estimTestDurationModel.valid || !isSubmitForm">
                               <span class="text-danger pull-right"
                                 [hidden]="!estimTestDurationModel.hasError('pattern')">Invalid</span>
                             </span>
                           </label>
-                          <input type="text" class="form-control" name="estimTestDuration"
-                            [(ngModel)]="ticket.estimTestDuration" #estimTestDurationModel="ngModel"
-                            [textMask]="{mask: timeMask, showMask: true}" pattern="([01]?[0-9]|2[0-3]):[0-5][0-9]">
+                          <!-- [textMask]="{mask: timeMask, showMask: true}" pattern="([01]?[0-9]|2[0-3]):[0-5][0-9]" -->
+                          <input type="number" class="form-control" name="estimTestDuration"
+                            [(ngModel)]="ticket.estimTestDuration" #estimTestDurationModel="ngModel">
                         </div>
-                        <div class="form-group col-md-6">
+                        <div class="form-group">
                           <label class="control-label ax-color-black w-100-pre">Exact Test Time
                             <span [hidden]="actualTestDurationModel.valid || !isSubmitForm">
                               <span class="text-danger pull-right"
                                 [hidden]="!actualTestDurationModel.hasError('pattern')">Invalid</span>
                             </span>
                           </label>
-                          <input type="text" class="form-control" name="actualTestDuration"
-                            [(ngModel)]="ticket.actualTestDuration" #actualTestDurationModel="ngModel"
-                            [textMask]="{mask: timeMask, showMask: true}" pattern="([01]?[0-9]|2[0-3]):[0-5][0-9]">
+                          <!-- [textMask]="{mask: timeMask, showMask: true}" pattern="([01]?[0-9]|2[0-3]):[0-5][0-9]" -->
+                          <input type="number" class="form-control" name="actualTestDuration"
+                            [(ngModel)]="ticket.actualTestDuration" #actualTestDurationModel="ngModel">
+                        </div>
+                        <div class="form-group">
+                          <label class="control-label ax-color-black w-100-pre">Assigned to Sprint No</label>
+                          <input type="text" class="form-control" name="assignedToSprintNo"
+                            [(ngModel)]="ticket.assignedToSprintNo">
+                        </div>
+                        <div class="form-group">
+                          <label class="control-label ax-color-black w-100-pre">UAT Version</label>
+                          <input type="text" class="form-control" name="uatVersion" [(ngModel)]="ticket.uatVersion">
+                        </div>
+                        <div class="form-group">
+                          <label class="control-label ax-color-black w-100-pre">Date Assigned to UAT</label>
+                          <kendo-datepicker name="dateAssignedToUat" [(ngModel)]="ticket.dateAssignedToUat"
+                            [format]="'dd-MM-yyyy'" class="w-100-pre" placeholder="">
+                          </kendo-datepicker>
+                          <!-- <input type="text" class="form-control" name="productionReleaseNo"
+                            [(ngModel)]="ticket.DateAssignedToUat"> -->
+                        </div>
+                        <div class="form-group">
+                          <label class="control-label ax-color-black w-100-pre">Production Version</label>
+                          <input type="text" class="form-control" name="productionVersion"
+                            [(ngModel)]="ticket.productionVersion">
+                        </div>
+                      </div>
+                      <div class="col-md-10">
+                        <div class="acc-container m-b-15">
+                          <div class="acc-header">
+                            <div style="flex:1"><label class="control-label ax-color-black m-b-0">Design Task</label>
+                            </div>
+                            <div style="width: 30px;" class="text-right ax-cursor-pointer"
+                              (click)="toggleAccordion('design')">
+                              <i *ngIf="checkAccOpen('design')" class="md md-expand-more font-18"
+                                style="height: 20px;"></i>
+                              <i *ngIf="!checkAccOpen('design')" class="md md-expand-less font-18"
+                                style="height: 20px;"></i>
+                            </div>
+                          </div>
+                          <div class="acc-body" *ngIf="checkAccOpen('design')">
+                            <div class="form-group m-b-0" id="emailbody">
+                              <!-- <label class="control-label ax-color-black">Design Task</label> -->
+                              <!-- <textarea id="elm1" class="tinymce-editor" name="designtask" [(ngModel)]="ticket.requiredEffect"></textarea> -->
+                              <ckeditor name="elm1" [(ngModel)]="ticket.designTask" [config]="dTaskConfig"></ckeditor>
+                            </div>
+                          </div>
+                        </div>
+                        <div class="acc-container m-b-15">
+                          <div class="acc-header">
+                            <div style="flex:1"><label class="control-label ax-color-black">Development Task</label>
+                            </div>
+                            <div style="width: 30px;" class="text-right ax-cursor-pointer"
+                              (click)="toggleAccordion('development')">
+                              <i *ngIf="checkAccOpen('development')" class="md md-expand-more font-18"
+                                style="height: 20px;"></i>
+                              <i *ngIf="!checkAccOpen('development')" class="md md-expand-less font-18"
+                                style="height: 20px;"></i>
+                            </div>
+                          </div>
+                          <div class="acc-body" *ngIf="checkAccOpen('development')">
+                            <div class="form-group m-b-0">
+                              <!-- <label class="control-label ax-color-black">Development Task</label> -->
+                              <!-- <textarea id="elm2" class="tinymce-editor" name="developmenttask" [(ngModel)]="ticket.description"></textarea> -->
+                              <ckeditor name="elm2" [(ngModel)]="ticket.developmentTask" [config]="dTaskConfig">
+                              </ckeditor>
+                            </div>
+                          </div>
                         </div>
                       </div>
                     </div>
-                    <div class="clearfix"></div>
-                    <div class="col-md-4">
-                      <div class="form-group required">
-                        <label class="control-label ax-color-black w-100-pre">
-                          Created By
-                          <span [hidden]="createdByStaff.valid || !isSubmitForm">
-                            <span class="text-danger pull-right"
-                              [hidden]="!createdByStaff.hasError('required')">Required</span>
-                          </span>
-                        </label>
-                        <select class="form-control" name="createdByStaff" [(ngModel)]="ticket.createdByStaff"
-                          #createdByStaff="ngModel" required>
-                          <option [ngValue]="null" disabled></option>
-                          <option *ngFor="let user of users" value="{{user.username}}">
-                            {{user.fullName}}
-                          </option>
-                        </select>
-                      </div>
-                      <div class="form-group required">
-                        <label class="control-label ax-color-black w-100-pre">
-                          Priority
-                          <span [hidden]="priority.valid || !isSubmitForm">
-                            <span class="text-danger pull-right"
-                              [hidden]="!priority.hasError('required')">Required</span>
-                          </span>
-                        </label>
-                        <select class="form-control" name="priority" [(ngModel)]="ticket.priority" #priority="ngModel"
-                          required>
-                          <option [ngValue]="null" disabled></option>
-                          <option value="{{tp.code}}" *ngFor="let tp of ticketprioritylist">{{tp.desc}}</option>
-                        </select>
-                      </div>
-                      <div class="form-group" id="emailbody">
-                        <label class="control-label ax-color-black">Design Task</label>
-                        <!-- <textarea id="elm1" class="tinymce-editor" name="designtask" [(ngModel)]="ticket.requiredEffect"></textarea> -->
-                        <ckeditor name="elm1" [(ngModel)]="ticket.designTask" [config]="ckEditorConfig"></ckeditor>
-                      </div>
-                    </div>
-                    <div class="col-md-4">
-                      <div class="form-group">
-                        <label class="control-label ax-color-black w-100-pre">
-                          Assigned By
-                          <span [hidden]="assignedByStaff.valid || !isSubmitForm">
-                            <span class="text-danger pull-right"
-                              [hidden]="!assignedByStaff.hasError('required')">Required</span>
-                          </span>
-                        </label>
-                        <select class="form-control" name="assignedByStaff" [(ngModel)]="ticket.assignedByStaff"
-                          #assignedByStaff="ngModel">
-                          <option [ngValue]="null" disabled></option>
-                          <option *ngFor="let user of users" value="{{user.username}}">
-                            {{user.fullName}}
-                          </option>
-                        </select>
-                      </div>
-                      <div class="form-group required">
-                        <label class="control-label ax-color-black w-100-pre">
-                          Module
-                          <span [hidden]="module.valid || !isSubmitForm">
-                            <span class="text-danger pull-right" [hidden]="!module.hasError('required')">Required</span>
-                          </span>
-                        </label>
-                        <!-- <select class="form-control" name="module" [(ngModel)]="ticket.module" #module="ngModel"
-                          required>
-                          <option value="{{tm.code}}" *ngFor="let tm of ticketmodulelist">{{tm.desc}}</option>
-                        </select> -->
-                        <input auto-complete [(ngModel)]="ticket.module" name="module" required #module="ngModel"
-                          [source]="ticketmodulelist" class="form-control" [re-focus-after-select]="false" />
-                      </div>
-                      <div class="form-group">
-                        <label class="control-label ax-color-black">Development Task</label>
-                        <!-- <textarea id="elm2" class="tinymce-editor" name="developmenttask" [(ngModel)]="ticket.description"></textarea> -->
-                        <ckeditor name="elm2" [(ngModel)]="ticket.developmentTask" [config]="ckEditorConfig"></ckeditor>
-                      </div>
-                    </div>
-                    <div class="col-md-4">
-                      <div class="form-group">
-                        <label class="control-label ax-color-black w-100-pre">
-                          Assigned To
-                          <span [hidden]="assignedToStaff.valid || !isSubmitForm">
-                            <span class="text-danger pull-right"
-                              [hidden]="!assignedToStaff.hasError('required')">Required</span>
-                          </span>
-                        </label>
-                        <select class="form-control" name="assignedToStaff" [(ngModel)]="ticket.assignedToStaff"
-                          #assignedToStaff="ngModel">
-                          <option [ngValue]="null" disabled></option>
-                          <option *ngFor="let user of users" value="{{user.username}}">
-                            {{user.fullName}}
-                          </option>
-                        </select>
-                      </div>
-                      <div class="row">
-                        <div class="form-group col-md-6 required">
-                          <label class="control-label ax-color-black w-100-pre">
-                            Ticket Status
-                            <span [hidden]="status.valid || !isSubmitForm">
-                              <span class="text-danger pull-right"
-                                [hidden]="!status.hasError('required')">Required</span>
-                            </span>
-                          </label>
-                          <select class="form-control" name="status" [(ngModel)]="ticket.status" #status="ngModel"
-                            required>
-                            <option value="{{ts.code}}" *ngFor="let ts of ticketstatuslist">{{ts.desc}}</option>
-                          </select>
-                        </div>
-                        <div class="form-group col-md-6 required">
-                          <label class="control-label ax-color-black w-100-pre">
-                            Ticket Type
-                            <span [hidden]="ticketType.valid || !isSubmitForm">
-                              <span class="text-danger pull-right"
-                                [hidden]="!ticketType.hasError('required')">Required</span>
-                            </span>
-                          </label>
-                          <select class="form-control" name="ticketType" [(ngModel)]="ticket.ticketType"
-                            #ticketType="ngModel" required>
-                            <option value="{{ts.code}}" *ngFor="let ts of tickettypelist">{{ts.desc}}</option>
-                          </select>
-                        </div>
-                      </div>
-                      <div class="form-group">
+                    <div class="row">
+                      <div class="form-group col-md-6 m-b-0">
                         <label class="control-label ax-color-black">Completed Task</label>
                         <!-- <textarea id="elm3" name="area" class="tinymce-editor" [(ngModel)]="ticket.events"></textarea> -->
-                        <ckeditor name="elm3" [(ngModel)]="ticket.completedTask" [config]="ckEditorConfig"></ckeditor>
+                        <ckeditor name="elm3" [(ngModel)]="ticket.completedTask" [config]="cTaskConfig"></ckeditor>
                       </div>
-                    </div>
-                    <div class="clearfix"></div>
-                    <div class="col-md-4">
-                      <div class="form-group">
-                        <!--<input type="file" class="pull-left" style="visibility: hidden;height: 0; width: 0;" #fileInput (change)="uploadFile($event)">-->
-                        <!--<div class="btn btn-ocean btn-square btn-xs m-b-10" (click)="fileInput.click()">Upload File</div>-->
-                        <div class="m-b-10 file-drop" style="color: #777777;">
-                          <file-upload [allowedTypes]="allowedTypes" allowedSize="15"
-                            (onUploadFiles)="uploadFile($event)" [allowedMultiple]="true">
-                          </file-upload>
+                      <div class="col-md-6">
+                        <div class="form-group">
+                          <label class="control-label ax-color-black">Files</label>
+                          <!--<input type="file" class="pull-left" style="visibility: hidden;height: 0; width: 0;" #fileInput (change)="uploadFile($event)">-->
+                          <!--<div class="btn btn-ocean btn-square btn-xs m-b-10" (click)="fileInput.click()">Upload File</div>-->
+                          <div class="m-b-10 file-drop" style="color: #777777;">
+                            <file-upload [allowedTypes]="allowedTypes" allowedSize="15"
+                              (onUploadFiles)="uploadFile($event)" [allowedMultiple]="true">
+                            </file-upload>
+                          </div>
+                        </div>
+                        <div style="height: 160px;overflow-y: scroll">
+                          <ng-container *ngIf="ticket.ticketImageUrls">
+                            <div class="ax-color-black"
+                              style="background: #eee;border: 1px solid #e7e7e7;border-radius: 2px;font-size: 11px;padding: 7.5px;"
+                              *ngFor="let imgurl of ticket.ticketImageUrls.split('|'); let i = index">
+                              <a href="{{imgurl}}" target="_blank">{{imgurl}}</a> <i
+                                class="md md-clear text-danger ax-cursor-pointer" (click)="removeFile(imgurl, i)"></i>
+                            </div>
+                          </ng-container>
+                        </div>
+                        <div class="text-right">
+                          <button class="btn btn-ocean" (click)="submitTicket(ticketForm)">Save Ticket</button>&#160;
+                          <button class="btn btn-cocktail">Cancel</button>
                         </div>
                       </div>
                     </div>
-                    <div class="col-md-8" style="height: 160px;overflow-y: scroll">
-                      <ng-container *ngIf="ticket.ticketImageUrls">
-                        <div class="ax-color-black"
-                          style="background: #eee;border: 1px solid #e7e7e7;border-radius: 2px;font-size: 11px;padding: 7.5px;"
-                          *ngFor="let imgurl of ticket.ticketImageUrls.split('|'); let i = index">
-                          <a href="{{imgurl}}" target="_blank">{{imgurl}}</a> <i
-                            class="md md-clear text-danger ax-cursor-pointer" (click)="removeFile(imgurl, i)"></i>
-                        </div>
-                      </ng-container>
-                    </div>
+                    <!-- <div class="form-group">
+                      <label class="control-label ax-color-black w-100-pre">
+                        Assigned By
+                        <span [hidden]="assignedByStaff.valid || !isSubmitForm">
+                          <span class="text-danger pull-right"
+                            [hidden]="!assignedByStaff.hasError('required')">Required</span>
+                        </span>
+                      </label>
+                      <select class="form-control" name="assignedByStaff" [(ngModel)]="ticket.assignedByStaff"
+                        #assignedByStaff="ngModel">
+                        <option [ngValue]="null" disabled></option>
+                        <option *ngFor="let user of users" value="{{user.username}}">
+                          {{user.fullName}}
+                        </option>
+                      </select>
+                    </div> -->
                     <div class="clearfix"></div>
-                    <div class="col-md-4 text-right pull-right">
-                      <button class="btn btn-ocean" (click)="submitTicket(ticketForm)">Save Ticket</button>&#160;
-                      <button class="btn btn-cocktail">Cancel</button>
-                    </div>
+
                   </form>
-                  <div class="clearfix"></div>
                 </div>
               </div>
             </div>
