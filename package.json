@@ -58,6 +58,7 @@
     "@progress/kendo-data-query": "^1.5.2",
     "@progress/kendo-drawing": "^1.13.7",
     "@types/file-saver": "^2.0.1",
+    "angular-ics-generator": "0.0.2",
     "angular2-multiselect-dropdown": "^4.2.2",
     "angular2-text-mask": "^9.0.0",
     "angular2-tinymce": "^3.3.0",

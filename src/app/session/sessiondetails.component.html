@@ -270,7 +270,7 @@
 
 <!--EMAIL-->
 <email-component *ngIf="emailData && (emailData | json) != ({} | json)" [(emailData)]="emailData"
-  [modalTitle]="emailModalTitle"></email-component>
+  [modalTitle]="emailModalTitle" [emailEntity]="emailEntity" [session]="session"></email-component>
 
 <button #emailModlaBtn style="visibility: hidden; height: 0" data-toggle="modal" data-target="#emailModal"
   data-backdrop="static">Open Email Model

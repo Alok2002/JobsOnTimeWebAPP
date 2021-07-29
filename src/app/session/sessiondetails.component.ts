@@ -44,6 +44,7 @@ export class SessionDetailsComponent implements OnInit {
   @ViewChild("smsModlaBtn") smsModlaBtn;
 
   token: string;
+  emailEntity: string;
 
   constructor(private activateroute: ActivatedRoute, private emailservice: EmailServices, private smsservice: SmsServices,
     private sessionService: SessionServices, private jobsevice: JobServices, private surveyservice: SurveyServices, 
@@ -77,6 +78,7 @@ export class SessionDetailsComponent implements OnInit {
   getSessionbyId(id) {
     this.sessionService.getSessionsbyId(id)
       .subscribe((res: any) => {
+        console.log(res);
         this.session = res.value;
         console.log(this.session);
       });
@@ -113,6 +115,7 @@ export class SessionDetailsComponent implements OnInit {
 
   openEmailModal(entity, title) {
     this.emailModalTitle = title;
+    this.emailEntity = entity;
     //var ids = "?sessionids=" + this.editSessionId;
     this.emailservice.getEmailData(entity, this.editSessionId)
       .subscribe((res: any) => {

@@ -1,16 +1,14 @@
+import { Session } from './../models/session';
 import { Component, EventEmitter, Inject, Input, OnChanges, OnInit, Output, PLATFORM_ID, ViewChild } from '@angular/core';
-import { CookieService } from 'ngx-cookie-service';
 import swal from 'sweetalert2';
 import { Email } from '../models/email';
-import { apiHost, ckEditorConfig } from './../app.component';
-import { EmailServices } from '../services/email.services';
 import { EmailTemplate } from '../models/emailtemplate';
-// import * as ClassicEditor from '@ckeditor/ckeditor5-build-classic';
-// import * as Editor from './../../assets/ckeditor/build/ckeditor';
-import { isPlatformBrowser } from '@angular/common';
+import { EmailServices } from '../services/email.services';
+import { apiHost, ckEditorConfig } from './../app.component';
 
 // declare var tinymce: any;
 declare var jQuery: any;
+declare var ics: any;
 
 @Component({
   selector: 'email-component',
@@ -46,6 +44,9 @@ export class EmailComponent implements OnInit, OnChanges {
   @ViewChild("attachment1") attachment1: any;
   ckEditorConfig = JSON.parse(JSON.stringify(ckEditorConfig));
   isBrowser = false;
+  @Input() session: Session;
+  @Input() emailEntity: string;
+  isAttachIcsFile = false;
 
   constructor(private emailService: EmailServices, @Inject(PLATFORM_ID) platformId: Object) {
     /*this.isBrowser = isPlatformBrowser(platformId);
@@ -160,7 +161,7 @@ export class EmailComponent implements OnInit, OnChanges {
     //if (this.emailAttachments.length < 3) this.emailAttachments.unshift(null);
     if (this.emailAttachments.length < 1) this.emailAttachments.push(null);
 
-    if(this.emailAttachments.length < 3) {
+    if (this.emailAttachments.length < 3) {
       var index = this.emailAttachments.indexOf(null);
       if (index < 0) this.emailAttachments.push(null);
     }
@@ -201,7 +202,7 @@ export class EmailComponent implements OnInit, OnChanges {
     }
   }
 
-  sendEmailHelper(form) {
+  async sendEmailHelper(form) {
     if (this.emailData.recipientsList) this.emailData.recipients = this.emailData.recipientsList.map(e => e.value).join(",");
     //if(this.emailData.bccRecipientsList)this.emailData.bccRecipients = this.emailData.bccRecipientsList.join(',');
 
@@ -211,6 +212,10 @@ export class EmailComponent implements OnInit, OnChanges {
     }
     else {
       console.log(this.emailData);
+      if (this.isAttachIcsFile) {
+        await this.generateIcsFile().then((data) => this.emailAttachments.push(data));
+      }
+
       this.emailService.postEmail(this.emailData, this.emailAttachments)
         .subscribe((res: any) => {
           this.emailData = new Email();
@@ -267,5 +272,19 @@ export class EmailComponent implements OnInit, OnChanges {
         //this.initTinymce();
       }
     })
+  }
+
+  async generateIcsFile() {
+    console.log(this.session);
+    return new Promise(resolve => {
+      var ret = null;
+      var cal = ics();
+      cal.addEvent('subject', 'description', 'location', new Date(this.session.dateTime), new Date(this.session.dateTime));
+      var ret = cal.download('event');
+      var file = new File([ret], 'event.ics');
+      console.log(file);
+      ret = file;
+      resolve(ret);
+    });
   }
 }

@@ -58,7 +58,8 @@
               "src/assets/js/jquery.app.js",
               "src/assets/plugins/bootstrap-sweetalert/sweet-alert.min.js",
               "src/assets/plugins/moment/moment.js",
-              "src/assets/js/ax-client.js"
+              "src/assets/js/ax-client.js",
+              "src/assets/js/ics.min.js"
             ],
             "es5BrowserSupport": true
           },
