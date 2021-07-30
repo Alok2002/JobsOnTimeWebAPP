@@ -426,7 +426,7 @@ export class SharedServices {
         return this._http.get(url);
     }
 
-    saveQuery(entity, saveForCurrentJob, lastUrlSegment, filterSaveName, filters, surveyid?) {
+    saveQuery(entity, saveForCurrentJob, lastUrlSegment, filterSaveName, filters, surveyid?, trackingJobNo?) {
         console.log(entity);
         let input = new FormData();
         //input.append("entity", entity);
@@ -434,6 +434,9 @@ export class SharedServices {
         input.append('lastUrlSegment', lastUrlSegment);
         input.append('filterSaveName', filterSaveName);
         input.append('surveyid', surveyid);
+
+        if(trackingJobNo)
+            input.append('trackingJobNo', trackingJobNo);
 
         if (entity == 'clientDocument') {
             input.append('parentTableName', 'Client');

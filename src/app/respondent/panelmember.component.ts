@@ -689,19 +689,20 @@ export class PanelMemberComponent implements OnInit {
     this.isUpdateFiler = false;
     this.isSubmitForm = true;
     if (!form.invalid) {
-      this.sharedService.saveQuery('respondent', this.saveForCurrentJob, '', this.saveQueryName, this.filters)
+      var trackingJobNo = 0;
+      var trackingJson = this.cookieservice.get("currentlytracking") ? JSON.parse(this.cookieservice.get("currentlytracking")) : null;      
+      if(this.saveForCurrentJob && trackingJson) {
+        trackingJobNo = trackingJson.id;
+      }
+            
+      this.sharedService.saveQuery('respondent', this.saveForCurrentJob, '', this.saveQueryName, this.filters, null, trackingJobNo)
         .subscribe((res: any) => {
           console.log(res);
           if (res.succeeded) {
             this.isSubmitForm = false;
             this.selectedFilterId = res.value;
             this.isUpdateFiler = true;
-            this.saveQueryCancelBtn.nativeElement.click();
-            /*swal(
-              'Success!',
-              'Query has been saved successfully.',
-              'success'
-            )*/
+            this.saveQueryCancelBtn.nativeElement.click();            
           }
           else {
             var err = "";
@@ -731,7 +732,8 @@ export class PanelMemberComponent implements OnInit {
 
   openSaveQueryModal() {
     if (this.filters && this.filters.length > 0) {
-      this.saveQueryBtn.nativeElement.click()
+      this.saveQueryBtn.nativeElement.click();
+      this.isSubmitForm = false;
     }
     else {
       swal(
