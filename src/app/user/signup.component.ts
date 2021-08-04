@@ -1,5 +1,6 @@
-﻿import { SurveyServices } from './../services/survey.services';
-import { Component, OnInit } from '@angular/core';
+﻿import { reCaptchaSiteKey, siteTheme } from './../app.component';
+import { SurveyServices } from './../services/survey.services';
+import { Component, OnInit, ViewChild } from '@angular/core';
 import * as JWT from 'jwt-decode';
 import { CookieService } from 'ngx-cookie-service';
 import swal from 'sweetalert2';
@@ -12,6 +13,7 @@ import { UserServices } from '../services/user.services';
 import { SharedServices } from '../services/shared.services';
 import { ActivatedRoute } from '@angular/router';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
+import { InvisibleReCaptchaComponent } from 'ngx-captcha';
 declare var jQuery: any;
 
 @Component({
@@ -42,6 +44,11 @@ export class SignUpComponent implements OnInit {
     isFarronResearch = false;
     pattern = passwordPattern;
     termsUrl: string;
+    siteTheme = siteTheme;
+
+    reCaptchaSiteKey = reCaptchaSiteKey;
+    @ViewChild("captchaElem") captchaElem: InvisibleReCaptchaComponent;
+    recaptcha: any;
 
     constructor(private userservice: UserServices, public sharedservice: SharedServices, public respondentservice: RespondentServices, private inpService: InputServices,
         private cookieService: CookieService, private activateroute: ActivatedRoute, private surveyservice: SurveyServices, public httpClient: HttpClient) { }
@@ -152,7 +159,14 @@ export class SignUpComponent implements OnInit {
             console.log(form);
             //this.isSubmitForm = false;
             this.isSubmitFormSpinner = false;
-        } else if (this.respondent.isTermsAgreed) {
+        } else if (!this.recaptcha) {
+            swal(
+                'Error!',
+                'Invalid Captcha',
+                'error'
+            )
+        }
+        else if (this.respondent.isTermsAgreed) {
             this.respondentservice.updateRespondent(this.respondent)
                 .subscribe((res: any) => {
                     this.isSubmitFormSpinner = false;
@@ -264,5 +278,12 @@ export class SignUpComponent implements OnInit {
             .subscribe((res: any) => {
                 this.isFarronResearch = res.value;
             })
+    }
+
+    reloadCaptcha(): void {
+        this.captchaElem.reloadCaptcha();
+    }
+
+    handleSuccess(e) {
     }
 }

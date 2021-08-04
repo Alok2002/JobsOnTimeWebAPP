@@ -3086,3 +3086,7 @@ ng-otp-input .wrapper {
 .text-green-dark {
   color: green;
 }
+
+.bg-blue {
+  background: #2ea2db;
+}

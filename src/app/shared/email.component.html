@@ -65,7 +65,19 @@
             <label class="control-label ax-color-black w-100-pre">
               Body
               <div class="pull-right">
-                <div class="form-group m-b-0">
+                <div
+                  *ngIf="emailEntity == 'CreateSessionConfirmationEmail' || emailEntity == 'CreateSessionConfirmationNewResEmail'"
+                  class="form-group m-b-0 m-r-10" style="display: inline-block;">
+                  <label for="checkbox1" class="control-label ax-color-black pull-left">
+                    Attach Calendar Invite to Confirmation Email&#160;&#160;&#160;
+                  </label>
+                  <div class="checkbox checkbox-inline checkbox-primary">
+                    <input id="checkbox1" type="checkbox" name="isAttachCalendarEvent" [(ngModel)]="emailData.isAttachCalendarEvent">
+                    <label for="checkbox1" class="control-label ax-color-black">
+                    </label>
+                  </div>
+                </div>
+                <div class="form-group m-b-0" style="display: inline-block;">
                   <label for="checkbox1" class="control-label ax-color-black pull-left">
                     Add to Electronic Documents&#160;&#160;&#160;
                   </label>
@@ -84,7 +96,7 @@
 
           <input type="file" style="height: 0; visibility: hidden" #attachment1
             (change)="selectEmailAttachmentFiles($event)">
-            <!-- ?.slice().reverse() -->
+          <!-- ?.slice().reverse() -->
           <div *ngFor="let eatt of emailAttachments; let i = index" class="input-group form-group">
             <input type="text" disabled name="attachment1" class="form-control" [value]="eatt?.name">
             <span class="input-group-addon no-padding">
@@ -120,6 +132,7 @@
         <ng-container *ngIf="showEmailSuccessMsg">
           <h3 class="text-center text-success m-b-0">Email Sent Successfully.</h3>
         </ng-container>
+        <!-- <button (click)="generateIcsFile()">Generate ICS File</button> -->
       </div>
     </div><!-- /.modal-content -->
   </div><!-- /.modal-dialog -->

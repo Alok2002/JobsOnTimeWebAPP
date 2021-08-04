@@ -1,0 +1,30 @@
+:root {
+  --theme-orange: #f37e20;
+}
+
+.theme-orange .btn-skyblue,
+.theme-orange .btn-skyblue:hover,
+.theme-orange .btn-skyblue:focus,
+.theme-orange .btn-skyblue:active {
+  background-color: var(--theme-orange);
+}
+
+.theme-orange .ax-nav-tabs>li>a:hover {
+  color: var(--theme-orange);
+}
+
+.theme-orange .ax-nav-tabs li.active a {
+  border-top: 2px solid var(--theme-orange) !important;
+}
+
+.theme-orange .nav-tab-left.navtab-custom li.active a {
+  border-left: 2px solid var(--theme-orange) !important;
+}
+
+.theme-orange .ax-nav-tabs>li.active>a {
+  background-color: var(--theme-orange) !important;
+}
+
+.theme-orange .bg-blue {
+  background: var(--theme-orange);
+}

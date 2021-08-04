@@ -26,9 +26,12 @@ export class NewRespondentComponent implements OnInit {
         else {
             this.activateroute.params.subscribe(params => {
                 if (params['resid']) {
+                    this.selectTab = null;
                     this.resId = params['resid'];
-                    this.getRespondentById();
-                    this.selectTab = 'jobs';
+                    this.getRespondentById();                    
+                    setTimeout(() => {
+                        this.selectTab = 'jobs';
+                    }, 1000) 
                 }
                 else {
                     this.respondent = new Respondent();
