@@ -180,12 +180,13 @@
 
                     <ng-container *ngIf="sq.isMedia">
                       <div class="row">
-                        <div class="col-md-2" *ngIf="sq.answerType == 'Text'">
+                        <div class="col-md-2" *ngIf="sq.answerType == 'Text' || sq.answerType == 'AddressText'">
                           <label class="ax-color-black">Go to specific Question</label>
                           <input type="number" name="goToQuestionNum" [(ngModel)]="sq.goToQuestionNum"
                             class="form-control" />
                         </div>
-                        <div [class.col-md-10]="sq.answerType == 'Text'" [class.col-md-12]="sq.answerType != 'Text'">
+                        <div [class.col-md-10]="sq.answerType == 'Text' || sq.answerType == 'AddressText'"
+                          [class.col-md-12]="sq.answerType != 'Text' && sq.answerType != 'AddressTex'">
                           <div *ngIf="sq.isMedia" class="form-group no-padding pull-left p-l-10"
                             style="width: calc(100% - 220px);">
                             <label class="ax-color-black">Media Url</label>

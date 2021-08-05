@@ -119,10 +119,10 @@ export class JobComponent implements OnInit {
       { field: 'jobMainContactName', header: 'Main Contact', index: 4, width: '130', sort: false },
       { field: 'contactCount', header: 'Contact', index: 5, width: '65', sort: false, textAlign: 'center' },
       { field: 'venueCount', header: 'Venue', index: 6, width: '65', sort: false, textAlign: 'center' },
-      { field: 'incentiveCount', header: 'Incentive', index: 7, width: '65', sort: false, textAlign: 'center' },    
+      { field: 'incentiveCount', header: 'Incentive', index: 7, width: '65', sort: false, textAlign: 'center' },
       { field: 'jobTopic', header: 'Topic', index: 8, width: '150', sort: false },
       { field: 'jobSubject', header: 'Subject', index: 9, width: '150', sort: false },
-      { field: 'validationReportReceivedCalculated', header: 'RVR Rcvd', index: 10, width: '75', sort: false, textAlign: 'center' },      
+      { field: 'validationReportReceivedCalculated', header: 'RVR Rcvd', index: 10, width: '75', sort: false, textAlign: 'center' },
       { field: 'jobStatus', header: 'Job Status', index: 11, width: '175', sort: false },
       { field: 'projectManagerUser.fullName', header: 'Project Manager', index: 12, width: '110', sort: false },
       { field: 'sessionType', header: 'Session Type', index: 13, width: '125', sort: false },
@@ -370,7 +370,7 @@ export class JobComponent implements OnInit {
                 link.click();
               })
           }
-          if(method == 'excel')
+          if (method == 'excel')
             this.exporttoExcelHelper();
         } else {
           /*var err = "";
@@ -415,9 +415,15 @@ export class JobComponent implements OnInit {
       { header: 'Last Modified Date', key: 'dateLastModified', width: 25 },
     ];*/
 
-    var headerArr = []    
+    var headerArr = []
+    var i = 0;
     this.selectedColumns.forEach((sc) => {
-      headerArr.push({ header: sc.header, key: sc.field, width: 30 });
+      if (sc.field == 'jobNumber') {
+        headerArr.push({ header: sc.header, key: sc.field + i, width: 30 });
+        i++;
+      } else {
+        headerArr.push({ header: sc.header, key: sc.field, width: 30 });
+      }
     })
     sheet.columns = headerArr;
 
@@ -426,14 +432,25 @@ export class JobComponent implements OnInit {
     this.jobs.forEach((am) => {
       var dataobj = {};
       //sheet
-      sheet.columns.forEach(cl => {        
+      var i = 0;
+      sheet.columns.forEach(cl => {
         if (cl.key == 'expectedFirstSessionDate' || cl.key == 'expectedLastSessionDate' || cl.key == 'dateReceived' || cl.key == 'dateJobApproved'
           || cl.key == 'dateQuoted' || cl.key == 'dateJobApproved' || cl.key == 'dateAllocatedToRecruitment' || cl.key == 'dateLastModified') {
           var cdate = moment(am[cl.key]).format('DD/MM/YYYY');
           dataobj[cl.key] = cdate;
+        } else if (cl.key == 'jobNumber' + i) {
+          dataobj[cl.key] = am['jobNumber'];
+          i++;
+        } else {
+          if (cl.key && cl.key.split('.') && cl.key.split('.').length > 1) {
+            var arr = cl.key.split('.');
+            debugger;
+            if (am[arr[0]])
+              dataobj[cl.key] = am[arr[0]][arr[1]];
+          } else {
+            dataobj[cl.key] = am[cl.key];
+          }
         }
-        else
-          dataobj[cl.key] = am[cl.key];
       });
 
       sheet.addRow(dataobj);
@@ -486,7 +503,7 @@ export class JobComponent implements OnInit {
       this.sharedService.saveQuery('job', this.saveForCurrentJob, '', this.saveQueryName, this.filters)
         .subscribe((res: any) => {
           console.log(res);
-          this.selectedFilterId = res.value;   
+          this.selectedFilterId = res.value;
           this.isUpdateFiler = true;
           if (res.succeeded) {
             this.saveQueryCancelBtn.nativeElement.click();
