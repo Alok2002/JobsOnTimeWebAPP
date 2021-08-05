@@ -4,6 +4,7 @@ import { FormsModule } from '@angular/forms';
 import { RouterModule, Routes } from '@angular/router';
 import { NguiAutoCompleteModule } from '@ngui/auto-complete';
 import { TextMaskModule } from 'angular2-text-mask';
+import { NgxCaptchaModule } from 'ngx-captcha';
 
 import { NgxMaskModule } from '../../assets/ax-npm/ngx-mask';
 import { SignUpImpairmentComponent } from '../user/signupimpairment.component';
@@ -24,6 +25,7 @@ export const route: Routes = [
     TextMaskModule,
     NumericModule,
     SafeHtmlPipeModule,
+    NgxCaptchaModule
   ],
   declarations: [
     SignUpImpairmentComponent

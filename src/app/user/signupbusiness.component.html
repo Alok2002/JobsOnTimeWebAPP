@@ -209,6 +209,20 @@
                       <input type="password" name="password" [(ngModel)]="respondent.passwordRaw" class="form-control"
                         [pattern]="pattern" minlength="8" maxlength="20" required #passwordModel="ngModel">
                     </div>
+                    <div class="clearfix"></div>
+
+                    <div class="form-group required">
+                      <label class="control-label">
+                        Captcha                        
+                      </label>
+                      <span class="p-l-5">
+                        <b class="text-danger" *ngIf="isSubmitForm && !recaptcha"> Required</b>
+                      </span>
+                      <ngx-recaptcha2 #captchaElem [siteKey]="reCaptchaSiteKey" (success)="handleSuccess($event)"
+                        [theme]="'light'" [type]="'image'" [size]="'normal'" name="recaptcha" [(ngModel)]="recaptcha"
+                        required>
+                      </ngx-recaptcha2>
+                    </div>
 
                     <div class="clearfix"></div>
                     <div class="text-left">

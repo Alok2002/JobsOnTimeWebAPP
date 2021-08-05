@@ -8,6 +8,7 @@ import { TextMaskModule } from 'angular2-text-mask';
 import { NumericModule } from './numeric.module';
 import { NguiAutoCompleteModule } from '@ngui/auto-complete';
 import { SafeHtmlPipeModule } from './safehtmlpipe.module';
+import { NgxCaptchaModule } from 'ngx-captcha';
 
 export const route: Routes = [
   { path: '', component: SignUpBusinessComponent, pathMatch: 'full' }
@@ -22,7 +23,8 @@ export const route: Routes = [
     NgxMaskModule.forRoot(),
     TextMaskModule,
     NumericModule,
-    SafeHtmlPipeModule
+    SafeHtmlPipeModule,
+    NgxCaptchaModule
   ],
   declarations: [
     SignUpBusinessComponent
