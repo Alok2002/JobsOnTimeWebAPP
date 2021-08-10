@@ -674,7 +674,9 @@ export class PanelMemberComponent implements OnInit {
   filterSubmit(res) {
     this.getResId = null;
     console.log("inside filter submit");
-    this.maxrecords = res.maxrecords;
+    console.log(res)
+    debugger
+    this.maxrecords = res.maxrecords == null ? 50 : res.maxrecords;
     this.filters = res.filters;
 
     if (!this.initView) {
@@ -690,19 +692,19 @@ export class PanelMemberComponent implements OnInit {
     this.isSubmitForm = true;
     if (!form.invalid) {
       var trackingJobNo = 0;
-      var trackingJson = this.cookieservice.get("currentlytracking") ? JSON.parse(this.cookieservice.get("currentlytracking")) : null;      
-      if(this.saveForCurrentJob && trackingJson) {
+      var trackingJson = this.cookieservice.get("currentlytracking") ? JSON.parse(this.cookieservice.get("currentlytracking")) : null;
+      if (this.saveForCurrentJob && trackingJson) {
         trackingJobNo = trackingJson.id;
       }
-            
-      this.sharedService.saveQuery('respondent', this.saveForCurrentJob, '', this.saveQueryName, this.filters, null, trackingJobNo)
+
+      this.sharedService.saveQuery('respondent', this.saveForCurrentJob, '', this.saveQueryName, this.filters, null, trackingJobNo, this.maxrecords)
         .subscribe((res: any) => {
           console.log(res);
           if (res.succeeded) {
             this.isSubmitForm = false;
             this.selectedFilterId = res.value;
             this.isUpdateFiler = true;
-            this.saveQueryCancelBtn.nativeElement.click();            
+            this.saveQueryCancelBtn.nativeElement.click();
           }
           else {
             var err = "";

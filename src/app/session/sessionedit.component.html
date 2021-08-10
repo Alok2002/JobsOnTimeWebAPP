@@ -8,6 +8,7 @@
         </select>
       </div>
 
+
       <div class="form-group required">
         <label class="control-label w-100-pre">
           <span class="d-desktop-only pull-left">Session Name</span>
@@ -35,6 +36,17 @@
           </span>
         </label>
         <input type="text" class="form-control" name="name" [(ngModel)]="session.name" #nameModel="ngModel" required>
+      </div>
+
+      <div class="form-group required">
+        <label class="control-label w-100-pre">
+          <span class="d-desktop-only pull-left">Session Number</span>
+          <span [hidden]="sessionNumberModel.valid || !isSubmitForm">
+            <span class="text-danger pull-right" [hidden]="!sessionNumberModel.hasError('required')">Required</span>
+          </span>
+        </label>
+        <input type="number" class="form-control" name="sessionNumber" [(ngModel)]="session.sessionNumber"
+          #sessionNumberModel="ngModel" required>
       </div>
 
       <div class="form-group col-md-6 no-padding-left">
@@ -152,7 +164,7 @@
           #additionVenueInstructionModel="ngModel"></textarea> -->
         <ckeditor name="venueInstructions" [(ngModel)]="session.venueInstructions" [config]="ckEditorConfig"></ckeditor>
       </div>
-      
+
       <div class="col-md-12 no-padding text-right">
         <div class="pull-left">
           <div class="form-group m-b-0">

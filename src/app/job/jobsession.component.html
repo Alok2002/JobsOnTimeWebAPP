@@ -1,5 +1,6 @@
 <filter *ngIf="isShowFilter" [entity]="'jobgroup'" [showFilter]="true" (filterSubmit)="filterSubmit($event)"
-  (filtersEmit)="filtersEmit($event)" [isUpdateFiler]="isUpdateFiler" [selectedFilterId]="selectedFilterId" class="d-desktop-only"></filter>
+  (filtersEmit)="filtersEmit($event)" [isUpdateFiler]="isUpdateFiler" [selectedFilterId]="selectedFilterId"
+  class="d-desktop-only"></filter>
 
 <p-table #dt [columns]="selectedColumns" [value]="sessions" [lazy]="true" (onLazyLoad)="loadData($event)"
   [paginator]="true" [paginatorPosition]="'top'" [pageLinks]="10" [rows]="noofrows" [totalRecords]="totalRecords"
@@ -16,7 +17,7 @@
             <i class="md md-file-download"></i>
           </a>
           <ng-container *ngIf="!isSessionCalendar">
-            <a class="btn btn-ocean btn-xs waves-effect btn-square" [routerLink]="['/session/add', id]">
+            <a class="btn btn-ocean btn-xs waves-effect btn-square" [routerLink]="['/session/add', id, nextSessionNo]">
               <i class="md md-add-circle-outline"></i> New
             </a>
             <a class="btn btn-cocktail btn-xs waves-effect btn-square m-l--1" id="deleteAlert"
@@ -122,7 +123,8 @@
           <td *ngSwitchCase="'contact'" [style.width.px]="sc.width" [style.textAlign]="sc?.textAlign">
             <a *ngIf="se?.clientJobGroupContact.length > 0" class="ax-cursor-pointer"
               (click)="viewContacts = se?.clientJobGroupContact; viewSessionName = se?.name" data-toggle="modal"
-              data-target="#contactModal" data-backdrop="static">View</a></td>
+              data-target="#contactModal" data-backdrop="static">View</a>
+          </td>
           <td *ngSwitchCase="'venue'" [style.width.px]="sc.width" [style.textAlign]="sc?.textAlign">
             <a *ngIf="se?.clientJobGroupVenue.length > 0" class="ax-cursor-pointer"
               (click)="viewVenues = se?.clientJobGroupVenue; viewSessionName = se?.name" data-toggle="modal"

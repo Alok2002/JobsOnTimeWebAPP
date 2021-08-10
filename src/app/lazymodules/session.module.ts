@@ -38,6 +38,7 @@ import { SessionConfirmationEmailComponent } from '../session/sessionconfirmatio
 export const route: Routes = [
   { path: '', component: SessionDetailsComponent, pathMatch: 'full' },//NOT USE
   { path: 'add/:jobid', component: SessionDetailsComponent, pathMatch: 'full' },
+  { path: 'add/:jobid/:sessionno', component: SessionDetailsComponent, pathMatch: 'full' },
   { path: 'edit/:id/:jobid', component: SessionDetailsComponent, pathMatch: 'full' },
   { path: 'edit/:id/:jobid/:tab', component: SessionDetailsComponent, pathMatch: 'full' }
 ];

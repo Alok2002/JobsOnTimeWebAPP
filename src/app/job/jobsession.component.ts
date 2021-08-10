@@ -86,6 +86,7 @@ export class JobSessionComponent implements OnInit {
   totalRecords = 0;
   colVisData = [];
   selectedFilterId = null;
+  nextSessionNo: number;
 
   constructor(private jobservice: JobServices, private cookieservice: CookieService,
     private sharedService: SharedServices, private emailservice: EmailServices,
@@ -152,6 +153,17 @@ export class JobSessionComponent implements OnInit {
         this.sessions = resp.value;
         this.totalRecords = resp.totalCount;
         console.log(this.sessions);
+
+        var sessionList: Array<Session> = [];
+        sessionList = JSON.parse(JSON.stringify(this.sessions));
+        sessionList.sort((a, b) => {
+          if (a.sessionNumber < b.sessionNumber)
+            return -1;
+          if (a.sessionNumber > b.sessionNumber)
+            return 1;
+          return 0;
+        });
+        this.nextSessionNo = sessionList.length > 0 ? sessionList[sessionList.length - 1].sessionNumber + 1 : 1;
       });
   }
 

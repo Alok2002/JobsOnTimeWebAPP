@@ -221,6 +221,11 @@ export class FilterComponent implements OnInit {
   }
 
   loadExistingFilter() {
+    var index = this.existingfilterlist.findIndex((ex) => ex.id == this.selectedexistingfilterid);
+    if (index >= 0) {
+      this.maxrecords = this.existingfilterlist[index].maxRecords ? this.existingfilterlist[index].maxRecords : null;
+    }
+
     this.sharedService.getExistingFilter(this.entity, this.selectedexistingfilterid)
       .subscribe((res: any) => {
         console.log(res);
