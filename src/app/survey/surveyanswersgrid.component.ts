@@ -119,7 +119,7 @@ export class SurveyAnswersGridComponent implements OnInit {
     private resservice: RespondentServices, private clientService: ClientServices,
     private _userService: UserServices, private emailService: EmailServices, private sharedService: SharedServices,
     private jobService: JobServices, private jobSessionService: JobSessionServices,
-    private smsservice: SmsServices, private cookieservice: CookieService) {
+    private smsservice: SmsServices, private cookieservice: CookieService, private loader: LoadingBarService) {
   }
 
   ngOnInit() {
@@ -176,6 +176,9 @@ export class SurveyAnswersGridComponent implements OnInit {
         this.answerGrid = resp.value;
         this.totalRecords = resp.totalCount;
         console.log(this.answerGrid);
+        console.log(this.loader);
+        this.loader.complete();
+        this.loader.stop();
       });
   }
 

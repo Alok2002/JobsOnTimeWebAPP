@@ -69,6 +69,7 @@ export class ReferenceComponent implements OnInit {
         {
             title: 'Health Details',
             submenu: [{ title: 'Allergies', field: 'Allergy' },
+            { title: 'Beauty', field: 'Beauty' },
             { title: 'Dietary Requirements', field: 'DietaryRequirement' },
             { title: 'Disabilty Assistance', field: 'DisabiltyAssistances' },
             { title: 'Eye Conditions', field: 'OpticalIssue' },
