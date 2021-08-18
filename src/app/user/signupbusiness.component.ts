@@ -1,5 +1,5 @@
-﻿import { postcodePattern, mobilePattern, phonePattern, passwordPattern } from './../app.component';
-import { Component, Input, OnInit } from '@angular/core';
+﻿import { postcodePattern, mobilePattern, phonePattern, passwordPattern, reCaptchaSiteKey } from './../app.component';
+import { Component, Input, OnInit, ViewChild } from '@angular/core';
 import { DomSanitizer } from '@angular/platform-browser';
 import * as JWT from 'jwt-decode';
 import { CookieService } from 'ngx-cookie-service';
@@ -13,6 +13,7 @@ import { RespondentServices } from '../services/respondent.services';
 import { UserServices } from '../services/user.services';
 import { SharedServices } from './../services/shared.services';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
+import { InvisibleReCaptchaComponent } from 'ngx-captcha';
 declare var jQuery: any;
 
 @Component({
@@ -54,6 +55,10 @@ export class SignUpBusinessComponent implements OnInit {
 
   pattern = passwordPattern;
   termsUrl: string;
+
+  reCaptchaSiteKey = reCaptchaSiteKey;
+  @ViewChild("captchaElem") captchaElem: InvisibleReCaptchaComponent;
+  recaptcha: any;
 
   constructor(private userservice: UserServices, public sharedservice: SharedServices,
     public respondentservice: RespondentServices, private _sanitizer: DomSanitizer, private inpService: InputServices,
@@ -225,6 +230,12 @@ export class SignUpBusinessComponent implements OnInit {
       console.log(form);
       //this.isSubmitForm = false;
       this.isSubmitFormSpinner = false;
+    } else if (!this.recaptcha) {
+      swal(
+        'Error!',
+        'Invalid Captcha',
+        'error'
+      )
     } else if (this.respondent.isTermsAgreed) {
       this.respondentservice.updateRespondent(this.respondent)
         .subscribe((res: any) => {
@@ -331,5 +342,12 @@ export class SignUpBusinessComponent implements OnInit {
       .subscribe((res: any) => {
         this.isFarronResearch = res.value;
       })
+  }
+
+  reloadCaptcha(): void {
+    this.captchaElem.reloadCaptcha();
+  }
+
+  handleSuccess(e) {
   }
 }

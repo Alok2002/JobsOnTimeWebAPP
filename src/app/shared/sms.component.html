@@ -1,9 +1,10 @@
-<div class="modal fade bs-example-modal-lg" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel" aria-hidden="true"
-  id="smsModal">
+<div class="modal fade bs-example-modal-lg" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel"
+  aria-hidden="true" id="smsModal">
   <div class="modal-dialog modal-md">
     <div class="modal-content">
       <div class="modal-header no-border ax-modal-header">
-        <button type="button" class="close" data-dismiss="modal" aria-hidden="true" (click)="resetSmsData();closeModal.emit(true);">×</button>
+        <button type="button" class="close" data-dismiss="modal" aria-hidden="true"
+          (click)="resetSmsData();closeModal.emit(true);">×</button>
         <h4 class="modal-title">{{modalTitle}}</h4>
       </div>
       <div class="modal-body no-padding">
@@ -48,7 +49,8 @@
                   Add to Electronic Documents
                 </label>
                 <div class="checkbox checkbox-primary" style="margin-left: 190px;margin-bottom:0px">
-                  <input id="checkbox1" type="checkbox" checked [(ngModel)]="smsData.addToElectronicDocuments" name="isElectronicDoc">
+                  <input id="checkbox1" type="checkbox" checked [(ngModel)]="smsData.addToElectronicDocuments"
+                    name="isElectronicDoc">
                   <label for="checkbox1" class="control-label ax-color-black">
                   </label>
                 </div>
