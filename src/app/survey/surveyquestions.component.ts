@@ -261,13 +261,13 @@ export class SurveyQuestionsComponent implements OnInit {
 
       case "thumbsupdown":
         qoptions = new SurveyQuestionOption();
-        qoptions.optionText = "Up";
+        qoptions.optionText = "Thumbs Up";
         qoptions.action = "Go to next question";
         qoptions.fillQuotaId = null;
         newQues.clientJobSurveyQuestionOption.push(qoptions);
 
         qoptions = new SurveyQuestionOption();
-        qoptions.optionText = "Down";
+        qoptions.optionText = "Thumbs Down";
         qoptions.action = "Go to next question";
         qoptions.fillQuotaId = null;
         newQues.clientJobSurveyQuestionOption.push(qoptions);

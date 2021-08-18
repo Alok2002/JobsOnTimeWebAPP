@@ -378,8 +378,8 @@
           [mediaUrl]="surveyQuestions[selectedIndex].mediaUrl"></SurveyMediaPreviewComponent>
         <br *ngIf="surveyQuestions[selectedIndex].mediaUrl != null">
         <div class="clearfix"></div>
-        <div class="table-responsive m-b-0 no-border-radius"
-          [style.maxWidth.px]="matrixKey.length * 300" id="scroll-content">
+        <div class="table-responsive m-b-0 no-border-radius" [style.maxWidth.px]="matrixKey.length * 300"
+          id="scroll-content">
           <table class="table ax-table1 table-bordered m-b-0">
             <tbody>
               <tr>
@@ -1377,6 +1377,8 @@
     </ng-container>
   </ng-container>
 
+  {{surveyQuestions[selectedIndex] | json}}
+  {{isPreview | json}}
   <ng-container
     *ngIf="surveyQuestions[selectedIndex].internalText != null && surveyQuestions[selectedIndex].internalText != '' && isPreview">
     <div class="alert alert-warning" style="padding: 7px 10px;margin-bottom: 15px;color: #4c5667">
