@@ -1,3 +1,5 @@
+@import './theme-orange.css';
+
 .ax-nav-tabs>li>a:hover {
   color: #0372cc;
 }

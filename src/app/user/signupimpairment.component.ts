@@ -1,12 +1,12 @@
 ﻿import { MetaService } from '@ngx-meta/core';
 import { Router, NavigationEnd, ActivatedRoute } from '@angular/router';
-import { Component, Input, OnInit, ElementRef } from '@angular/core';
+import { Component, Input, OnInit, ElementRef, ViewChild } from '@angular/core';
 import { DomSanitizer } from '@angular/platform-browser';
 import * as JWT from 'jwt-decode';
 import { CookieService } from 'ngx-cookie-service';
 import swal from 'sweetalert2';
 
-import { apiHost, mobileMask, phoneMask, postcodeMask, pageTile, postcodePattern, mobilePattern, phonePattern, passwordPattern } from '../app.component';
+import { apiHost, mobileMask, phoneMask, postcodeMask, pageTile, postcodePattern, mobilePattern, phonePattern, passwordPattern, reCaptchaSiteKey } from '../app.component';
 import { LoginUser } from '../models/loginuser';
 import { Respondent } from '../models/respondent';
 import { InputServices } from '../services/input.services';
@@ -14,13 +14,14 @@ import { RespondentServices } from '../services/respondent.services';
 import { SharedServices } from '../services/shared.services';
 import { UserServices } from '../services/user.services';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
+import { InvisibleReCaptchaComponent } from 'ngx-captcha';
 
 declare var jQuery: any;
 
 @Component({
   selector: 'SignUpImpairmentComponent',
   templateUrl: './signupimpairment.component.html',
-  styles: ['.btn:focus {outline: 5px auto red !important;} .label-error-msg {font-size:13px;}'],
+  styles: ['.btn:focus {outline: 5px auto red !important;} .label-error-msg {font-size:13px;} ::ng-deep body {overflow: hidden}'],
   styleUrls: ['../../assets/css/disability.css']
 })
 
@@ -61,6 +62,10 @@ export class SignUpImpairmentComponent implements OnInit {
   isFarronResearch = false;
   pattern = passwordPattern;
   termsUrl: string;
+
+  reCaptchaSiteKey = reCaptchaSiteKey;
+  @ViewChild("captchaElem") captchaElem: InvisibleReCaptchaComponent;
+  recaptcha: any;
 
   constructor(private userservice: UserServices, public sharedservice: SharedServices, private metaservice: MetaService,
     public respondentservice: RespondentServices, private _sanitizer: DomSanitizer, private activatedRoute: ActivatedRoute,
@@ -295,6 +300,12 @@ export class SignUpImpairmentComponent implements OnInit {
       const formGroupInvalid = this.el.nativeElement.querySelectorAll('.ng-invalid');
       if (formGroupInvalid && formGroupInvalid.length > 1)
         (<HTMLInputElement>formGroupInvalid[1]).focus();
+    } else if (!this.recaptcha) {
+      swal(
+        'Error!',
+        'Invalid Captcha',
+        'error'
+      )
     } else if (this.respondent.isTermsAgreed) {
       this.respondentservice.updateRespondent(this.respondent)
         .subscribe((res: any) => {
@@ -439,5 +450,12 @@ export class SignUpImpairmentComponent implements OnInit {
       .subscribe((res: any) => {
         this.isFarronResearch = res.value;
       })
+  }
+
+  reloadCaptcha(): void {
+    this.captchaElem.reloadCaptcha();
+  }
+
+  handleSuccess(e) {
   }
 }

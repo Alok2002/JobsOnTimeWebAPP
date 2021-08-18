@@ -169,7 +169,7 @@ export class ResJobsComponent implements OnInit {
     const workbook = new Excel.Workbook();
     var sheet = workbook.addWorksheet('My Sheet');
 
-    sheet.columns = [
+    /*sheet.columns = [
       { header: 'Date', key: 'eventDate', width: 15 },
       { header: 'Event', key: 'eventDescription', width: 50 },
       { header: 'User', key: 'fullName', width: 25 },
@@ -179,7 +179,13 @@ export class ResJobsComponent implements OnInit {
       { header: 'Job', key: 'jobId', width: 10 },
       { header: 'Job Name', key: 'jobNumberAndName', width: 30 },
       { header: 'Subject', key: '', width: 30 }
-    ];
+    ];*/
+    var columns = [];    
+    this.cols.forEach((cl) => {
+      var clobj = { header: cl.header, key: cl.field, width: 25 }
+      columns.push(clobj);
+    });
+    sheet.columns = columns;
 
     this.resjobsevents.forEach((am) => {
       var dataobj = {};
@@ -188,9 +194,7 @@ export class ResJobsComponent implements OnInit {
         if (cl.key == 'eventDate') {
           var cdate = moment(am[cl.key]).format('DD/MM/YYYY');
           dataobj[cl.key] = cdate;
-        }
-        else if (cl.key == 'fullName')
-          dataobj[cl.key] = am['userNameNavigation'][cl.key];
+        }        
         else
           dataobj[cl.key] = am[cl.key];
       });

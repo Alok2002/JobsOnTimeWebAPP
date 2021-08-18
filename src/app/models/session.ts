@@ -70,4 +70,5 @@ export class Session {
   public sessionRequirements: string;
   public arrivalInformation: string;
   public incentiveInfo: string;
+  public respEvent: Array<any>;
 }

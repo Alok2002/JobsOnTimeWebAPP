@@ -39,4 +39,6 @@ export class Email {
 
   public recipientsList: Array<{display: string, value: string}>;
   public bccRecipientsList: Array<{display: string, value: string}>;
+
+  public isAttachCalendarEvent: boolean;
 }

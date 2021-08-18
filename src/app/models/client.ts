@@ -35,4 +35,5 @@ export class Client {
 
   public clientContact: Array<ClientContact>;
   public dateAgreedToTerms: any;
+  public isActive: boolean;
 }

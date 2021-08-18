@@ -318,8 +318,8 @@ export class AttendanceComponent {
     loadData(event: LazyLoadEvent) {
         this.loading = true;
 
-        if (!event.sortField) { event.sortField = "name" }
-        if (!event.sortOrder) { event.sortOrder = 1 }
+        if (!event.sortField) { event.sortField = "date" }
+        if (!event.sortOrder) { event.sortOrder = -1 }
 
         console.log(event);
         /*this.dataTablesParameters.start = event.first;
