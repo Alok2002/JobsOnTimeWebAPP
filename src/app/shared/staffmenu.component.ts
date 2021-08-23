@@ -175,7 +175,16 @@ export class StaffMenuComponent implements OnInit {
   gotoRespondent(res) {
     if (res && res != "" && res != 0 && res.hasOwnProperty('id')) {
       this.resetSearchBoxs();
-      this.router.navigate(['/respondent/', res.id]);
+
+      if (res.businessRego) {
+        this.router.navigate(['/bussinesspanelmember/', res.id]);
+      }
+      else if (res.disabilityRego) {
+        this.router.navigate(['/impairmentpanelmember/', res.id]);
+      }
+      else {
+        this.router.navigate(['/respondent/', res.id]);
+      }
     }
     else
       this.resetSearchBoxs();
