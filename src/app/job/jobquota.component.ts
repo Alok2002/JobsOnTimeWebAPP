@@ -73,13 +73,13 @@ export class JobQuotaComponent implements OnInit {
 
   ngOnInit() {
     this.cols = [
-      {field: 'description', header: 'Description', width: 'auto', index: 0, sort: true},
-      {field: 'surveyQuotaRequired', header: 'Survey Quota Required', width: 'auto', index: 1, sort: false},
-      {field: 'surveyQuotaQualified', header: 'Survey Quota Qualified', width: 'auto', index: 2, sort: true},
-      {field: 'surveyQuotaNeeded', header: 'Survey Quota Needed', width: 'auto', index: 3, sort: false},
-      {field: 'screenerQuotaRequired', header: 'Screener Quota Required', width: 'auto', index: 4, sort: true},
-      {field: 'screenerQuotaQualified', header: 'Screener Quota Qualified', width: 'auto', index: 5, sort: true},
-      {field: 'screenerQuotaNeeded', header: 'Screener Quota Needed', width: 'auto', index: 6, sort: false},
+      { field: 'description', header: 'Description', width: 'auto', index: 0, sort: true },
+      { field: 'surveyQuotaRequired', header: 'Survey Quota Required', width: 'auto', index: 1, sort: false },
+      { field: 'surveyQuotaQualified', header: 'Survey Quota Qualified', width: 'auto', index: 2, sort: true },
+      { field: 'surveyQuotaNeeded', header: 'Survey Quota Needed', width: 'auto', index: 3, sort: false },
+      { field: 'screenerQuotaRequired', header: 'Screener Quota Required', width: 'auto', index: 4, sort: true },
+      { field: 'screenerQuotaQualified', header: 'Screener Quota Qualified', width: 'auto', index: 5, sort: true },
+      { field: 'screenerQuotaNeeded', header: 'Screener Quota Needed', width: 'auto', index: 6, sort: false },
     ];
     this.selectedColumns = this.cols;
     this.getJobQuota();
@@ -167,7 +167,7 @@ export class JobQuotaComponent implements OnInit {
       );
     }
   }
-  
+
   deleteClearQualifiedQuota() {
     this.deleteItemIds = [];
     this.selectedRowData.forEach(rd => {
@@ -180,7 +180,7 @@ export class JobQuotaComponent implements OnInit {
         text: 'You will not be able to recover this item!',
         type: 'warning',
         showCancelButton: true,
-        confirmButtonText: 'Yes, delete it!',
+        confirmButtonText: 'Yes, clear it!',
         confirmButtonColor: '#ffaa00',
         cancelButtonText: 'No, keep it'
       }).then((result) => {

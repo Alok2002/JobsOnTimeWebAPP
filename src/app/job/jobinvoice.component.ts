@@ -485,11 +485,22 @@ export class JobInvoiceComponent implements OnInit {
       }
 
       if (this.job.quoteStatus == 'Quote Emailed to Client') {
+        var qfdate = null;
         if (this.job.quoteFollowUpDate) {
-          this.job.quoteFollowUpDate = moment(this.job.quoteFollowUpDate).add(5, 'days').toDate();
+          const dayINeed = 2; // for Thursday
+          const today = moment(this.job.quoteFollowUpDate).isoWeekday();
+          if (today <= dayINeed) {
+            qfdate = moment(this.job.quoteFollowUpDate).isoWeekday(dayINeed);
+          } else {
+            qfdate = moment(this.job.quoteFollowUpDate).add(1, 'weeks').isoWeekday(dayINeed);
+          }
         } else {
-          this.job.quoteFollowUpDate = moment().add(5, 'days').toDate();
+          const nextWeekStart = moment().add(1, 'weeks').startOf('isoWeek');
+          qfdate = nextWeekStart.add(1, 'days').toDate();
         }
+
+        if (qfdate)
+          this.job.quoteFollowUpDate = moment(qfdate).toDate();
       }
     }
   }
