@@ -204,7 +204,10 @@ export class SurveyDetailsComponent implements OnInit {
 
   selectedTabFn(tab) {
     if (this.childSurveyQuestion == null || !this.childSurveyQuestion.alertChangeDetect()) {
-      this.selectedTab = tab;
+      this.selectedTab = null;
+      setTimeout(() => {
+        this.selectedTab = tab;
+      }, 1000)
     } else {
       var ret = swal({
         title: 'Are you sure?',

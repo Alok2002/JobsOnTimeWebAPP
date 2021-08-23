@@ -83,6 +83,11 @@
                 <span class="hidden-xs1">Events</span>
               </a>
             </li>
+            <li [class.active]="selectedTab == 'questionlibrary'" [class.disable]="!isUpdateSurvey">
+              <a (click)="isUpdateSurvey && selectedTabFn('questionlibrary')">
+                <span class="hidden-xs1">Manage Question Library</span>
+              </a>
+            </li>
           </ul>
 
           <div *ngIf="!isLoading" class="tab-content no-margin ax-tab-content">
@@ -98,10 +103,16 @@
               </SurveyQuestionsComponent>
               <SurveyAnswersGrid [jobId]="jobId" [surveyId]="surveyId" [isUpdateSurvey]="isUpdateSurvey"
                 [surveyquestions]="surveyquestions" [isScreener]="survey?.isScreener"
-                [noofrows]="surveyquestions?.length > 30 ? 25 : 50" *ngIf="selectedTab == 'surveyanswers' && surveyquestions">
+                [noofrows]="surveyquestions?.length > 30 ? 25 : 50"
+                *ngIf="selectedTab == 'surveyanswers' && surveyquestions">
               </SurveyAnswersGrid>
               <SurveyEventsComponent [jobId]="jobId" [isUpdateSurvey]="isUpdateSurvey" [isScreener]="survey?.isScreener"
                 *ngIf="selectedTab == 'surveyevnets'"></SurveyEventsComponent>
+              <SurveyLibraryQuestionsComponent [surveyId]="surveyId" [jobId]="jobId" [isUpdateSurvey]="isUpdateSurvey"
+                style="display: block;width: 100%;height: 100%;" *ngIf="selectedTab == 'questionlibrary'"
+                (surveyQuestionUpdate)="surveyQuestionUpdate($event)"
+                (isDestorySurveyQuestion)="isDestorySurveyQuestion($event)">
+              </SurveyLibraryQuestionsComponent>
             </div>
           </div>
         </div>
