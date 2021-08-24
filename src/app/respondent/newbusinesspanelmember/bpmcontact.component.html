@@ -43,6 +43,22 @@
 
       <div class="clearfix"></div>
 
+      <div class="form-group col-md-12 no-padding-left">
+        <label class="control-label w-100-pre" for="gender">
+          Gender
+          <span [hidden]="gendermodel.valid || !isSubmitForm">
+            <span class="text-danger pull-right" [hidden]="!gendermodel.hasError('required')">Required</span>
+          </span>
+        </label>
+        <select id="gender" name="gender" class="form-control" [(ngModel)]="respondent.gender" #gendermodel="ngModel"
+          required>
+          <option *ngFor="let gl of genderList" [value]="gl.code">{{gl.desc}}</option>
+        </select>
+      </div>
+
+      <div class="clearfix"></div>
+
+
       <div class="form-group col-md-6 no-padding-left required">
         <label class="control-label w-100-pre" for="companyEmail">Company Email
           <span [hidden]="companyEmailmodel.valid || !isSubmitForm" class="pull-right">
