@@ -8,17 +8,19 @@
     <div class="pull-left">
       <a class="btn btn-ocean btn-xs btn-square" data-toggle="modal" data-target="#addnewsurveyquestionmodal"
         data-backdrop="static" (click)="addNewQuestion()">Add New Question</a>
-      <span class="survey-select-que" style="padding: 0px !important;margin-left: 1px">
-        <button class="btn btn-ocean btn-xs btn-square" style="color: #fff !important; font-weight: normal"
-          data-toggle="modal" data-target="#surveyQueLib" data-backdrop="static" (click)="lqSearchInput = null">
-          Question Library
-        </button>
-      </span>
-      <a class="btn btn-ocean btn-xs btn-square" data-toggle="modal" data-target="#copysurveyfromjob"
-        data-backdrop="static" (click)="copysurveyjobid = null" style="margin-left: 1px">Copy Survey Questions from
-        Another Job</a>
-      <a class="btn btn-ocean btn-xs btn-square" data-toggle="modal" data-target="#add-new-quota-modal"
-        data-backdrop="static" (click)="addNewQuota()" style="margin-left: 1px">Add Quota</a>
+      <ng-container *ngIf="!isQuestionLibPage">
+        <span class="survey-select-que" style="padding: 0px !important;margin-left: 1px">
+          <button class="btn btn-ocean btn-xs btn-square" style="color: #fff !important; font-weight: normal"
+            data-toggle="modal" data-target="#surveyQueLib" data-backdrop="static" (click)="lqSearchInput = null">
+            Question Library
+          </button>
+        </span>
+        <a class="btn btn-ocean btn-xs btn-square" data-toggle="modal" data-target="#copysurveyfromjob"
+          data-backdrop="static" (click)="copysurveyjobid = null" style="margin-left: 1px">Copy Survey Questions from
+          Another Job</a>
+        <a class="btn btn-ocean btn-xs btn-square" data-toggle="modal" data-target="#add-new-quota-modal"
+          data-backdrop="static" (click)="addNewQuota()" style="margin-left: 1px">Add Quota</a>
+      </ng-container>
     </div>
     <div class="pull-right" *ngIf="surveyquestions.length > 0">
       <div class="input-group pull-left ax-table-x300" style="margin-top: -1px">
@@ -100,14 +102,26 @@
                     <span class="hint--top" aria-label="Reorder">
                       <i class="ti-move sq-move"></i>
                     </span>
-                    <span class="duplicateselectedques hint--top" (click)="duplicateQuestion(i)"
-                      aria-label="Duplicate Question">
-                      <i class="ti-files"></i>
-                    </span>
-                    <button class="btn-trans deleteselectedques hint--top" (click)="removeQuestion(i, sq?.id)"
-                      [disabled]="isDisableDelete" aria-label="Delete Question">
-                      <i class="ti-trash"></i>
-                    </button>
+                    <ng-container *ngIf="!isQuestionLibPage">
+                      <span class="duplicateselectedques hint--top" (click)="duplicateQuestion(i)"
+                        aria-label="Duplicate Question">
+                        <i class="ti-files"></i>
+                      </span>
+                      <button class="btn-trans deleteselectedques hint--top" (click)="removeQuestion(i, sq?.id)"
+                        [disabled]="isDisableDelete" aria-label="Delete Question">
+                        <i class="ti-trash"></i>
+                      </button>
+                    </ng-container>
+                    <ng-container *ngIf="isQuestionLibPage">
+                      <span class="duplicateselectedques hint--top" (click)="duplicateQuestionLibrary(i)"
+                        aria-label="Duplicate Question">
+                        <i class="ti-files"></i>
+                      </span>
+                      <button class="btn-trans deleteselectedques hint--top" (click)="removeQuestionLibrary(i, sq?.id)"
+                        [disabled]="isDisableDelete" aria-label="Delete Question">
+                        <i class="ti-trash"></i>
+                      </button>
+                    </ng-container>
                     <!--<span class="breakques hint&#45;&#45;top" aria-label="Split">-->
                     <!--<i class="ti-split-v"></i>-->
                     <!--</span>-->
@@ -450,14 +464,16 @@
       style="font-weight: normal;width: 34px;font-weight: 600;" data-toggle="modal"
       data-target="#addnewsurveyquestionmodal" data-backdrop="static" (click)="addNewQuestion()"
       title="Add New Question">A</button>
-    <button class="btn btn-ocean text-white btn-block btn-square"
-      style="font-weight: normal;width: 34px;font-weight: 600;" data-toggle="modal" data-target="#surveyQueLib"
-      data-backdrop="static" title="Question Library" (click)="lqSearchInput = null">
-      L
-    </button>
-    <button class="btn btn-ocean text-white btn-block btn-square" data-toggle="modal" data-target="#add-new-quota-modal"
-      style="font-weight: normal;width: 34px;font-weight: 600;" data-backdrop="static" (click)="addNewQuota()"
-      title="Add Quota">Q</button>
+    <ng-container *ngIf="!isQuestionLibPage">
+      <button class="btn btn-ocean text-white btn-block btn-square"
+        style="font-weight: normal;width: 34px;font-weight: 600;" data-toggle="modal" data-target="#surveyQueLib"
+        data-backdrop="static" title="Question Library" (click)="lqSearchInput = null">
+        L
+      </button>
+      <button class="btn btn-ocean text-white btn-block btn-square" data-toggle="modal"
+        data-target="#add-new-quota-modal" style="font-weight: normal;width: 34px;font-weight: 600;"
+        data-backdrop="static" (click)="addNewQuota()" title="Add Quota">Q</button>
+    </ng-container>
     <button *ngIf="openIndexs.length != surveyquestions.length" class="btn btn-ocean text-white btn-block btn-square"
       (click)="updateOpenIndex(-1)" style="font-weight: normal;width: 34px;font-weight: 600;"
       title="Expand All">E</button>

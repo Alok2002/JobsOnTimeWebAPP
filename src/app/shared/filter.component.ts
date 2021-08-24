@@ -82,6 +82,7 @@ export class FilterComponent implements OnInit {
 
   ngOnChanges() {
     console.log(this.selectedFilterId);
+    console.log(this.isUpdateFiler);
     debugger
     if (this.isUpdateFiler) {
       this.getExistingQueryList();
@@ -340,7 +341,8 @@ export class FilterComponent implements OnInit {
       .subscribe((res: any) => {
         console.log(res);
         this.existingfilterlist = res.value;
-        this.loadExistingFilter();
+        if (this.selectedexistingfilterid > 0)
+          this.loadExistingFilter();
       });
   }
 
