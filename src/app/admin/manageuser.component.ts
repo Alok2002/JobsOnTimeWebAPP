@@ -367,7 +367,7 @@ export class ManageUserComponent implements OnInit {
     }
     if (type == 'clientlevelsecurity') {
       this.user.security_CEN = data;
-      this.user.security_CLI = data;      
+      this.user.security_CLI = data;
     }
     if (type == 'joblevelsecurity') {
       this.user.security_JOB = data;
@@ -409,6 +409,7 @@ export class ManageUserComponent implements OnInit {
       this.user.security_LST = data;
       this.user.security_SEV = data;
       this.user.security_MSA = data;
+      this.user.security_MSLQ = data;
     }
   }
 

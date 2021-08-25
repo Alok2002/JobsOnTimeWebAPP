@@ -47,7 +47,8 @@ export const SecurityRights = {
     IncentiveReport: "INCRPT",
     SearchEvents: "SEV",
     ManageStaffAttendance: "MSA",
-    SurveyMapReference: "SMR"
+    SurveyMapReference: "SMR",
+    ManageSurveyLibraryQuestions: "MSLQ"
 };
 
 export const SecurityRightsExportError = "You don't have permission to export results.<br>Please contact system administrator.";

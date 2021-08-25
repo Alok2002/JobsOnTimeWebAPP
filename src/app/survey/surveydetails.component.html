@@ -83,7 +83,8 @@
                 <span class="hidden-xs1">Events</span>
               </a>
             </li>
-            <li [class.active]="selectedTab == 'questionlibrary'" [class.disable]="!isUpdateSurvey">
+            <li *ngIf="hasManageSurveyLibraryQuestions" [class.active]="selectedTab == 'questionlibrary'"
+              [class.disable]="!isUpdateSurvey">
               <a (click)="isUpdateSurvey && selectedTabFn('questionlibrary')">
                 <span class="hidden-xs1">Manage Question Library</span>
               </a>
