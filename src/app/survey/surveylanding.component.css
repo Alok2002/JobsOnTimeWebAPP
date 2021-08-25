@@ -13,9 +13,39 @@ ul.session-list {
 }
 
 ul.session-list li {
-    margin: 7px 0px;
+  margin: 7px 0px;
 }
 
 .login-page-wrapper {
   margin-top: 125px !important;
+}
+
+.section-header {
+  background: #dce2e4;
+  padding: 5px 0px;
+  margin: 0px;
+  border-radius: 5px;
+  font-size: 16px;
+}
+
+.survey-theme-green .section-header {
+  background: #9bbb59;
+  color: #fff;  
+}
+
+
+.survey-theme-green .btn-basil,
+.survey-theme-green .btn-basil:hover,
+.survey-theme-green .btn-basil:focus,
+.survey-theme-green .btn-basil:active {
+  background-color: #9bbb59;
+  color: #fff;
+}
+
+.survey-theme-green .btn-cocktail,
+.survey-theme-green .btn-cocktail:hover,
+.survey-theme-green .btn-cocktail:focus,
+.survey-theme-green .btn-cocktail:active {
+  background-color: #7f7f7f;
+  color: #fff;
 }

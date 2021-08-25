@@ -1,4 +1,4 @@
-﻿<div class="no-padding home-bg" style="margin-bottom: -61px;">
+﻿<div class="no-padding home-bg {{surveyTheme}}" style="margin-bottom: -61px;">
   <div class="home-bg-trans1">
     <!-- Navigation Bar-->
     <header id="topnav">
@@ -50,9 +50,8 @@
                   <h2 style="font-size: 18px; margin: 0;">Dear {{landingPageData?.respondentName}},</h2>
                   <div [innerHTML]="landingPageData?.inviteDetailedDescription" class="m-b-20"></div>
                   <div class="text-center">
-                    <h3 class="m-b-20"
-                      style="background: #dce2e4;padding: 5px 0px;margin: 0px;border-radius: 5px;font-size: 16px;">
-                      <img height="25"
+                    <h3 class="m-b-20 section-header">
+                      <img *ngIf="surveyTheme != 'survey-theme-green'" height="25"
                         src="https://cdn4.iconfinder.com/data/icons/social-messaging-ui-color-and-shapes-6/177800/294-512.png"
                         width="25">
                       {{landingPageData?.jobIncentive}}

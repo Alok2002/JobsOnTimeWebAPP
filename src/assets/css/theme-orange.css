@@ -28,3 +28,10 @@
 .theme-orange .bg-blue {
   background: var(--theme-orange);
 }
+
+.theme-orange .btn-basil,
+.theme-orange .btn-basil:hover,
+.theme-orange .btn-basil:focus,
+.theme-orange .btn-basil:active {
+  background-color: var(--theme-orange);
+}
