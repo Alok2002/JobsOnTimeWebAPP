@@ -6,6 +6,7 @@ export const environment = {
   production: false,
   apiHost: window['apiHost'],
   siteTheme: window['siteTheme'],
+  surveyTheme: window['surveyTheme']
 };
 
 /*
