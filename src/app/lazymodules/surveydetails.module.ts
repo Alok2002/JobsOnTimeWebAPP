@@ -30,6 +30,7 @@ import { MultiSelectModule } from 'primeng/multiselect';
 import { DateInputsModule } from '@progress/kendo-angular-dateinputs';
 import { SafeHtmlPipeModule } from './safehtmlpipe.module';
 import { CKEditorModule } from 'ckeditor4-angular';
+import { SurveyLibraryQuestionsComponent } from '../survey/surveylibraryquestions.component';
 
 export const route: Routes = [
   {
@@ -76,8 +77,9 @@ export const route: Routes = [
     SurveyStatsComponent,
     SurveyAnswersGridComponent,
     SurveyEventsComponent,
-    QuotaModalComponent,    
+    QuotaModalComponent,
     //SurveyTemplateComponent
+    SurveyLibraryQuestionsComponent
   ]
 })
 

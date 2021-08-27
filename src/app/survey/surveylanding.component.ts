@@ -5,6 +5,7 @@ import { ActivatedRoute } from '@angular/router';
 import { SharedServices } from './../services/shared.services';
 import { SurveyServices } from './../services/survey.services';
 import swal from 'sweetalert2';
+import { environment } from './../../environments/environment';
 
 @Component({
     selector: 'survey-landing-component',
@@ -25,6 +26,7 @@ export class SurveyLandingComponent {
     jobId: number;
     surveyid: number;
     isSubmitForm = false;
+    surveyTheme = environment.surveyTheme;
 
     constructor(private surveyservices: SurveyServices, private activatedroute: ActivatedRoute,
         private sharedService: SharedServices) { }

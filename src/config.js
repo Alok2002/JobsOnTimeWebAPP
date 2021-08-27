@@ -1,2 +1,3 @@
 window['apiHost'] = ''; //http://localhost:56478
-window['siteTheme'] = '';
+window['siteTheme'] = ''; //'orange' |
+window['surveyTheme'] = ''; //'survey-theme-green' |

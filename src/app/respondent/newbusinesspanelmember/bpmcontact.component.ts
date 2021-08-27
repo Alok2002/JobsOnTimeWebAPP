@@ -82,7 +82,6 @@ export class BPMContactComponent implements OnInit {
       this.isLoading = false;
     }
 
-    // this.getGenderList();
     this.currentyear = (new Date()).getFullYear();
     this.getoccupationlist();
     this.getbusinesssizelist();
@@ -94,6 +93,7 @@ export class BPMContactComponent implements OnInit {
     this.getPermissionDetails();
     this.getBusinessRoleList();
     this.getCountryCode();
+    this.getGenderList();
   }
 
   getGenderList() {

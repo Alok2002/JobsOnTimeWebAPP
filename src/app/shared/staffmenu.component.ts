@@ -99,43 +99,63 @@ export class StaffMenuComponent implements OnInit {
     }
   }
 
-  logOutHelper(ipAddress) {
+  async logOutHelper(ipAddress) {
     var token = this.cookieservice.get('auth_token');
-    debugger;
+    await this.stopTrackingJobHelper();
     this.sharedService.logOut(token, ipAddress)
       .subscribe(res => {
         console.log(res);
-        //window.location.href = '/signin';
-        this.getCurrentlyTrackingJob();
+        this.removeLoggedInUserCookie();
       })
   }
 
+  removeLoggedInUserCookie() {
+    this.cookieservice.delete('auth_token', '/');
+    window.location.href = '/signin';
+  }
+
+  async stopTrackingJobHelper() {
+    return new Promise(async (resolve) => {
+      var trackingJobId = null;
+      await this.getCurrentlyTrackingJob().then((data) => trackingJobId = data);
+      await this.stopTrackingJob(trackingJobId).then((data) => trackingJobId = data);
+      resolve(true);
+    });
+  }
+
   stopTrackingJob(trackingJobId) {
-    var token = this.getToken();
-    if (trackingJobId == 0) {
-      this.cookieservice.delete('auth_token', '/');
-      window.location.href = '/signin';
-    } else {
-      this.sharedService.stopTrackingJob(trackingJobId, token['primarysid'])
-        .subscribe(res => {
-          console.log(res);
-          this.cookieservice.delete('auth_token', '/');
-          window.location.href = '/signin';
-        });
-    }
+    return new Promise(resolve => {
+      var ret = null;
+      var token = this.getToken();
+      if (trackingJobId == 0) {
+        console.log("No Tracking Job")
+        resolve(ret);
+      } else {
+        this.sharedService.stopTrackingJob(trackingJobId, token['primarysid'])
+          .subscribe(res => {
+            console.log(res);
+            ret = res;
+            resolve(ret);
+          });
+      }
+    });
   }
 
   getCurrentlyTrackingJob() {
-    var token = this.getToken();
-    this.sharedService.getCurrentlyTrackingJob(token['primarysid'])
-      .subscribe((res: any) => {
-        console.log(res);
-        if (res.value) {
-          this.stopTrackingJob(res.value.jobId);
-        } else {
-          this.stopTrackingJob(0);
-        }
-      });
+    return new Promise(resolve => {
+      var ret = null;
+      var token = this.getToken();
+      this.sharedService.getCurrentlyTrackingJob(token['primarysid'])
+        .subscribe((res: any) => {
+          console.log(res);
+          if (res.value) {
+            ret = res.value.jobId;
+          } else {
+            ret = 0;
+          }
+          resolve(ret);
+        });
+    });
   }
 
   /*getUserName() {
@@ -155,7 +175,16 @@ export class StaffMenuComponent implements OnInit {
   gotoRespondent(res) {
     if (res && res != "" && res != 0 && res.hasOwnProperty('id')) {
       this.resetSearchBoxs();
-      this.router.navigate(['/respondent/', res.id]);
+
+      if (res.businessRego) {
+        this.router.navigate(['/bussinesspanelmember/', res.id]);
+      }
+      else if (res.disabilityRego) {
+        this.router.navigate(['/impairmentpanelmember/', res.id]);
+      }
+      else {
+        this.router.navigate(['/respondent/', res.id]);
+      }
     }
     else
       this.resetSearchBoxs();

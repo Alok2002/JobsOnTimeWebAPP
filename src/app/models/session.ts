@@ -1,28 +1,28 @@
-import {Incentive} from './incentive';
-import {JobContact} from './jobcontact';
-import {SessionContact} from './sessioncontact';
-import {SessionVenue} from './sessionvenue';
+import { Incentive } from './incentive';
+import { JobContact } from './jobcontact';
+import { SessionContact } from './sessioncontact';
+import { SessionVenue } from './sessionvenue';
 
 export class Session {
-    /*public id: number;
-    public dateTime: number;
-    public name: string;
-    public location: string;
-    public incentive: string;
-    public duration: string;
-    public clientJobId: number;
-    public time: string;
-    public other: string;
-    public locationPhoneEmail: string;
-    public locationPhone: string;
-    public groupType: string;
-    public incentiveType: string;
-    public clientContactName: string;
-    public clientContactDaytime: string;
-    public clientContactEmail: string;
-    public clientContactAfterHours: string;
-    public researchersName: string;
-    public researchersContactAfterHours: string;*/
+  /*public id: number;
+  public dateTime: number;
+  public name: string;
+  public location: string;
+  public incentive: string;
+  public duration: string;
+  public clientJobId: number;
+  public time: string;
+  public other: string;
+  public locationPhoneEmail: string;
+  public locationPhone: string;
+  public groupType: string;
+  public incentiveType: string;
+  public clientContactName: string;
+  public clientContactDaytime: string;
+  public clientContactEmail: string;
+  public clientContactAfterHours: string;
+  public researchersName: string;
+  public researchersContactAfterHours: string;*/
 
   public id: number;
   public dateTime: any;
@@ -51,8 +51,8 @@ export class Session {
 
   public clientJobGroupContact: Array<SessionContact>;
   public clientJobGroupVenue: Array<SessionVenue>;
-  public clientJobGroupIncentives: Array<{clientJobGroupId: number, clientJobIncentiveId: number, clientJobIncentives: Incentive}>;
-  public clientJobGroupTime: Array<{id: number, clientJobGroupId: number, formattedGroupTime: string}>;
+  public clientJobGroupIncentives: Array<{ clientJobGroupId: number, clientJobIncentiveId: number, clientJobIncentives: Incentive }>;
+  public clientJobGroupTime: Array<{ id: number, clientJobGroupId: number, formattedGroupTime: string }>;
 
   public numberOfFinalConfirmedRespondents: number;
   public numberOfSmsConfirmedRespondents: number;
@@ -71,4 +71,6 @@ export class Session {
   public arrivalInformation: string;
   public incentiveInfo: string;
   public respEvent: Array<any>;
+
+  public sessionNumber: number;
 }

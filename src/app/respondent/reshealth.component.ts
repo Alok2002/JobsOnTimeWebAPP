@@ -29,6 +29,7 @@ export class ResHealthComponent implements OnInit {
     today = new Date();
     respondent: Respondent;
     isLoading = true;
+    beautyList = [];
 
     constructor(private resService: RespondentServices, @Inject(PLATFORM_ID) public platformId: Object) {
     }
@@ -50,6 +51,11 @@ export class ResHealthComponent implements OnInit {
             .subscribe((res: any) => {
                 console.log(res);
                 this.allergyList = res.value;
+            });
+        this.resService.getRespondentData('Beauty', this.resId)
+            .subscribe((res: any) => {
+                console.log(res);
+                this.beautyList = res.value;
             });
         this.resService.getRespondentData('DietaryRequirement', this.resId)
             .subscribe((res: any) => {
@@ -123,6 +129,11 @@ export class ResHealthComponent implements OnInit {
             });*/
 
         this.resService.updateReferenceData('Allergy', this.allergyList, this.resId)
+            .subscribe(res => {
+                console.log(res);
+            });
+
+        this.resService.updateReferenceData('Beauty', this.beautyList, this.resId)
             .subscribe(res => {
                 console.log(res);
             });

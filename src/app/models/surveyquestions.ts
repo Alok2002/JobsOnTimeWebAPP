@@ -1,5 +1,5 @@
-import {SurveyQuestionOption} from "./surveyquestionoption";
-import {SurveyAnswers} from "./surveyanswers";
+import { SurveyQuestionOption } from "./surveyquestionoption";
+import { SurveyAnswers } from "./surveyanswers";
 
 export class SurveyQuestions {
   //public questionName: string;
@@ -31,7 +31,7 @@ export class SurveyQuestions {
 
   //public questionOptions: Array<SurveyQuestionOption>;
   public clientJobSurveyQuestionOption: Array<SurveyQuestionOption>;
-  public matrixChoiceArray: Array<{optionName: string, questionId: number}>;
+  public matrixChoiceArray: Array<{ optionName: string, questionId: number }>;
   public clientJobSurveyAnswers: Array<SurveyAnswers>;
   public isMedia: boolean;
   public answerTypeToolTip: string;
@@ -41,4 +41,5 @@ export class SurveyQuestions {
   public profilePopulateAlert: string;
   public goToQuestionNum: number;
   public randomizeOptions: boolean;
+  public isTemplate: boolean;
 }

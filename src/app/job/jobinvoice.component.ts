@@ -101,7 +101,7 @@ export class JobInvoiceComponent implements OnInit {
   getIsFarronResearch() {
     this.sharedservice.getIsFarronResearch()
       .subscribe((res: any) => {
-        this.isFarronResearch = res.value;        
+        this.isFarronResearch = res.value;
       })
   }
 
@@ -244,7 +244,7 @@ export class JobInvoiceComponent implements OnInit {
 
       if (inv.itemTaxCode == 'GST') {
         var gstper = 0.1;
-        if(this.countrycode == 'NZ')  gstper = 0.15;
+        if (this.countrycode == 'NZ') gstper = 0.15;
         var quoTax = (inv.itemQuotedQty * inv.itemQuotedAmount) * gstper;
         var actTax = (inv.itemActualQty * inv.itemActualAmount) * gstper;
 
@@ -481,6 +481,26 @@ export class JobInvoiceComponent implements OnInit {
         if (this.job.invoiceStatus == null) this.job.invoiceStatus = 'Order';
         if (this.job.dateJobApproved == null) this.job.dateJobApproved = today.toString();
         if (this.job.jobStatus == null) this.job.jobStatus = 'To be allocated to Manager';
+        if (this.job.quoteFollowUpDate) this.job.quoteFollowUpDate = null;
+      }
+
+      if (this.job.quoteStatus == 'Quote Emailed to Client') {
+        var qfdate = null;
+        if (this.job.quoteFollowUpDate) {
+          const dayINeed = 2; // for Thursday
+          const today = moment(this.job.quoteFollowUpDate).isoWeekday();
+          if (today <= dayINeed) {
+            qfdate = moment(this.job.quoteFollowUpDate).isoWeekday(dayINeed);
+          } else {
+            qfdate = moment(this.job.quoteFollowUpDate).add(1, 'weeks').isoWeekday(dayINeed);
+          }
+        } else {
+          const nextWeekStart = moment().add(1, 'weeks').startOf('isoWeek');
+          qfdate = nextWeekStart.add(1, 'days').toDate();
+        }
+
+        if (qfdate)
+          this.job.quoteFollowUpDate = moment(qfdate).toDate();
       }
     }
   }

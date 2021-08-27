@@ -128,7 +128,7 @@
           <div class="tab-content no-margin ax-tab-content">
             <div class="tab-pane active" id="details-tab">
               <SessionEditComponent [id]="editSessionId" [jobId]="jobId" [isUpdateSession]="isUpdateSession"
-                *ngIf="selectedTab == 'sessionedit'"></SessionEditComponent>
+                [sessionNo]="sessionNo" *ngIf="selectedTab == 'sessionedit'"></SessionEditComponent>
               <SessionTimeComponent [id]="editSessionId" [isUpdateSession]="isUpdateSession"
                 *ngIf="selectedTab == 'sessiontime'"></SessionTimeComponent>
               <SessionResearcherComponent [id]="editSessionId" [jobId]="jobId" [isUpdateSession]="isUpdateSession"
@@ -150,8 +150,8 @@
               <SessionPendingScreenerRespondents [id]="editSessionId" [jobId]="jobId"
                 [isUpdateSession]="isUpdateSession" *ngIf="selectedTab == 'pendingscreeningrespondents'">
               </SessionPendingScreenerRespondents>
-              <SessionConfirmationEmail [id]="editSessionId" [jobId]="jobId"
-                [isUpdateSession]="isUpdateSession" *ngIf="selectedTab == 'sessionconfirmationemail'">
+              <SessionConfirmationEmail [id]="editSessionId" [jobId]="jobId" [isUpdateSession]="isUpdateSession"
+                *ngIf="selectedTab == 'sessionconfirmationemail'">
               </SessionConfirmationEmail>
             </div>
           </div>

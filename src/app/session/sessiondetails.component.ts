@@ -45,9 +45,10 @@ export class SessionDetailsComponent implements OnInit {
 
   token: string;
   emailEntity: string;
+  sessionNo: number;
 
   constructor(private activateroute: ActivatedRoute, private emailservice: EmailServices, private smsservice: SmsServices,
-    private sessionService: SessionServices, private jobsevice: JobServices, private surveyservice: SurveyServices, 
+    private sessionService: SessionServices, private jobsevice: JobServices, private surveyservice: SurveyServices,
     private cookieservice: CookieService) {
   }
 
@@ -69,6 +70,8 @@ export class SessionDetailsComponent implements OnInit {
       if (params['tab']) {
         this.selectedTab = params['tab'];
       }
+      if (params['sessionno'])
+        this.sessionNo = params['sessionno'];
     });
 
     this.getJobById(this.jobId);

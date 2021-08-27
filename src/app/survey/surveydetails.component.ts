@@ -19,6 +19,8 @@ import { ClientServices } from '../services/client.services';
 import { UserServices } from '../services/user.services';
 import { EmailServices } from '../services/email.services';
 import { TrackingJob } from '../models/trackingjob';
+import { SecurityInfoResolve } from '../services/securityinfo.reslove';
+import { SecurityRights, SecurityRightsExportError } from '../shared/enum';
 
 
 declare var jQuery: any;
@@ -68,13 +70,16 @@ export class SurveyDetailsComponent implements OnInit {
 
   token: string;
   @ViewChild("emailmodalbtn") emailmodalbtn: any;
+  hasManageSurveyLibraryQuestions = false;
 
   constructor(private activateroute: ActivatedRoute, private sharedService: SharedServices, private clientSevice: ClientServices,
     private surveyservice: SurveyServices, private jobservice: JobServices, private jtc: JobTrackerComponent,
-    private cookieservice: CookieService, public router: Router, private _userService: UserServices, private emailService: EmailServices) {
+    private cookieservice: CookieService, public router: Router, private _userService: UserServices, private emailService: EmailServices,
+    private securityInfoResolve: SecurityInfoResolve) {
   }
 
   ngOnInit() {
+    this.getManageSurveyLibraryQuestions();
     if (this.cookieservice.check('auth_token')) {
       this.token = this.cookieservice.get('auth_token');
     }
@@ -204,7 +209,10 @@ export class SurveyDetailsComponent implements OnInit {
 
   selectedTabFn(tab) {
     if (this.childSurveyQuestion == null || !this.childSurveyQuestion.alertChangeDetect()) {
-      this.selectedTab = tab;
+      this.selectedTab = null;
+      setTimeout(() => {
+        this.selectedTab = tab;
+      }, 1000)
     } else {
       var ret = swal({
         title: 'Are you sure?',
@@ -408,4 +416,16 @@ export class SurveyDetailsComponent implements OnInit {
       }
     })
   }*/
+
+  getManageSurveyLibraryQuestions() {
+    console.log(SecurityRights.ManageSurveyLibraryQuestions)
+    this.securityInfoResolve.checkPermission(SecurityRights.ManageSurveyLibraryQuestions)
+      .subscribe((res: any) => {
+        if (res.succeeded) {
+          this.hasManageSurveyLibraryQuestions = true;
+        } else {
+          this.hasManageSurveyLibraryQuestions = false;
+        }
+      })
+  }
 }

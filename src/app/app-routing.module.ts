@@ -95,6 +95,7 @@ const routes: Routes = [
 
   //SESSION
   { path: 'session/add/:jobid', loadChildren: './lazymodules/session.module#SessionModule', canActivate: [AuthService], data: { permissions: ["Staff"] } },
+  { path: 'session/add/:jobid/:sessionno', loadChildren: './lazymodules/session.module#SessionModule', canActivate: [AuthService], data: { permissions: ["Staff"] } },
   { path: 'session/edit/:id/:jobid', loadChildren: './lazymodules/session.module#SessionModule', canActivate: [AuthService], data: { permissions: ["Staff"] } },
   { path: 'session/edit/:id/:jobid/:tab', loadChildren: './lazymodules/session.module#SessionModule', canActivate: [AuthService], data: { permissions: ["Staff"] } },
   { path: 'sessioncalendar', loadChildren: './lazymodules/sessioncalendar.module#SessioncalendarModule', canActivate: [AuthService], data: { permissions: ["Staff"] } },

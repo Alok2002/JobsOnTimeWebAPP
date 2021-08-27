@@ -3,7 +3,7 @@ export class Sms {
   public groupId: number;
   public addToElectronicDocuments: boolean;
   public recipients: string;
-  public recipientsList: Array<{display: string, value: string}>;
+  public recipientsList: Array<{ display: string, value: string }>;
   public subject: string;
   public body: string;
   public respondentIds: Array<number>;

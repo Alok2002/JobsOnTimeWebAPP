@@ -33,6 +33,16 @@
           <div class="clearfix"></div>
         </div>
         <div class="form-group">
+          <label class="control-label">Beauty</label>
+          <ng-container *ngFor="let ba of beautyList; let i = index">
+            <div class="checkbox checkbox-primary pull-left res-check-margin w-100-pre">
+              <input type="checkbox" name="beauty{{i}}" id="beauty{{i}}" [(ngModel)]="ba.selected" value="true">
+              <label class="control-label" for="beauty{{i}}">{{ba.description}}</label>
+            </div>
+          </ng-container>
+          <div class="clearfix"></div>
+        </div>
+        <div class="form-group">
           <label class="control-label panel-member-heading-label">Dietary Requirement</label>
           <ng-container *ngFor="let ba of dietaryRequirementList; let i = index">
             <div class="checkbox checkbox-primary pull-left res-check-margin w-100-pre">
