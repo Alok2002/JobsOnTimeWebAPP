@@ -71,7 +71,7 @@
                             </label>
                             <input type="text" name="respondentEmail" class="form-control"
                               [(ngModel)]="welcomePageData.respondentEmail" #emailModel="ngModel"
-                              pattern="^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,10})+$" required>
+                              pattern="^\w+(['\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,10})+$" required>
                           </div>
                           <div class="row">
                             <div class="col-md-6 form-group required">
@@ -104,12 +104,14 @@
                               <input type="text" name="respondentPostcode" class="form-control"
                                 [(ngModel)]="welcomePageData.respondentPostcode" required
                                 #respondentPostcodeModel="ngModel"
-                                [textMask]="{mask: postcodeMask, showMask: true, guide: false}" numeric [pattern]="postcodePattern">
+                                [textMask]="{mask: postcodeMask, showMask: true, guide: false}" numeric
+                                [pattern]="postcodePattern">
                             </div>
                           </div>
                         </div>
                         <div *ngIf="!isLoggedIn" tabindex="0" class="control-label m-b-15">
-                          If the above is not your email address Please click <b style="color: #d41517;">This is not my Profile</b> button.
+                          If the above is not your email address Please click <b style="color: #d41517;">This is not my
+                            Profile</b> button.
                         </div>
                       </div>
                       <div class="row" id="start-btn1">

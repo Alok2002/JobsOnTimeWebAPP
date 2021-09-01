@@ -313,7 +313,7 @@
                     </span>
                   </label>
                   <input type="text" class="form-control" #officeEmail="ngModel" required
-                    pattern="^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,10})+$" [(ngModel)]="user.emailAddress"
+                    pattern="^\w+(['\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,10})+$" [(ngModel)]="user.emailAddress"
                     name="officeEmail">
                 </div>
               </div>
@@ -329,7 +329,7 @@
                     </span>
                   </label>
                   <input type="text" class="form-control" name="personalEmail" #personalEmailModel="ngModel" required
-                    pattern="^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,10})+$" [(ngModel)]="user.personalEmail">
+                    pattern="^\w+(['\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,10})+$" [(ngModel)]="user.personalEmail">
                 </div>
               </div>
               <div class="clearfix"></div>

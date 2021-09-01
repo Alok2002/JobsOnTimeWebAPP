@@ -670,6 +670,7 @@ export class SurveyAnswersGridComponent implements OnInit {
         .subscribe((res: any) => {
           console.log(res);
           this.smsData = res.value;
+          this.smsData.jobId = this.jobId;
           this.smsModlaBtn.nativeElement.click();
         })
     }
