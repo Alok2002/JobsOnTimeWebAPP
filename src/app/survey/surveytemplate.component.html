@@ -81,6 +81,15 @@
               title="Selected" class="md md-check text-white"></i>
           </span>
         </div>
+        <ul class="list-group d-inline-block m-l-10 m-b-0">
+          <ng-container *ngFor="let qop of surveyQuestions[selectedIndex].clientJobSurveyQuestionOption">
+            <li *ngIf="qop?.internalText && qop?.internalText != ''" class="list-group-item" style="padding: 8.5px;">
+              <i *ngIf="qop.optionText == 'Yes'" class="md md-check icon" style="color: #486824;"></i>
+              <i *ngIf="qop.optionText == 'No'" class="md md-close icon" style="color: #d41517;"></i>
+              <b>{{qop.internalText}}</b>
+            </li>
+          </ng-container>
+        </ul>
         <div class="clearfix"></div>
       </div>
     </ng-container>
@@ -235,6 +244,15 @@
           (click)="surveyQuestions[selectedIndex].clientJobSurveyAnswers[0].answer = 'ThumbsDown';gotoNextQuestion.emit(true)">
           <i class="fa fa-thumbs-o-down danger"></i>
         </span>
+        <ul class="list-group d-inline-block m-b-0" style="vertical-align: bottom;">
+          <ng-container *ngFor="let qop of surveyQuestions[selectedIndex].clientJobSurveyQuestionOption">
+            <li *ngIf="qop?.internalText && qop?.internalText != ''" class="list-group-item" style="padding: 8.5px;">
+              <i *ngIf="qop.optionText == 'Thumbs Up'" class="fa fa-thumbs-o-up success" style="color:#ccc"></i>
+              <i *ngIf="qop.optionText == 'Thumbs Down'" class="fa fa-thumbs-o-down danger" style="color:#ccc"></i>
+              <b class="p-l-5">{{qop.internalText}}</b>
+            </li>
+          </ng-container>
+        </ul>
       </div>
     </ng-container>
     <!--PICTURE OPTION-->
