@@ -122,7 +122,8 @@
                     </div>
                     <div class="m-b-15">
                       <label class="control-label ax-color-black">Incentive</label>
-                      <select class="form-control" name="incentive" [(ngModel)]="resevent.incentive" (change)="updateIncentiveId()">
+                      <select class="form-control" name="incentive" [(ngModel)]="resevent.incentive"
+                        (change)="updateIncentiveId()">
                         <option value=""></option>
                         <ng-container *ngFor="let ince of incentives">
                           <option *ngIf="ince.selected">
@@ -189,7 +190,8 @@
                         </label>
                       </div>
                       <div class="radio radio-success m-l-15">
-                        <input type="radio" [(ngModel)]="resevent.event" name="event" value="Job - Potential" id="jobHold">
+                        <input type="radio" [(ngModel)]="resevent.event" name="event" value="Job - Potential"
+                          id="jobHold">
                         <label class="ax-color-black" for="jobHold">
                           Potential respondent
                         </label>
@@ -200,6 +202,26 @@
                       <textarea class="form-control" name="notes" [(ngModel)]="resevent.notes"></textarea>
                     </div>
 
+                    <div class="form-group">
+                      <div class="checkbox checkbox-primary">
+                        <input id="sendconfirmationemail" type="checkbox" name="sendconfirmationemail"
+                          (change)="reseventaction = $event.target.checked ? 'sendconfirmationemail' : null"
+                          [checked]="reseventaction == 'sendconfirmationemail'">
+                        <label for="sendconfirmationemail">
+                          Send Confirmation Email
+                        </label>
+                      </div>
+                    </div>
+                    <div class="form-group">
+                      <div class="checkbox checkbox-primary">
+                        <input id="sendconfirmationsms" type="checkbox" name="sendconfirmationsms"
+                          (change)="reseventaction = $event.target.checked ? 'sendconfirmationsms' : null"
+                          [checked]="reseventaction == 'sendconfirmationsms'">
+                        <label for="sendconfirmationsms">
+                          Send Confirmation SMS
+                        </label>
+                      </div>
+                    </div>
 
                     <div class="col-md-12 no-padding">
                       <div class="pull-left" *ngIf="resevent.event == 'Job - Qualified'">
@@ -279,3 +301,18 @@
     </div>
   </div>
 </div>
+
+<!--EMAIL-->
+<email-component *ngIf="emailData && (emailData | json) != ({} | json)" [(emailData)]="emailData"
+  [modalTitle]="emailModalTitle" [emailEntity]="emailEntity" [redirectUrl]="redirectUrl"></email-component>
+<button #emailModlaBtn style="visibility: hidden; height: 0" data-toggle="modal" data-target="#emailModal"
+  data-backdrop="static">Open Email Model
+</button>
+
+<!--SMS-->
+<sms-component *ngIf="smsData" [(smsData)]="smsData" [modalTitle]="smsModalTitle" [redirectUrl]="redirectUrl">
+</sms-component>
+<button #smsModlaBtn style="visibility: hidden; height: 0" data-toggle="modal" data-target="#smsModal"
+  data-backdrop="static">Open
+  SMS Model
+</button>

@@ -21,6 +21,8 @@ export class SmsComponent implements OnInit, OnChanges {
   showSmsSuccessMsg = false;
   isLoading = true;
 
+  @Input() redirectUrl: string;
+
   constructor(private smsServices: SmsServices, private cookieservice: CookieService) {
   }
 
@@ -88,5 +90,13 @@ export class SmsComponent implements OnInit, OnChanges {
       return mapstring.length;
     }
     return 0;
+  }
+
+  gotoRedirectUrl() {
+    if (this.redirectUrl) {
+      setTimeout(() => {
+        window.location.href = this.redirectUrl;
+      }, 1500)
+    }
   }
 }

@@ -1,3 +1,4 @@
+import { SmsServices } from './../services/sms.services';
 import { CookieService } from 'ngx-cookie-service';
 import { Component, Input, OnInit, ViewChild, ViewEncapsulation } from '@angular/core';
 import { Subject } from 'rxjs/Subject';
@@ -14,6 +15,9 @@ import { ObjectUtils } from 'primeng/components/utils/objectutils';
 import { LazyLoadEvent } from 'primeng/api';
 import { RespondentServices } from '../services/respondent.services';
 import { apiHost } from '../app.component';
+import { EmailServices } from '../services/email.services';
+import { Email } from '../models/email';
+import { Sms } from '../models/sms';
 
 declare var jQuery: any;
 
@@ -73,8 +77,18 @@ export class SessionQualifiedRespondent implements OnInit {
   token: string;
   apihost = apiHost;
 
+  @ViewChild("emailModlaBtn") emailModlaBtn;
+  emailData = new Email();
+  emailModalTitle: string;
+  emailEntity: string;
+
+  smsData = new Sms();
+  smsModalTitle: string;
+  @ViewChild("smsModlaBtn") smsModlaBtn;
+
   constructor(private jobservice: JobServices, private sessionservice: SessionServices, private cookieservice: CookieService,
-    private sharedService: SharedServices, private respondentservice: RespondentServices) { }
+    private sharedService: SharedServices, private respondentservice: RespondentServices, private emailService: EmailServices,
+    private smsServices: SmsServices) { }
 
   ngOnInit() {
     if (this.cookieservice.check('auth_token')) {
@@ -640,5 +654,117 @@ export class SessionQualifiedRespondent implements OnInit {
       )
     }
     /*}*/
+  }
+
+  //Send confirmation email
+  getConfirmationEmailData() {
+    this.deleteItemIds = [];
+    this.selectedRowData.forEach(rd => {
+      this.deleteItemIds.push(rd.resId);
+    })
+
+    if (this.deleteItemIds.length > 0) {
+      var err = [];
+      this.deleteItemIds.forEach(id => {
+        var index = this.respondents.findIndex((res) => res.id == id);
+        if (index >= 0) {
+          if (!this.respondents[index].respondentEmail)
+            err.push(this.respondents[index].respondentFullName + ' email address missing.');
+        }
+      });
+      if (err.length == 0) {
+        this.emailService.createSessionConfirmationResIdsEmail(this.deleteItemIds, this.id)
+          .subscribe((res: any) => {
+            console.log(res)
+            if (res.succeeded) {
+              this.deleteItemIds = [];
+              this.emailData = res.value;
+              this.emailEntity = "CreateSessionConfirmationEmail";
+              console.log(this.emailData);
+              setTimeout(() => {
+                this.emailModlaBtn.nativeElement.click();
+              }, 1000)
+            } else {
+              var err = "";
+              res.errors.forEach((er) => {
+                err = err + " " + er;
+              });
+              swal(
+                'Error!',
+                err,
+                'error'
+              )
+            }
+          })
+      } else {
+        swal(
+          'Error!',
+          err.join('. '),
+          'error'
+        )
+      }
+    } else {
+      swal(
+        'Oops...',
+        'Please select an item to send confirmation email.',
+        'info'
+      )
+    }
+  }
+
+  //Send Confirmation SMS
+  getConfirmationSmsData() {
+    this.deleteItemIds = [];
+    this.selectedRowData.forEach(rd => {
+      this.deleteItemIds.push(rd.resId);
+    })
+
+    if (this.deleteItemIds.length > 0) {
+      var err = [];
+      this.deleteItemIds.forEach(id => {
+        var index = this.respondents.findIndex((res) => res.id == id);
+        if (index >= 0) {
+          if (!this.respondents[index].respondentMobile)
+            err.push(this.respondents[index].respondentFullName + ' mobile number missing.');
+        }
+      });
+      if (err.length == 0) {
+        this.smsServices.getResIdsSmsData(this.deleteItemIds, this.id)
+          .subscribe((res: any) => {
+            console.log(res)
+            if (res.succeeded) {
+              this.deleteItemIds = [];
+              this.smsData = res.value;
+              this.smsModalTitle = "Confirmation SMS";
+              console.log(this.emailData);
+              setTimeout(() => {
+                this.smsModlaBtn.nativeElement.click();
+              }, 1000)
+            } else {
+              var err = "";
+              res.errors.forEach((er) => {
+                err = err + " " + er;
+              });
+              swal(
+                'Error!',
+                err,
+                'error'
+              )
+            }
+          })
+      } else {
+        swal(
+          'Error!',
+          err.join('. '),
+          'error'
+        )
+      }
+    } else {
+      swal(
+        'Oops...',
+        'Please select an item to send confirmation SMS.',
+        'info'
+      )
+    }
   }
 }

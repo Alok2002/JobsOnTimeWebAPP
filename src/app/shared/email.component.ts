@@ -48,6 +48,8 @@ export class EmailComponent implements OnInit, OnChanges {
   @Input() emailEntity: string;
   isAttachIcsFile = false;
 
+  @Input() redirectUrl: string;
+
   constructor(private emailService: EmailServices, @Inject(PLATFORM_ID) platformId: Object) {
     /*this.isBrowser = isPlatformBrowser(platformId);
     if(this.isBrowser) {
@@ -224,6 +226,7 @@ export class EmailComponent implements OnInit, OnChanges {
 
           if (res.succeeded) {
             this.showEmailSuccessMsg = true;
+            this.gotoRedirectUrl();
           } else {
             var err = "";
             res.errors.forEach((er) => {
@@ -286,5 +289,13 @@ export class EmailComponent implements OnInit, OnChanges {
       ret = file;
       resolve(ret);
     });
+  }
+
+  gotoRedirectUrl() {
+    if (this.redirectUrl) {
+      setTimeout(() => {
+        window.location.href = this.redirectUrl;
+      }, 1500)
+    }
   }
 }

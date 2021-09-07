@@ -95,7 +95,7 @@ export class EmailServices {
 
     return this._http.post(apiHost + '/api/email/CreateOnlineSurveywithThirdpartyURL', input);
   }
-  
+
   getCreateOnlineSurveywithUniqueRespondentID(ids, jobid, sessionid) {
     console.log(ids);
     console.log(jobid);
@@ -108,5 +108,13 @@ export class EmailServices {
     input.append("sessionId", sessionid);
 
     return this._http.post(apiHost + '/api/email/CreateOnlineSurveywithUniqueRespondentID', input);
+  }
+
+  createSessionConfirmationResIdsEmail(resids: Array<string>, sessionid) {
+    let input = new FormData();
+    var json = JSON.stringify(resids);
+    input.append("json", json);
+
+    return this._http.post(apiHost + '/api/email/CreateSessionConfirmationResIdsEmail/' + sessionid, input);
   }
 }
