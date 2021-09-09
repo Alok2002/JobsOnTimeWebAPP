@@ -20,6 +20,10 @@ export class EventServices {
     return this._http.get(apiHost + '/api/event/GetClientJobGroups/' + jobId);
   }
 
+  getClientJobGroupsIncludePast(jobId) {
+    return this._http.get(apiHost + '/api/event/GetClientJobGroups/' + jobId + '/true');
+  }
+
   getIncentiveListForJob(jobId) {
     return this._http.get(apiHost + '/api/event/GetIncentiveListForJob/' + jobId);
   }

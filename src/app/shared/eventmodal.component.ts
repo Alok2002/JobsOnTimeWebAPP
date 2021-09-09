@@ -11,6 +11,7 @@ import { EventServices } from '../services/event.services';
 import { RespondentServices } from '../services/respondent.services';
 import { SessionServices } from '../services/session.services';
 import { SharedServices } from '../services/shared.services';
+import { JobSessionServices } from '../services/jobsession.services';
 
 @Component({
   selector: 'EventModalComponent',
@@ -41,7 +42,7 @@ export class EventModalComponent implements OnInit, OnChanges {
 
   constructor(private clientSevice: ClientServices, private sharedService: SharedServices,
     private resservice: RespondentServices, private eventService: EventServices,
-    public sessionservice: SessionServices, private cookieservice: CookieService) {
+    public sessionservice: SessionServices, private cookieservice: CookieService, private jobSessionServices: JobSessionServices) {
     // console.log("inside constructor");
   }
 
@@ -101,7 +102,7 @@ export class EventModalComponent implements OnInit, OnChanges {
 
   getEventClientJobGroups(jobid) {
     this.resevent.groupId = null;
-    this.eventService.getClientJobGroups(jobid)
+    this.eventService.getClientJobGroupsIncludePast(jobid)
       .subscribe((res: any) => {
         console.log(res);
         this.eventJobSessions = res.value;

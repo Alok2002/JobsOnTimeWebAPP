@@ -371,7 +371,7 @@ export class FilterComponent implements OnInit {
     this.eventservice.getJobListIncludingPast(clientid)
       .subscribe((res: any) => {
         console.log(res);
-        this.jobs = [];
+        // this.jobs = [];
         res.value.forEach((va) => {
           va['clientId'] = clientid;
           this.jobs.push(va);
@@ -392,7 +392,7 @@ export class FilterComponent implements OnInit {
     this.eventservice.getGroupListIncludingPast(jobid)
       .subscribe((res: any) => {
         console.log(res);
-        this.jobSessions = [];
+        // this.jobSessions = [];
         res.value.forEach((va) => {
           va['jobId'] = jobid;
           this.jobSessions.push(va);
