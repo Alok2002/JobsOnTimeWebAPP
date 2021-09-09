@@ -50,7 +50,7 @@ export class ResSurveysComponent implements OnInit {
   }
 
   getRespondentSurvey() {
-    this.respondentservice.getRespondentSurvey(this.resId)
+    this.respondentservice.getRespondentSurveyForStaff(this.resId)
       .subscribe((res: any) => {
         this.ressurvey = res.value;
         console.log(this.ressurvey);

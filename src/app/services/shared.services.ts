@@ -1214,4 +1214,8 @@ export class SharedServices {
     isAttendanceAlertEnabled() {
         return this._http.get(apiHost + '/api/config/IsAttendanceAlertEnabled');
     }
+
+    getApiVersion() {
+        return this._http.get(apiHost + '/api/config/ApiVersion');
+    }
 }
