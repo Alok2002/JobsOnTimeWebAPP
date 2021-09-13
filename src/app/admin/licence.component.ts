@@ -83,6 +83,11 @@ export class LicenceComponent implements OnInit {
     }
     else {
       console.log(this.licence);
+      if (this.licence.licenceExpiry) {
+        var dateReceived = moment(this.licence.licenceExpiry, 'YYYY-MM-DD');
+        this.licence.licenceExpiry = dateReceived.utcOffset(0, true).format();
+      }
+
       this._licenceservice.postNewLicence(this.licence)
         .subscribe(res => {
           this._licenceservice.getAllLicences()

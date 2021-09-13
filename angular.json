@@ -57,7 +57,6 @@
               "src/assets/js/jquery.core.js",
               "src/assets/js/jquery.app.js",
               "src/assets/plugins/bootstrap-sweetalert/sweet-alert.min.js",
-              "src/assets/plugins/moment/moment.js",
               "src/assets/js/ax-client.js",
               "src/assets/js/ics.min.js"
             ],
@@ -65,12 +64,10 @@
           },
           "configurations": {
             "production": {
-              "fileReplacements": [
-                {
-                  "replace": "src/environments/environment.ts",
-                  "with": "src/environments/environment.prod.ts"
-                }
-              ],
+              "fileReplacements": [{
+                "replace": "src/environments/environment.ts",
+                "with": "src/environments/environment.prod.ts"
+              }],
               "optimization": true,
               "outputHashing": "all",
               "sourceMap": false,
@@ -80,13 +77,11 @@
               "extractLicenses": true,
               "vendorChunk": false,
               "buildOptimizer": true,
-              "budgets": [
-                {
-                  "type": "initial",
-                  "maximumWarning": "4mb",
-                  "maximumError": "5mb"
-                }
-              ]
+              "budgets": [{
+                "type": "initial",
+                "maximumWarning": "4mb",
+                "maximumError": "5mb"
+              }]
             }
           }
         },
@@ -145,12 +140,10 @@
           },
           "configurations": {
             "production": {
-              "fileReplacements": [
-                {
-                  "replace": "src/environments/environment.ts",
-                  "with": "src/environments/environment.prod.ts"
-                }
-              ]
+              "fileReplacements": [{
+                "replace": "src/environments/environment.ts",
+                "with": "src/environments/environment.prod.ts"
+              }]
             }
           }
         }

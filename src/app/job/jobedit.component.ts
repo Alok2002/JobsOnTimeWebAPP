@@ -150,25 +150,25 @@ export class JobEditComponent implements OnInit {
     this.isSubmitForm = true;
     this.isSubmitFormSpinner = true;
 
-    /*if (this.job.dateReceived) {
+    if (this.job.dateReceived) {
       var dateReceived = moment(this.job.dateReceived, 'YYYY-MM-DD');
-      this.job.dateReceived = dateReceived.format();
+      this.job.dateReceived = dateReceived.utcOffset(0, true).format();
     }
 
     if (this.job.dateAllocatedToRecruitment) {
       var dateAllocatedToRecruitment = moment(this.job.dateAllocatedToRecruitment, 'YYYY-MM-DD');
-      this.job.dateAllocatedToRecruitment = dateAllocatedToRecruitment.format();
+      this.job.dateAllocatedToRecruitment = dateAllocatedToRecruitment.utcOffset(0, true).format();
     }
 
     if (this.job.expectedFirstSessionDate) {
       var expectedFirstSessionDate = moment(this.job.expectedFirstSessionDate, 'YYYY-MM-DD');
-      this.job.expectedFirstSessionDate = expectedFirstSessionDate.format();
+      this.job.expectedFirstSessionDate = expectedFirstSessionDate.utcOffset(0, true).format();
     }
 
     if (this.job.expectedLastSessionDate) {
       var expectedLastSessionDate = moment(this.job.expectedLastSessionDate, 'YYYY-MM-DD');
-      this.job.expectedLastSessionDate = expectedLastSessionDate.format();
-    }*/
+      this.job.expectedLastSessionDate = expectedLastSessionDate.utcOffset(0, true).format();
+    }
 
     if (form.invalid) {
       //this.isSubmitForm = false;

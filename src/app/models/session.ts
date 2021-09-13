@@ -30,7 +30,8 @@ export class Session {
   public location: string;
   public duration: string;
   public clientJobId: number;
-  public time: string;
+  // public time: string;
+  public interviewTime: string;
   public groupType: string;
   public respondentsRequired: number;
   public numberNeeded: number;

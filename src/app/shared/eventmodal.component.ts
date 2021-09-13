@@ -128,7 +128,7 @@ export class EventModalComponent implements OnInit, OnChanges {
   }
 
   getSessionTimes(id) {
-    this.resevent.inDepthTime = null;
+    this.resevent.interviewTime = null;
     this.sessionservice.getSessionTimesBySessionIdForEventModal(id)
       .subscribe((res: any) => {
         console.log(res);
@@ -145,8 +145,8 @@ export class EventModalComponent implements OnInit, OnChanges {
         if (this.selectAllCheckBox) this.deleteItemIds = [];
         console.log(this.deleteItemIds);
 
-        if (!this.isEditInDepthTime)
-          this.resevent.inDepthTime = moment(this.resevent.inDepthTime, "hh:mm").format("hh:mm A");
+        // if (!this.isEditInDepthTime)
+        //   this.resevent.interviewTime = moment(this.resevent.interviewTime, "hh:mm").format("hh:mm A");
 
         console.log(this.resevent);
         this.resservice.createResEvent(this.resevent)

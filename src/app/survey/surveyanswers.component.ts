@@ -438,8 +438,8 @@ export class SurveyAnswersComponent implements OnInit {
     this.resevent.jobId = this.jobid;
     //this.resevent.clientId = this.job.clientId;
 
-    if (this.isEditInDepthTime)
-      this.resevent.inDepthTime = moment(this.resevent.inDepthTime, "hh:mm").format("hh:mm A");
+    // if (this.isEditInDepthTime)
+    //   this.resevent.interviewTime = moment(this.resevent.interviewTime, "hh:mm").format("hh:mm A");
 
     if (this.reseventaction) {
       this.resservice.getRespondentById(this.resid)

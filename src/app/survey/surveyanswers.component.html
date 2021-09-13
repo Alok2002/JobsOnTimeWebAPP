@@ -111,14 +111,14 @@
                         </div>
                       </label>
                       <select *ngIf="!isEditInDepthTime" class="form-control" name="sessiontime"
-                        [(ngModel)]="resevent.inDepthTime">
+                        [(ngModel)]="resevent.interviewTime">
                         <option value=""></option>
                         <option *ngFor="let st of sessiontimes; let i = index" [value]="st.formattedGroupTime">
                           {{st.formattedGroupTime}}
                         </option>
                       </select>
                       <input type="time" *ngIf="isEditInDepthTime" class="form-control" name="sessiontime"
-                        [(ngModel)]="resevent.inDepthTime" required>
+                        [(ngModel)]="resevent.interviewTime" required>
                     </div>
                     <div class="m-b-15">
                       <label class="control-label ax-color-black">Incentive</label>

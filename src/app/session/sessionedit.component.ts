@@ -183,6 +183,12 @@ export class SessionEditComponent implements OnInit {
       this.session.clientJobId = this.jobId;
       console.log(this.incentives)
       console.log(this.session.id)
+
+      if (this.session.dateTime) {
+        var dateTime = moment(this.session.dateTime, 'YYYY-MM-DD');
+        this.session.dateTime = dateTime.utcOffset(0, true).format();
+      }
+
       this.jobservice.getSessionByJob(this.session.clientJobId)
         .subscribe((res: any) => {
           console.log(res)

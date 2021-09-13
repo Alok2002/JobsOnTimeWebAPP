@@ -169,8 +169,10 @@ export class ManageUserComponent implements OnInit {
       if (this.user.id == 0) this.user.newUser = false;
       else this.user.newUser = true;
 
-      if (this.user.dateofBirth)
-        this.user.dateofBirth = moment(this.user.dateofBirth).toDate();
+      if (this.user.dateofBirth) {
+        var dateofBirth = moment(this.user.dateofBirth, 'YYYY-MM-DD');
+        this.user.dateofBirth = dateofBirth.utcOffset(0, true).format();
+      }
 
       this._userService.submitUser(this.user)
         .subscribe((res: any) => {
