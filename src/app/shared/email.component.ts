@@ -47,8 +47,9 @@ export class EmailComponent implements OnInit, OnChanges {
   @Input() session: Session;
   @Input() emailEntity: string;
   isAttachIcsFile = false;
-
   @Input() redirectUrl: string;
+
+  emailSuccessMsg = "Email Sent Successfully.";
 
   constructor(private emailService: EmailServices, @Inject(PLATFORM_ID) platformId: Object) {
     /*this.isBrowser = isPlatformBrowser(platformId);
@@ -214,31 +215,40 @@ export class EmailComponent implements OnInit, OnChanges {
     }
     else {
       console.log(this.emailData);
-      if (this.isAttachIcsFile) {
-        await this.generateIcsFile().then((data) => this.emailAttachments.push(data));
+      // if (this.isAttachIcsFile) {
+      //   await this.generateIcsFile().then((data) => this.emailAttachments.push(data));
+      // }
+
+      if (this.emailData.recipientsList.length > 1500) {
+        this.emailService.postEmail(this.emailData, this.emailAttachments, true)
+          .subscribe((res: any) => {
+            console.log(res)
+          });
+        this.showEmailSuccessMsg = true;
+        this.emailSuccessMsg = "Emails are in the queue. System will notify once the emails are sent";
+      } else {
+        this.emailService.postEmail(this.emailData, this.emailAttachments)
+          .subscribe((res: any) => {
+            this.emailData = new Email();
+            this.emailAttachments = [];
+            this.emailAttachments.length = 1;
+
+            if (res.succeeded) {
+              this.showEmailSuccessMsg = true;
+              this.gotoRedirectUrl();
+            } else {
+              var err = "";
+              res.errors.forEach((er) => {
+                err = err + " " + er;
+              });
+              swal(
+                'Error!',
+                err,
+                'error'
+              )
+            }
+          })
       }
-
-      this.emailService.postEmail(this.emailData, this.emailAttachments)
-        .subscribe((res: any) => {
-          this.emailData = new Email();
-          this.emailAttachments = [];
-          this.emailAttachments.length = 1;
-
-          if (res.succeeded) {
-            this.showEmailSuccessMsg = true;
-            this.gotoRedirectUrl();
-          } else {
-            var err = "";
-            res.errors.forEach((er) => {
-              err = err + " " + er;
-            });
-            swal(
-              'Error!',
-              err,
-              'error'
-            )
-          }
-        })
     }
   }
 
