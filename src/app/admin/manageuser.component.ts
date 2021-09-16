@@ -379,6 +379,7 @@ export class ManageUserComponent implements OnInit {
       this.user.security_MYOB = data;
       this.user.security_RJA = data;
       this.user.security_SMR = data;
+      this.user.security_MSLQ = data;
     }
     if (type == 'reportslevelsecurity') {
       this.user.security_SRRPT = data;
@@ -411,7 +412,6 @@ export class ManageUserComponent implements OnInit {
       this.user.security_LST = data;
       this.user.security_SEV = data;
       this.user.security_MSA = data;
-      this.user.security_MSLQ = data;
     }
   }
 

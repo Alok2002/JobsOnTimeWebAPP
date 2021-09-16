@@ -524,6 +524,13 @@
                         <input id="sec-smr" type="checkbox" name="Security_SMR" [(ngModel)]="user.security_SMR">
                         <label for="sec-smr">Allow Map Reference to Survey Questions</label>
                       </div>
+                      <div class="clearfix"></div>
+                      <div class="checkbox checkbox-primary pull-left">
+                        <input id="sec-security_MSLQ" type="checkbox" name="Security_MSLQ"
+                          [(ngModel)]="user.security_MSLQ">
+                        <label for="sec-security_MSLQ">Manage Question Library</label>
+                      </div>
+                      <div class="clearfix"></div>
                     </div>
                   </div>
                 </div>
@@ -746,12 +753,6 @@
                         <input id="sec-security_MSA" type="checkbox" name="Security_MSA"
                           [(ngModel)]="user.security_MSA">
                         <label for="sec-security_MSA">Manage Staff Attendance</label>
-                      </div>
-                      <div class="clearfix"></div>
-                      <div class="checkbox checkbox-primary pull-left">
-                        <input id="sec-security_MSLQ" type="checkbox" name="Security_MSLQ"
-                          [(ngModel)]="user.security_MSLQ">
-                        <label for="sec-security_MSLQ">Manage Survey Library Questions</label>
                       </div>
                       <div class="clearfix"></div>
                     </div>
