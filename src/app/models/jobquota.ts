@@ -15,6 +15,8 @@ export class JobQuota {
   public screenerQuotaRequired: number;
   public screenerQuotaQualified: number;
   public closeSurvey: boolean;
+
+  public checked?: any;
 }
 
 

@@ -184,6 +184,25 @@
                       </div>
                     </ng-container>
 
+                    <ng-container *ngIf="sq.answerType=='Matrix'">
+                      <div class="form-group col-md-4 no-padding-left">
+                        <label class="control-label">
+                          <ng-container *ngIf="sq.answerType == 'Matrix'">Minimum number of answers per column
+                          </ng-container>
+                        </label>
+                        <input type="text" class="form-control" name="minNumMatrixColAnswers{{i}}"
+                          [(ngModel)]="sq.minNumMatrixColAnswers" pattern=".{0,9}" mask="99" />
+                      </div>
+                      <div class="form-group col-md-4">
+                        <label class="control-label">
+                          <ng-container *ngIf="sq.answerType == 'Matrix'">Maximum number of answers per column
+                          </ng-container>
+                        </label>
+                        <input type="text" class="form-control" name="maxNumMatrixColAnswers{{i}}"
+                          [(ngModel)]="sq.maxNumMatrixColAnswers" pattern=".{0,9}" mask="99" />
+                      </div>
+                    </ng-container>
+
                     <div *ngIf="checkIsMappingEntity(sq.answerType) && hasSurveyMapReference" class="form-group">
                       <label class="control-label">Map References</label>
                       <select name="mappingEntity{{i}}" class="form-control" [(ngModel)]="sq.mappingEntity">

@@ -220,6 +220,11 @@ export class ClientNotesComponent implements OnInit {
     else {
       this.note.clientId = this.id;
       //this.note.username = "Ram";
+      if (this.note.expiryDate) {
+        var expiryDate = moment(this.note.expiryDate, 'YYYY-MM-DD');
+        this.note.expiryDate = expiryDate.utcOffset(0, true).format();
+      }
+
       this._clientService.postClientNote(this.note)
         .subscribe((res: any) => {
           console.log(res);

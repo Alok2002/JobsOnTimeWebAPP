@@ -256,7 +256,7 @@
           </div> -->
         </label>
         <input type="text" class="form-control" [(ngModel)]="respondent.email" name="email" #emailModel="ngModel"
-          pattern="^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,10})+$" (ngModelChange)="checkConfirmationEmail()"
+          pattern="^\w+(['\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,10})+$" (ngModelChange)="checkConfirmationEmail()"
           id="EmailAddress" autocomplete="on">
       </div>
       <div *ngIf="isMyProfile" class="form-group col-md-6 no-padding-right pull-left">
@@ -272,7 +272,7 @@
         </label>
         <input type="text" class="form-control" [(ngModel)]="confirmEmail" name="confirmemail"
           #confirmemailModel="ngModel" (ngModelChange)="checkConfirmationEmail()"
-          pattern="^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,10})+$" (paste)="preventDefault($event)"
+          pattern="^\w+(['\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,10})+$" (paste)="preventDefault($event)"
           id="ConfirmEmailAddress" autocomplete="on">
       </div>
 

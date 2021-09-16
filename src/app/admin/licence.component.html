@@ -184,8 +184,9 @@
                 <!-- <input type="text" class="form-control" name="licenceExpiry" #licenceExpiry="ngModel"
                   [(ngModel)]="licence.licenceExpiry" ngui-datetime-picker date-format="DD-MM-YYYY"
                   [close-on-select]="true" date-only="true" data-mask="99-99-9999"> -->
-                <kendo-datepicker name="licenceExpiry" [(ngModel)]="licence.licenceExpiry" [popupSettings]="{ appendTo: containerRef }"
-                  [format]="'dd-MM-yyyy'" class="w-100-pre" placeholder="" #licenceExpiry="ngModel" required>
+                <kendo-datepicker name="licenceExpiry" [(ngModel)]="licence.licenceExpiry"
+                  [popupSettings]="{ appendTo: containerRef }" [format]="'dd-MM-yyyy'" class="w-100-pre" placeholder=""
+                  #licenceExpiry="ngModel" required>
                 </kendo-datepicker>
               </div>
 
@@ -267,7 +268,7 @@
                   </span>
                 </label>
                 <input type="text" class="form-control" name="contactEmail" #contactEmailField="ngModel"
-                  pattern="^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,10})+$" [(ngModel)]="licence.contactEmail">
+                  pattern="^\w+(['\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,10})+$" [(ngModel)]="licence.contactEmail">
               </div>
 
               <div class="col-md-12 no-padding text-right">

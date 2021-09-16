@@ -1,19 +1,19 @@
-﻿import { reCaptchaSiteKey, siteTheme } from './../app.component';
-import { SurveyServices } from './../services/survey.services';
+﻿import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Component, OnInit, ViewChild } from '@angular/core';
+import { ActivatedRoute } from '@angular/router';
 import * as JWT from 'jwt-decode';
+import { InvisibleReCaptchaComponent } from 'ngx-captcha';
 import { CookieService } from 'ngx-cookie-service';
 import swal from 'sweetalert2';
-import { apiHost, mobileMask, phoneMask, postcodeMask, postcodePattern, mobilePattern, phonePattern, passwordPattern } from '../app.component';
+import { apiHost, mobileMask, mobilePattern, passwordPattern, phoneMask, phonePattern, postcodeMask, postcodePattern } from '../app.component';
 import { LoginUser } from '../models/loginuser';
 import { Respondent } from '../models/respondent';
 import { InputServices } from '../services/input.services';
 import { RespondentServices } from '../services/respondent.services';
-import { UserServices } from '../services/user.services';
 import { SharedServices } from '../services/shared.services';
-import { ActivatedRoute } from '@angular/router';
-import { HttpClient, HttpHeaders } from '@angular/common/http';
-import { InvisibleReCaptchaComponent } from 'ngx-captcha';
+import { UserServices } from '../services/user.services';
+import { reCaptchaSiteKey, siteTheme } from './../app.component';
+import { SurveyServices } from './../services/survey.services';
 declare var jQuery: any;
 
 @Component({

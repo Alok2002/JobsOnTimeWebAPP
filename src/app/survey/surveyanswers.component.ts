@@ -1,4 +1,6 @@
-import { Component, OnInit, Inject, PLATFORM_ID } from '@angular/core';
+import { Respondent } from './../models/respondent';
+import { SmsServices } from './../services/sms.services';
+import { Component, OnInit, Inject, PLATFORM_ID, ViewChild } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import swal from 'sweetalert2';
 
@@ -17,6 +19,9 @@ import { SurveyServices } from '../services/survey.services';
 import { JobServices } from '../services/job.services';
 import * as moment from 'moment';
 import { isPlatformBrowser } from '@angular/common';
+import { EmailServices } from '../services/email.services';
+import { Email } from '../models/email';
+import { Sms } from '../models/sms';
 
 @Component({
   selector: 'SurveyAnswers',
@@ -50,10 +55,23 @@ export class SurveyAnswersComponent implements OnInit {
 
   responseMessage: string;
   responseSurveySuccess: boolean = null;
+  reseventaction: string;
+
+  @ViewChild("emailModlaBtn") emailModlaBtn;
+  emailData = new Email();
+  emailModalTitle: string;
+  emailEntity: string;
+
+  smsData = new Sms();
+  smsModalTitle: string;
+  @ViewChild("smsModlaBtn") smsModlaBtn;
+
+  redirectUrl: string;
+  startSurvey: boolean;
 
   constructor(private router: Router, private activateroute: ActivatedRoute, private resservice: RespondentServices,
     private surveyservice: SurveyServices, private jobservice: JobServices, private sessionservice: SessionServices,
-    @Inject(PLATFORM_ID) public platformId: Object) {
+    @Inject(PLATFORM_ID) public platformId: Object, private emailService: EmailServices, private smsServices: SmsServices) {
   }
 
   ngOnInit() {
@@ -404,6 +422,7 @@ export class SurveyAnswersComponent implements OnInit {
   changeOfSession() {
     this.sessionservice.getSessionIncentiveBySessionId(this.resevent.groupId)
       .subscribe((res: any) => {
+        console.log(res)
         this.incentives = res.value;
       });
 
@@ -419,9 +438,45 @@ export class SurveyAnswersComponent implements OnInit {
     this.resevent.jobId = this.jobid;
     //this.resevent.clientId = this.job.clientId;
 
-    if (this.isEditInDepthTime)
-      this.resevent.inDepthTime = moment(this.resevent.inDepthTime, "hh:mm").format("hh:mm A");
+    // if (this.isEditInDepthTime)
+    //   this.resevent.interviewTime = moment(this.resevent.interviewTime, "hh:mm").format("hh:mm A");
 
+    if (this.reseventaction) {
+      this.resservice.getRespondentById(this.resid)
+        .subscribe((res: any) => {
+          console.log(res)
+          if (res && res.value) {
+            var resp: Respondent = res.value;
+            if (this.reseventaction == "sendconfirmationemail" && !resp.email) {
+              swal(
+                'Error!',
+                resp.fullName + ' email address missing.',
+                'error'
+              )
+            }
+            else if (this.reseventaction == "sendconfirmationsms" && !resp.phoneMobile) {
+              swal(
+                'Error!',
+                resp.fullName + ' mobile missing.',
+                'error'
+              )
+            } else {
+              this.recordEventHelper();
+            }
+          } else {
+            swal(
+              'Error!',
+              'Invalid Respondent data',
+              'error'
+            )
+          }
+        })
+    } else {
+      this.recordEventHelper();
+    }
+  }
+
+  recordEventHelper() {
     this.resservice.createResEvent(this.resevent)
       .subscribe((res: any) => {
         console.log(res);
@@ -435,7 +490,15 @@ export class SurveyAnswersComponent implements OnInit {
           this.surveyservice.updateSurveyQuotas(this.screenerId, this.resid, this.jobQuotas)
             .subscribe(res => {
               console.log(res);
-              this.router.navigate(['/managescreener', this.jobid, this.screenerId]);
+              if (!this.reseventaction)
+                this.router.navigate(['/managescreener', this.jobid, this.screenerId]);
+              else {
+                this.redirectUrl = '/managescreener/' + this.jobid + '/' + this.screenerId;
+                if (this.reseventaction == "sendconfirmationemail")
+                  this.getConfirmationEmailData();
+                if (this.reseventaction == "sendconfirmationsms")
+                  this.getConfirmationSmsData();
+              }
             });
 
           /*if (!this.survey.isScreener)
@@ -461,5 +524,61 @@ export class SurveyAnswersComponent implements OnInit {
       if ((ince.incentiveAmount + " - " + ince.incentiveType) == this.resevent.incentive)
         this.resevent.incentiveId = ince.id;
     })
+  }
+
+  //Send confirmation email
+  getConfirmationEmailData() {
+    var resIds = [];
+    resIds.push(this.resid);
+    this.emailService.createSessionConfirmationResIdsEmail(resIds, this.resevent.groupId)
+      .subscribe((res: any) => {
+        console.log(res)
+        if (res.succeeded) {
+          this.emailData = res.value;
+          this.emailEntity = "CreateSessionConfirmationEmail";
+          console.log(this.emailData);
+          setTimeout(() => {
+            this.emailModlaBtn.nativeElement.click();
+          }, 1000)
+        } else {
+          var err = "";
+          res.errors.forEach((er) => {
+            err = err + " " + er;
+          });
+          swal(
+            'Error!',
+            err,
+            'error'
+          )
+        }
+      })
+  }
+
+  //Send Confirmation SMS
+  getConfirmationSmsData() {
+    var resIds = [];
+    resIds.push(this.resid);
+    this.smsServices.getResIdsSmsData(resIds, this.resevent.groupId)
+      .subscribe((res: any) => {
+        console.log(res)
+        if (res.succeeded) {
+          this.smsData = res.value;
+          this.smsModalTitle = "Confirmation SMS";
+          console.log(this.emailData);
+          setTimeout(() => {
+            this.smsModlaBtn.nativeElement.click();
+          }, 1000)
+        } else {
+          var err = "";
+          res.errors.forEach((er) => {
+            err = err + " " + er;
+          });
+          swal(
+            'Error!',
+            err,
+            'error'
+          )
+        }
+      })
   }
 }

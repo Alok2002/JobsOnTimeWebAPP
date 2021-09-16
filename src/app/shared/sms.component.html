@@ -4,7 +4,7 @@
     <div class="modal-content">
       <div class="modal-header no-border ax-modal-header">
         <button type="button" class="close" data-dismiss="modal" aria-hidden="true"
-          (click)="resetSmsData();closeModal.emit(true);">×</button>
+          (click)="resetSmsData();closeModal.emit(true);gotoRedirectUrl()">×</button>
         <h4 class="modal-title">{{modalTitle}}</h4>
       </div>
       <div class="modal-body no-padding">
@@ -60,7 +60,8 @@
               <a class="btn btn-ocean waves-effect waves-light btn-md" (click)="sendSms(smsForm)">
                 Send SMS
               </a>
-              <a data-dismiss="modal" aria-hidden="true" class="btn btn-cocktail m-l-5">Cancel</a>
+              <a data-dismiss="modal" aria-hidden="true" class="btn btn-cocktail m-l-5"
+                (click)="gotoRedirectUrl()">Cancel</a>
             </div>
           </div>
           <div class="clearfix"></div>

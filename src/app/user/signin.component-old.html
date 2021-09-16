@@ -80,7 +80,7 @@
                           <!--                          </span>-->
                           <!--                        </label>-->
                           <input type="text" id="email" name="email" class="form-control"
-                            pattern="^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,10})+$"
+                            pattern="^\w+(['\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,10})+$"
                             [class.invalid-field]="!emailModel.valid && isSubmitForm" (blur)="checkDuplicateUser()"
                             placeholder="Email Address" [(ngModel)]="loginUser.emailAddress" #emailModel="ngModel"
                             required autocomplete="off">

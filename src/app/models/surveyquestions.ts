@@ -42,4 +42,6 @@ export class SurveyQuestions {
   public goToQuestionNum: number;
   public randomizeOptions: boolean;
   public isTemplate: boolean;
+  public minNumMatrixColAnswers: number;
+  public maxNumMatrixColAnswers: number;
 }

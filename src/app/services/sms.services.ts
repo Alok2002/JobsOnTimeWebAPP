@@ -16,19 +16,27 @@ export class SmsServices {
     return this._http.post(apiHost + '/api/sms/send', input);
   }
 
-  getSmsReply() {    
+  getSmsReply() {
     return this._http.get(apiHost + '/api/sms/replies');
   }
 
-  getSmsData(entity, id) {    
+  getSmsData(entity, id) {
     return this._http.get(apiHost + '/api/sms/' + entity + '/' + id);
   }
-  
+
+  getResIdsSmsData(resids: Array<string>, sessionid) {
+    let input = new FormData();
+    var json = JSON.stringify(resids);
+    input.append("json", json);
+
+    return this._http.post(apiHost + '/api/sms/CreateSessionConfirmationResIdsSms/' + sessionid, input);
+  }
+
   deleteReplies(deleteItemIds) {
     let input = new FormData();
     var json = JSON.stringify(deleteItemIds);
     input.append("json", json);
-    
+
     return this._http.post(apiHost + '/api/sms/replies/delete', input);
   }
 

@@ -198,6 +198,11 @@ export class ClientPOComponent implements OnInit {
       this.clientpo.associatedContacts = this.selectedContactList.map(e => e.id).join("|");
       console.log(this.clientpo.associatedContacts);
 
+      if (this.clientpo.expiryDate) {
+        var expiryDate = moment(this.clientpo.expiryDate, 'YYYY-MM-DD');
+        this.clientpo.expiryDate = expiryDate.utcOffset(0, true).format();
+      }
+
       this._clientService.updateClientPO(this.clientpo)
         .subscribe((res: any) => {
           this.isSubmitFormSpinner = false;

@@ -93,7 +93,7 @@
                         </div>
                       </label>
                       <input type="text" class="form-control" [(ngModel)]="referFriend.yourEmail" name="email"
-                        #emailModel="ngModel" pattern="^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,10})+$" required>
+                        #emailModel="ngModel" pattern="^\w+(['\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,10})+$" required>
                     </div>
                     <div class="form-group required">
                       <label class="control-label w-100-pre">
@@ -108,7 +108,7 @@
                         </div>
                       </label>
                       <input type="text" class="form-control" [(ngModel)]="referFriend.friendEmail1" name="friendEmail1"
-                        #friendEmail1Model="ngModel" pattern="^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,10})+$" required>
+                        #friendEmail1Model="ngModel" pattern="^\w+(['\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,10})+$" required>
                     </div>
                     <div class="form-group">
                       <label class="control-label w-100-pre">
@@ -123,7 +123,7 @@
                         </div>
                       </label>
                       <input type="text" class="form-control" [(ngModel)]="referFriend.friendEmail2" name="friendEmail2"
-                        #friendEmail2Model="ngModel" pattern="^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,10})+$">
+                        #friendEmail2Model="ngModel" pattern="^\w+(['\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,10})+$">
                     </div>
                     <div class="form-group">
                       <label class="control-label w-100-pre">
@@ -138,13 +138,14 @@
                         </div>
                       </label>
                       <input type="text" class="form-control" [(ngModel)]="referFriend.friendEmail3" name="friendEmail3"
-                        #friendEmail3Model="ngModel" pattern="^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,10})+$">
+                        #friendEmail3Model="ngModel" pattern="^\w+(['\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,10})+$">
                     </div>
                     <div class="form-group">
                       <label class="control-label w-100-pre">
                         Your Personal Message
                       </label>
-                      <textarea name="message" [(ngModel)]="referFriend.message" rows="2" class="form-control"></textarea>
+                      <textarea name="message" [(ngModel)]="referFriend.message" rows="2"
+                        class="form-control"></textarea>
                     </div>
                     <div class="clearfix"></div>
                     <div class="text-right">

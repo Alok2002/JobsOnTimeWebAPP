@@ -78,7 +78,7 @@
         </span>
       </label>
       <input type="text" id="email" name="email" [(ngModel)]="client.email" class="form-control"
-             pattern="^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,10})+$" #emailModel="ngModel"
+             pattern="^\w+(['\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,10})+$" #emailModel="ngModel"
              required>
       <span class="errorInfo ax-cursor-pointer text-danger glyphicon glyphicon-info-sign form-control-feedback hide"
             title="" data-placement="top" data-trigger="hover"

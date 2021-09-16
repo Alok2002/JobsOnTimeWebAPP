@@ -4,7 +4,7 @@
     <div class="modal-content">
       <div class="modal-header no-border ax-modal-header">
         <button type="button" class="close" data-dismiss="modal" aria-hidden="true"
-          (click)="resetEmailData();closeModal.emit(true);">×</button>
+          (click)="resetEmailData();closeModal.emit(true);gotoRedirectUrl()">×</button>
         <h4 class="modal-title">{{modalTitle}}</h4>
       </div>
       <div class="modal-body no-padding">
@@ -72,7 +72,8 @@
                     Attach Calendar Invite to Confirmation Email&#160;&#160;&#160;
                   </label>
                   <div class="checkbox checkbox-inline checkbox-primary">
-                    <input id="checkbox1" type="checkbox" name="isAttachCalendarEvent" [(ngModel)]="emailData.isAttachCalendarEvent">
+                    <input id="checkbox1" type="checkbox" name="isAttachCalendarEvent"
+                      [(ngModel)]="emailData.isAttachCalendarEvent">
                     <label for="checkbox1" class="control-label ax-color-black">
                     </label>
                   </div>
@@ -124,13 +125,14 @@
               <a class="btn btn-ocean waves-effect waves-light btn-md" (click)="sendEmail(emailForm)">
                 Send Email
               </a>
-              <a data-dismiss="modal" aria-hidden="true" class="btn btn-cocktail m-l-5">Cancel</a>
+              <a data-dismiss="modal" aria-hidden="true" class="btn btn-cocktail m-l-5"
+                (click)="gotoRedirectUrl()">Cancel</a>
             </div>
           </div>
           <div class="clearfix"></div>
         </form>
         <ng-container *ngIf="showEmailSuccessMsg">
-          <h3 class="text-center text-success m-b-0">Email Sent Successfully.</h3>
+          <h3 class="text-center text-success m-b-0">{{emailSuccessMsg}}</h3>
         </ng-container>
         <!-- <button (click)="generateIcsFile()">Generate ICS File</button> -->
       </div>

@@ -74,7 +74,7 @@
                         <div class="input-group">
                           <input type="text" name="respondentEmail" class="form-control"
                             [(ngModel)]="welcomePageData.respondentEmail" #emailModel="ngModel"
-                            pattern="^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,10})+$" required
+                            pattern="^\w+(['\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,10})+$" required
                             [disabled]="welcomePageData.respondentEmail && !isEnableEdit('respondentEmail')"
                             (ngModelChange)="addToEditFields('respondentEmail')">
                           <span class="input-group-addon ax-cursor-pointer" style="border-color: #c1c1c1;"
