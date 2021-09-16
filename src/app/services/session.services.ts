@@ -5,6 +5,8 @@ import { Observable } from "rxjs/Observable";
 import { ConfigItem } from '../models/configitem';
 import { apiHost } from "../app.component";
 import { AuthService } from "./auth.services";
+import { Session } from '../models/session';
+
 @Injectable()
 export class SessionServices {
   constructor(private _http: HttpClient, private authService: AuthService) { }
@@ -228,7 +230,7 @@ export class SessionServices {
 
     return this._http.post(apiHost + '/api/event/RecordPaymentForQualifiedResp', input);
   }
-  
+
   cancelPayment(ids, jobid, sessionid) {
     let input = new FormData();
     var json = JSON.stringify(ids);

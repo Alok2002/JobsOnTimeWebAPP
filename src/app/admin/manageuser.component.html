@@ -335,12 +335,14 @@
               <div class="clearfix"></div>
               <div class="col-md-12 no-padding text-right">
                 <div class="pull-left">
-                  <div class="checkbox checkbox-primary checkbox-inline m-l-22-checkbox" style="margin: 7px 7px 7px 0px;">
+                  <div class="checkbox checkbox-primary checkbox-inline m-l-22-checkbox"
+                    style="margin: 7px 7px 7px 0px;">
                     <input type="checkbox" id="inlineCheckbox1" [(ngModel)]="user.inactive" name="inactive"
                       [value]="user.inactive">
                     <label for="inlineCheckbox1"> Inactive </label>
                   </div>
-                  <div class="checkbox checkbox-primary checkbox-inline m-l-22-checkbox" style="margin: 7px 7px 7px 0px;">
+                  <div class="checkbox checkbox-primary checkbox-inline m-l-22-checkbox"
+                    style="margin: 7px 7px 7px 0px;">
                     <input type="checkbox" id="inlineCheckbox2" [(ngModel)]="user.skip2FA" name="skip2FA"
                       [value]="user.skip2FA">
                     <label for="inlineCheckbox2"> Skip 2FA </label>
@@ -460,7 +462,7 @@
                         <input id="sec-security_CLI" type="checkbox" name="Security_CLI"
                           [(ngModel)]="user.security_CLI">
                         <label for="sec-security_CLI">Allow to Delete Client, Contact, Notes, Feedback, Venue</label>
-                      </div>                      
+                      </div>
                     </div>
                   </div>
                 </div>
@@ -522,6 +524,13 @@
                         <input id="sec-smr" type="checkbox" name="Security_SMR" [(ngModel)]="user.security_SMR">
                         <label for="sec-smr">Allow Map Reference to Survey Questions</label>
                       </div>
+                      <div class="clearfix"></div>
+                      <div class="checkbox checkbox-primary pull-left">
+                        <input id="sec-security_MSLQ" type="checkbox" name="Security_MSLQ"
+                          [(ngModel)]="user.security_MSLQ">
+                        <label for="sec-security_MSLQ">Manage Question Library</label>
+                      </div>
+                      <div class="clearfix"></div>
                     </div>
                   </div>
                 </div>
@@ -727,7 +736,7 @@
                         <input id="sec-mgq" type="checkbox" name="Security_MGQ" [(ngModel)]="user.security_MGQ">
                         <label for="sec-mgq">Manage Global Queries</label>
                       </div>
-                      <div class="clearfix"></div>                      
+                      <div class="clearfix"></div>
                       <div class="checkbox checkbox-primary pull-left">
                         <input id="sec-security_LST" type="checkbox" name="Security_LST"
                           [(ngModel)]="user.security_LST">

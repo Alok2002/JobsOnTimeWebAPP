@@ -75,6 +75,8 @@ export class SessionEditComponent implements OnInit {
   ckEditorConfig = JSON.parse(JSON.stringify(ckEditorConfig));
   isBrowser = false;
 
+  @Input() sessionNo: number;
+
   constructor(private sharedservice: SharedServices, private sessionservice: SessionServices, private _clientService: ClientServices,
     private jobservice: JobServices, private router: Router, private resService: RespondentServices, @Inject(PLATFORM_ID) platformId: Object) {
     /*this.isBrowser = isPlatformBrowser(platformId);
@@ -125,6 +127,8 @@ export class SessionEditComponent implements OnInit {
 
   addNew() {
     this.session = new Session();
+    if (this.sessionNo)
+      this.session.sessionNumber = this.sessionNo;
     this.isLoading = false;
   }
 
@@ -179,35 +183,61 @@ export class SessionEditComponent implements OnInit {
       this.session.clientJobId = this.jobId;
       console.log(this.incentives)
       console.log(this.session.id)
-      if (this.session.id) {
-        this.sessionservice.updateSessionIncentive(this.incentives, this.session.id)
-          .subscribe(res => {
-            console.log(res);
-          });
-      }
-
-      if (this.session.dateTime) {
-        var dateTime = moment(this.session.dateTime, 'YYYY-MM-DD');
-        this.session.dateTime = dateTime.format();
-      }
-
-      this.sessionservice.postSession(this.session)
+      this.jobservice.getSessionByJob(this.session.clientJobId)
         .subscribe((res: any) => {
-          console.log(res);
-          if (res.succeeded) {
-            swal(
-              'Successfully Saved!',
-              '',
-              'success'
-            )
+          console.log(res)
+          var sessionList: Array<Session> = res.value;
+          var isValidSessionNo = sessionList.length == 0 ? true : false;
+          if (!isValidSessionNo) {
+            var index = sessionList.findIndex((se) => se.sessionNumber == this.session.sessionNumber);
+            if (index >= 0) {
+              if (!this.session.id)
+                isValidSessionNo = false;
+              else if (sessionList[index].id == this.session.id)
+                isValidSessionNo = true;
+            } else {
+              isValidSessionNo = true;
+            }
+          }
 
-            if (!this.isUpdateSession) {
-              this.router.navigate(['/session/edit', res.value.id, this.jobId]);
+          if (isValidSessionNo) {
+            if (this.session.id) {
+              this.sessionservice.updateSessionIncentive(this.incentives, this.session.id)
+                .subscribe(res => {
+                  console.log(res);
+                });
             }
 
-            this.getSessionById(res.value.id);
+            if (this.session.dateTime) {
+              var dateTime = moment(this.session.dateTime, 'YYYY-MM-DD');
+              this.session.dateTime = dateTime.format();
+            }
+
+            this.sessionservice.postSession(this.session)
+              .subscribe((res: any) => {
+                console.log(res);
+                if (res.succeeded) {
+                  swal(
+                    'Successfully Saved!',
+                    '',
+                    'success'
+                  )
+
+                  if (!this.isUpdateSession) {
+                    this.router.navigate(['/session/edit', res.value.id, this.jobId]);
+                  }
+
+                  this.getSessionById(res.value.id);
+                }
+              });
+          } else {
+            swal(
+              'Invalid Session Number!',
+              'Session Number already exists',
+              'error'
+            )
           }
-        });
+        })
     }
   }
 

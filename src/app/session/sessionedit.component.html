@@ -1,5 +1,5 @@
 <div class="mob-without-no-padding-lr">
-  <div class="col-md-4 no-padding-left">
+  <div class="col-md-5 no-padding-left">
     <form class="ax-form" role="form" #sessionform="ngForm" *ngIf="!isLoading">
       <div *ngIf="preSessions && preSessions?.length > 0 && !id" class="form-group">
         <label class="control-label w-100-pre">Copy Session</label>
@@ -8,33 +8,46 @@
         </select>
       </div>
 
-      <div class="form-group required">
-        <label class="control-label w-100-pre">
-          <span class="d-desktop-only pull-left">Session Name</span>
-          <span class="d-mobile-only pull-left">Name</span>
-          <span [hidden]="nameModel.valid || !isSubmitForm">
-            <span class="text-danger pull-right" [hidden]="!nameModel.hasError('required')">Required</span>
-          </span>
-          <span class="pull-right m-r-5">
-            <div class="checkbox checkbox-primary no-margin">
-              <input id="rvrrecvd" type="checkbox" name="rvrrecvd" [(ngModel)]="session.validationReportReceived"
-                [disabled]="session?.validationReportReceived && session?.id">
-              <label for="rvrrecvd">
-                RVR Rcvd
-              </label>
-            </div>
-          </span>
+      <div class="row">
+        <div class="form-group required col-md-4">
+          <label class="control-label w-100-pre">
+            <span class="d-desktop-only pull-left">Session Number</span>
+            <span [hidden]="sessionNumberModel.valid || !isSubmitForm">
+              <span class="text-danger pull-right" [hidden]="!sessionNumberModel.hasError('required')">Required</span>
+            </span>
+          </label>
+          <input type="number" class="form-control" name="sessionNumber" [(ngModel)]="session.sessionNumber"
+            #sessionNumberModel="ngModel" required>
+        </div>
 
-          <span class="pull-right m-r-10">
-            <div class="checkbox checkbox-primary no-margin">
-              <input id="rvrsent" type="checkbox" name="rvrsent" [(ngModel)]="session.validationReportSent">
-              <label for="rvrsent">
-                RVR Sent
-              </label>
-            </div>
-          </span>
-        </label>
-        <input type="text" class="form-control" name="name" [(ngModel)]="session.name" #nameModel="ngModel" required>
+        <div class="form-group required col-md-8">
+          <label class="control-label w-100-pre">
+            <span class="d-desktop-only pull-left">Session Name</span>
+            <span class="d-mobile-only pull-left">Name</span>
+            <span [hidden]="nameModel.valid || !isSubmitForm">
+              <span class="text-danger pull-right" [hidden]="!nameModel.hasError('required')">Required</span>
+            </span>
+            <span class="pull-right m-r-5">
+              <div class="checkbox checkbox-primary no-margin">
+                <input id="rvrrecvd" type="checkbox" name="rvrrecvd" [(ngModel)]="session.validationReportReceived"
+                  [disabled]="session?.validationReportReceived && session?.id">
+                <label for="rvrrecvd">
+                  RVR Rcvd
+                </label>
+              </div>
+            </span>
+
+            <span class="pull-right m-r-10">
+              <div class="checkbox checkbox-primary no-margin">
+                <input id="rvrsent" type="checkbox" name="rvrsent" [(ngModel)]="session.validationReportSent">
+                <label for="rvrsent">
+                  RVR Sent
+                </label>
+              </div>
+            </span>
+          </label>
+          <input type="text" class="form-control" name="name" [(ngModel)]="session.name" #nameModel="ngModel" required>
+        </div>
       </div>
 
       <div class="form-group col-md-6 no-padding-left">
@@ -152,7 +165,7 @@
           #additionVenueInstructionModel="ngModel"></textarea> -->
         <ckeditor name="venueInstructions" [(ngModel)]="session.venueInstructions" [config]="ckEditorConfig"></ckeditor>
       </div>
-      
+
       <div class="col-md-12 no-padding text-right">
         <div class="pull-left">
           <div class="form-group m-b-0">
@@ -175,7 +188,7 @@
   </div>
 </div>
 
-<div class="col-md-5 mobile-m-t-10" *ngIf="session?.id">
+<div class="col-md-4 mobile-m-t-10" *ngIf="session?.id">
   <div class="panel panel-warning ax-panel-tab">
     <div class="panel-heading">
       <div class="panel-title">

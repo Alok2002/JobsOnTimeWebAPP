@@ -82,14 +82,15 @@ export class FilterComponent implements OnInit {
 
   ngOnChanges() {
     console.log(this.selectedFilterId);
+    console.log(this.isUpdateFiler);
+    debugger
     if (this.isUpdateFiler) {
       this.getExistingQueryList();
-      this.loadExistingFilter();
     }
 
     if (this.selectedFilterId) {
       this.selectedexistingfilterid = this.selectedFilterId;
-      this.loadExistingFilter()
+      this.getExistingQueryList();
     }
   }
 
@@ -221,6 +222,12 @@ export class FilterComponent implements OnInit {
   }
 
   loadExistingFilter() {
+    var index = this.existingfilterlist.findIndex((ex) => ex.id == this.selectedexistingfilterid);
+    if (index >= 0) {
+      this.maxrecords = this.existingfilterlist[index].maxRecords ? this.existingfilterlist[index].maxRecords : null;
+    }
+    debugger
+
     this.sharedService.getExistingFilter(this.entity, this.selectedexistingfilterid)
       .subscribe((res: any) => {
         console.log(res);
@@ -334,6 +341,8 @@ export class FilterComponent implements OnInit {
       .subscribe((res: any) => {
         console.log(res);
         this.existingfilterlist = res.value;
+        if (this.selectedexistingfilterid > 0)
+          this.loadExistingFilter();
       });
   }
 

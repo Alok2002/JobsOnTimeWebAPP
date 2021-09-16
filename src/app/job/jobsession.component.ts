@@ -86,6 +86,7 @@ export class JobSessionComponent implements OnInit {
   totalRecords = 0;
   colVisData = [];
   selectedFilterId = null;
+  nextSessionNo: number;
 
   constructor(private jobservice: JobServices, private cookieservice: CookieService,
     private sharedService: SharedServices, private emailservice: EmailServices,
@@ -102,24 +103,25 @@ export class JobSessionComponent implements OnInit {
 
   getSessions() {
     this.cols = [
-      { field: 'name', header: 'Session Name', index: 3, width: '300', sort: true },
-      { field: 'dateTime', header: 'Session Date', index: 4, width: '150', sort: false },
-      { field: 'groupType', header: 'Type', index: 5, width: '150', sort: false },
-      { field: 'projectManagerName', header: 'Project Manager', index: 6, width: '110', sort: false },
-      { field: 'contact', header: 'Contact', index: 7, width: '75', sort: false, textAlign: 'center' },
-      { field: 'venue', header: 'Venue', index: 8, width: '75', sort: false, textAlign: 'center' },
-      { field: 'incentive', header: 'Incentive', index: 9, width: '75', sort: false, textAlign: 'center' },
-      { field: 'times', header: 'Times', index: 10, width: '75', sort: false, textAlign: 'center' },
-      { field: 'respondentsRequired', header: 'Req', index: 11, width: '50', sort: false },
-      { field: 'numberOfQualifiedRespondents', header: 'Qual', index: 12, width: '50', sort: false },
-      { field: 'numberNeeded', header: 'Need', index: 13, width: '50', sort: false },
-      { field: 'numberOfEmailConfirmedRespondents', header: 'Conf Email Sent', index: 14, width: '100', sort: false },
-      { field: 'numberOfSmsConfirmedRespondents', header: 'Conf SMS Sent', index: 15, width: '100', sort: false },
-      { field: 'numberOfFinalConfirmedRespondents', header: 'Confirmed', index: 16, width: '75', sort: false },
-      { field: 'validationReportReceived', header: 'RVR Rcvd', index: 17, width: '100', sort: false, textAlign: 'center' },
-      { field: 'validationReportSent', header: 'RVR Sent', index: 18, width: '100', sort: false, textAlign: 'center' },
-      { field: 'afterHourSession', header: 'After Hours', index: 19, width: '100', sort: false, textAlign: 'center' },
-      { field: 'other', header: 'Other', index: 20, width: '350', sort: false }
+      { field: 'sessionNumber', header: 'Session Number', index: 3, width: '125', sort: true },
+      { field: 'name', header: 'Session Name', index: 4, width: '300', sort: true },
+      { field: 'dateTime', header: 'Session Date', index: 5, width: '150', sort: false },
+      { field: 'groupType', header: 'Type', index: 6, width: '150', sort: false },
+      { field: 'projectManagerName', header: 'Project Manager', index: 7, width: '110', sort: false },
+      { field: 'contact', header: 'Contact', index: 8, width: '75', sort: false, textAlign: 'center' },
+      { field: 'venue', header: 'Venue', index: 9, width: '75', sort: false, textAlign: 'center' },
+      { field: 'incentive', header: 'Incentive', index: 10, width: '75', sort: false, textAlign: 'center' },
+      { field: 'times', header: 'Times', index: 11, width: '75', sort: false, textAlign: 'center' },
+      { field: 'respondentsRequired', header: 'Req', index: 12, width: '50', sort: false },
+      { field: 'numberOfQualifiedRespondents', header: 'Qual', index: 13, width: '50', sort: false },
+      { field: 'numberNeeded', header: 'Need', index: 14, width: '50', sort: false },
+      { field: 'numberOfEmailConfirmedRespondents', header: 'Conf Email Sent', index: 15, width: '100', sort: false },
+      { field: 'numberOfSmsConfirmedRespondents', header: 'Conf SMS Sent', index: 16, width: '100', sort: false },
+      { field: 'numberOfFinalConfirmedRespondents', header: 'Confirmed', index: 17, width: '75', sort: false },
+      { field: 'validationReportReceived', header: 'RVR Rcvd', index: 18, width: '100', sort: false, textAlign: 'center' },
+      { field: 'validationReportSent', header: 'RVR Sent', index: 19, width: '100', sort: false, textAlign: 'center' },
+      { field: 'afterHourSession', header: 'After Hours', index: 20, width: '100', sort: false, textAlign: 'center' },
+      { field: 'other', header: 'Other', index: 21, width: '350', sort: false }
     ];
 
     if (this.isSessionCalendar) {
@@ -152,6 +154,17 @@ export class JobSessionComponent implements OnInit {
         this.sessions = resp.value;
         this.totalRecords = resp.totalCount;
         console.log(this.sessions);
+
+        var sessionList: Array<Session> = [];
+        sessionList = JSON.parse(JSON.stringify(this.sessions));
+        sessionList.sort((a, b) => {
+          if (a.sessionNumber < b.sessionNumber)
+            return -1;
+          if (a.sessionNumber > b.sessionNumber)
+            return 1;
+          return 0;
+        });
+        this.nextSessionNo = sessionList.length > 0 ? sessionList[sessionList.length - 1].sessionNumber + 1 : 1;
       });
   }
 

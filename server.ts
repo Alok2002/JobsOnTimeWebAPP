@@ -6,6 +6,7 @@ import { provideModuleMap } from '@nguniversal/module-map-ngfactory-loader';
 import * as express from 'express';
 import { join } from 'path';
 import { createProxyMiddleware, Filter, Options, RequestHandler } from 'http-proxy-middleware';
+import compression from 'compression';
 
 // Express Engine
 // Import module map for lazy loading
@@ -14,6 +15,8 @@ enableProdMode();
 
 // Express server
 const app = express();
+app.use(compression());
+
 const request = require('request');
 
 const PORT = process.env.PORT || 4200;

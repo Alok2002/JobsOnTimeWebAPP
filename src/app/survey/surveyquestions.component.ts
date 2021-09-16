@@ -127,6 +127,8 @@ export class SurveyQuestionsComponent implements OnInit {
   @Output() isDestorySurveyQuestion = new EventEmitter();
   hasSurveyMapReference = false;
 
+  @Input() isQuestionLibPage = false;
+
   constructor(private activatedroute: ActivatedRoute, private jobservice: JobServices, private surveyservice: SurveyServices,
     private sharedservice: SharedServices, private dragulaService: DragulaService, private cookieService: CookieService,
     private differs: KeyValueDiffers, @Inject(PLATFORM_ID) platformId: Object, private securityInfoResolve: SecurityInfoResolve,) {
@@ -210,15 +212,15 @@ export class SurveyQuestionsComponent implements OnInit {
         this.surveyId = params["surveyId"];
       }
     });
-
-    this.getSurvey();
     this.getLibQuestions();
-
-    //this.getAllJobs();
-    this.getJobWithSurveyQuestions();
-    this.getJobQuota(this.jobId);
     this.getSystemReferences();
     this.getSecurityRightsSurveyMapReference();
+
+    if (!this.isQuestionLibPage) {
+      this.getSurvey();
+      this.getJobWithSurveyQuestions();
+      this.getJobQuota(this.jobId);
+    }
   }
 
   ngOnDestroy() {
@@ -227,6 +229,7 @@ export class SurveyQuestionsComponent implements OnInit {
     this.dragulaService.destroy("DRAGULA_CONTAINER_QO");
     this.dragulaService.destroy("DRAGULA_CONTAINER_QOH");
     this.isDestorySurveyQuestion.emit(true);
+    console.log("inside ngondestroy");
   }
 
   generateQuestion() {
@@ -261,13 +264,13 @@ export class SurveyQuestionsComponent implements OnInit {
 
       case "thumbsupdown":
         qoptions = new SurveyQuestionOption();
-        qoptions.optionText = "Up";
+        qoptions.optionText = "Thumbs Up";
         qoptions.action = "Go to next question";
         qoptions.fillQuotaId = null;
         newQues.clientJobSurveyQuestionOption.push(qoptions);
 
         qoptions = new SurveyQuestionOption();
-        qoptions.optionText = "Down";
+        qoptions.optionText = "Thumbs Down";
         qoptions.action = "Go to next question";
         qoptions.fillQuotaId = null;
         newQues.clientJobSurveyQuestionOption.push(qoptions);
@@ -369,7 +372,11 @@ export class SurveyQuestionsComponent implements OnInit {
     this.updatematrixHorizontalOptions();
 
     this.surveyquestions.forEach((sq, i) => {
-      sq.clientJobGroupSurveyId = this.survey.id;
+      if (this.isQuestionLibPage) {
+        sq.isTemplate = true;
+      } else {
+        sq.clientJobGroupSurveyId = this.survey.id;
+      }
       sq.questionNumber = i + 1;
 
       //sq.clientJobSurveyQuestionOption = sq.clientJobSurveyQuestionOption;
@@ -391,15 +398,20 @@ export class SurveyQuestionsComponent implements OnInit {
     this.surveyservice.submitSuerveyQuestions(this.surveyquestions)
       .subscribe(res => {
         console.log(res);
-        this.isupdatesurveyquestionsource = true;
-        this.getSurvey();
+        if (!this.isQuestionLibPage) {
+          this.isupdatesurveyquestionsource = true;
+          this.getSurvey();
+          this.surveyQuestionUpdate.emit(true);
+        }
+        else
+          this.getLibQuestions();
         // this.getSurveyQuestionsbySurveyId();
-        this.surveyQuestionUpdate.emit(true);
+
 
         if (!isAutoSave) {
           swal(
             "Success!",
-            "Survey questions has been saved successfully.",
+            this.isQuestionLibPage ? "Survey library questions has been saved successfully." : "Survey questions has been saved successfully.",
             "success"
           );
         }
@@ -624,37 +636,40 @@ export class SurveyQuestionsComponent implements OnInit {
       .subscribe((res: any) => {
         console.log(res);
         this.surveyquestions = res.value;
-
-        this.surveyquestions.forEach(sq => {
-          this.surveyQuestionTypes.forEach(sr => {
-            if (sr.answerType == sq.answerType) {
-              sq["iconclass"] = sr.iconclass;
-              sq["option"] = sr.option;
-              sq["isMedia"] = sr.media;
-            }
-            if (
-              sr.option &&
-              sq.clientJobSurveyQuestionOption &&
-              sq.clientJobSurveyQuestionOption.length < 1 &&
-              sq.answerType != "ImageSingleSelect" &&
-              sq.answerType != "ImageMultiSelect" &&
-              sq.answerType != "ReorderImage"
-            ) {
-              var qoptions = new SurveyQuestionOption();
-              qoptions.action = "Go to next question";
-              qoptions.fillQuotaId = null;
-              sq.clientJobSurveyQuestionOption.push(qoptions);
-            }
-          });
-
-          sq.clientJobSurveyQuestionOption.sort((a, b) => {
-            if (a.order > b.order) return 1;
-            else if (a.order < b.order) return -1;
-            return 0;
-          });
-        });
-        this.populateMatrixChoiceArray();
+        this.populateSurveyQuestions();
       });
+  }
+
+  populateSurveyQuestions() {
+    this.surveyquestions.forEach(sq => {
+      this.surveyQuestionTypes.forEach(sr => {
+        if (sr.answerType == sq.answerType) {
+          sq["iconclass"] = sr.iconclass;
+          sq["option"] = sr.option;
+          sq["isMedia"] = sr.media;
+        }
+        if (
+          sr.option &&
+          sq.clientJobSurveyQuestionOption &&
+          sq.clientJobSurveyQuestionOption.length < 1 &&
+          sq.answerType != "ImageSingleSelect" &&
+          sq.answerType != "ImageMultiSelect" &&
+          sq.answerType != "ReorderImage"
+        ) {
+          var qoptions = new SurveyQuestionOption();
+          qoptions.action = "Go to next question";
+          qoptions.fillQuotaId = null;
+          sq.clientJobSurveyQuestionOption.push(qoptions);
+        }
+      });
+
+      sq.clientJobSurveyQuestionOption.sort((a, b) => {
+        if (a.order > b.order) return 1;
+        else if (a.order < b.order) return -1;
+        return 0;
+      });
+    });
+    this.populateMatrixChoiceArray();
   }
 
   populateMatrixChoiceArray() {
@@ -700,15 +715,21 @@ export class SurveyQuestionsComponent implements OnInit {
       .subscribe((res: any) => {
         this.libQuestions = res.value;
         console.log(this.libQuestions);
-        this.libQuestions.forEach(lq => {
-          this.surveyQuestionTypes.forEach(sr => {
-            if (sr.type == lq.answerType) {
-              lq["iconclass"] = sr.iconclass;
-              lq["option"] = sr.option;
-              lq["isMedia"] = sr.media;
-            }
+        if (this.isQuestionLibPage) {
+          this.surveyquestions = res.value;
+          this.populateSurveyQuestions();
+          console.log(this.surveyquestions);
+        } else {
+          this.libQuestions.forEach(lq => {
+            this.surveyQuestionTypes.forEach(sr => {
+              if (sr.type == lq.answerType) {
+                lq["iconclass"] = sr.iconclass;
+                lq["option"] = sr.option;
+                lq["isMedia"] = sr.media;
+              }
+            });
           });
-        });
+        }
       });
   }
 
@@ -963,7 +984,7 @@ export class SurveyQuestionsComponent implements OnInit {
         if (sq.id == null || sq.id == 0) ret = true;
       });
     }*/
-    if (JSON.stringify(this.surveyquestionssource) != JSON.stringify(this.surveyquestions)) ret = true;
+    if (JSON.stringify(this.surveyquestionssource) != JSON.stringify(this.surveyquestions) || this.isQuestionLibPage) ret = true;
     return ret;
   }
 
@@ -1237,5 +1258,51 @@ export class SurveyQuestionsComponent implements OnInit {
         console.log(res)
         this.hasSurveyMapReference = res.succeeded;
       })
+  }
+
+  /**QUESTION LIBRARY CHANGES**/
+  removeQuestionLibrary(index, id) {
+    swal({
+      title: "Are you sure?",
+      text: "You will not be able to recover this item!",
+      type: "warning",
+      showCancelButton: true,
+      confirmButtonText: "Yes, delete it!",
+      confirmButtonColor: "#ffaa00",
+      cancelButtonText: "No, keep it"
+    }).then(result => {
+      if (result.value) {
+        this.isDisableDelete = true;
+        if (id) {
+          this.surveyservice.deletesurveyquestions(id)
+            .subscribe((res: any) => {
+              if (res.succeeded) this.surveyquestions.splice(index, 1);
+              this.updateSurveyQuestionSource();
+              this.isDisableDelete = false;
+            });
+        } else {
+          this.surveyquestions.splice(index, 1);
+          this.updateSurveyQuestionSource();
+          this.isDisableDelete = false;
+        }
+      } else if (result.dismiss === swal.DismissReason.cancel) {
+        swal("Cancelled", "Survey Question is safe :)", "error");
+      }
+    });
+  }
+
+  duplicateQuestionLibrary(index) {
+    //this.surveyquestions[index + 1].push(this.surveyquestions[index]);
+    //this.surveyquestions.insert(index + 1, this.surveyquestions[index]);
+    var quesstr = JSON.stringify(this.surveyquestions[index]);
+    var quesjson = JSON.parse(quesstr);
+    quesjson.id = 0;
+    quesjson.clientJobSurveyQuestionOption.forEach((qo) => {
+      qo.id = 0;
+      qo.questionId = 0;
+    })
+    this.surveyquestions.splice(index, 0, quesjson);
+
+    console.log(this.surveyquestions);
   }
 }

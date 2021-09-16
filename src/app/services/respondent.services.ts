@@ -217,6 +217,12 @@ export class RespondentServices {
     return this._http.get(apiHost + '/api/respondent-surveys/' + resid);
   }
 
+  getRespondentSurveyForStaff(resid) {
+    let headers = new Headers();
+    console.log(resid);
+    return this._http.get(apiHost + '/api/respondent-surveys-staff-View/' + resid);
+  }
+
   getRespondentOpportunities(resid) {
     let headers = new Headers();
     console.log(resid);

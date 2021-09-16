@@ -43,6 +43,22 @@
 
       <div class="clearfix"></div>
 
+      <div class="form-group col-md-12 no-padding-left">
+        <label class="control-label w-100-pre" for="gender">
+          Gender
+          <span [hidden]="gendermodel.valid || !isSubmitForm">
+            <span class="text-danger pull-right" [hidden]="!gendermodel.hasError('required')">Required</span>
+          </span>
+        </label>
+        <select id="gender" name="gender" class="form-control" [(ngModel)]="respondent.gender" #gendermodel="ngModel"
+          required>
+          <option *ngFor="let gl of genderList" [value]="gl.code">{{gl.desc}}</option>
+        </select>
+      </div>
+
+      <div class="clearfix"></div>
+
+
       <div class="form-group col-md-6 no-padding-left required">
         <label class="control-label w-100-pre" for="companyEmail">Company Email
           <span [hidden]="companyEmailmodel.valid || !isSubmitForm" class="pull-right">
@@ -206,9 +222,22 @@
           <label class="control-label ax-color-black no-padding" for="oneOffRespondent">One Off Respondent</label>
         </div>
       </div>
+	  <div class="form-control m-b-15" style="height: auto;">
+        <div class="checkbox checkbox-primary no-margin">
+          <input type="checkbox" name="isBusinessOwner" [(ngModel)]="respondent.isBusinessOwner" value="true"
+            id="isBusinessOwner">
+          <label class="control-label ax-color-black no-padding" for="oneOffRespondent">Is Business Owner</label>
+        </div>
+      </div>
+	  <div *ngIf="!isMyProfile" class="form-control m-b-15" style="height: auto;">
+        <div class="checkbox checkbox-primary no-margin">
+          <input type="checkbox" name="isRealBusinessOwner" [(ngModel)]="respondent.isRealBusinessOwner" value="true"
+            id="isRealBusinessOwner">
+          <label class="control-label ax-color-black no-padding" for="oneOffRespondent">Is Real Business Owner</label>
+        </div>
+      </div>
     </div>
-
-    <div class="clearfix"></div>
+	<div class="clearfix"></div>
     <div class="form-group">
       <div class="checkbox checkbox-primary w-100-pre m-t-0">
         <input id="isTermsAgreed" type="checkbox" [(ngModel)]="respondent.isTermsAgreed" name="isTermsAgreed" disabled>

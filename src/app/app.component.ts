@@ -102,6 +102,7 @@ export var siteTheme = environment.siteTheme;
 })
 
 export class AppComponent implements OnInit {
+  apiHost = apiHost;
   constructor(private route: ActivatedRoute, private cookieService: CookieService, private router: Router,
     public loader: LoadingBarService, @Inject(PLATFORM_ID) platformId: Object, private _http: HttpClient,
     @Inject(DOCUMENT) private document) {

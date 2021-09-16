@@ -119,7 +119,7 @@ export class SurveyAnswersGridComponent implements OnInit {
     private resservice: RespondentServices, private clientService: ClientServices,
     private _userService: UserServices, private emailService: EmailServices, private sharedService: SharedServices,
     private jobService: JobServices, private jobSessionService: JobSessionServices,
-    private smsservice: SmsServices, private cookieservice: CookieService) {           
+    private smsservice: SmsServices, private cookieservice: CookieService, private loader: LoadingBarService) {
   }
 
   ngOnInit() {
@@ -162,10 +162,10 @@ export class SurveyAnswersGridComponent implements OnInit {
     this.frozenCols = [
       { field: 'respondentID', header: 'Action', index: 0, width: '75', sort: true },
       { field: 'respondentFullName', header: 'Respondent Name', index: 1, width: '150', sort: true }
-    ];    
+    ];
   }
 
-  loadData(event: LazyLoadEvent) {    
+  loadData(event: LazyLoadEvent) {
     if (!event.sortField) { event.sortField = "success" }
     if (!event.sortOrder) { event.sortOrder = 1 }
 
@@ -175,7 +175,10 @@ export class SurveyAnswersGridComponent implements OnInit {
         // debugger;
         this.answerGrid = resp.value;
         this.totalRecords = resp.totalCount;
-        console.log(this.answerGrid);                
+        console.log(this.answerGrid);
+        console.log(this.loader);
+        this.loader.complete();
+        this.loader.stop();
       });
   }
 
@@ -204,7 +207,7 @@ export class SurveyAnswersGridComponent implements OnInit {
                 link.download = "Survey Answer.xlsx";
                 link.click();
               })
-          }            
+          }
           if (method == 'raw') {
             this.sharedService.getQueryResultsRawDataExport(event, this.colVisData, this.maxrecords, this.filters, "ClientJobSurvey", this.surveyId)
               .subscribe((res: any) => {
@@ -457,7 +460,8 @@ export class SurveyAnswersGridComponent implements OnInit {
     console.log(res);
     this.isLoading = true;
     this.filters = res.filters;
-    this.maxrecords = res.maxrecords;
+    this.maxrecords = res.maxrecords == null ? 50 : res.maxrecords;
+
     this.loadData({ first: 0, rows: this.noofrows });
   }
 
