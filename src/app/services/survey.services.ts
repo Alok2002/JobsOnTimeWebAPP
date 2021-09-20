@@ -290,4 +290,10 @@ export class SurveyServices {
     getThankYouPageSign() {
         return this._http.get(apiHost + '/api/config/getthankyoupagesign');
     }
+
+    deleteSurveyAnswerById(said) {
+        let input = new FormData();
+        input.append("said", said);
+        return this._http.post(apiHost + '/api/survey/deleteSurveyAnswerById', input);
+    }
 }
