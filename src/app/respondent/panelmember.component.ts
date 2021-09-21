@@ -676,7 +676,7 @@ export class PanelMemberComponent implements OnInit {
     console.log("inside filter submit");
     console.log(res)
     debugger
-    this.maxrecords = res.maxrecords == null ? 50 : res.maxrecords;
+    //this.maxrecords = res.maxrecords == null ? 50 : res.maxrecords;
     this.filters = res.filters;
 
     if (!this.initView) {
