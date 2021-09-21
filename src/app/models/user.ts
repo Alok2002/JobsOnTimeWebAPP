@@ -68,6 +68,7 @@ export class User {
     public security_MPRPT: boolean;
     public security_MSA: boolean;
     public security_MSLQ: boolean;
+    public security_DVT: boolean;
 
     public employeePosition: string;
     public inactive: boolean;

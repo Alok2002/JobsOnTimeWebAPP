@@ -906,6 +906,10 @@ export class SharedServices {
         return this._http.get(apiHost + '/api/config/IsFarronResearch');
     }
 
+    getIsJOTLicensee() {
+        return this._http.get(apiHost + '/api/config/IsJOTLicensee');
+    }
+
     getAllPrivateList() {
         return this._http.get(apiHost + '/api/respondentlists');
     }
@@ -1217,5 +1221,13 @@ export class SharedServices {
 
     getApiVersion() {
         return this._http.get(apiHost + '/api/config/ApiVersion');
+    }
+
+    getEncryptDecryptString(type, text) {
+        let input = new FormData();        
+        input.append("type", type);
+        input.append("text", text);
+
+        return this._http.post(apiHost + '/api/get-encrypt-decrypt-string', input);
     }
 }
