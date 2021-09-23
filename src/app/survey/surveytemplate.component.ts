@@ -126,6 +126,9 @@ export class SurveyTemplateComponent implements OnInit {
     if (surveyQuestion.clientJobSurveyAnswers && surveyQuestion.clientJobSurveyAnswers.length > 0) {
       surveyQuestion.clientJobSurveyAnswers.forEach((ans, i) => {
         if (ans.answer == optionText) {
+          if (surveyQuestion.clientJobSurveyAnswers[i] && surveyQuestion.clientJobSurveyAnswers[i].id) {
+            this.deleteSurveyAnswerById(surveyQuestion.clientJobSurveyAnswers[i].id);
+          }
           surveyQuestion.clientJobSurveyAnswers.splice(i, 1);
           found = true;
         }
@@ -217,6 +220,9 @@ console.log(obj);
       var found = false;
       this.surveyQuestions[this.selectedIndex].clientJobSurveyAnswers.forEach((ans, i) => {
         if (ans.answer == answer) {
+          if (this.surveyQuestions[this.selectedIndex].clientJobSurveyAnswers[i] && this.surveyQuestions[this.selectedIndex].clientJobSurveyAnswers[i].id) {
+            this.deleteSurveyAnswerById(this.surveyQuestions[this.selectedIndex].clientJobSurveyAnswers[i].id);
+          }
           this.surveyQuestions[this.selectedIndex].clientJobSurveyAnswers.splice(i, 1);
           found = true;
         }
@@ -232,7 +238,12 @@ console.log(obj);
           this.surveyQuestions[this.selectedIndex].clientJobSurveyAnswers.forEach((sqa, i) => {
             if (sqa.answer) {
               var opt = sqa.answer.split(':')[0];
-              if (opt == option) this.surveyQuestions[this.selectedIndex].clientJobSurveyAnswers.splice(i, 1);
+              if (opt == option) {
+                if (this.surveyQuestions[this.selectedIndex].clientJobSurveyAnswers[i] && this.surveyQuestions[this.selectedIndex].clientJobSurveyAnswers[i].id) {
+                  this.deleteSurveyAnswerById(this.surveyQuestions[this.selectedIndex].clientJobSurveyAnswers[i].id);
+                }
+                this.surveyQuestions[this.selectedIndex].clientJobSurveyAnswers.splice(i, 1);
+              }
             }
           })
         }
@@ -243,7 +254,12 @@ console.log(obj);
             console.log(opt)
             if (sqa.answer) {
               var opt = sqa.answer.split(':')[0];
-              if (opt == option) this.surveyQuestions[this.selectedIndex].clientJobSurveyAnswers.splice(i, 1);
+              if (opt == option) {
+                if (this.surveyQuestions[this.selectedIndex].clientJobSurveyAnswers[i] && this.surveyQuestions[this.selectedIndex].clientJobSurveyAnswers[i].id) {
+                  this.deleteSurveyAnswerById(this.surveyQuestions[this.selectedIndex].clientJobSurveyAnswers[i].id);
+                }
+                this.surveyQuestions[this.selectedIndex].clientJobSurveyAnswers.splice(i, 1);
+              }
             }
           })
         }
@@ -322,6 +338,9 @@ console.log(obj);
     if (surveyQuestion.clientJobSurveyAnswers && surveyQuestion.clientJobSurveyAnswers.length > 0) {
       surveyQuestion.clientJobSurveyAnswers.forEach((ans, i) => {
         if (ans.answer == optionText) {
+          if (surveyQuestion.clientJobSurveyAnswers[i] && surveyQuestion.clientJobSurveyAnswers[i].id) {
+            this.deleteSurveyAnswerById(surveyQuestion.clientJobSurveyAnswers[i].id);
+          }
           surveyQuestion.clientJobSurveyAnswers.splice(i, 1);
           found = true;
         }
@@ -400,8 +419,12 @@ console.log(obj);
 
     this.surveyQuestions[this.selectedIndex].clientJobSurveyAnswers.forEach((ca, i) => {
       var ansArr = ca.answer.split(':')[0];
-      if (ansArr == op.optionText)
+      if (ansArr == op.optionText) {
+        if (this.surveyQuestions[this.selectedIndex].clientJobSurveyAnswers[i] && this.surveyQuestions[this.selectedIndex].clientJobSurveyAnswers[i].id) {
+          this.deleteSurveyAnswerById(this.surveyQuestions[this.selectedIndex].clientJobSurveyAnswers[i].id);
+        }
         this.surveyQuestions[this.selectedIndex].clientJobSurveyAnswers.splice(i, 1);
+      }
     })
 
     this.surveyQuestions[this.selectedIndex].clientJobSurveyAnswers.push(surveyAns);
@@ -466,8 +489,12 @@ console.log(obj);
       console.log(ansArr);
       console.log(op);
       console.log(ca);
-      if (ansArr == op.optionText)
+      if (ansArr == op.optionText) {
+        if (this.surveyQuestions[this.selectedIndex].clientJobSurveyAnswers[i] && this.surveyQuestions[this.selectedIndex].clientJobSurveyAnswers[i].id) {
+          this.deleteSurveyAnswerById(this.surveyQuestions[this.selectedIndex].clientJobSurveyAnswers[i].id);
+        }
         this.surveyQuestions[this.selectedIndex].clientJobSurveyAnswers.splice(i, 1);
+      }
     })
 
     this.surveyQuestions[this.selectedIndex].clientJobSurveyAnswers.push(surveyAns);
@@ -544,5 +571,12 @@ console.log(obj);
 
   updateAddressTypeAnswer() {
     this.surveyQuestions[this.selectedIndex].clientJobSurveyAnswers[0].answer = this.addressName + "|" + this.addressStreet;
+  }
+
+  deleteSurveyAnswerById(said) {
+    this.surveyservice.deleteSurveyAnswerById(said)
+      .subscribe((res: any) => {
+        console.log(res)
+      })
   }
 }
