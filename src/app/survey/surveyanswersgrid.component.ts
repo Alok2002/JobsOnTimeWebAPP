@@ -113,6 +113,9 @@ export class SurveyAnswersGridComponent implements OnInit {
 
   frozenCols = [];
   selectedFilterId = null;
+  confSmsEmailModalTitle: string;
+  currentlyTrackingJob = null;
+  jobIdForSmsEmailActionId = null;
 
   constructor(private router: Router, private securityInfoResolve: SecurityInfoResolve,
     private activateroute: ActivatedRoute, private surveyservice: SurveyServices,
@@ -618,6 +621,7 @@ export class SurveyAnswersGridComponent implements OnInit {
           console.log(res);
           if (res.succeeded) {
             this.emailData = res.value;
+            this.emailData.jobId = this.jobIdForSmsEmailActionId;
             console.log(this.emailData);
 
             setTimeout(() => {
@@ -670,7 +674,7 @@ export class SurveyAnswersGridComponent implements OnInit {
         .subscribe((res: any) => {
           console.log(res);
           this.smsData = res.value;
-          this.smsData.jobId = this.jobId;
+          this.smsData.jobId = this.jobIdForSmsEmailActionId;
           this.smsModlaBtn.nativeElement.click();
         })
     }
@@ -743,6 +747,46 @@ export class SurveyAnswersGridComponent implements OnInit {
     var index = this.selectedRowData.findIndex(sr => sr.respondentID == resid);
     if (index >= 0) ret = true;
     return ret;
+  }
+
+  confirmModalForSmsEmail(module) {
+    this.getCurrentlyTrackingJob();
+    if (this.currentlyTrackingJob && this.currentlyTrackingJob.id) {
+      swal({
+        title: 'Do you want this action against the tracked job?',
+        text: '',
+        type: 'warning',
+        showCancelButton: true,
+        confirmButtonText: 'Yes',
+        confirmButtonColor: '#ffaa00',
+        cancelButtonText: 'No'
+      }).then((result) => {
+        if (result.value) {
+          this.jobIdForSmsEmailActionId = this.currentlyTrackingJob.id;
+        } else {
+          this.jobIdForSmsEmailActionId = this.jobId;
+        }
+        this.confirmModalForSmsEmailHelper(module);
+      });
+    } else {
+      this.confirmModalForSmsEmailHelper(module);
+    }
+  }
+
+  confirmModalForSmsEmailHelper(module) {
+    if (module == 'email') {
+      this.openEmailModal('CreateRespondentEmail', 'Send Email')
+    }
+    if (module == 'sms') {
+      this.openSmsModal('CreateRespondentSms', 'Send SMS')
+    }
+  }
+
+  getCurrentlyTrackingJob() {
+    if (this.cookieservice.check("currentlytracking"))
+      this.currentlyTrackingJob = JSON.parse(this.cookieservice.get("currentlytracking"));
+    else
+      this.currentlyTrackingJob = null;
   }
 }
 

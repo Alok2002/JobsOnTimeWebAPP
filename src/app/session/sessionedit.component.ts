@@ -216,7 +216,7 @@ export class SessionEditComponent implements OnInit {
 
             if (this.session.dateTime) {
               var dateTime = moment(this.session.dateTime, 'YYYY-MM-DD');
-              this.session.dateTime = dateTime.format();
+              this.session.dateTime = dateTime.utcOffset(0, true).format();
             }
 
             this.sessionservice.postSession(this.session)
