@@ -1,4 +1,4 @@
-import { Component, OnInit, Inject, PLATFORM_ID } from '@angular/core';
+import { Component, OnInit, Inject, PLATFORM_ID, ViewChild } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import swal from 'sweetalert2';
 
@@ -32,6 +32,9 @@ export class SurveyPreviewComponent implements OnInit {
   responseSurveySuccess: string;
 
   surveyPreQualRes: { heading: string, isPreQualSurvey: boolean, respondentId: number, statement1: string, statement2: string, url: string };
+  gotoqno: number;
+  isSubmitForm = false;
+  @ViewChild('gotoquestionmodal') gotoquestionmodal: any;
 
   constructor(private surveyservice: SurveyServices, private activateroute: ActivatedRoute,
     private surveyService: SurveyServices, private jobsevice: JobServices, @Inject(PLATFORM_ID) public platformId: Object) {
@@ -238,7 +241,22 @@ export class SurveyPreviewComponent implements OnInit {
   }
 
   gotoNextQuestion(event) {
-    if(event)
+    if (event)
       this.submitQuestion('next');
+  }
+
+  gotoSpecificQuestion(form) {
+    if (form.valid) {
+      if (this.gotoqno < 1 || this.gotoqno > this.surveyQuestions.length) {
+        swal(
+          'Oops...',
+          'Invalid question number. Please check and try again',
+          'error'
+        );
+      } else {
+        this.selectedIndex = this.gotoqno - 1;
+        this.gotoquestionmodal.close();
+      }
+    }
   }
 }
