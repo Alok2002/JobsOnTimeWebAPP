@@ -18,6 +18,7 @@ import { apiHost } from '../app.component';
 import { EmailServices } from '../services/email.services';
 import { Email } from '../models/email';
 import { Sms } from '../models/sms';
+import * as moment from 'moment';
 
 declare var jQuery: any;
 
@@ -113,7 +114,7 @@ export class SessionQualifiedRespondent implements OnInit {
       { field: 'userFullName', header: 'User', index: 9, width: '150', sort: false },
       { field: 'eventDate', header: 'Event Date', index: 10, width: '150', sort: false },
       { field: 'eventDescription', header: 'Event', index: 11, width: '150', sort: false },
-      { field: 'inDepthTime24Hours', header: 'In Depth Time', index: 12, width: '100', sort: true },
+      { field: 'interviewTime', header: 'In Depth Time', index: 12, width: '100', sort: true },
       { field: 'incentive', header: 'Incentive', index: 13, width: '250', sort: false },
       { field: 'attendeeDocumentComment', header: 'Attendee Doc Comment', index: 14, width: '150', sort: false },
       { field: 'eventNotes', header: 'Notes', index: 15, width: '350', sort: false }
@@ -766,5 +767,14 @@ export class SessionQualifiedRespondent implements OnInit {
         'info'
       )
     }
+  }
+
+  getFormattedTime(interviewTime) {
+    var ret = "";
+    if (interviewTime) {
+      var mm = moment(interviewTime, 'hh:mm:ss');
+      ret = mm.format('hh:mm A');
+    }
+    return ret;
   }
 }

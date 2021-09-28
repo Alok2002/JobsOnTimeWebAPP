@@ -20,7 +20,7 @@ import { SessionPendingScreenerRespondents } from '../session/sessionpendingscre
 import { SessionQualifiedRespondent } from '../session/sessionqualifiedrespondent.component';
 import { SessionQuota } from '../session/sessionquota.component';
 import { SessionResearcherComponent } from '../session/sessionresearcher.component';
-import { SessionTimeComponent } from '../session/sessiontime.component';
+// import { SessionTimeComponent } from '../session/sessiontime.component';
 import { SessionVenueComponent } from '../session/sessionvenue.component';
 import { SessionWaitlistRespondents } from '../session/sessionwaitlistrespondents.component';
 import { EmailModule } from './child/email.module';
@@ -70,7 +70,7 @@ export const route: Routes = [
   declarations: [
     SessionDetailsComponent,
     SessionEditComponent,
-    SessionTimeComponent,
+    // SessionTimeComponent,
     SessionResearcherComponent,
     SessionIncentiveComponent,
     SessionCustomiseRVR,

@@ -113,8 +113,8 @@
                       <select *ngIf="!isEditInDepthTime" class="form-control" name="sessiontime"
                         [(ngModel)]="resevent.interviewTime">
                         <option value=""></option>
-                        <option *ngFor="let st of sessiontimes; let i = index" [value]="st.formattedGroupTime">
-                          {{st.formattedGroupTime}}
+                        <option *ngFor="let st of sessiontimes; let i = index" [value]="st.interviewTime">
+                          {{getFormattedTime(st.interviewTime)}}
                         </option>
                       </select>
                       <input type="time" *ngIf="isEditInDepthTime" class="form-control" name="sessiontime"
