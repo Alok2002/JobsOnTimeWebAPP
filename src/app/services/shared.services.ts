@@ -1224,10 +1224,14 @@ export class SharedServices {
     }
 
     getEncryptDecryptString(type, text) {
-        let input = new FormData();        
+        let input = new FormData();
         input.append("type", type);
         input.append("text", text);
 
         return this._http.post(apiHost + '/api/get-encrypt-decrypt-string', input);
+    }
+
+    getSessionSort() {
+        return this._http.get(apiHost + '/api/config/sessionsort');
     }
 }
