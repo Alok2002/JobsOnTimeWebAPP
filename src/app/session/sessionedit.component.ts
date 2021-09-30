@@ -183,11 +183,19 @@ export class SessionEditComponent implements OnInit {
       this.session.clientJobId = this.jobId;
       console.log(this.incentives)
       console.log(this.session.id)
+
+      if (this.session.dateTime) {
+        var dateTime = moment(this.session.dateTime, 'YYYY-MM-DD');
+        this.session.dateTime = dateTime.utcOffset(0, true).format();
+      }
+
       this.jobservice.getSessionByJob(this.session.clientJobId)
         .subscribe((res: any) => {
           console.log(res)
           var sessionList: Array<Session> = res.value;
           var isValidSessionNo = sessionList.length == 0 ? true : false;
+          if (!this.session.sessionNumber)
+              isValidSessionNo = true;
           if (!isValidSessionNo) {
             var index = sessionList.findIndex((se) => se.sessionNumber == this.session.sessionNumber);
             if (index >= 0) {
@@ -210,7 +218,7 @@ export class SessionEditComponent implements OnInit {
 
             if (this.session.dateTime) {
               var dateTime = moment(this.session.dateTime, 'YYYY-MM-DD');
-              this.session.dateTime = dateTime.format();
+              this.session.dateTime = dateTime.utcOffset(0, true).format();
             }
 
             this.sessionservice.postSession(this.session)

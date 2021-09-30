@@ -460,7 +460,7 @@ export class SurveyAnswersGridComponent implements OnInit {
     console.log(res);
     this.isLoading = true;
     this.filters = res.filters;
-    this.maxrecords = res.maxrecords == null ? 50 : res.maxrecords;
+    this.maxrecords = res.maxrecords; // == null ? 50 : res.maxrecords;
 
     this.loadData({ first: 0, rows: this.noofrows });
   }
