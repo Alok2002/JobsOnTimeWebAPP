@@ -287,14 +287,15 @@
 
 <!--EMAIL-->
 <email-component *ngIf="emailData && (emailData | json) != ({} | json)" [(emailData)]="emailData"
-  [modalTitle]="emailModalTitle" (closeModal)="closeModal($event)"></email-component>
+  [modalTitle]="emailModalTitle" (closeModal)="closeModal($event)" [jobData]="smsEmailJobData"></email-component>
 
 <button #emailModlaBtn style="visibility: hidden; height: 0" data-toggle="modal" data-target="#emailModal"
   data-backdrop="static">Open Email Model
 </button>
 
 <!--SMS-->
-<sms-component *ngIf="smsData" [(smsData)]="smsData" [modalTitle]="smsModalTitle" (closeModal)="closeModal($event)">
+<sms-component *ngIf="smsData" [(smsData)]="smsData" [modalTitle]="smsModalTitle" (closeModal)="closeModal($event)"
+  [jobData]="smsEmailJobData">
 </sms-component>
 
 <button #smsModlaBtn style="visibility: hidden; height: 0" data-toggle="modal" data-target="#smsModal"

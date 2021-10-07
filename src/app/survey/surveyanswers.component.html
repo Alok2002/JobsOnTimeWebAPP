@@ -250,7 +250,7 @@
                 <ng-container *ngIf="startSurvey && !finishSurvey">
                   <div class="clearfix"></div>
                   <SurveyTemplateComponent [surveyQuestions]="surveyQuestions" *ngIf="surveyQuestions"
-                    [selectedIndex]="selectedIndex" [isPreview]="true"></SurveyTemplateComponent>
+                    [selectedIndex]="selectedIndex" [isPreview]="true" [isScreen]="isScreen"></SurveyTemplateComponent>
 
                   <div class="clearfix"></div>
                   <div class="col-md-12 no-padding text-left" id="bottom-btn">

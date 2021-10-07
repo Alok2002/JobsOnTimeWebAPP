@@ -5,6 +5,7 @@ import { Email } from '../models/email';
 import { EmailTemplate } from '../models/emailtemplate';
 import { EmailServices } from '../services/email.services';
 import { apiHost, ckEditorConfig } from './../app.component';
+import { Job } from '../models/job';
 
 // declare var tinymce: any;
 declare var jQuery: any;
@@ -50,6 +51,7 @@ export class EmailComponent implements OnInit, OnChanges {
   @Input() redirectUrl: string;
 
   emailSuccessMsg = "Email Sent Successfully.";
+  @Input() jobData: { exJob: Job, trJob: Job } = null;
 
   constructor(private emailService: EmailServices, @Inject(PLATFORM_ID) platformId: Object) {
     /*this.isBrowser = isPlatformBrowser(platformId);

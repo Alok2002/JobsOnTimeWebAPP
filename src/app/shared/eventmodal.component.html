@@ -33,7 +33,8 @@
 
             <div class="form-group">
               <label class="control-label">Client</label>
-              <select class="form-control" name="client" (change)="getEventClientJobs(selectedClient)" [(ngModel)]="selectedClient">
+              <select class="form-control" name="client" (change)="getEventClientJobs(selectedClient)"
+                [(ngModel)]="selectedClient">
                 <ng-container *ngFor="let cl of eventClients">
                   <option value="{{cl.value}}">{{cl.text}}</option>
                 </ng-container>
@@ -42,8 +43,7 @@
             <div class="form-group">
               <label class="control-label">Job</label>
               <select class="form-control" name="job" (change)="getEventClientJobGroups(resevent.jobId);
-                getEventIncentiveListForJob(resevent.jobId);"
-                [(ngModel)]="resevent.jobId" name="job">
+                getEventIncentiveListForJob(resevent.jobId);" [(ngModel)]="resevent.jobId" name="job">
                 <ng-container *ngFor="let js of eventJobs">
                   <option value="{{js.value}}">{{js.text}}</option>
                 </ng-container>
@@ -60,7 +60,8 @@
             </div>
             <div class="form-group">
               <label class="control-label">Incentive</label>
-              <select class="form-control" name="incentive-amount" [(ngModel)]="resevent.incentive" (change)="updateIncentiveId()">
+              <select class="form-control" name="incentive-amount" [(ngModel)]="resevent.incentive"
+                (change)="updateIncentiveId()">
                 <!-- <option value=""></option> -->
                 <option *ngFor="let ince of eventIncentives" [value]="ince.text">{{ince.text}}</option>
               </select>
@@ -75,16 +76,19 @@
                   </a>
                 </div>
               </label>
-              <select name="indepthtime" class="form-control" [(ngModel)]="resevent.inDepthTime" *ngIf="isEditInDepthTime">
+              <select name="indepthtime" class="form-control" [(ngModel)]="resevent.interviewTime"
+                *ngIf="isEditInDepthTime">
                 <ng-container *ngFor="let st of sessiontimes">
-                  <option [value]="st.text">{{st.text}}</option>
+                  <option [value]="st.interviewTime">{{st.interviewTime}}</option>
                 </ng-container>
               </select>
-              <input type="time" *ngIf="!isEditInDepthTime" class="form-control" name="indepthtime" [(ngModel)]="resevent.inDepthTime">
+              <input type="time" *ngIf="!isEditInDepthTime" class="form-control" name="indepthtime"
+                [(ngModel)]="resevent.interviewTime">
             </div>
             <div class="form-group">
               <label class="control-label">Attendee Doc. Comment</label>
-              <input type="text" class="form-control" name="attendoccomment" [(ngModel)]="resevent.attendeeDocumentComment">
+              <input type="text" class="form-control" name="attendoccomment"
+                [(ngModel)]="resevent.attendeeDocumentComment">
             </div>
             <div class="form-group">
               <label class="control-label">Notes</label>
@@ -97,7 +101,8 @@
                     Remove from other groups
                   </label>
                   <div class="checkbox checkbox-primary" style="margin-left: 175px;">
-                    <input checked="" id="checkbox1" name="removeFromOtherGroups" type="checkbox" [(ngModel)]="resevent.removeFromOtherGroups">
+                    <input checked="" id="checkbox1" name="removeFromOtherGroups" type="checkbox"
+                      [(ngModel)]="resevent.removeFromOtherGroups">
                     <label for="checkbox1" class="control-label ax-color-black">
                     </label>
                   </div>
@@ -105,9 +110,11 @@
               </div>
 
               <div class="col-md-6 pull-right text-right no-padding">
-                <a class="btn btn-ocean waves-effect waves-light m-l-10 btn-md" (click)="createResEvent(eventsModelForm)">Save
+                <a class="btn btn-ocean waves-effect waves-light m-l-10 btn-md"
+                  (click)="createResEvent(eventsModelForm)">Save
                 </a>
-                <a data-dismiss="modal" aria-hidden="true" class="btn btn-cocktail m-l-5" (click)="resetEventForm.emit(true)">Cancel</a>
+                <a data-dismiss="modal" aria-hidden="true" class="btn btn-cocktail m-l-5"
+                  (click)="resetEventForm.emit(true)">Cancel</a>
               </div>
             </div>
           </form>

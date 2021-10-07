@@ -40,6 +40,8 @@ export class SurveyTemplateComponent implements OnInit {
   addressStreet: string;
   isMobile = isMobile;
 
+  @Input() isScreen: boolean = false;
+
   constructor(public sanitizer: DomSanitizer, private sharedservice: SharedServices, private surveyservice: SurveyServices,
     private dragularservice: DragulaService) {
     // const container = document.querySelector('.survey-template');
@@ -574,7 +576,7 @@ console.log(obj);
   }
 
   deleteSurveyAnswerById(said) {
-    this.surveyservice.deleteSurveyAnswerById(said)
+    this.surveyservice.deleteSurveyAnswerById(said, this.isScreen)
       .subscribe((res: any) => {
         console.log(res)
       })

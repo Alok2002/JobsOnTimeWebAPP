@@ -116,6 +116,8 @@ export class SurveyAnswersGridComponent implements OnInit {
   confSmsEmailModalTitle: string;
   currentlyTrackingJob = null;
   jobIdForSmsEmailActionId = null;
+  smsEmailJobData: { exJob: Job, trJob: Job } = null;
+  job: Job;
 
   constructor(private router: Router, private securityInfoResolve: SecurityInfoResolve,
     private activateroute: ActivatedRoute, private surveyservice: SurveyServices,
@@ -126,6 +128,7 @@ export class SurveyAnswersGridComponent implements OnInit {
   }
 
   ngOnInit() {
+    this.getJobById();
     this.getAnswerGrid();
     this.getClients();
     // this.initTinymce();
@@ -133,6 +136,13 @@ export class SurveyAnswersGridComponent implements OnInit {
     this.getEmailTemplates();
 
     //this.populateTableFields();
+  }
+
+  getJobById() {
+    this.jobService.getJobsByJob(this.jobId)
+      .subscribe((res: any) => {
+        this.job = res.value;
+      })
   }
 
   getAnswerGrid() {
@@ -750,9 +760,14 @@ export class SurveyAnswersGridComponent implements OnInit {
   }
 
   confirmModalForSmsEmail(module) {
+    this.smsEmailJobData = { exJob: null, trJob: null };
     this.getCurrentlyTrackingJob();
-    if (this.currentlyTrackingJob && this.currentlyTrackingJob.id) {
-      swal({
+    this.smsEmailJobData.exJob = this.job;
+    this.jobIdForSmsEmailActionId = this.smsEmailJobData.exJob.id;
+
+    if (this.currentlyTrackingJob && this.currentlyTrackingJob.id && this.jobIdForSmsEmailActionId != this.currentlyTrackingJob.id) {
+      this.smsEmailJobData.trJob = this.currentlyTrackingJob;
+      /*swal({
         title: 'Do you want this action against the tracked job?',
         text: '',
         type: 'warning',
@@ -767,10 +782,11 @@ export class SurveyAnswersGridComponent implements OnInit {
           this.jobIdForSmsEmailActionId = this.jobId;
         }
         this.confirmModalForSmsEmailHelper(module);
-      });
-    } else {
-      this.confirmModalForSmsEmailHelper(module);
-    }
+      });*/
+    } //else {
+    console.log(this.smsEmailJobData)
+    this.confirmModalForSmsEmailHelper(module);
+    //}
   }
 
   confirmModalForSmsEmailHelper(module) {
