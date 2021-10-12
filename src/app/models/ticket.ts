@@ -23,11 +23,14 @@ export class Ticket {
     public ticketType: string;
     public designTask: string;
     public developmentTask: string;
-    public completedTask: string;            
+    public completedTask: string;
     public assignedToStaffHistory: string;
     public assignedToStaffHistoryList: any;//Array<string> | Array<any>;
     public assignedToSprintNo: string;
     public uatVersion: string;
     public dateAssignedToUat: string | Date;
     public productionVersion: string;
+    public lastChangedStaff: string;
+    public statusHistory: string;
+    public statusHistoryList: Array<string>;
 }

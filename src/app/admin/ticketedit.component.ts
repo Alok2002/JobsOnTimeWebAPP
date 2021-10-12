@@ -182,8 +182,10 @@ export class TicketEditComponent implements OnInit {
         this.initTicket = JSON.parse(JSON.stringify(this.ticket));
         this.ticket.assignedToStaffHistoryList.forEach((sl, i) => {
           this.ticket.assignedToStaffHistoryList[i] = { display: sl }
-        })
+        });
+        this.initPopOver();
         console.log(this.ticket);
+        debugger;
       });
   }
 
@@ -248,6 +250,9 @@ export class TicketEditComponent implements OnInit {
           this.ticket.assignedByStaff = this.initTicket.assignedByStaff;
         }
       }
+
+      if (this.ticket.lastChangedStaff)
+        this.ticket.lastChangedStaff = this.loginusername;
 
       this._ticketService.postTicket(this.ticket)
         .subscribe(res => {
@@ -323,5 +328,21 @@ export class TicketEditComponent implements OnInit {
     var index = this.accordionList.indexOf(tab);
     if (index >= 0) this.accordionList.splice(index, 1);
     else this.accordionList.push(tab);
+  }
+
+  getTicketStatusHistory() {
+    var ret = 'Nil';
+    if (this.ticket && this.ticket.statusHistoryList) {
+      this.ticket.statusHistoryList.forEach((sh) => {
+        ret += '<p>' + sh + '</p>';
+      })
+    }
+    return ret;
+  }
+
+  initPopOver() {
+    if (typeof jQuery != 'undefined') {
+      jQuery('[data-toggle="popover"]').popover()
+    }
   }
 }
