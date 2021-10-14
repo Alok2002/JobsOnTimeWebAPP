@@ -373,6 +373,17 @@ export class SessionQualifiedRespondent implements OnInit {
             this.deleteItemIds = [];
             this.unCheckAllItems();
             this.inDepthTimeModalBtn.nativeElement.click();
+            swal(
+              'Success',
+              'In Depth Time has been updated successfully',
+              'success'
+            )
+          } else {
+            swal(
+              'Error',
+              'Something went wrong while saving the In Depth Time',
+              'error'
+            )
           }
         });
     }
