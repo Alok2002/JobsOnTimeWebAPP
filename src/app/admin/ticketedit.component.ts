@@ -183,9 +183,11 @@ export class TicketEditComponent implements OnInit {
         this.ticket.assignedToStaffHistoryList.forEach((sl, i) => {
           this.ticket.assignedToStaffHistoryList[i] = { display: sl }
         });
-        this.initPopOver();
+
+        setTimeout(() => {
+          this.initPopOver();
+        }, 1000)
         console.log(this.ticket);
-        debugger;
       });
   }
 
@@ -333,9 +335,11 @@ export class TicketEditComponent implements OnInit {
   getTicketStatusHistory() {
     var ret = 'Nil';
     if (this.ticket && this.ticket.statusHistoryList) {
+      ret = "<ul style='padding: 0;margin: 0px 0px 0px 15px;'>";
       this.ticket.statusHistoryList.forEach((sh) => {
-        ret += '<p>' + sh + '</p>';
+        ret += "<li>" + sh + "</li>";
       })
+      ret += "</ul>"
     }
     return ret;
   }

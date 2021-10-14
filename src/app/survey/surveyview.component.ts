@@ -73,6 +73,8 @@ export class SurveyViewComponent implements OnInit {
   encodedData: string;
   postcodePattern = postcodePattern;
 
+  isSurveyStart = false;
+
   constructor(private activateroute: ActivatedRoute, private router: Router, private metaservice: MetaService,
     private surveyservice: SurveyServices, private cookieservice: CookieService,
     private sharedService: SharedServices, @Inject(PLATFORM_ID) public platformId: Object) {
@@ -99,14 +101,15 @@ export class SurveyViewComponent implements OnInit {
                   this.errorList = res.errors;
                 }
 
-                if(this.errorList.length == 0) {
+                if (this.errorList.length == 0) {
                   this.getSurvey();
                   this.getSurveyQuestionAnswers();
                   this.getPrequalSurveyDetails();
-                }                
+                }
               })
             this.isPreview = false;
             this.getSurveyWelcomeValues(params['encodeddata']);
+            this.isSurveyStart = true;
           }
           else if (params['action'] == 'client-preview') {
             this.surveyservice.getClientSurveyDecodedValues(params['encodeddata'])
@@ -122,12 +125,12 @@ export class SurveyViewComponent implements OnInit {
                   this.errorList = res.errors;
                 }
 
-                if(this.errorList.length == 0) {
+                if (this.errorList.length == 0) {
                   this.getSurvey();
                   this.getSurveyQuestionAnswers();
-                }                
+                }
               })
-            this.isPreview = true;            
+            this.isPreview = true;
           }
           else {
             this.router.navigate(['/']);
@@ -241,7 +244,7 @@ export class SurveyViewComponent implements OnInit {
           if (sq.answerType == 'StaffText') this.surveyQuestions.splice(i, 1);
         })
 
-        if(this.isPreview) this.startSurvey = true;
+        if (this.isPreview) this.startSurvey = true;
       });
   }
 
@@ -440,11 +443,11 @@ export class SurveyViewComponent implements OnInit {
       .subscribe((res: any) => {
         console.log(res)
         this.welcomePageData = res.value;
-        if(res.errors && res.errors.length > 0) {
+        if (res.errors && res.errors.length > 0) {
           res.errors.forEach((er) => {
             this.errorList.push(er)
           })
-        }        
+        }
       })
   }
 

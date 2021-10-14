@@ -2,7 +2,7 @@
   <ng-container [ngSwitch]="surveyQuestions[selectedIndex].answerType">
     <!--INFORMATION TEXT-->
     <ng-container *ngSwitchCase="'Information'">
-      <div class="form-group" [class.required]="surveyQuestions[selectedIndex].isMandatory">
+      <div class="form-group" [class.required]="surveyQuestions[selectedIndex].isMandatory && !isSurveyStart">
         <label id="question" tabindex="0" class="control-label ax-color-black"
           [innerHTML]="surveyQuestions[selectedIndex].questionText | safeHtml">
           <!-- <span class="ax-color-black">{{surveyQuestions[selectedIndex]?.questionNumber}}. </span> -->
@@ -12,7 +12,7 @@
     </ng-container>
     <!--FREE TEXT-->
     <ng-container *ngSwitchCase="'Text'">
-      <div class="form-group" [class.required]="surveyQuestions[selectedIndex].isMandatory">
+      <div class="form-group" [class.required]="surveyQuestions[selectedIndex].isMandatory && !isSurveyStart">
         <label id="question" tabindex="0" class="control-label ax-color-black"
           for="{{surveyQuestions[selectedIndex].questionText}}"
           [innerHTML]="surveyQuestions[selectedIndex].questionText | safeHtml">
@@ -30,7 +30,7 @@
     </ng-container>
     <!--STAFF TEXT-->
     <ng-container *ngSwitchCase="'StaffText'">
-      <div class="form-group" [class.required]="surveyQuestions[selectedIndex].isMandatory">
+      <div class="form-group" [class.required]="surveyQuestions[selectedIndex].isMandatory && !isSurveyStart">
         <label id="question" tabindex="0" class="control-label ax-color-black"
           for="{{surveyQuestions[selectedIndex].questionText}}"
           [innerHTML]="surveyQuestions[selectedIndex].questionText | safeHtml">
@@ -46,7 +46,8 @@
     </ng-container>
     <!--YESNO TEXT-->
     <ng-container *ngSwitchCase="'YesNo'">
-      <div class="form-group survey-yesorno" [class.required]="surveyQuestions[selectedIndex].isMandatory">
+      <div class="form-group survey-yesorno"
+        [class.required]="surveyQuestions[selectedIndex].isMandatory && !isSurveyStart">
         <label id="question" tabindex="0" class="control-label ax-color-black"
           [innerHTML]="surveyQuestions[selectedIndex].questionText | safeHtml">
           <!-- <span class="ax-color-black">{{surveyQuestions[selectedIndex]?.questionNumber}}. </span> -->
@@ -95,7 +96,8 @@
     </ng-container>
     <!--OPINION SCALE-->
     <ng-container *ngSwitchCase="'OneToTen'">
-      <div class="form-group survey-list-rating m-b-10" [class.required]="surveyQuestions[selectedIndex].isMandatory">
+      <div class="form-group survey-list-rating m-b-10"
+        [class.required]="surveyQuestions[selectedIndex].isMandatory && !isSurveyStart">
         <label id="question" tabindex="0" class="control-label ax-color-black"
           [innerHTML]="surveyQuestions[selectedIndex].questionText | safeHtml">
           <!-- <span class="ax-color-black">{{surveyQuestions[selectedIndex]?.questionNumber}}. </span> -->
@@ -127,7 +129,8 @@
     </ng-container>
     <!--STAR RATING-->
     <ng-container *ngSwitchCase="'starrating'">
-      <div class="form-group survey-star-rating" [class.required]="surveyQuestions[selectedIndex].isMandatory">
+      <div class="form-group survey-star-rating"
+        [class.required]="surveyQuestions[selectedIndex].isMandatory && !isSurveyStart">
         <label id="question" tabindex="0" class="control-label ax-color-black"
           [innerHTML]="surveyQuestions[selectedIndex].questionText | safeHtml">
           <!-- <span class="ax-color-black">{{surveyQuestions[selectedIndex]?.questionNumber}}. </span> -->
@@ -175,7 +178,7 @@
     <!--MULTI SELECT-->
     <ng-container *ngSwitchCase="'OptionListMultipleAnswer'">
       <div class="form-group survey-multi-select active" data-id="5"
-        [class.required]="surveyQuestions[selectedIndex].isMandatory">
+        [class.required]="surveyQuestions[selectedIndex].isMandatory && !isSurveyStart">
         <label id="question" tabindex="0" class="control-label ax-color-black"
           [innerHTML]="surveyQuestions[selectedIndex].questionText | safeHtml">
           <!-- <span class="ax-color-black">{{surveyQuestions[selectedIndex]?.questionNumber}}. </span> -->
@@ -224,7 +227,8 @@
     </ng-container>
     <!--THUMBSUPDOWN-->
     <ng-container *ngSwitchCase="'thumbsupdown'">
-      <div class="form-group survey-thumb" [class.required]="surveyQuestions[selectedIndex].isMandatory">
+      <div class="form-group survey-thumb"
+        [class.required]="surveyQuestions[selectedIndex].isMandatory && !isSurveyStart">
         <label id="question" tabindex="0" class="control-label ax-color-black"
           [innerHTML]="surveyQuestions[selectedIndex].questionText | safeHtml">
           <!-- <div class="ax-color-black" style="display: inline;">{{surveyQuestions[selectedIndex]?.questionNumber}}. </div> -->
@@ -257,7 +261,8 @@
     </ng-container>
     <!--PICTURE OPTION-->
     <ng-container *ngSwitchCase="'Picturechoice'">
-      <div class="form-group survey-img active" [class.required]="surveyQuestions[selectedIndex].isMandatory">
+      <div class="form-group survey-img active"
+        [class.required]="surveyQuestions[selectedIndex].isMandatory && !isSurveyStart">
         <label id="question" tabindex="0" class="control-label ax-color-black"
           [innerHTML]="surveyQuestions[selectedIndex].questionText | safeHtml">
           <!-- <span class="ax-color-black">{{surveyQuestions[selectedIndex]?.questionNumber}}. </span> -->
@@ -288,7 +293,7 @@
     </ng-container>
     <!--LONGTEXT-->
     <ng-container *ngSwitchCase="'longtext'">
-      <div class="form-group" [class.required]="surveyQuestions[selectedIndex].isMandatory">
+      <div class="form-group" [class.required]="surveyQuestions[selectedIndex].isMandatory && !isSurveyStart">
         <label id="question" tabindex="0" class="control-label ax-color-black"
           [innerHTML]="surveyQuestions[selectedIndex].questionText | safeHtml">
           <!-- <span class="ax-color-black">{{surveyQuestions[selectedIndex]?.questionNumber}}. </span> -->
@@ -304,7 +309,8 @@
     </ng-container>
     <!--SINGLE CHOICE-->
     <ng-container *ngSwitchCase="'OptionList'">
-      <div class="form-group active" data-id="9" [class.required]="surveyQuestions[selectedIndex].isMandatory">
+      <div class="form-group active" data-id="9"
+        [class.required]="surveyQuestions[selectedIndex].isMandatory && !isSurveyStart">
         <label id="question" tabindex="0" class="control-label ax-color-black"
           [innerHTML]="surveyQuestions[selectedIndex].questionText | safeHtml">
           <!-- <span class="ax-color-black">{{surveyQuestions[selectedIndex]?.questionNumber}}. </span> -->
@@ -339,7 +345,7 @@
     </ng-container>
     <!--SELECT QUESTION-->
     <ng-container *ngSwitchCase="'selectquestion'">
-      <div class="form-group active" [class.required]="surveyQuestions[selectedIndex].isMandatory">
+      <div class="form-group active" [class.required]="surveyQuestions[selectedIndex].isMandatory && !isSurveyStart">
         <label id="question" tabindex="0" class="control-label ax-color-black"
           [innerHTML]="surveyQuestions[selectedIndex].questionText | safeHtml">
           <!-- <span class="ax-color-black">{{surveyQuestions[selectedIndex]?.questionNumber}}. </span> -->
@@ -364,7 +370,7 @@
     </ng-container>
     <!--DATE QUESTION-->
     <ng-container *ngSwitchCase="'dateformat'">
-      <div class="form-group active" [class.required]="surveyQuestions[selectedIndex].isMandatory">
+      <div class="form-group active" [class.required]="surveyQuestions[selectedIndex].isMandatory && !isSurveyStart">
         <label id="question" tabindex="0" class="control-label ax-color-black"
           for="{{surveyQuestions[selectedIndex].questionText}}"
           [innerHTML]="surveyQuestions[selectedIndex].questionText | safeHtml">
@@ -384,7 +390,8 @@
     </ng-container>
     <!--MATRIX QUESTION-->
     <ng-container *ngSwitchCase="'Matrix'">
-      <div class="form-group survey-matrix" [class.required]="surveyQuestions[selectedIndex].isMandatory">
+      <div class="form-group survey-matrix"
+        [class.required]="surveyQuestions[selectedIndex].isMandatory && !isSurveyStart">
         <label id="question" tabindex="0" class="control-label ax-color-black"
           [innerHTML]="surveyQuestions[selectedIndex].questionText | safeHtml">
           <!-- <span class="ax-color-black">{{surveyQuestions[selectedIndex]?.questionNumber}}. </span> -->
@@ -477,7 +484,8 @@
 
     <!--VIDEO QUESTION-->
     <ng-container *ngSwitchCase="'Videoquestion'">
-      <div class="form-group active" data-id="14" [class.required]="surveyQuestions[selectedIndex].isMandatory">
+      <div class="form-group active" data-id="14"
+        [class.required]="surveyQuestions[selectedIndex].isMandatory && !isSurveyStart">
         <label id="question" tabindex="0" class="control-label ax-color-black"
           [innerHTML]="surveyQuestions[selectedIndex].questionText | safeHtml">
           <!-- <span class="ax-color-black">{{surveyQuestions[selectedIndex]?.questionNumber}}. </span> -->
@@ -504,7 +512,7 @@
     <!--REORDER-->
     <ng-container *ngSwitchCase="'ReorderOptions'">
       <div class="form-group survey-reorder-option" data-id="5"
-        [class.required]="surveyQuestions[selectedIndex].isMandatory">
+        [class.required]="surveyQuestions[selectedIndex].isMandatory && !isSurveyStart">
         <label id="question" tabindex="0" class="control-label ax-color-black"
           [innerHTML]="surveyQuestions[selectedIndex].questionText | safeHtml">
           <!-- <span class="ax-color-black">{{surveyQuestions[selectedIndex]?.questionNumber}}. </span> -->
@@ -544,7 +552,7 @@
     <!--ButtonMultiSelect-->
     <ng-container *ngSwitchCase="'ButtonMultiSelect'">
       <div class="form-group survey-button-multi-select active ax-color-black" data-id="5"
-        [class.required]="surveyQuestions[selectedIndex].isMandatory">
+        [class.required]="surveyQuestions[selectedIndex].isMandatory && !isSurveyStart">
         <label id="question" tabindex="0" class="control-label ax-color-black"
           [innerHTML]="surveyQuestions[selectedIndex].questionText | safeHtml">
           <!-- <span class="ax-color-black">{{surveyQuestions[selectedIndex]?.questionNumber}}. </span> -->
@@ -584,7 +592,7 @@
     <!--ButtonSingleSelect-->
     <ng-container *ngSwitchCase="'ButtonSingleSelect'">
       <div class="form-group survey-button-multi-select active ax-color-black" data-id="5"
-        [class.required]="surveyQuestions[selectedIndex].isMandatory">
+        [class.required]="surveyQuestions[selectedIndex].isMandatory && !isSurveyStart">
         <label id="question" tabindex="0" class="control-label ax-color-black"
           [innerHTML]="surveyQuestions[selectedIndex].questionText | safeHtml">
           <!-- <span class="ax-color-black">{{surveyQuestions[selectedIndex]?.questionNumber}}. </span> -->
@@ -625,7 +633,7 @@
     </ng-container>
     <!--Essay-->
     <ng-container *ngSwitchCase="'Essay'">
-      <div class="form-group" [class.required]="surveyQuestions[selectedIndex].isMandatory">
+      <div class="form-group" [class.required]="surveyQuestions[selectedIndex].isMandatory && !isSurveyStart">
         <label id="question" tabindex="0" class="control-label ax-color-black"
           for="{{surveyQuestions[selectedIndex].questionText}}" style="width: 100%;">
           <!-- <span class="ax-color-black">{{surveyQuestions[selectedIndex]?.questionNumber}}. </span> -->
@@ -649,7 +657,7 @@
     </ng-container>
     <!--Numbers-->
     <ng-container *ngSwitchCase="'Numbers'">
-      <div class="form-group" [class.required]="surveyQuestions[selectedIndex].isMandatory">
+      <div class="form-group" [class.required]="surveyQuestions[selectedIndex].isMandatory && !isSurveyStart">
         <label id="question" tabindex="0" class="control-label ax-color-black"
           for="{{surveyQuestions[selectedIndex].questionText}}"
           [innerHTML]="surveyQuestions[selectedIndex].questionText | safeHtml">
@@ -668,7 +676,7 @@
     </ng-container>
     <!--DropdownMenu-->
     <ng-container *ngSwitchCase="'DropdownMenu'">
-      <div class="form-group" [class.required]="surveyQuestions[selectedIndex].isMandatory">
+      <div class="form-group" [class.required]="surveyQuestions[selectedIndex].isMandatory && !isSurveyStart">
         <label id="question" tabindex="0" class="control-label ax-color-black"
           for="{{surveyQuestions[selectedIndex].questionText}}"
           [innerHTML]="surveyQuestions[selectedIndex].questionText | safeHtml">
@@ -691,7 +699,8 @@
     </ng-container>
     <!--Image Single Select-->
     <ng-container *ngSwitchCase="'ImageSingleSelect'">
-      <div class="form-group survey-img active" [class.required]="surveyQuestions[selectedIndex].isMandatory">
+      <div class="form-group survey-img active"
+        [class.required]="surveyQuestions[selectedIndex].isMandatory && !isSurveyStart">
         <label tabindex="0" class="control-label ax-color-black"
           [innerHTML]="surveyQuestions[selectedIndex].questionText | safeHtml">
           <!-- <span class="ax-color-black">{{surveyQuestions[selectedIndex]?.questionNumber}}. </span> -->
@@ -722,7 +731,8 @@
     </ng-container>
     <!--Image Multi Select-->
     <ng-container *ngSwitchCase="'ImageMultiSelect'">
-      <div class="form-group survey-img active" [class.required]="surveyQuestions[selectedIndex].isMandatory">
+      <div class="form-group survey-img active"
+        [class.required]="surveyQuestions[selectedIndex].isMandatory && !isSurveyStart">
         <label id="question" tabindex="0" class="control-label ax-color-black"
           [innerHTML]="surveyQuestions[selectedIndex].questionText | safeHtml">
           <!-- <span class="ax-color-black">{{surveyQuestions[selectedIndex]?.questionNumber}}. </span> -->
@@ -753,7 +763,8 @@
     </ng-container>
     <!--AudioUpload-->
     <ng-container *ngSwitchCase="'AudioUpload'">
-      <div class="form-group survey-img active" [class.required]="surveyQuestions[selectedIndex].isMandatory">
+      <div class="form-group survey-img active"
+        [class.required]="surveyQuestions[selectedIndex].isMandatory && !isSurveyStart">
         <label id="question" tabindex="0" class="control-label ax-color-black"
           [innerHTML]="surveyQuestions[selectedIndex].questionText | safeHtml">
           <!-- <span class="ax-color-black">{{surveyQuestions[selectedIndex]?.questionNumber}}. </span> -->
@@ -780,7 +791,8 @@
     </ng-container>
     <!--VideoUpload-->
     <ng-container *ngSwitchCase="'VideoUpload'">
-      <div class="form-group survey-img active" [class.required]="surveyQuestions[selectedIndex].isMandatory">
+      <div class="form-group survey-img active"
+        [class.required]="surveyQuestions[selectedIndex].isMandatory && !isSurveyStart">
         <label id="question" tabindex="0" class="control-label ax-color-black"
           [innerHTML]="surveyQuestions[selectedIndex].questionText | safeHtml">
           <!-- <span class="ax-color-black">{{surveyQuestions[selectedIndex]?.questionNumber}}. </span> -->
@@ -807,7 +819,8 @@
     </ng-container>
     <!--ImageUpload-->
     <ng-container *ngSwitchCase="'ImageUpload'">
-      <div class="form-group survey-img active" [class.required]="surveyQuestions[selectedIndex].isMandatory">
+      <div class="form-group survey-img active"
+        [class.required]="surveyQuestions[selectedIndex].isMandatory && !isSurveyStart">
         <label id="question" tabindex="0" class="control-label ax-color-black"
           [innerHTML]="surveyQuestions[selectedIndex].questionText | safeHtml">
           <!-- <span class="ax-color-black">{{surveyQuestions[selectedIndex]?.questionNumber}}. </span> -->
@@ -835,7 +848,7 @@
     <!--REORDER IMAGE-->
     <ng-container *ngSwitchCase="'ReorderImage'">
       <div class="form-group survey-reorder-option survey-reorder-image active" data-id="5"
-        [class.required]="surveyQuestions[selectedIndex].isMandatory">
+        [class.required]="surveyQuestions[selectedIndex].isMandatory && !isSurveyStart">
         <label id="question" tabindex="0" class="control-label ax-color-black"
           [innerHTML]="surveyQuestions[selectedIndex].questionText | safeHtml">
           <!-- <span class="ax-color-black">{{surveyQuestions[selectedIndex]?.questionNumber}}. </span> -->
@@ -878,7 +891,8 @@
     </ng-container>
     <!--Button Rating-->
     <ng-container *ngSwitchCase="'ButtonRating'">
-      <div class="form-group survey-list-rating m-b-10" [class.required]="surveyQuestions[selectedIndex].isMandatory">
+      <div class="form-group survey-list-rating m-b-10"
+        [class.required]="surveyQuestions[selectedIndex].isMandatory && !isSurveyStart">
         <label id="question" tabindex="0" class="control-label ax-color-black"
           [innerHTML]="surveyQuestions[selectedIndex].questionText | safeHtml">
           <!-- <span class="ax-color-black">{{surveyQuestions[selectedIndex]?.questionNumber}}. </span> -->
@@ -919,7 +933,8 @@
     </ng-container>
     <!--Multithumbsupdown-->
     <ng-container *ngSwitchCase="'MultiThumbsUpDown'">
-      <div class="form-group survey-multithumbsupdown" [class.required]="surveyQuestions[selectedIndex].isMandatory">
+      <div class="form-group survey-multithumbsupdown"
+        [class.required]="surveyQuestions[selectedIndex].isMandatory && !isSurveyStart">
         <label id="question" tabindex="0" class="control-label ax-color-black"
           [innerHTML]="surveyQuestions[selectedIndex].questionText | safeHtml">
           <!-- <span class="ax-color-black">{{surveyQuestions[selectedIndex]?.questionNumber}}. </span> -->
@@ -959,7 +974,7 @@
     <!-- SliderRating -->
     <ng-container *ngSwitchCase="'SliderRating'">
       <div class="form-group survey-multithumbsupdown m-b-10"
-        [class.required]="surveyQuestions[selectedIndex].isMandatory">
+        [class.required]="surveyQuestions[selectedIndex].isMandatory && !isSurveyStart">
         <label id="question" tabindex="0" class="control-label ax-color-black"
           [innerHTML]="surveyQuestions[selectedIndex].questionText | safeHtml">
           <!-- <span class="ax-color-black">{{surveyQuestions[selectedIndex]?.questionNumber}}. </span> -->
@@ -996,7 +1011,7 @@
     <!--RatingScale-->
     <ng-container *ngSwitchCase="'RatingScale'">
       <div class="form-group survey-matrix survey-ratingscale"
-        [class.required]="surveyQuestions[selectedIndex].isMandatory">
+        [class.required]="surveyQuestions[selectedIndex].isMandatory && !isSurveyStart">
         <label id="question" tabindex="0" class="control-label ax-color-black"
           [innerHTML]="surveyQuestions[selectedIndex].questionText | safeHtml">
           <!-- <span class="ax-color-black">{{surveyQuestions[selectedIndex]?.questionNumber}}. </span> -->
@@ -1055,7 +1070,8 @@
     <!--201126NEWQUESTION-->
     <!--MULTI YESNO TEXT-->
     <ng-container *ngSwitchCase="'MultiYesNo'">
-      <div class="form-group survey-multithumbsupdown" [class.required]="surveyQuestions[selectedIndex].isMandatory">
+      <div class="form-group survey-multithumbsupdown"
+        [class.required]="surveyQuestions[selectedIndex].isMandatory && !isSurveyStart">
         <label id="question" tabindex="0" class="control-label ax-color-black"
           [innerHTML]="surveyQuestions[selectedIndex].questionText | safeHtml">
         </label>
@@ -1109,7 +1125,8 @@
     <!--MULTI STAR RATIG-->
     <!--MULTI STAR RATIG-->
     <ng-container *ngSwitchCase="'MultiStarRating'">
-      <div class="form-group survey-multithumbsupdown" [class.required]="surveyQuestions[selectedIndex].isMandatory">
+      <div class="form-group survey-multithumbsupdown"
+        [class.required]="surveyQuestions[selectedIndex].isMandatory && !isSurveyStart">
         <label id="question" tabindex="0" class="control-label ax-color-black"
           [innerHTML]="surveyQuestions[selectedIndex].questionText | safeHtml">
         </label>
@@ -1162,7 +1179,7 @@
     </ng-container>
     <!--ADDRESS TYPE-->
     <ng-container *ngSwitchCase="'AddressText'">
-      <div class="form-group" [class.required]="surveyQuestions[selectedIndex].isMandatory">
+      <div class="form-group" [class.required]="surveyQuestions[selectedIndex].isMandatory && !isSurveyStart">
         <label id="question" tabindex="0" class="control-label ax-color-black"
           for="{{surveyQuestions[selectedIndex].questionText}}"
           [innerHTML]="surveyQuestions[selectedIndex].questionText | safeHtml">
@@ -1186,7 +1203,7 @@
     </ng-container>
     <!--MULTI TEXT TYPE-->
     <ng-container *ngSwitchCase="'MultiText'">
-      <div class="form-group" [class.required]="surveyQuestions[selectedIndex].isMandatory">
+      <div class="form-group" [class.required]="surveyQuestions[selectedIndex].isMandatory && !isSurveyStart">
         <label id="question" tabindex="0" class="control-label ax-color-black"
           for="{{surveyQuestions[selectedIndex].questionText}}"
           [innerHTML]="surveyQuestions[selectedIndex].questionText | safeHtml">
@@ -1211,7 +1228,8 @@
     </ng-container>
     <!--SIMLY RATING-->
     <ng-container *ngSwitchCase="'SmileyRating'">
-      <div class="form-group survey-star-rating" [class.required]="surveyQuestions[selectedIndex].isMandatory">
+      <div class="form-group survey-star-rating"
+        [class.required]="surveyQuestions[selectedIndex].isMandatory && !isSurveyStart">
         <label id="question" tabindex="0" class="control-label ax-color-black"
           [innerHTML]="surveyQuestions[selectedIndex].questionText | safeHtml">
           <!-- <span class="ax-color-black">{{surveyQuestions[selectedIndex]?.questionNumber}}. </span> -->
@@ -1246,7 +1264,8 @@
     </ng-container>
     <!--Multi SmileyRating QUESTION-->
     <ng-container *ngSwitchCase="'Multi SmileyRating'">
-      <div class="form-group survey-matrix" [class.required]="surveyQuestions[selectedIndex].isMandatory">
+      <div class="form-group survey-matrix"
+        [class.required]="surveyQuestions[selectedIndex].isMandatory && !isSurveyStart">
         <label id="question" tabindex="0" class="control-label ax-color-black"
           [innerHTML]="surveyQuestions[selectedIndex].questionText | safeHtml">
           <!-- <span class="ax-color-black">{{surveyQuestions[selectedIndex]?.questionNumber}}. </span> -->
@@ -1305,7 +1324,7 @@
     </ng-container>
     <!--MULTI Smiley-->
     <ng-container *ngSwitchCase="'MultiSmiley'">
-      <div class="form-group" [class.required]="surveyQuestions[selectedIndex].isMandatory">
+      <div class="form-group" [class.required]="surveyQuestions[selectedIndex].isMandatory && !isSurveyStart">
         <label id="question" tabindex="0" class="control-label ax-color-black"
           [innerHTML]="surveyQuestions[selectedIndex].questionText | safeHtml">
         </label>
@@ -1367,7 +1386,8 @@
     </ng-container>
     <!--DocumentUpload-->
     <ng-container *ngSwitchCase="'DocumentUpload'">
-      <div class="form-group survey-img active" [class.required]="surveyQuestions[selectedIndex].isMandatory">
+      <div class="form-group survey-img active"
+        [class.required]="surveyQuestions[selectedIndex].isMandatory && !isSurveyStart">
         <label id="question" tabindex="0" class="control-label ax-color-black"
           [innerHTML]="surveyQuestions[selectedIndex].questionText | safeHtml">
           <!-- <span class="ax-color-black">{{surveyQuestions[selectedIndex]?.questionNumber}}. </span> -->

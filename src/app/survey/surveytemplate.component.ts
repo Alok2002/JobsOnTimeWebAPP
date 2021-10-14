@@ -40,6 +40,8 @@ export class SurveyTemplateComponent implements OnInit {
   addressStreet: string;
   isMobile = isMobile;
 
+  @Input() isSurveyStart = false;
+
   constructor(public sanitizer: DomSanitizer, private sharedservice: SharedServices, private surveyservice: SurveyServices,
     private dragularservice: DragulaService) {
     // const container = document.querySelector('.survey-template');

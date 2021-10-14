@@ -172,7 +172,8 @@
                   <ng-container *ngIf="startSurvey && !finishSurvey">
                     <div class="clearfix"></div>
                     <SurveyTemplateComponent [surveyQuestions]="surveyQuestions" *ngIf="surveyQuestions"
-                      [selectedIndex]="selectedIndex" (gotoNextQuestion)="gotoNextQuestion($event)">
+                      [selectedIndex]="selectedIndex" (gotoNextQuestion)="gotoNextQuestion($event)"
+                      [isSurveyStart]="isSurveyStart">
                     </SurveyTemplateComponent>
 
                     <div class="clearfix"></div>

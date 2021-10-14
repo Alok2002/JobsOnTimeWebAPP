@@ -16,7 +16,7 @@ import { pageTile } from '../app.component';
 export class ResetPassComponent implements OnInit {
     emailAddress: string;
     isSubmitForm = false;
-    isDuplicateUser = false;
+    isDuplicateUser: boolean = null;
     firstName: string;
     lastName: string;
     error: string;
@@ -44,7 +44,7 @@ export class ResetPassComponent implements OnInit {
         this.isSubmitForm = true;
         if (form.invalid) {
             //this.isSubmitForm = false;
-        } else {
+        } else if (this.isDuplicateUser != null) {
             this.userservice.forgotPassword(this.emailAddress, this.firstName, this.lastName, this.role)
                 .subscribe((res: any) => {
                     this.isSubmitForm = false;
@@ -74,13 +74,13 @@ export class ResetPassComponent implements OnInit {
     }
 
     checkDuplicateUser() {
-        if(this.emailAddress && this.emailAddress.length > 3) {
+        if (this.emailAddress && this.emailAddress.length > 3) {
             this.userservice.checkDuplicateUser(this.emailAddress)
-            .subscribe((res: any) => {
-                console.log(res);
-                this.isDuplicateUser = res;
-            });
-        }        
+                .subscribe((res: any) => {
+                    console.log(res);
+                    this.isDuplicateUser = res;
+                });
+        }
     }
 
     getIsFarronResearch() {
