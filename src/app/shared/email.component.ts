@@ -227,7 +227,7 @@ export class EmailComponent implements OnInit, OnChanges {
             console.log(res)
           });
         this.showEmailSuccessMsg = true;
-        this.emailSuccessMsg = "Emails are in the queue. System will notify once the emails are sent";
+        this.emailSuccessMsg = "Emails are in the queued and it will be sent shortly.";
       } else {
         this.emailService.postEmail(this.emailData, this.emailAttachments)
           .subscribe((res: any) => {
