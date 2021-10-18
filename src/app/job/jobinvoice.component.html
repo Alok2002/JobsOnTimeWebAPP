@@ -31,6 +31,42 @@
         </ng-container>
       </select>
     </div>
+    <div class="form-group col-md-6 no-padding">
+      <label class="control-label">Assigned By</label>
+      <select id="assignedBy" class="form-control" name="assignedBy" [(ngModel)]="job.assignedByStaff">
+        <option [ngValue]="null"></option>
+        <ng-container *ngFor="let staff of staffs">
+          <option value="{{staff.username}}">{{staff.fullName}}</option>
+        </ng-container>
+      </select>
+    </div>
+    <div class="form-group col-md-6 no-padding-right">
+      <label class="control-label">Assigned To</label>
+      <select id="assignedTo" class="form-control" name="assignedTo" [(ngModel)]="job.assignedToStaff">
+        <option [ngValue]="null"></option>
+        <ng-container *ngFor="let staff of staffs">
+          <option value="{{staff.username}}">{{staff.fullName}}</option>
+        </ng-container>
+      </select>
+    </div>
+    <div class="clearfix"></div>
+    <div class="form-group">
+      <label class="control-label w-100-pre">
+        <span>Assigned to History</span>
+      </label>
+      <!-- <textarea name="assignedToStaffHistory" [(ngModel)]="job.assignedToStaffHistory" class="form-control"></textarea> -->
+      <tag-input [(ngModel)]="job.assignedToStaffHistoryList" name="assignedToStaffHistoryList"
+        #assignedToStaff="ngModel" [onlyFromAutocomplete]="true" theme='bootstrap' [placeholder]="''"
+        class="sendmobile-input" [secondaryPlaceholder]="''" [disable]="true">
+        <tag-input-dropdown [showDropdownIfEmpty]="true" [dynamicUpdate]="false" [focusFirstElement]="true"
+          [displayBy]="'fullNameWithLoginUserName'" [identifyBy]="'fullNameWithLoginUserName'"
+          [autocompleteItems]="users">
+          <ng-template let-item="item" let-index="index">
+            {{ item?.fullName }}
+          </ng-template>
+        </tag-input-dropdown>
+      </tag-input>
+    </div>
     <div class="clearfix"></div>
     <div class="form-group col-md-4 no-padding">
       <label class="control-label">Date Job Quoted</label>
