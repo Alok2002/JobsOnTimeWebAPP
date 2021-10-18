@@ -69,7 +69,7 @@ export class EmailServices {
     return this._http.get(apiHost + '/api/email/' + entity + '/' + id);
   }
 
-  postEmail(email, attachment?) {
+  postEmail(email, attachment?, isHideLoading?) {
     let input = new FormData();
     var json = JSON.stringify(email);
     input.append("json", json);
@@ -79,7 +79,12 @@ export class EmailServices {
       }
     }
 
-    return this._http.post(apiHost + '/api/email/send', input);
+    var ret = this._http.post(apiHost + '/api/email/send', input);
+    if (isHideLoading) {
+      ret = this._http.post(apiHost + '/api/email/send', input, { headers: { ignoreLoadingBar: '' } });
+    }
+
+    return ret;
   }
 
   getCreateOnlineSurveywithThirdpartyURL(ids, jobid, sessionid) {
@@ -95,7 +100,7 @@ export class EmailServices {
 
     return this._http.post(apiHost + '/api/email/CreateOnlineSurveywithThirdpartyURL', input);
   }
-  
+
   getCreateOnlineSurveywithUniqueRespondentID(ids, jobid, sessionid) {
     console.log(ids);
     console.log(jobid);
@@ -108,5 +113,13 @@ export class EmailServices {
     input.append("sessionId", sessionid);
 
     return this._http.post(apiHost + '/api/email/CreateOnlineSurveywithUniqueRespondentID', input);
+  }
+
+  createSessionConfirmationResIdsEmail(resids: Array<string>, sessionid) {
+    let input = new FormData();
+    var json = JSON.stringify(resids);
+    input.append("json", json);
+
+    return this._http.post(apiHost + '/api/email/CreateSessionConfirmationResIdsEmail/' + sessionid, input);
   }
 }

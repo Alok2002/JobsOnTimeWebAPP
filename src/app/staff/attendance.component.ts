@@ -355,6 +355,12 @@ export class AttendanceComponent {
     submitAttendanceReport(form) {
         this.isSubmitForm = true;
         var err = [];
+
+        if (this.attendanceReport.date) {
+            var date = moment(this.attendanceReport.date, 'YYYY-MM-DD');
+            this.attendanceReport.date = date.utcOffset(0, true).format();
+        }
+
         if ((this.attendanceReport.out1 && (this.attendanceReport.in1 > this.attendanceReport.out1)) ||
             (this.attendanceReport.out1 && !this.attendanceReport.in1))
             err.push("<p>Invalid entries in line 1</p>");

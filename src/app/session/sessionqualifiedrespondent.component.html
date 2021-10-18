@@ -63,6 +63,12 @@
           <!--<a class="btn btn-blue btn-xs btn-square waves-effect" href="javascript:;"-->
           <!--(click)="actionButtons('Unconfirmed')">Save Query</a>-->
           <a (click)="note = null;openModal('note')" class="btn btn-skyblue btn-xs btn-square waves-effect">Note</a>
+          <a (click)="getConfirmationEmailData()" class="btn btn-sand btn-xs btn-square waves-effect">
+            Confirmation Email
+          </a>
+          <a (click)="getConfirmationSmsData()" class="btn btn-pink btn-xs btn-square waves-effect">
+            Confirmation SMS
+          </a>
         </div>
       </div>
     </div>
@@ -122,12 +128,12 @@
         <ng-container [ngSwitch]="sc.field">
           <td *ngSwitchCase="'resId'" [style.width.px]="sc.width" [style.textAlign]="sc?.textAlign">
             <!-- <span class="d-desktop-only pull-left"> -->
-              <a *ngIf="!re?.businessRego && !re?.disabilityRego" [routerLink]="['/respondent',re?.resId]"
-                target="_blank">{{re?.resId}}</a>
-              <a *ngIf="re?.businessRego" [routerLink]="['/bussinesspanelmember',re?.resId]"
-                target="_blank">{{re?.resId}}</a>
-              <a *ngIf="re?.disabilityRego" [routerLink]="['/impairmentpanelmember',re?.resId]"
-                target="_blank">{{re?.resId}}</a>
+            <a *ngIf="!re?.businessRego && !re?.disabilityRego" [routerLink]="['/respondent',re?.resId]"
+              target="_blank">{{re?.resId}}</a>
+            <a *ngIf="re?.businessRego" [routerLink]="['/bussinesspanelmember',re?.resId]"
+              target="_blank">{{re?.resId}}</a>
+            <a *ngIf="re?.disabilityRego" [routerLink]="['/impairmentpanelmember',re?.resId]"
+              target="_blank">{{re?.resId}}</a>
             <!-- </span> -->
             <!-- <span class="d-mobile-only pull-left">
               {{re['id']}}
@@ -152,6 +158,9 @@
             <ng-container *ngIf="!re?.paymentSent">
               <i class="md md-clear text-danger"></i>
             </ng-container>
+          </td>
+          <td *ngSwitchCase="'interviewTime'" [style.width.px]="sc.width" [style.textAlign]="sc?.textAlign">
+            {{getFormattedTime(re?.interviewTime)}}
           </td>
           <td *ngSwitchCase="'eventDate'" [style.width.px]="sc.width" [style.textAlign]="sc?.textAlign">
             {{re?.eventDate | date: 'dd-MM-yyyy hh:mm a'}}
@@ -198,7 +207,8 @@
             </label>
             <input *ngIf="isOverride" type="time" class="form-control" name="indepthtime" [(ngModel)]="inDepthTime" />
             <select *ngIf="!isOverride" class="form-control" name="indepthtime" [(ngModel)]="inDepthTime">
-              <option *ngFor="let st of sessiontimes;" [value]="st.groupTime">{{st.formattedGroupTime}}</option>
+              <option *ngFor="let st of sessiontimes;" [value]="st.interviewTime">{{getFormattedTime(st.interviewTime)}}
+              </option>
             </select>
           </div>
           <div class="pull-right">
@@ -314,3 +324,17 @@
   <!-- /.modal-dialog -->
 </div>
 <!-- /.modal -->
+
+<!--EMAIL-->
+<email-component *ngIf="emailData && (emailData | json) != ({} | json)" [(emailData)]="emailData"
+  [modalTitle]="emailModalTitle" [emailEntity]="emailEntity"></email-component>
+<button #emailModlaBtn style="visibility: hidden; height: 0" data-toggle="modal" data-target="#emailModal"
+  data-backdrop="static">Open Email Model
+</button>
+
+<!--SMS-->
+<sms-component *ngIf="smsData" [(smsData)]="smsData" [modalTitle]="smsModalTitle"></sms-component>
+<button #smsModlaBtn style="visibility: hidden; height: 0" data-toggle="modal" data-target="#smsModal"
+  data-backdrop="static">Open
+  SMS Model
+</button>

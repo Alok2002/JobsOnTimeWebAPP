@@ -88,6 +88,9 @@ export class JobSessionComponent implements OnInit {
   selectedFilterId = null;
   nextSessionNo: number;
 
+  sortField: string = 'loading';
+  sortOrder: number = 1;
+
   constructor(private jobservice: JobServices, private cookieservice: CookieService,
     private sharedService: SharedServices, private emailservice: EmailServices,
     private securityInfoResolve: SecurityInfoResolve) {
@@ -99,6 +102,7 @@ export class JobSessionComponent implements OnInit {
     }
 
     this.getSessions();
+    this.getSessionSort();
   }
 
   getSessions() {
@@ -144,8 +148,8 @@ export class JobSessionComponent implements OnInit {
   }
 
   loadData(event: LazyLoadEvent) {
-    if (!event.sortField) { event.sortField = "jobNumber" }
-    if (!event.sortOrder) { event.sortOrder = 1 }
+    if (!event.sortField) { event.sortField = this.sortField }
+    if (!event.sortOrder) { event.sortOrder = this.sortOrder }
 
     console.log(event);
     this.sharedService.getDataWithFilter(event, this.colVisData, this.maxrecords, this.filters, 'jobgroup', this.id)
@@ -470,5 +474,17 @@ export class JobSessionComponent implements OnInit {
       if (a.index < b.index) return -1;
       return 0;
     })
+  }
+
+  getSessionSort() {
+    this.sharedService.getSessionSort()
+      .subscribe((res: any) => {
+        console.log(res);
+        if (res.value) {
+          var valArr = res.value.value.split(':');
+          this.sortField = valArr[0];
+          this.sortOrder = valArr[1];
+        }
+      })
   }
 }

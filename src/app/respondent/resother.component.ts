@@ -4,6 +4,7 @@ import swal from 'sweetalert2';
 
 import { Respondent } from '../models/respondent';
 import { RespondentServices } from '../services/respondent.services';
+import * as moment from 'moment';
 
 declare var jQuery: any;
 
@@ -131,6 +132,11 @@ export class ResOtherComponent implements OnInit {
       .subscribe(res => {
         console.log(res);
       })
+
+    if (this.respondent.inactiveUntil) {
+      var inactiveUntil = moment(this.respondent.inactiveUntil, 'YYYY-MM-DD');
+      this.respondent.inactiveUntil = inactiveUntil.utcOffset(0, true).format();
+    }
 
     this.resService.updateRespondent(this.respondent)
       .subscribe((res: any) => {

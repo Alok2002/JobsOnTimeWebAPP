@@ -141,7 +141,7 @@
                         </div>
                       </label>
                       <input type="text" class="form-control" [(ngModel)]="respondent.email" name="email"
-                        #emailModel="ngModel" pattern="^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,10})+$" required>
+                        #emailModel="ngModel" pattern="^\w+(['\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,10})+$" required>
                     </div>
 
                     <div class="form-group col-md-6 no-padding">
@@ -213,7 +213,7 @@
 
                     <div class="form-group required">
                       <label class="control-label">
-                        Captcha                        
+                        Captcha
                       </label>
                       <span class="p-l-5">
                         <b class="text-danger" *ngIf="isSubmitForm && !recaptcha"> Required</b>

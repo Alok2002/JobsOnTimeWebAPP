@@ -72,7 +72,7 @@ export class SurveyEditComponent implements OnInit {
 
       if (this.survey.expiryDate) {
         var expiryDate = moment(this.survey.expiryDate, 'YYYY-MM-DD HH:mm');
-        this.survey.expiryDate = expiryDate.format();
+        this.survey.expiryDate = expiryDate.utcOffset(0, true).format();
       }
 
       console.log(this.survey);

@@ -275,17 +275,22 @@ export class JobInvoiceComponent implements OnInit {
     debugger
     if (this.job.dateQuoted) {
       var dateQuoted = moment(this.job.dateQuoted, 'YYYY-MM-DD');
-      this.job.dateQuoted = dateQuoted.format();
+      this.job.dateQuoted = dateQuoted.utcOffset(0, true).format();
     }
 
     if (this.job.dateJobApproved) {
       var dateJobApproved = moment(this.job.dateJobApproved, 'YYYY-MM-DD');
-      this.job.dateJobApproved = dateJobApproved.format();
+      this.job.dateJobApproved = dateJobApproved.utcOffset(0, true).format();
     }
 
     if (this.job.invoiceSent) {
       var invoiceSent = moment(this.job.invoiceSent, 'YYYY-MM-DD');
-      this.job.invoiceSent = invoiceSent.format();
+      this.job.invoiceSent = invoiceSent.utcOffset(0, true).format();
+    }
+
+    if (this.job.quoteFollowUpDate) {
+      var quoteFollowUpDate = moment(this.job.quoteFollowUpDate, 'YYYY-MM-DD');
+      this.job.quoteFollowUpDate = quoteFollowUpDate.utcOffset(0, true).format();
     }
 
     this.jobsevice.updateJob(this.job)
@@ -381,6 +386,11 @@ export class JobInvoiceComponent implements OnInit {
       });*/
       this.clientpo.associatedContacts = this.selectedContactList.map(e => e.id).join('|');
       console.log(this.clientpo.associatedContacts);
+
+      if (this.clientpo.expiryDate) {
+        var expiryDate = moment(this.clientpo.expiryDate, 'YYYY-MM-DD');
+        this.clientpo.expiryDate = expiryDate.utcOffset(0, true).format();
+      }
 
       this.clientservice.updateClientPO(this.clientpo)
         .subscribe((res: any) => {

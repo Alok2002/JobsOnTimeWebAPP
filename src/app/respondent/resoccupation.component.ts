@@ -177,6 +177,17 @@ export class ResOccupationComponent implements OnInit {
       console.log(this.respondent);
       console.log(this.respondent.occupationObj);
       debugger
+
+      if (this.respondent.maternityFromDate) {
+        var maternityFromDate = moment(this.respondent.maternityFromDate, 'YYYY-MM-DD');
+        this.respondent.maternityFromDate = maternityFromDate.utcOffset(0, true).format();
+      }
+
+      if (this.respondent.maternityToDate) {
+        var maternityToDate = moment(this.respondent.maternityToDate, 'YYYY-MM-DD');
+        this.respondent.maternityToDate = maternityToDate.utcOffset(0, true).format();
+      }
+
       if (this.respondent.occupationObj && this.respondent.occupationObj['id'])
         this.respondent.occupationId = this.respondent.occupationObj['id'];
       if (this.respondent.partnerOccupationObj && this.respondent.partnerOccupationObj['id'])

@@ -51,6 +51,7 @@ export class ManageUserComponent implements OnInit {
   @ViewChild('container', { read: ViewContainerRef })
   public containerRef: ViewContainerRef;
   accountingSystemName: string;
+  isJOTLicensee = false;
 
   constructor(private _userService: UserServices, private sharedService: SharedServices,
     private securityInfoResolve: SecurityInfoResolve, private jobservice: JobServices) { }
@@ -77,6 +78,7 @@ export class ManageUserComponent implements OnInit {
     this.getUsers();
     this.addNew();
     this.getAccountingSystemName();
+    this.getIsJOTLicensee();
   }
 
   getAccountingSystemName() {
@@ -169,8 +171,10 @@ export class ManageUserComponent implements OnInit {
       if (this.user.id == 0) this.user.newUser = false;
       else this.user.newUser = true;
 
-      if (this.user.dateofBirth)
-        this.user.dateofBirth = moment(this.user.dateofBirth).toDate();
+      if (this.user.dateofBirth) {
+        var dateofBirth = moment(this.user.dateofBirth, 'YYYY-MM-DD');
+        this.user.dateofBirth = dateofBirth.utcOffset(0, true).format();
+      }
 
       this._userService.submitUser(this.user)
         .subscribe((res: any) => {
@@ -401,7 +405,8 @@ export class ManageUserComponent implements OnInit {
       this.user.security_USR = data;
       this.user.security_REF = data;
       this.user.security_CFG = data;
-      this.user.security_RME = data;
+      if(this.isJOTLicensee)
+        this.user.security_RME = data;
       this.user.security_TKT = data;
       this.user.security_ETA = data;
       this.user.security_ESA = data;
@@ -410,6 +415,8 @@ export class ManageUserComponent implements OnInit {
       this.user.security_LST = data;
       this.user.security_SEV = data;
       this.user.security_MSA = data;
+      if(this.isJOTLicensee)
+        this.user.security_DVT = data;
     }
   }
 
@@ -419,5 +426,13 @@ export class ManageUserComponent implements OnInit {
       if (a.index < b.index) return -1;
       return 0;
     })
+  }
+
+  getIsJOTLicensee() {
+    this.sharedService.getIsJOTLicensee()
+      .subscribe((res: any) => {
+        console.log(res)
+        this.isJOTLicensee = res.value;
+      })
   }
 }

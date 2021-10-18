@@ -83,7 +83,7 @@ export class FilterComponent implements OnInit {
   ngOnChanges() {
     console.log(this.selectedFilterId);
     console.log(this.isUpdateFiler);
-    debugger
+    // debugger
     if (this.isUpdateFiler) {
       this.getExistingQueryList();
     }
@@ -226,7 +226,7 @@ export class FilterComponent implements OnInit {
     if (index >= 0) {
       this.maxrecords = this.existingfilterlist[index].maxRecords ? this.existingfilterlist[index].maxRecords : null;
     }
-    debugger
+    // debugger
 
     this.sharedService.getExistingFilter(this.entity, this.selectedexistingfilterid)
       .subscribe((res: any) => {
@@ -371,7 +371,7 @@ export class FilterComponent implements OnInit {
     this.eventservice.getJobListIncludingPast(clientid)
       .subscribe((res: any) => {
         console.log(res);
-        this.jobs = [];
+        // this.jobs = [];
         res.value.forEach((va) => {
           va['clientId'] = clientid;
           this.jobs.push(va);
@@ -392,7 +392,7 @@ export class FilterComponent implements OnInit {
     this.eventservice.getGroupListIncludingPast(jobid)
       .subscribe((res: any) => {
         console.log(res);
-        this.jobSessions = [];
+        // this.jobSessions = [];
         res.value.forEach((va) => {
           va['jobId'] = jobid;
           this.jobSessions.push(va);

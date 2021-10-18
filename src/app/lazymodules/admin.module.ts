@@ -17,6 +17,7 @@ import { PrivateListComponent } from '../admin/privatelist.component';
 import { SearchEventsComponent } from '../admin/searchevents.component';
 import { CKEditorModule } from 'ckeditor4-angular';
 import { SearchArchivedEventsComponent } from '../admin/searcharchivedevents.component';
+import { DevToolsComponent } from '../admin/devtools.component';
 
 export const route: Routes = [
   { path: '', component: AdminComponent, pathMatch: 'full' },
@@ -26,6 +27,8 @@ export const route: Routes = [
   { path: 'privatelist', component: PrivateListComponent, pathMatch: 'full', data: { securityData: SecurityRights.PrivateListAdmin }, resolve: { securityInfo: SecurityInfoResolve } },
   { path: 'searchevents', component: SearchEventsComponent, pathMatch: 'full', data: { securityData: SecurityRights.SearchEvents }, resolve: { securityInfo: SecurityInfoResolve } },
   { path: 'searcharchivedevents', component: SearchArchivedEventsComponent, pathMatch: 'full', data: { securityData: SecurityRights.SearchEvents }, resolve: { securityInfo: SecurityInfoResolve } },
+  { path: 'dev-tools', component: DevToolsComponent, pathMatch: 'full', data: { securityData: SecurityRights.DeveloperTools }, resolve: { securityInfo: SecurityInfoResolve } },
+
   // { path: 'searchevents', component: SearchEventsComponent, pathMatch: 'full' },
 ];
 
@@ -48,7 +51,8 @@ export const route: Routes = [
     GlobalQueriesComponent,
     PrivateListComponent,
     SearchEventsComponent,
-    SearchArchivedEventsComponent
+    SearchArchivedEventsComponent,
+    DevToolsComponent
   ]
 })
 

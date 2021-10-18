@@ -1270,6 +1270,12 @@ export class PanelMemberComponent implements OnInit {
       .subscribe((res: any) => {
         console.log(res);
         this.eventJobs = res.value;
+        this.eventJobs = this.eventJobs.filter((jb) => jb.value != 0);
+        if (this.emailData.jobId) {
+          var index = this.eventJobs.findIndex((ej) => ej.value == this.emailData.jobId);
+          if (index < 0)
+            this.emailData.jobId = null;
+        }
       })
   }
 

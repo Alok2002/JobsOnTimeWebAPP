@@ -489,4 +489,13 @@ export class SessionEditComponent implements OnInit {
         //  // console.log(e);
       });
   }
+
+  getFormattedTime(interviewTime) {
+    var ret = "";
+    if (interviewTime) {
+      var mm = moment(interviewTime, 'hh:mm:ss');
+      ret = mm.format('hh:mm A');
+    }
+    return ret;
+  }
 }

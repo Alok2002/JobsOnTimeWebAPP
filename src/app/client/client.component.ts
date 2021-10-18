@@ -610,7 +610,24 @@ export class ClientComponent {
         /*this.dataTablesParameters.start = event.first;
         this.dataTablesParameters.length = event.rows;*/
 
-        this.sharedService.getDataWithFilter(event, this.colVisData, this.maxrecords, this.filters, "client", null)
+        console.log(this.filters)
+        var flts = [];
+        var index = -1;
+        if (this.filters && this.filters.length > 0) {
+            flts = JSON.parse(JSON.stringify(this.filters));
+            index = this.filters.findIndex(fl => fl.caption == "Inactive Status");
+        }
+
+        if (index < 0) {
+            flts.push({
+                caption: "Inactive Status", comparison: "Is", type: "DropDown",
+                value1: "Active Only", value2: "", value3: "", value4: "", value5: "", value6: "", value7: ""
+            });
+        }
+
+        console.log(flts)
+        debugger
+        this.sharedService.getDataWithFilter(event, this.colVisData, this.maxrecords, flts, "client", null)
             .subscribe((resp: any) => {
                 // debugger;
                 this.clients = resp.value;

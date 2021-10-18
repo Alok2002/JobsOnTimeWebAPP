@@ -234,6 +234,11 @@ export class TicketEditComponent implements OnInit {
       /*if (this.ticket.assignedToStaffHistoryList && this.ticket.assignedToStaffHistoryList.length > 0)
         this.ticket.assignedToStaffHistory = this.ticket.assignedToStaffHistoryList.map((elem) => { return elem.display; }).join("~");*/
 
+      if (this.ticket.dateAssignedToUat) {
+        var dateReceived = moment(this.ticket.dateAssignedToUat, 'YYYY-MM-DD');
+        this.ticket.dateAssignedToUat = dateReceived.utcOffset(0, true).format();
+      }
+
       if (this.ticket.id) {
         if (this.ticket.assignedToStaff != this.initTicket.assignedToStaff) {
           if (!this.initTicket.assignedToStaffHistoryList) this.initTicket.assignedToStaffHistoryList = [];

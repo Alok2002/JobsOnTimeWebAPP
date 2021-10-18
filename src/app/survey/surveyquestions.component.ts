@@ -395,27 +395,28 @@ export class SurveyQuestionsComponent implements OnInit {
 
     console.log(this.surveyquestions);
 
-    this.surveyservice.submitSuerveyQuestions(this.surveyquestions)
-      .subscribe(res => {
-        console.log(res);
-        if (!this.isQuestionLibPage) {
-          this.isupdatesurveyquestionsource = true;
-          this.getSurvey();
-          this.surveyQuestionUpdate.emit(true);
-        }
-        else
-          this.getLibQuestions();
-        // this.getSurveyQuestionsbySurveyId();
+    if (this.validateSurveyQuestions(isAutoSave)) {
+      this.surveyservice.submitSuerveyQuestions(this.surveyquestions)
+        .subscribe(res => {
+          console.log(res);
+          if (!this.isQuestionLibPage) {
+            this.isupdatesurveyquestionsource = true;
+            this.getSurvey();
+            this.surveyQuestionUpdate.emit(true);
+          }
+          else
+            this.getLibQuestions();
+          // this.getSurveyQuestionsbySurveyId();
 
-
-        if (!isAutoSave) {
-          swal(
-            "Success!",
-            this.isQuestionLibPage ? "Survey library questions has been saved successfully." : "Survey questions has been saved successfully.",
-            "success"
-          );
-        }
-      });
+          if (!isAutoSave) {
+            swal(
+              "Success!",
+              this.isQuestionLibPage ? "Survey library questions has been saved successfully." : "Survey questions has been saved successfully.",
+              "success"
+            );
+          }
+        });
+    }
     console.log(this.surveyquestions);
   }
 
@@ -1304,5 +1305,39 @@ export class SurveyQuestionsComponent implements OnInit {
     this.surveyquestions.splice(index, 0, quesjson);
 
     console.log(this.surveyquestions);
+  }
+
+  validateSurveyQuestions(isAutoSave) {
+    var ret = false;
+    var err = [];
+
+    this.surveyquestions.forEach((sq, i) => {
+      if (sq.minNumAnswers != null && sq.maxNumAnswers != null) {
+        if (sq.minNumAnswers > sq.maxNumAnswers) {
+          if (sq.answerType == 'Matrix')
+            err.push("Question " + (i + 1) + " Minimum number of answers per row must be less than Maximum number of answers per row");
+          else if (sq.answerType == 'Essay')
+            err.push("Question " + (i + 1) + " Minimum number of characters must be less than Maximum number of characters");
+          else
+            err.push("Question " + (i + 1) + " Minimum number of answers must be less than Maximum number of answers");
+        }
+      }
+
+      if (sq.minNumMatrixColAnswers != null && sq.maxNumMatrixColAnswers != null) {
+        if (sq.minNumMatrixColAnswers > sq.maxNumMatrixColAnswers) {
+          err.push("Question " + (i + 1) + " Minimum number of answers per column must be less than Maximum number of answers per column");
+        }
+      }
+    });
+
+    if (err.length > 0) {
+      if (!isAutoSave)
+        swal("Oops!", err.join('. '), "error");
+      ret = false;
+    } else {
+      ret = true;
+    }
+
+    return ret;
   }
 }

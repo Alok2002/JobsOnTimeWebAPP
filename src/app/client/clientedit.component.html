@@ -39,11 +39,13 @@
     </div>
     <div class="form-group col-md-4 no-padding">
       <label class="control-label" for="cardId">Card Id</label>
-      <input type="text" id="cardId" name="cardId" [(ngModel)]="client.cardId" class="form-control" autocomplete="nope" for="Card Id">
+      <input type="text" id="cardId" name="cardId" [(ngModel)]="client.cardId" class="form-control" autocomplete="nope"
+        for="Card Id">
     </div>
     <div class="form-group col-md-4 no-padding-right">
       <label class="control-label" for="cardId">Allow Online Access</label>
-      <select class="form-control" [(ngModel)]="client.allowOnlineAccess" name="allowOnlineAccess" for="Allow Online Access">
+      <select class="form-control" [(ngModel)]="client.allowOnlineAccess" name="allowOnlineAccess"
+        for="Allow Online Access">
         <option value="true">Yes</option>
         <option value="false">No</option>
       </select>
@@ -51,7 +53,8 @@
     <div class="clearfix"></div>
     <div class="form-group col-md-4 no-padding-left">
       <label class="control-label" for="cardId">Allow Private List</label>
-      <select class="form-control" [(ngModel)]="client.allowPrivateList" name="allowPrivateList" for="Allow Private List">
+      <select class="form-control" [(ngModel)]="client.allowPrivateList" name="allowPrivateList"
+        for="Allow Private List">
         <option value="true">Yes</option>
         <option value="false">No</option>
       </select>
@@ -92,7 +95,7 @@
         </span>
       </label>
       <input type="text" id="email" name="email" [(ngModel)]="client.email" class="form-control"
-             pattern="^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,10})+$" #emailModel="ngModel"
+             pattern="^\w+(['\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,10})+$" #emailModel="ngModel"
              required>
       <span class="errorInfo ax-cursor-pointer text-danger glyphicon glyphicon-info-sign form-control-feedback hide"
             title="" data-placement="top" data-trigger="hover"

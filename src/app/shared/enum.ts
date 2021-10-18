@@ -48,7 +48,8 @@ export const SecurityRights = {
     SearchEvents: "SEV",
     ManageStaffAttendance: "MSA",
     SurveyMapReference: "SMR",
-    ManageSurveyLibraryQuestions: "MSLQ"
+    ManageSurveyLibraryQuestions: "MSLQ",
+    DeveloperTools: "DVT"
 };
 
 export const SecurityRightsExportError = "You don't have permission to export results.<br>Please contact system administrator.";

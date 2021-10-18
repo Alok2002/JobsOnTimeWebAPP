@@ -291,9 +291,11 @@ export class SurveyServices {
         return this._http.get(apiHost + '/api/config/getthankyoupagesign');
     }
 
-    deleteSurveyAnswerById(said) {
+    deleteSurveyAnswerById(said, isScreen) {
         let input = new FormData();
         input.append("said", said);
+        input.append("isScreen", isScreen);
+
         return this._http.post(apiHost + '/api/survey/deleteSurveyAnswerById', input);
     }
 }

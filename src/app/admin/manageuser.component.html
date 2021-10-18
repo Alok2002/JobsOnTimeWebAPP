@@ -313,7 +313,7 @@
                     </span>
                   </label>
                   <input type="text" class="form-control" #officeEmail="ngModel" required
-                    pattern="^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,10})+$" [(ngModel)]="user.emailAddress"
+                    pattern="^\w+(['\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,10})+$" [(ngModel)]="user.emailAddress"
                     name="officeEmail">
                 </div>
               </div>
@@ -329,7 +329,7 @@
                     </span>
                   </label>
                   <input type="text" class="form-control" name="personalEmail" #personalEmailModel="ngModel" required
-                    pattern="^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,10})+$" [(ngModel)]="user.personalEmail">
+                    pattern="^\w+(['\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,10})+$" [(ngModel)]="user.personalEmail">
                 </div>
               </div>
               <div class="clearfix"></div>
@@ -707,9 +707,9 @@
                           <label for="sec-dread">Manage Private Lists</label>
                         </div>
                         <div class="clearfix"></div> -->
-                      <div class="checkbox checkbox-primary pull-left">
+                      <div *ngIf="isJOTLicensee" class="checkbox checkbox-primary pull-left">
                         <input id="sec-rla" type="checkbox" name="Security_RME" [(ngModel)]="user.security_RME">
-                        <label for="sec-rla">Manage ResearchMe Licences</label>
+                        <label for="sec-rla">Manage JOT Licences</label>
                       </div>
                       <div class="clearfix"></div>
                       <div class="checkbox checkbox-primary pull-left">
@@ -753,6 +753,12 @@
                         <input id="sec-security_MSA" type="checkbox" name="Security_MSA"
                           [(ngModel)]="user.security_MSA">
                         <label for="sec-security_MSA">Manage Staff Attendance</label>
+                      </div>
+                      <div class="clearfix"></div>
+                      <div *ngIf="isJOTLicensee" class="checkbox checkbox-primary pull-left">
+                        <input id="sec-security_DVT" type="checkbox" name="Security_DVT"
+                          [(ngModel)]="user.security_DVT">
+                        <label for="sec-security_DVT">Developer Tools</label>
                       </div>
                       <div class="clearfix"></div>
                     </div>

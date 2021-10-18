@@ -7,7 +7,8 @@ export class ResEvent {
     public event: string;
     public attendeeDocumentComment: string;
     public notes: string;
-    public inDepthTime: string;
+    // public inDepthTime: string;
+    public interviewTime: string;
     public sendConfirmationEmail: boolean;
     public sendConfirmationSMS: boolean;
     public sendNoShowEmail: boolean;
