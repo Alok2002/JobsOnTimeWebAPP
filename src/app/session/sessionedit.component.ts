@@ -194,6 +194,8 @@ export class SessionEditComponent implements OnInit {
           console.log(res)
           var sessionList: Array<Session> = res.value;
           var isValidSessionNo = sessionList.length == 0 ? true : false;
+          if (!this.session.sessionNumber)
+              isValidSessionNo = true;
           if (!isValidSessionNo) {
             var index = sessionList.findIndex((se) => se.sessionNumber == this.session.sessionNumber);
             if (index >= 0) {

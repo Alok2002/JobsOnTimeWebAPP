@@ -295,6 +295,7 @@ export class SurveyServices {
         let input = new FormData();
         input.append("said", said);
         input.append("isScreen", isScreen);
+
         return this._http.post(apiHost + '/api/survey/deleteSurveyAnswerById', input);
     }
 }
