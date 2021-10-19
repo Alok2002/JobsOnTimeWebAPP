@@ -194,6 +194,8 @@ export class SessionEditComponent implements OnInit {
           console.log(res)
           var sessionList: Array<Session> = res.value;
           var isValidSessionNo = sessionList.length == 0 ? true : false;
+          if (!this.session.sessionNumber)
+              isValidSessionNo = true;
           if (!isValidSessionNo) {
             var index = sessionList.findIndex((se) => se.sessionNumber == this.session.sessionNumber);
             if (index >= 0) {
@@ -216,7 +218,7 @@ export class SessionEditComponent implements OnInit {
 
             if (this.session.dateTime) {
               var dateTime = moment(this.session.dateTime, 'YYYY-MM-DD');
-              this.session.dateTime = dateTime.format();
+              this.session.dateTime = dateTime.utcOffset(0, true).format();
             }
 
             this.sessionservice.postSession(this.session)
@@ -486,5 +488,14 @@ export class SessionEditComponent implements OnInit {
       (e: string) => {
         //  // console.log(e);
       });
+  }
+
+  getFormattedTime(interviewTime) {
+    var ret = "";
+    if (interviewTime) {
+      var mm = moment(interviewTime, 'hh:mm:ss');
+      ret = mm.format('hh:mm A');
+    }
+    return ret;
   }
 }

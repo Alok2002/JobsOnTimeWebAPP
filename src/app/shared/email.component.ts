@@ -5,6 +5,7 @@ import { Email } from '../models/email';
 import { EmailTemplate } from '../models/emailtemplate';
 import { EmailServices } from '../services/email.services';
 import { apiHost, ckEditorConfig } from './../app.component';
+import { Job } from '../models/job';
 
 // declare var tinymce: any;
 declare var jQuery: any;
@@ -50,6 +51,7 @@ export class EmailComponent implements OnInit, OnChanges {
   @Input() redirectUrl: string;
 
   emailSuccessMsg = "Email Sent Successfully.";
+  @Input() jobData: { exJob: Job, trJob: Job } = null;
 
   constructor(private emailService: EmailServices, @Inject(PLATFORM_ID) platformId: Object) {
     /*this.isBrowser = isPlatformBrowser(platformId);
@@ -225,7 +227,7 @@ export class EmailComponent implements OnInit, OnChanges {
             console.log(res)
           });
         this.showEmailSuccessMsg = true;
-        this.emailSuccessMsg = "Emails are in the queue. System will notify once the emails are sent";
+        this.emailSuccessMsg = "Emails are in the queue and will be sent shortly.";
       } else {
         this.emailService.postEmail(this.emailData, this.emailAttachments)
           .subscribe((res: any) => {

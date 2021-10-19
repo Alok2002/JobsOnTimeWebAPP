@@ -365,7 +365,7 @@
               <li>
                 <a [routerLink]="['/system-configuration']">System Configuration</a>
               </li>
-              <li *ngIf="isFarronResearch">
+              <li *ngIf="isJOTLicensee">
                 <a [routerLink]="['/software-licence']">Software Licences</a>
               </li>
               <li>
@@ -382,6 +382,9 @@
               </li>
               <li>
                 <a [routerLink]="['/admin/privatelist']">Manage Private List</a>
+              </li>
+              <li *ngIf="isJOTLicensee">
+                <a [routerLink]="['/admin/dev-tools']">Developer Tools</a>
               </li>
             </ul>
           </li>

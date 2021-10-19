@@ -40,6 +40,7 @@ export class SurveyTemplateComponent implements OnInit {
   addressStreet: string;
   isMobile = isMobile;
 
+  @Input() isScreen: boolean = false;
   @Input() isSurveyStart = false;
 
   constructor(public sanitizer: DomSanitizer, private sharedservice: SharedServices, private surveyservice: SurveyServices,
@@ -576,7 +577,7 @@ console.log(obj);
   }
 
   deleteSurveyAnswerById(said) {
-    this.surveyservice.deleteSurveyAnswerById(said)
+    this.surveyservice.deleteSurveyAnswerById(said, this.isScreen)
       .subscribe((res: any) => {
         console.log(res)
       })

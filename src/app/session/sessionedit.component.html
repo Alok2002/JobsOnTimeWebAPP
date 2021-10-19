@@ -9,15 +9,15 @@
       </div>
 
       <div class="row">
-        <div class="form-group required col-md-4">
+        <div class="form-group col-md-4">
           <label class="control-label w-100-pre">
-            <span class="d-desktop-only pull-left">Session Number</span>
+            Session Number
             <span [hidden]="sessionNumberModel.valid || !isSubmitForm">
               <span class="text-danger pull-right" [hidden]="!sessionNumberModel.hasError('required')">Required</span>
             </span>
           </label>
           <input type="number" class="form-control" name="sessionNumber" [(ngModel)]="session.sessionNumber"
-            #sessionNumberModel="ngModel" required>
+            #sessionNumberModel="ngModel">
         </div>
 
         <div class="form-group required col-md-8">
@@ -269,7 +269,7 @@
           <!--<div class="checkbox checkbox-primary pull-left res-check-margin w-100-pre">-->
           <!--<input type="checkbox" name="sessiontime{{i}}" value="true">-->
           <div>
-            <label class="control-label font-normal">{{st.formattedGroupTime}}
+            <label class="control-label font-normal">{{getFormattedTime(st.interviewTime)}}
               <a class="text-danger" (click)="deleteSessionTime(st.id)"><i class="md md-clear"></i></a>
             </label>
           </div>
@@ -475,7 +475,7 @@
                   <span class="text-danger pull-right" [hidden]="!grouptimemodal.hasError('required')">Required</span>
                 </span>
               </label>
-              <input type="time" class="form-control" name="grouptime" [(ngModel)]="sessiontime.groupTime"
+              <input type="time" class="form-control" name="grouptime" [(ngModel)]="sessiontime.interviewTime"
                 #grouptimemodal="ngModel" required>
             </div>
 
