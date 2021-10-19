@@ -9,6 +9,15 @@
       </div>
       <div class="modal-body no-padding">
         <form class="ax-form" *ngIf="!showSmsSuccessMsg && smsData != null" #smsForm="ngForm">
+          <div *ngIf="jobData" class="save-query-btn btn-group btn-group-justified m-b-10">
+            <a *ngIf="jobData?.exJob?.id" class="btn btn-default waves-effect waves-light"
+              [class.btn-primary]="jobData?.exJob?.id == smsData?.jobId" role="button"
+              (click)="smsData.jobId = jobData.exJob.id">{{jobData?.exJob?.jobNumberAndName}}</a>
+
+            <a *ngIf="jobData?.trJob?.id" class="btn btn-default waves-effect waves-light"
+              [class.btn-primary]="jobData?.trJob?.id == smsData?.jobId" role="button"
+              (click)="smsData.jobId = jobData.trJob.id">{{jobData?.trJob?.jobNumberAndName}}</a>
+          </div>
           <div class="form-group">
             <label class="control-label ax-color-black w-100-pre">
               Mobile Numbers

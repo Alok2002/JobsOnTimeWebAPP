@@ -36,8 +36,7 @@
           <i class="md md-folder-open"></i> Send Update SMS
         </a> -->
 
-          <a class="btn btn-pink btn-xs waves-effect btn-square m-l--1"
-            (click)="openEmailModal('CreateRespondentEmail', 'Send Email')">
+          <a class="btn btn-pink btn-xs waves-effect btn-square m-l--1" (click)="confirmModalForSmsEmail('email')">
             <i class="md md-folder-open"></i> Email
           </a>
 
@@ -45,8 +44,7 @@
             <i class="md md-folder-open"></i> Voice Mail Left
           </a>
 
-          <a class="btn btn-success btn-xs waves-effect btn-square m-l--1"
-            (click)="openSmsModal('CreateRespondentSms', 'Send SMS')">
+          <a class="btn btn-success btn-xs waves-effect btn-square m-l--1" (click)="confirmModalForSmsEmail('sms')">
             <i class="md md-folder-open"></i> SMS
           </a>
           <a class="btn btn-blue btn-xs waves-effect btn-square m-l--1 hidden" #smsModel data-toggle='modal'
@@ -190,7 +188,9 @@
           <td *ngSwitchCase="'respondentEmail'" [style.width.px]="sc.width" [style.textAlign]="sc?.textAlign"
             style="vertical-align:top"><a href="mailto:{{ans.respondentEmail}}">{{ans.respondentEmail}}</a></td>
           <td *ngSwitchCase="'startedTime'" [style.width.px]="sc.width" [style.textAlign]="sc?.textAlign"
-            style="vertical-align:top">{{ans.startedTime != '0001-01-01T00:00:00' ? (ans.startedTime | date: 'dd-MM-yyyy hh:mm a') : ''}}</td>
+            style="vertical-align:top">
+            {{ans.startedTime != '0001-01-01T00:00:00' ? (ans.startedTime | date: 'dd-MM-yyyy hh:mm a') : ''}}
+          </td>
           <td *ngSwitchCase="'lastQualifiedEventDateTime'" [style.width.px]="sc.width" [style.textAlign]="sc?.textAlign"
             style="vertical-align:top">
             <ng-container *ngIf="ans.lastQualifiedEventDateTime != '0001-01-01T00:00:00'">
@@ -287,14 +287,15 @@
 
 <!--EMAIL-->
 <email-component *ngIf="emailData && (emailData | json) != ({} | json)" [(emailData)]="emailData"
-  [modalTitle]="emailModalTitle" (closeModal)="closeModal($event)"></email-component>
+  [modalTitle]="emailModalTitle" (closeModal)="closeModal($event)" [jobData]="smsEmailJobData"></email-component>
 
 <button #emailModlaBtn style="visibility: hidden; height: 0" data-toggle="modal" data-target="#emailModal"
   data-backdrop="static">Open Email Model
 </button>
 
 <!--SMS-->
-<sms-component *ngIf="smsData" [(smsData)]="smsData" [modalTitle]="smsModalTitle" (closeModal)="closeModal($event)">
+<sms-component *ngIf="smsData" [(smsData)]="smsData" [modalTitle]="smsModalTitle" (closeModal)="closeModal($event)"
+  [jobData]="smsEmailJobData">
 </sms-component>
 
 <button #smsModlaBtn style="visibility: hidden; height: 0" data-toggle="modal" data-target="#smsModal"

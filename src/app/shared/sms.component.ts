@@ -1,3 +1,4 @@
+import { Job } from './../models/job';
 import { Component, EventEmitter, Input, OnChanges, OnInit, Output } from '@angular/core';
 import { CookieService } from 'ngx-cookie-service';
 import swal from 'sweetalert2';
@@ -22,6 +23,7 @@ export class SmsComponent implements OnInit, OnChanges {
   isLoading = true;
 
   @Input() redirectUrl: string;
+  @Input() jobData: { exJob: Job, trJob: Job } = null;
 
   constructor(private smsServices: SmsServices, private cookieservice: CookieService) {
   }

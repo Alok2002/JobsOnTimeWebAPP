@@ -83,7 +83,7 @@ export class FilterComponent implements OnInit {
   ngOnChanges() {
     console.log(this.selectedFilterId);
     console.log(this.isUpdateFiler);
-    debugger
+    // debugger
     if (this.isUpdateFiler) {
       this.getExistingQueryList();
     }
@@ -226,7 +226,7 @@ export class FilterComponent implements OnInit {
     if (index >= 0) {
       this.maxrecords = this.existingfilterlist[index].maxRecords ? this.existingfilterlist[index].maxRecords : null;
     }
-    debugger
+    // debugger
 
     this.sharedService.getExistingFilter(this.entity, this.selectedexistingfilterid)
       .subscribe((res: any) => {

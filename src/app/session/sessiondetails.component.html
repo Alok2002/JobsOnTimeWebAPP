@@ -129,8 +129,8 @@
             <div class="tab-pane active" id="details-tab">
               <SessionEditComponent [id]="editSessionId" [jobId]="jobId" [isUpdateSession]="isUpdateSession"
                 [sessionNo]="sessionNo" *ngIf="selectedTab == 'sessionedit'"></SessionEditComponent>
-              <SessionTimeComponent [id]="editSessionId" [isUpdateSession]="isUpdateSession"
-                *ngIf="selectedTab == 'sessiontime'"></SessionTimeComponent>
+              <!-- <SessionTimeComponent [id]="editSessionId" [isUpdateSession]="isUpdateSession"
+                *ngIf="selectedTab == 'sessiontime'"></SessionTimeComponent> -->
               <SessionResearcherComponent [id]="editSessionId" [jobId]="jobId" [isUpdateSession]="isUpdateSession"
                 *ngIf="selectedTab == 'sessionresearcher'"></SessionResearcherComponent>
               <SessionIncentiveComponent [id]="editSessionId" [jobId]="jobId" [isUpdateSession]="isUpdateSession"

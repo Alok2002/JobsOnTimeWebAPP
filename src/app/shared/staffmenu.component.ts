@@ -45,6 +45,7 @@ export class StaffMenuComponent implements OnInit {
   totalHours: string;
   isDisableClockToggle = false;
   userDropdownTimer: any;
+  isJOTLicensee = false;
 
   constructor(private sharedService: SharedServices,
     private userservice: UserServices,
@@ -68,6 +69,7 @@ export class StaffMenuComponent implements OnInit {
     this.getIsDisabilityPanelAllowed();
     this.updateClickPrevent();
     this.getWorkingHours();
+    this.getIsJOTLicensee();
   }
 
   getIsBusinessPanelAllowed() {
@@ -321,5 +323,13 @@ export class StaffMenuComponent implements OnInit {
       ret = JSON.parse(this.cookieservice.get("clock_in"));
     }
     return ret;
+  }
+
+  getIsJOTLicensee() {
+    this.sharedService.getIsJOTLicensee()
+      .subscribe((res: any) => {
+        console.log(res)
+        this.isJOTLicensee = res.value;
+      })
   }
 }

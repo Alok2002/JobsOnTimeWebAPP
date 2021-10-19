@@ -9,6 +9,15 @@
       </div>
       <div class="modal-body no-padding">
         <form #emailForm="ngForm" *ngIf="!showEmailSuccessMsg && emailData != null" class="ax-form">
+          <div *ngIf="jobData" class="save-query-btn btn-group btn-group-justified m-b-10">
+            <a *ngIf="jobData?.exJob?.id" class="btn btn-default waves-effect waves-light"
+              [class.btn-primary]="jobData?.exJob?.id == emailData?.jobId" role="button"
+              (click)="emailData.jobId = jobData.exJob.id">{{jobData?.exJob?.jobNumberAndName}}</a>
+
+            <a *ngIf="jobData?.trJob?.id" class="btn btn-default waves-effect waves-light"
+              [class.btn-primary]="jobData?.trJob?.id == emailData?.jobId" role="button"
+              (click)="emailData.jobId = jobData.trJob.id">{{jobData?.trJob?.jobNumberAndName}}</a>
+          </div>
           <div class="form-group col-md-12 no-padding required">
             <label class="control-label ax-color-black w-100-pre">
               From

@@ -241,13 +241,13 @@ export class SessionServices {
     return this._http.post(apiHost + '/api/event/CancelPayment', input);
   }
 
-  saveInDepthTime(ids, indepthtime) {
+  saveInDepthTime(ids, interviewTime) {
     let input = new FormData();
     var json = JSON.stringify(ids);
     input.append("json", json);
-    input.append("inDepthTime", indepthtime);
+    input.append("interviewTime", interviewTime);
 
-    return this._http.post(apiHost + '/api/event/PostInDepthTime', input);
+    return this._http.post(apiHost + '/api/event/PostInterviewTime', input);
   }
 
   saveIncentive(ids, incentive) {

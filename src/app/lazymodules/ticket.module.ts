@@ -19,9 +19,9 @@ import { TagInputModule } from 'ngx-chips';
 import { DateInputsModule } from '@progress/kendo-angular-dateinputs';
 
 export const route: Routes = [
-  { path: '', component: TicketComponent, pathMatch: 'full', data: { securityData: SecurityRights.ResearchMeLicence }, resolve: { securityInfo: SecurityInfoResolve } },
-  { path: 'add', component: TicketEditComponent, pathMatch: 'full', data: { securityData: SecurityRights.ResearchMeLicence }, resolve: { securityInfo: SecurityInfoResolve } },
-  { path: 'edit/:id', component: TicketEditComponent, pathMatch: 'full', data: { securityData: SecurityRights.ResearchMeLicence }, resolve: { securityInfo: SecurityInfoResolve } },
+  { path: '', component: TicketComponent, pathMatch: 'full', data: { securityData: SecurityRights.Tickets }, resolve: { securityInfo: SecurityInfoResolve } },
+  { path: 'add', component: TicketEditComponent, pathMatch: 'full', data: { securityData: SecurityRights.Tickets }, resolve: { securityInfo: SecurityInfoResolve } },
+  { path: 'edit/:id', component: TicketEditComponent, pathMatch: 'full', data: { securityData: SecurityRights.Tickets }, resolve: { securityInfo: SecurityInfoResolve } },
 ];
 
 @NgModule({

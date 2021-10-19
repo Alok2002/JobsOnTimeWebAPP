@@ -2,12 +2,12 @@
   (filtersEmit)="filtersEmit($event)" [isUpdateFiler]="isUpdateFiler" [selectedFilterId]="selectedFilterId"
   class="d-desktop-only"></filter>
 
-<p-table #dt [columns]="selectedColumns" [value]="sessions" [lazy]="true" (onLazyLoad)="loadData($event)"
-  [paginator]="true" [paginatorPosition]="'top'" [pageLinks]="10" [rows]="noofrows" [totalRecords]="totalRecords"
-  [loading]="false" selectionMode="multiple" [(selection)]="selectedRowData" [metaKeySelection]="true"
-  [resizableColumns]="true" columnResizeMode="expand"
+<p-table *ngIf="sortField != 'loading'" #dt [columns]="selectedColumns" [value]="sessions" [lazy]="true"
+  (onLazyLoad)="loadData($event)" [paginator]="true" [paginatorPosition]="'top'" [pageLinks]="10" [rows]="noofrows"
+  [totalRecords]="totalRecords" [loading]="false" selectionMode="multiple" [(selection)]="selectedRowData"
+  [metaKeySelection]="true" [resizableColumns]="true" columnResizeMode="expand"
   [tableStyleClass]="'table ax-table table-striped table-bordered m-b-0 border-color-e7e7e7'" [scrollable]="true"
-  sortField="id" [sortOrder]="-1" [autoLayout]="true">
+  [sortField]="sortField" [sortOrder]="sortOrder" [autoLayout]="true">
 
   <ng-template pTemplate="caption">
     <div class="pull-left col-md-8 no-padding text-left d-desktop-only">

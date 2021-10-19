@@ -159,6 +159,9 @@
               <i class="md md-clear text-danger"></i>
             </ng-container>
           </td>
+          <td *ngSwitchCase="'interviewTime'" [style.width.px]="sc.width" [style.textAlign]="sc?.textAlign">
+            {{getFormattedTime(re?.interviewTime)}}
+          </td>
           <td *ngSwitchCase="'eventDate'" [style.width.px]="sc.width" [style.textAlign]="sc?.textAlign">
             {{re?.eventDate | date: 'dd-MM-yyyy hh:mm a'}}
           </td>
@@ -204,7 +207,8 @@
             </label>
             <input *ngIf="isOverride" type="time" class="form-control" name="indepthtime" [(ngModel)]="inDepthTime" />
             <select *ngIf="!isOverride" class="form-control" name="indepthtime" [(ngModel)]="inDepthTime">
-              <option *ngFor="let st of sessiontimes;" [value]="st.groupTime">{{st.formattedGroupTime}}</option>
+              <option *ngFor="let st of sessiontimes;" [value]="st.interviewTime">{{getFormattedTime(st.interviewTime)}}
+              </option>
             </select>
           </div>
           <div class="pull-right">
