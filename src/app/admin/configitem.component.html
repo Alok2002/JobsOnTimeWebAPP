@@ -147,6 +147,13 @@
                 <input type="text" class="form-control" [(ngModel)]="configItem.configKey" name="configKey" required
                   #configKey="ngModel">
               </div>
+              <div class="form-group">
+                <label for="" class="control-label w-100-pre">
+                  Category
+                </label>
+                <input type="text" class="form-control" [(ngModel)]="configItem.category" name="category" 
+                  #configKey="ngModel">
+              </div>
               <div class="form-group required">
                 <label for="" class="control-label w-100-pre">
                   Value
@@ -155,7 +162,21 @@
                   </span>
                 </label>
                 <textarea class="form-control" [(ngModel)]="configItem.value" name="value" required
-                  #valuemodel="ngModel" rows="10">{{configItem.value}}</textarea>
+                  #valuemodel="ngModel" rows="5">{{configItem.value}}</textarea>
+              </div>
+              <div class="form-group">
+                <label for="" class="control-label w-100-pre">
+                  Description
+                </label>
+                <textarea class="form-control" [(ngModel)]="configItem.description" name="description" 
+                  #valuemodel="ngModel" rows="5">{{configItem.value}}</textarea>
+              </div>
+              <div class="form-group">
+                <label for="" class="control-label w-100-pre">
+                  Options
+                </label>
+                <input type="text" class="form-control" [(ngModel)]="configItem.options" name="category" 
+                  #configKey="ngModel">
               </div>
               <div class="col-md-12 no-padding text-right">
                 <a id="addclientbtn" (click)="submitConfigItem(systemConfigForm, configItem.id)"
