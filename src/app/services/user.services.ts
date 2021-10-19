@@ -9,7 +9,7 @@ import { AuthService } from '../services/auth.services';
 import { ReferFriend } from "../models/user";
 
 @Injectable()
-export class UserServices {    
+export class UserServices {
     constructor(private _http: HttpClient, private authService: AuthService,
         private cookieService: CookieService) { }
 
@@ -41,7 +41,8 @@ export class UserServices {
         let input = new FormData();
         input.append("emailAddress", email);
 
-        return this._http.post(apiHost + '/api/check-duplicate-user', input, { headers: { ignoreLoadingBar: '' } });
+        // return this._http.post(apiHost + '/api/check-duplicate-user', input, { headers: { ignoreLoadingBar: '' } });
+        return this._http.post(apiHost + '/api/check-duplicate-user', input);
     }
 
     login(loginUser) {
@@ -117,11 +118,11 @@ export class UserServices {
         return this._http.post(apiHost + '/api/ga/ValidateTwoFactorPIN', input);
     }
 
-    getUser2FAStatus(username) {            
+    getUser2FAStatus(username) {
         return this._http.get(apiHost + '/api/user-2fa-Status/' + username);
     }
-    
-    getUserDetails(username) {        
+
+    getUserDetails(username) {
         return this._http.get(apiHost + '/api/user-detail/' + username);
     }
 

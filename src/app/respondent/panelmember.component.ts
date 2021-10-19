@@ -1556,7 +1556,7 @@ export class PanelMemberComponent implements OnInit {
     //if(this.checkPermission()){
     if (this.deleteItemIds.length > 0) {
       swal({
-        title: 'Are you sure you want to merge all the selected respondents into the newest of those selected?',
+        title: 'Are you sure you want to merge all the selected respondents into the oldest of those selected?',
         html: 'The other respondents will be marked as inactive, and all events and internal notes will be moved across.<br>This action cannot be undone!!',
         type: 'warning',
         showCancelButton: true,

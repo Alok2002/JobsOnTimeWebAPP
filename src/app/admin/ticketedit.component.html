@@ -66,6 +66,13 @@
                                   <span class="text-danger pull-right"
                                     [hidden]="!status.hasError('required')">Required</span>
                                 </span>
+                                <span class="pull-right">
+                                  <a [attr.data-container]="'body'" title="" [attr.data-toggle]="'popover'"
+                                    [attr.data-placement]="'top'" [attr.data-content]="getTicketStatusHistory()"
+                                    [attr.data-original-title]="" [attr.data-html]="true" class="ax-cursor-pointer">
+                                    <i class="md md-info-outline"></i>
+                                  </a>
+                                </span>
                               </label>
                               <select class="form-control" name="status" [(ngModel)]="ticket.status" #status="ngModel"
                                 required>
@@ -196,8 +203,8 @@
                           </div>
                         </div>
                       </div>
-                    </div>                    
-                    <div class="row">                      
+                    </div>
+                    <div class="row">
                       <div class="col-md-2">
                         <div class="form-group">
                           <label class="control-label ax-color-black w-100-pre">Estimated Dev Time

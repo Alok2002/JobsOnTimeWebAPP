@@ -127,4 +127,9 @@ export class Job {
 
   public qualJob: boolean;
   public quantJob: boolean;
+
+  public assignedByStaff: string;
+  public assignedToStaff: string;
+  public assignedToStaffHistory: string;
+  public assignedToStaffHistoryList: any; //Array<string>;
 }

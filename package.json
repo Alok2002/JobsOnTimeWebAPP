@@ -85,6 +85,7 @@
     "ngx-cookie-service": "2.1.0",
     "ngx-google-places-autocomplete": "^2.0.3",
     "ngx-mask": "7.9.3",
+    "ngx-modal": "0.0.29",
     "ngx-typeahead": "^6.2.0",
     "primeicons": "^1.0.0",
     "primeng": "7.1.2",

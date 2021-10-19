@@ -3090,3 +3090,16 @@ ng-otp-input .wrapper {
 .bg-blue {
   background: #2ea2db;
 }
+
+.ngxmodal .modal-header {
+  border: 0 !important;
+  padding-bottom: 0 !important;
+}
+
+.ngxmodal .modal-body {
+  padding: 0 !important;
+}
+
+.ngxmodal .modal-footer {
+  display: none !important;
+}

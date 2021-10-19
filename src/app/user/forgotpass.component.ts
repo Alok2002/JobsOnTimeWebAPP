@@ -12,7 +12,7 @@ import { SharedServices } from './../services/shared.services';
 export class ForgotPassComponent implements OnInit {
   emailAddress: string;
   isSubmitForm = false;
-  isDuplicateUser = false;
+  isDuplicateUser: boolean = null;
   firstName: string;
   lastName: string;
   error: string;
@@ -29,7 +29,7 @@ export class ForgotPassComponent implements OnInit {
     this.isSubmitForm = true;
     if (form.invalid) {
       //this.isSubmitForm = false;
-    } else {
+    } else if (this.isDuplicateUser != null) {
       this.userservice.forgotPassword(this.emailAddress, this.firstName, this.lastName, null)
         .subscribe((res: any) => {
           this.isSubmitForm = false;

@@ -62,6 +62,7 @@ export class JobInvoiceComponent implements OnInit {
   isFarronResearch = false;
   countrycode: string;
   accountingSystemName: string;
+  initJob: Job;
 
   constructor(private jobsevice: JobServices, private userService: UserServices, private cookieservice: CookieService,
     private clientservice: ClientServices, private sharedservice: SharedServices, private securityInfoResolve: SecurityInfoResolve) {
@@ -132,6 +133,10 @@ export class JobInvoiceComponent implements OnInit {
         this.getContactbyClient(this.job.clientId);
         this.getClientPObyClientId(this.job.clientId);
         this.getInvoiceWarningByClient(this.job.clientId);
+        this.initJob = JSON.parse(JSON.stringify(this.job));
+        this.job.assignedToStaffHistoryList.forEach((sl, i) => {
+          this.job.assignedToStaffHistoryList[i] = { display: sl }
+        });
       });
   }
 
@@ -260,7 +265,42 @@ export class JobInvoiceComponent implements OnInit {
       if (inv.itemDescriptionObj && inv.itemDescriptionObj.value)
         inv.itemDescription = inv.itemDescriptionObj.value;
     });*/
+    if(this.job.assignedToStaff != this.initJob.assignedToStaff && this.job.quoteStatus == this.initJob.quoteStatus) {
+      swal({
+        title: 'Are you sure?',
+        text: 'You have assigned the quote but have not changed the status - Do you want to continue?',
+        type: 'warning',
+        showCancelButton: true,
+        confirmButtonText: 'Yes',
+        confirmButtonColor: '#ffaa00',
+        cancelButtonText: 'No'
+      }).then((result) => {
+        if (result.value) { 
+          this.submitInvoiceHelper();
+        }
+      });
+    }
+    else if(this.job.assignedToStaff == this.initJob.assignedToStaff && this.job.quoteStatus != this.initJob.quoteStatus) {
+      swal({
+        title: 'Are you sure?',
+        text: 'You have not changed the Assigned To Field - Do you want to continue?',
+        type: 'warning',
+        showCancelButton: true,
+        confirmButtonText: 'Yes',
+        confirmButtonColor: '#ffaa00',
+        cancelButtonText: 'No'
+      }).then((result) => {
+        if (result.value) { 
+          this.submitInvoiceHelper();
+        }
+      });
+    }
+    else {
+      this.submitInvoiceHelper();
+    }    
+  }
 
+  submitInvoiceHelper() {
     this.jobsevice.updateInvoice(this.invoices)
       .subscribe((res: any) => {
         console.log(res);
@@ -291,6 +331,16 @@ export class JobInvoiceComponent implements OnInit {
     if (this.job.quoteFollowUpDate) {
       var quoteFollowUpDate = moment(this.job.quoteFollowUpDate, 'YYYY-MM-DD');
       this.job.quoteFollowUpDate = quoteFollowUpDate.utcOffset(0, true).format();
+    }
+
+    if (this.job.id) {
+      if (this.job.assignedToStaff != this.initJob.assignedToStaff) {
+        if (!this.initJob.assignedToStaffHistoryList) this.initJob.assignedToStaffHistoryList = [];
+        this.initJob.assignedToStaffHistoryList.push(this.initJob.assignedToStaff + ' (' + this.initJob.assignedByStaff + ')');
+        this.job.assignedToStaffHistory = this.initJob.assignedToStaffHistoryList.join('~');
+      } else {
+        this.job.assignedByStaff = this.initJob.assignedByStaff;
+      }
     }
 
     this.jobsevice.updateJob(this.job)

@@ -6,6 +6,7 @@ import { NguiDatetimePickerModule } from '@ngui/datetime-picker';
 import { NgxMaskModule } from '../../assets/ax-npm/ngx-mask';
 import { SurveyPreviewComponent } from '../survey/surveypreview.component';
 import { SurveytemplateModule } from './surveytemplate.module';
+import { ModalModule } from "ngx-modal";
 
 export const route: Routes = [
   { path: '', component: SurveyPreviewComponent, pathMatch: 'full' },//NOT USE
@@ -19,7 +20,8 @@ export const route: Routes = [
     RouterModule.forChild(route),
     NguiDatetimePickerModule,
     NgxMaskModule.forRoot(),
-    SurveytemplateModule
+    SurveytemplateModule,
+    ModalModule
   ],
   declarations: [
     SurveyPreviewComponent
