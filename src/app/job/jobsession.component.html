@@ -430,7 +430,7 @@
             </thead>
             <tbody>
               <tr *ngFor="let vin of viewClientJobGroupTime">
-                <td>{{vin?.formattedGroupTime}}</td>
+                <td>{{getFormattedTime(vin?.interviewTime)}}</td>
               </tr>
             </tbody>
           </table>

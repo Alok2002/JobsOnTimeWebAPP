@@ -17,6 +17,7 @@ import { SharedServices } from '../services/shared.services';
 import { EmailServices } from '../services/email.services';
 import { PtableColumn } from '../models/ptablecolumn';
 import { LazyLoadEvent } from 'primeng/api';
+import * as moment from 'moment';
 
 declare var jQuery: any;
 declare var $: any;
@@ -64,7 +65,7 @@ export class JobSessionComponent implements OnInit {
   viewContacts: Array<SessionContact>;
   viewVenues: Array<SessionVenue>;
   viewIncentives: Array<{ clientJobGroupId: number, clientJobIncentiveId: number, clientJobIncentives: Incentive }>;
-  viewClientJobGroupTime: Array<{ id: number, clientJobGroupId: number, groupTime: string, formattedGroupTime: string }>;
+  viewClientJobGroupTime: Array<{ id: number, clientJobGroupId: number, groupTime: string, formattedGroupTime: string, interviewTime: string }>;
 
 
   @ViewChild('downloadBtn') downloadBtn;
@@ -486,5 +487,14 @@ export class JobSessionComponent implements OnInit {
           this.sortOrder = valArr[1];
         }
       })
+  }
+
+  getFormattedTime(interviewTime) {
+    var ret = "";
+    if (interviewTime) {
+      var mm = moment(interviewTime, 'hh:mm:ss');
+      ret = mm.format('hh:mm A');
+    }
+    return ret;
   }
 }
