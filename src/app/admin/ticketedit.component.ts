@@ -253,7 +253,7 @@ export class TicketEditComponent implements OnInit {
         }
       }
 
-      if (this.ticket.lastChangedStaff)
+      if (!this.ticket.lastChangedStaff)
         this.ticket.lastChangedStaff = this.loginusername;
 
       this._ticketService.postTicket(this.ticket)

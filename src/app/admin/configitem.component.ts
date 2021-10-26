@@ -40,8 +40,11 @@ export class ConfigItemComponent implements OnInit {
 
   ngOnInit() {
     this.cols = [
-      { field: 'configKey', header: 'Configuration Key', width: '350', index: 0, sort: true },
-      { field: 'value', header: 'Value', width: 'auto', index: 1, sort: false },
+      { field: 'configKey', header: 'Configuration Key', width: '250', index: 0, sort: true },
+      { field: 'value', header: 'Value', width: 'auto', index: 1, sort: true },
+      { field: 'description', header: 'Description', width: 'auto', index: 2, sort: true },
+      { field: 'options', header: 'Options', width: 'auto', index: 3, sort: true },
+      { field: 'category', header: 'Category', width: '200', index: 4, sort: true },
     ];
     this.selectedColumns = this.cols;
 
