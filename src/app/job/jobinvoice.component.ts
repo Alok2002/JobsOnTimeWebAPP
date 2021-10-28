@@ -15,7 +15,7 @@ import * as JWT from 'jwt-decode';
 import { CookieService } from 'ngx-cookie-service';
 import { SecurityInfoResolve } from '../services/securityinfo.reslove';
 import { SecurityRights } from '../shared/enum';
-import { invoiceDesSource } from '../app.component';
+// import { invoiceDesSource } from '../app.component';
 declare var jQuery: any;
 
 @Component({
@@ -28,7 +28,7 @@ export class JobInvoiceComponent implements OnInit {
   @Input() isUpdateJob: boolean;
 
   invoices: Array<JobInvoice> = [];
-  invoiceDesSource = invoiceDesSource;
+  invoiceDesSource: Array<string> = [];
 
   quotedTotal = 0;
   actualTotal = 0;
@@ -81,6 +81,18 @@ export class JobInvoiceComponent implements OnInit {
     this.getQuoteStatusList();
     this.getCountryCode();
     this.getAccountingSystemName();
+    this.getinvoiceDesSource();
+  }
+
+  getinvoiceDesSource() {
+    this.sharedservice.getAccountCodes()
+      .subscribe((res: any) => {
+        console.log(res)
+        this.invoiceDesSource = res.value.value.  split(',');
+        this.invoiceDesSource.forEach((ind) => {
+          ind = ind.trim();
+        })
+      })
   }
 
   getAccountingSystemName() {
@@ -265,7 +277,7 @@ export class JobInvoiceComponent implements OnInit {
       if (inv.itemDescriptionObj && inv.itemDescriptionObj.value)
         inv.itemDescription = inv.itemDescriptionObj.value;
     });*/
-    if(this.job.assignedToStaff != this.initJob.assignedToStaff && this.job.quoteStatus == this.initJob.quoteStatus) {
+    if (this.job.assignedToStaff != this.initJob.assignedToStaff && this.job.quoteStatus == this.initJob.quoteStatus) {
       swal({
         title: 'Are you sure?',
         text: 'You have assigned the quote but have not changed the status - Do you want to continue?',
@@ -275,12 +287,12 @@ export class JobInvoiceComponent implements OnInit {
         confirmButtonColor: '#ffaa00',
         cancelButtonText: 'No'
       }).then((result) => {
-        if (result.value) { 
+        if (result.value) {
           this.submitInvoiceHelper();
         }
       });
     }
-    else if(this.job.assignedToStaff == this.initJob.assignedToStaff && this.job.quoteStatus != this.initJob.quoteStatus) {
+    else if (this.job.assignedToStaff == this.initJob.assignedToStaff && this.job.quoteStatus != this.initJob.quoteStatus) {
       swal({
         title: 'Are you sure?',
         text: 'You have not changed the Assigned To Field - Do you want to continue?',
@@ -290,14 +302,14 @@ export class JobInvoiceComponent implements OnInit {
         confirmButtonColor: '#ffaa00',
         cancelButtonText: 'No'
       }).then((result) => {
-        if (result.value) { 
+        if (result.value) {
           this.submitInvoiceHelper();
         }
       });
     }
     else {
       this.submitInvoiceHelper();
-    }    
+    }
   }
 
   submitInvoiceHelper() {

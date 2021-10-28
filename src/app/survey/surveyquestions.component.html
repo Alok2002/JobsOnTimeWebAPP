@@ -380,44 +380,46 @@
                               (change)="generateOptionsFromInput(qop.optionText, sq, j)" rows="1"
                               class="form-control"></textarea>
                           </td>
-                          <td class="ax-table-x300">
-                            <select class="form-control" [(ngModel)]="qop.action" name="action{{i}}{{j}}"
-                              (ngModelChange)="changeQuestionAction(qop)">
-                              <option [ngValue]="null" selected disabled>Select Action</option>
-                              <option value="Go to next question">Go to next question</option>
-                              <option value="Go to specific question">Go to specific question</option>
-                              <option value="Fill Quota (and next question)">Fill Quota (and next question)</option>
-                              <option value="Fill Quota (and specific question)">Fill Quota (and specific question)
-                              </option>
-                              <!-- <option value="Qualify and end immediately">Qualify and end immediately</option> -->
-                              <option value="Disqualify and end">Disqualify and end</option>
-                              <option value="Disqualify unless any valid answer">Disqualify unless any valid answer
-                              </option>
-                            </select>
-                          </td>
-                          <td class="ax-table-x75">
-                            <input
-                              [disabled]="qop.action != 'Go to specific question' && qop.action != 'Fill Quota (and specific question)'"
-                              type="number" class="form-control" name="goToQuestionNum{{i}}{{j}}" placeholder="Q.No"
-                              [(ngModel)]="qop.goToQuestionNum" />
-                          </td>
-                          <!--                    <td class="ax-table-x150">-->
-                          <!--                      <select class="form-control">-->
-                          <!--                        <option value=""></option>-->
-                          <!--                      </select>-->
-                          <!--                    </td>-->
-                          <td class="ax-table-x200">
-                            <select
-                              [disabled]="qop.action != 'Fill Quota (and next question)' && qop.action != 'Fill Quota (and specific question)'"
-                              class="form-control" [(ngModel)]="qop.fillQuotaId" name="Quota{{i}}{{j}}">
-                              <option [ngValue]="null" selected disabled>Select Quota</option>
-                              <ng-container *ngFor="let quo of jobQuotas">
-                                <!--<ng-container *ngIf="!checkQuotaExist(quo.id)">-->
-                                <option [value]="quo.id">{{quo.description}}</option>
-                                <!--</ng-container>-->
-                              </ng-container>
-                            </select>
-                          </td>
+                          <ng-container *ngIf="sq.answerType != 'MultiThumbsUpDown'">
+                            <td class="ax-table-x300">
+                              <select class="form-control" [(ngModel)]="qop.action" name="action{{i}}{{j}}"
+                                (ngModelChange)="changeQuestionAction(qop)">
+                                <option [ngValue]="null" selected disabled>Select Action</option>
+                                <option value="Go to next question">Go to next question</option>
+                                <option value="Go to specific question">Go to specific question</option>
+                                <option value="Fill Quota (and next question)">Fill Quota (and next question)</option>
+                                <option value="Fill Quota (and specific question)">Fill Quota (and specific question)
+                                </option>
+                                <!-- <option value="Qualify and end immediately">Qualify and end immediately</option> -->
+                                <option value="Disqualify and end">Disqualify and end</option>
+                                <option value="Disqualify unless any valid answer">Disqualify unless any valid answer
+                                </option>
+                              </select>
+                            </td>
+                            <td class="ax-table-x75">
+                              <input
+                                [disabled]="qop.action != 'Go to specific question' && qop.action != 'Fill Quota (and specific question)'"
+                                type="number" class="form-control" name="goToQuestionNum{{i}}{{j}}" placeholder="Q.No"
+                                [(ngModel)]="qop.goToQuestionNum" />
+                            </td>
+                            <!--                    <td class="ax-table-x150">-->
+                            <!--                      <select class="form-control">-->
+                            <!--                        <option value=""></option>-->
+                            <!--                      </select>-->
+                            <!--                    </td>-->
+                            <td class="ax-table-x200">
+                              <select
+                                [disabled]="qop.action != 'Fill Quota (and next question)' && qop.action != 'Fill Quota (and specific question)'"
+                                class="form-control" [(ngModel)]="qop.fillQuotaId" name="Quota{{i}}{{j}}">
+                                <option [ngValue]="null" selected disabled>Select Quota</option>
+                                <ng-container *ngFor="let quo of jobQuotas">
+                                  <!--<ng-container *ngIf="!checkQuotaExist(quo.id)">-->
+                                  <option [value]="quo.id">{{quo.description}}</option>
+                                  <!--</ng-container>-->
+                                </ng-container>
+                              </select>
+                            </td>
+                          </ng-container>
                           <td style="padding-right: 0px">
                             <input type="text" class="form-control" placeholder="Staff Action"
                               name="staffAction{{i}}{{j}}" [(ngModel)]="qop.internalText">

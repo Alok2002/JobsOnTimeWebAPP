@@ -27,17 +27,6 @@ export var financeAccountPattern = ".{0,9}";
 export var pageTile = "Jobs On Time";
 export var isMobile = false;
 
-export var invoiceDesSource = ['4-1040: Cancellation Fee', '2-1510: Incentives EFT via Farron for ',
-  '2-1520: Incentives with GST', '4-9001: Incentives Paid by the Client',
-  '2-1510: Incentives EFT by Farron – Standby', '2-1530: Incentive Reward for Online',
-  '4-1020: Admin Fee to handle incentives', '4-1012: Online Bulletin Board',
-  '4-1013: Online Survey', '4-1014: Online Project',
-  '4-1011: Pilot Study', '4-1030: Project Management Fee',
-  '4-1060: Recontact Fee', '4-1010: Groups Recruitment',
-  '4-1000: Interviews Recruitment', '4-9004: Interview Recruitment – Standby',
-  '4-1030: Set Up Fee', '4-1111: Venue Hire',
-  '4-9007: Miscellaneous', '4-9003: International Transfer Fee'];
-
 // export var passwordPattern = "(?=.*[!#$%&'()*+,-./:;<=>?@^_`{|}~])(?=.*[a-z])(?=.*[0-9])(?=.*[A-Z]).*";
 export var passwordPattern = "(?=.*[!#$%&'()*+,-./:;<=>?@^_`{|}~])(?=.*[0-9])(?=.*[A-Z]).*";
 export var ckEditorConfigV5 = {
@@ -217,17 +206,6 @@ export class AppComponent implements OnInit {
         mobilePattern = ".{9,11}";
         financeAccountPattern = ".{0,16}";
         financeAccountMask = [/[0-9]/, /[0-9]/, '-', /[0-9]/, /[0-9]/, /[0-9]/, /[0-9]/, '-', /[0-9]/, /[0-9]/, /[0-9]/, /[0-9]/, /[0-9]/, /[0-9]/, /[0-9]/, '-', /[0-9]/, /[0-9]/, /[0-9]/];
-
-        invoiceDesSource = ['21100: Recruitment income',
-          '21200: Survey Income',
-          '21210: Venue income - Prime',
-          '21240: Venue income - Other',
-          '21410: Group refreshments income',
-          '21420: Viewer refreshments income',
-          '21505: Incidental income',
-          '21540: Researcher/ Moderator income',
-          '21999: Miscellaneous income',
-          '818: Incentives'];
       }
     }
   }

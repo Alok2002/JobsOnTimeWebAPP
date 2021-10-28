@@ -1234,4 +1234,8 @@ export class SharedServices {
     getSessionSort() {
         return this._http.get(apiHost + '/api/config/sessionsort');
     }
+
+    getAccountCodes() {
+        return this._http.get(apiHost + '/api/config/accountcodes');
+    }
 }
