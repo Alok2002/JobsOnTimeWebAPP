@@ -74,16 +74,18 @@ export class BPMContactComponent implements OnInit {
         .subscribe((res: any) => {
           this.respondent = res.value;
           this.isLoading = false;
+          console.log(this.respondent)
+          this.getoccupationlist();
         });
     }
     else {
       this.respondent = new Respondent();
       this.respondent.id = 0;
       this.isLoading = false;
+      this.getoccupationlist();
     }
 
     this.currentyear = (new Date()).getFullYear();
-    this.getoccupationlist();
     this.getbusinesssizelist();
     this.getoccupationlevellist();
     this.getData();
@@ -131,6 +133,10 @@ export class BPMContactComponent implements OnInit {
     } else {
       this.respondent.businessRego = true;
 
+      console.log(this.respondent);
+      console.log(this.respondent.occupationObj);
+
+
       if (this.respondent.occupationObj)
         this.respondent.occupationId = this.respondent.occupationObj['id'];
       /*if (this.respondent.partnerOccupationObj)
@@ -138,6 +144,8 @@ export class BPMContactComponent implements OnInit {
 
       //if (!this.respondent.birthMonth) this.respondent.birthMonth = 1;
       console.log(this.respondent.occupationObj);
+      console.log(this.respondent)
+      debugger
       this.respondentservice.updateRespondent(this.respondent)
         .subscribe((res: any) => {
           console.log(res);
@@ -264,6 +272,7 @@ export class BPMContactComponent implements OnInit {
       /*if (va.id == this.respondent.partnerOccupationId)
           this.respondent.partnerOccupationObj = va.description;*/
     });
+    console.log(this.respondent.occupationObj);
   }
 
   unmask(value) {
