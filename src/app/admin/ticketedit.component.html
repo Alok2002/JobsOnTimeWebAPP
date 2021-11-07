@@ -66,7 +66,7 @@
                                   <span class="text-danger pull-right"
                                     [hidden]="!status.hasError('required')">Required</span>
                                 </span>
-                                <span class="pull-right">
+                                <span *ngIf="ticket?.statusHistoryList?.length > 0" class="pull-right">
                                   <a [attr.data-container]="'body'" title="" [attr.data-toggle]="'popover'"
                                     [attr.data-placement]="'top'" [attr.data-content]="getTicketStatusHistory()"
                                     [attr.data-original-title]="" [attr.data-html]="true" class="ax-cursor-pointer">

@@ -349,4 +349,10 @@ export class TicketEditComponent implements OnInit {
       jQuery('[data-toggle="popover"]').popover()
     }
   }
+
+  ngOnDestroy() {
+    if (typeof jQuery != 'undefined') {
+      jQuery('[data-toggle="popover"]').popover('hide');
+    }
+  }
 }
